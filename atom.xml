@@ -1,0 +1,1991 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mohuishou</title>
+  
+  <subtitle>A New Life</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://lailin.xyz/"/>
+  <updated>2019-04-06T12:56:21.475Z</updated>
+  <id>https://lailin.xyz/</id>
+  
+  <author>
+    <name>Mohuishou</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>docker镜像瘦身&amp;优化</title>
+    <link href="https://lailin.xyz/post/notes/docker%E9%95%9C%E5%83%8F%E7%98%A6%E8%BA%AB/"/>
+    <id>https://lailin.xyz/post/notes/docker镜像瘦身/</id>
+    <published>2019-03-30T08:10:10.000Z</published>
+    <updated>2019-04-06T12:56:21.475Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;为什么在存储如此便宜的今天我们仍然需要对 Docker 镜像进行瘦身?&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="notes" scheme="https://lailin.xyz/categories/notes/"/>
+    
+    
+      <category term="blog" scheme="https://lailin.xyz/tags/blog/"/>
+    
+      <category term="docker" scheme="https://lailin.xyz/tags/docker/"/>
+    
+      <category term="cloud" scheme="https://lailin.xyz/tags/cloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GORM避坑指南之含关联关系的更新</title>
+    <link href="https://lailin.xyz/post/go/gorm%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97%E4%B9%8B%E5%90%AB%E5%85%B3%E8%81%94%E5%85%B3%E7%B3%BB%E7%9A%84%E6%9B%B4%E6%96%B0/"/>
+    <id>https://lailin.xyz/post/go/gorm避坑指南之含关联关系的更新/</id>
+    <published>2019-01-29T06:08:52.000Z</published>
+    <updated>2019-03-30T10:15:55.697Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在GORM的&lt;a href=&quot;http://gorm.io/docs/update.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;文档&lt;/a&gt;当中有说明，使用&lt;code&gt;Update&lt;/code&gt;, &lt;code&gt;Updates&lt;/code&gt;时只会更新改变的字段，但是出现关联关系的时候情况似乎有了一些微妙的变化&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If you only want to update changed Fields, you could use &lt;code&gt;Update&lt;/code&gt;, &lt;code&gt;Updates&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="blog" scheme="https://lailin.xyz/tags/blog/"/>
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="note" scheme="https://lailin.xyz/tags/note/"/>
+    
+      <category term="gorm" scheme="https://lailin.xyz/tags/gorm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Github Actions介绍&amp;自动构建Github Pages博客</title>
+    <link href="https://lailin.xyz/post/notes/Github-Actions%E8%87%AA%E5%8A%A8%E6%9E%84%E5%BB%BAGithub-Pages%E5%8D%9A%E5%AE%A2/"/>
+    <id>https://lailin.xyz/post/notes/Github-Actions自动构建Github-Pages博客/</id>
+    <published>2019-01-14T09:11:19.000Z</published>
+    <updated>2019-03-30T10:15:55.698Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文将主要讲述如何创建一个自定义的Github Actions， 并且使用Github Actions 完成 CI/CD的操作&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="blog" scheme="https://lailin.xyz/tags/blog/"/>
+    
+      <category term="notes" scheme="https://lailin.xyz/tags/notes/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在blog中内嵌在线PPT</title>
+    <link href="https://lailin.xyz/post/notes/%E5%9C%A8blog%E4%B8%AD%E5%86%85%E5%B5%8C%E5%9C%A8%E7%BA%BFPPT/"/>
+    <id>https://lailin.xyz/post/notes/在blog中内嵌在线PPT/</id>
+    <published>2018-12-08T00:44:03.000Z</published>
+    <updated>2019-04-06T14:10:45.660Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有时我们会做一些分享，分享之后可以把 PPT 脱敏之后放在博客上面，可以使用 office online 直接内嵌 PPT, 巨硬大法好&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="blog" scheme="https://lailin.xyz/tags/blog/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>记一次net http内存泄漏</title>
+    <link href="https://lailin.xyz/post/go/%E8%AE%B0%E4%B8%80%E6%AC%A1net-http%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/"/>
+    <id>https://lailin.xyz/post/go/记一次net-http内存泄漏/</id>
+    <published>2018-12-08T00:31:20.000Z</published>
+    <updated>2019-04-06T14:10:59.335Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;使用 gin 作为文件下载服务器，内存占用突然从几十 M 到了 10G 以上，导致服务被 kill 重启&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;复现&quot;&gt;&lt;a href=&quot;#复现&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="notes" scheme="https://lailin.xyz/tags/notes/"/>
+    
+      <category term="内存泄漏" scheme="https://lailin.xyz/tags/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pprof go性能分析工具</title>
+    <link href="https://lailin.xyz/post/go/pprof-go%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/"/>
+    <id>https://lailin.xyz/post/go/pprof-go性能分析工具/</id>
+    <published>2018-12-07T19:05:01.000Z</published>
+    <updated>2019-03-30T10:15:55.697Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;PPT 分享(可能需要 FQ 方能访问，需要可以访问, onedrive.live.com)&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="blog" scheme="https://lailin.xyz/tags/blog/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用TravisCI自动部署Blog</title>
+    <link href="https://lailin.xyz/post/notes/%E4%BD%BF%E7%94%A8TravisCI%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2Blog/"/>
+    <id>https://lailin.xyz/post/notes/使用TravisCI自动部署Blog/</id>
+    <published>2018-09-25T03:09:59.000Z</published>
+    <updated>2019-03-30T10:15:55.700Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;之前博客的更新一直都是在本地运行&lt;code&gt;hugo&lt;/code&gt;然后手动push到github仓库，虽然写了一个小脚本，但是本地还是多了一个public文件夹，最近看了travis ci可以和github完美的结合。关于travis ci
+        
+      
+    
+    </summary>
+    
+    
+      <category term="notes" scheme="https://lailin.xyz/tags/notes/"/>
+    
+      <category term="ci" scheme="https://lailin.xyz/tags/ci/"/>
+    
+      <category term="hugo" scheme="https://lailin.xyz/tags/hugo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Goland调试Go程序</title>
+    <link href="https://lailin.xyz/post/%E5%B7%A5%E5%85%B7/%E4%BD%BF%E7%94%A8Goland%E8%B0%83%E8%AF%95Go%E7%A8%8B%E5%BA%8F/"/>
+    <id>https://lailin.xyz/post/工具/使用Goland调试Go程序/</id>
+    <published>2018-09-23T06:35:51.000Z</published>
+    <updated>2019-03-30T10:15:55.704Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;在上一篇Blog当中发现了一个十分边缘的GORM的bug，由于不熟悉工具，bug的调试过程还是比较麻烦，这一篇讲一讲如何使用Goland强大的debug功能调试Go程序&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="tool" scheme="https://lailin.xyz/tags/tool/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一个十分边缘的gorm的bug</title>
+    <link href="https://lailin.xyz/post/notes/%E4%B8%80%E4%B8%AA%E5%8D%81%E5%88%86%E8%BE%B9%E7%BC%98%E7%9A%84gorm%E7%9A%84bug/"/>
+    <id>https://lailin.xyz/post/notes/一个十分边缘的gorm的bug/</id>
+    <published>2018-09-21T02:46:58.000Z</published>
+    <updated>2019-03-30T10:15:55.700Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;[toc]&lt;/p&gt;
+&lt;h3 id=&quot;复现代码&quot;&gt;&lt;a href=&quot;#复现代码&quot; class=&quot;headerlink&quot; title=&quot;复现代码&quot;&gt;&lt;/a&gt;复现代码&lt;/h3&gt;&lt;p&gt;这个代码的触发条件比较严苛，首先必须要保证gorm执行的一行必须为&lt;code&gt;updates&lt;/code&gt;语句，并且在&lt;code&gt;updates(struct)&lt;/code&gt;,并且传入的这个&lt;code&gt;struct&lt;/code&gt;必须要包含一个直接或者间接关联的一个多态表，这些条件缺一不可&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="notes" scheme="https://lailin.xyz/categories/notes/"/>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="gorm" scheme="https://lailin.xyz/tags/gorm/"/>
+    
+      <category term="notes" scheme="https://lailin.xyz/tags/notes/"/>
+    
+      <category term="bug" scheme="https://lailin.xyz/tags/bug/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Httprouter介绍及源码阅读</title>
+    <link href="https://lailin.xyz/post/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/httprouter%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"/>
+    <id>https://lailin.xyz/post/源码阅读/httprouter源码阅读/</id>
+    <published>2018-08-02T06:46:01.000Z</published>
+    <updated>2019-03-30T10:15:55.705Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;在上一篇文章当中阅读了Go语言的一个高性能的Web框架Gin，Web框架当中最重要的功能之一是路由，Gin的路由就是由httprouter这个包实现的&lt;/p&gt;
+&lt;h2 id=&quot;地址&quot;&gt;&lt;a href=&quot;#地址&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="web" scheme="https://lailin.xyz/categories/web/"/>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="路由" scheme="https://lailin.xyz/tags/%E8%B7%AF%E7%94%B1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Gin源码阅读 从0.1开始</title>
+    <link href="https://lailin.xyz/post/%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/gin%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB-%E4%BB%8E0-0-1%E5%BC%80%E5%A7%8B/"/>
+    <id>https://lailin.xyz/post/源码阅读/gin源码阅读-从0-0-1开始/</id>
+    <published>2018-07-21T07:03:19.000Z</published>
+    <updated>2019-03-30T10:15:55.705Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;最近打算开始学习一下Gin的源代码，现在Gin已经是一个十分成熟的框架了，代码量也不少，阅读起来还是有一定的难度，所以我打算从0.1版本开始阅读学习，一直到最新的一个版本。跟随着Gin的源码一步一步的学习成长。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+        
+      
+    
+    </summary>
+    
+      <category term="web" scheme="https://lailin.xyz/categories/web/"/>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="gin" scheme="https://lailin.xyz/tags/gin/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>纯技术人员和投资者的一些区别</title>
+    <link href="https://lailin.xyz/post/notes/%E7%BA%AF%E6%8A%80%E6%9C%AF%E4%BA%BA%E5%91%98%E5%92%8C%E6%8A%95%E8%B5%84%E8%80%85%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8C%BA%E5%88%AB/"/>
+    <id>https://lailin.xyz/post/notes/纯技术人员和投资者的一些区别/</id>
+    <published>2018-07-21T02:46:58.000Z</published>
+    <updated>2019-03-30T10:15:55.702Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;以下都是流水账，感慨一下…&lt;/p&gt;
+&lt;p&gt;今天有幸参加了一位师兄的校友聚会，也很巧合，和很多大佬一起吃了一个饭，听大佬们聊天受益颇多。&lt;/p&gt;
+&lt;p&gt;今天有一位做技术很厉害的，专家级的师兄想创业，聊起了他的项目，另外几个做企业的师兄在旁边听并且给出建议。让我产生一种很强烈的
+        
+      
+    
+    </summary>
+    
+      <category term="notes" scheme="https://lailin.xyz/categories/notes/"/>
+    
+    
+      <category term="notes" scheme="https://lailin.xyz/tags/notes/"/>
+    
+      <category term="杂记" scheme="https://lailin.xyz/tags/%E6%9D%82%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2018年的一些小目标</title>
+    <link href="https://lailin.xyz/post/%E4%B8%AA%E4%BA%BA%E8%AE%A1%E5%88%92/2018/"/>
+    <id>https://lailin.xyz/post/个人计划/2018/</id>
+    <published>2018-07-19T07:42:08.000Z</published>
+    <updated>2019-03-30T10:15:55.704Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;时间过得很快，从一个学生到一个社会人只需要那么一瞬间，一个来不及反应的瞬间。虽然之前经历过大量的实习工作，也不是第一次只身一人千里迢迢来到这个陌生的城市，但是还是有那么一些的不适应。&lt;/p&gt;
+&lt;p&gt;开始工作了，时间变得少了，但是学习的紧迫性却是变得更高了&lt;/p&gt;
+&lt;p&gt;列一
+        
+      
+    
+    </summary>
+    
+      <category term="规划总结" scheme="https://lailin.xyz/categories/%E8%A7%84%E5%88%92%E6%80%BB%E7%BB%93/"/>
+    
+    
+      <category term="规划" scheme="https://lailin.xyz/tags/%E8%A7%84%E5%88%92/"/>
+    
+      <category term="总结" scheme="https://lailin.xyz/tags/%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>go标准库——ioutil.ReadAll的实现</title>
+    <link href="https://lailin.xyz/post/go/go%E6%A0%87%E5%87%86%E5%BA%93/ioutil-ReadAll%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
+    <id>https://lailin.xyz/post/go/go标准库/ioutil-ReadAll的实现/</id>
+    <published>2018-03-19T17:53:06.000Z</published>
+    <updated>2019-03-30T10:15:55.697Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;最近准备学习一下 golang
+        
+      
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="go标准库" scheme="https://lailin.xyz/tags/go%E6%A0%87%E5%87%86%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用chromedp解决反爬虫问题</title>
+    <link href="https://lailin.xyz/post/notes/%E4%BD%BF%E7%94%A8chromedp%E8%A7%A3%E5%86%B3%E5%8F%8D%E7%88%AC%E8%99%AB%E9%97%AE%E9%A2%98/"/>
+    <id>https://lailin.xyz/post/notes/使用chromedp解决反爬虫问题/</id>
+    <published>2018-03-13T17:40:48.000Z</published>
+    <updated>2019-03-30T10:15:55.700Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="爬虫" scheme="https://lailin.xyz/tags/%E7%88%AC%E8%99%AB/"/>
+    
+      <category term="chromedp" scheme="https://lailin.xyz/tags/chromedp/"/>
+    
+      <category term="四川大学" scheme="https://lailin.xyz/tags/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>We川大开发笔记@0.2.0</title>
+    <link href="https://lailin.xyz/post/wescu/we%E5%B7%9D%E5%A4%A7%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0@0.2.0/"/>
+    <id>https://lailin.xyz/post/wescu/we川大开发笔记@0.2.0/</id>
+    <published>2018-01-24T01:55:25.000Z</published>
+    <updated>2019-03-30T10:15:55.704Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="we川大" scheme="https://lailin.xyz/tags/we%E5%B7%9D%E5%A4%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>We川大开发笔记@0.1.0</title>
+    <link href="https://lailin.xyz/post/wescu/we%E5%B7%9D%E5%A4%A7%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0@0.1.0/"/>
+    <id>https://lailin.xyz/post/wescu/we川大开发笔记@0.1.0/</id>
+    <published>2018-01-24T01:12:56.000Z</published>
+    <updated>2019-03-30T10:15:55.704Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="we川大" scheme="https://lailin.xyz/tags/we%E5%B7%9D%E5%A4%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>招银网络面试总结</title>
+    <link href="https://lailin.xyz/post/%E6%A0%A1%E6%8B%9B/%E6%8B%9B%E9%93%B6%E7%BD%91%E7%BB%9C%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/"/>
+    <id>https://lailin.xyz/post/校招/招银网络面试总结/</id>
+    <published>2017-09-22T10:46:42.000Z</published>
+    <updated>2019-03-30T10:15:55.705Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;三面同时进行，每一面间隔不超过五分钟，前面两面技术面最后一面HR，完全不会JAVA，结果一直问JAVA心态爆炸&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;一面-20min&quot;&gt;&lt;a href=&quot;#一面-20min&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="面试" scheme="https://lailin.xyz/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="秋招" scheme="https://lailin.xyz/tags/%E7%A7%8B%E6%8B%9B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>插入排序</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/"/>
+    <id>https://lailin.xyz/post/算法/插入排序/</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.706Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;插入排序&quot;&gt;&lt;a href=&quot;#插入排序&quot; class=&quot;headerlink&quot; title=&quot;插入排序&quot;&gt;&lt;/a&gt;插入排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>堆排序</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E5%A0%86%E6%8E%92%E5%BA%8F/"/>
+    <id>https://lailin.xyz/post/算法/堆排序/</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.706Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h2&gt;&lt;p&gt;堆积排序：
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>归并排序</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/"/>
+    <id>https://lailin.xyz/post/算法/归并排序/</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.706Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h2&gt;&lt;p&gt;归并排序:是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>冒泡排序</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/"/>
+    <id>https://lailin.xyz/post/算法/冒泡排序/</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.705Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;冒泡排序&quot;&gt;&lt;a href=&quot;#冒泡排序&quot; class=&quot;headerlink&quot; title=&quot;冒泡排序&quot;&gt;&lt;/a&gt;冒泡排序&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>快速排序</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"/>
+    <id>https://lailin.xyz/post/算法/快速排序/</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.706Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/mohuishou/go-sort&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>shell排序</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/shell%E6%8E%92%E5%BA%8F/"/>
+    <id>https://lailin.xyz/post/算法/shell排序/</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.705Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Shell-排序&quot;&gt;&lt;a href=&quot;#Shell-排序&quot; class=&quot;headerlink&quot; title=&quot;Shell 排序&quot;&gt;&lt;/a&gt;Shell 排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>百度面试总结</title>
+    <link href="https://lailin.xyz/post/%E6%A0%A1%E6%8B%9B/%E7%99%BE%E5%BA%A6%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/"/>
+    <id>https://lailin.xyz/post/校招/百度面试总结/</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.705Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;一面-40min&quot;&gt;&lt;a href=&quot;#一面-40min&quot; class=&quot;headerlink&quot; title=&quot;一面(40min)&quot;&gt;&lt;/a&gt;一面(40min)&lt;/h2&gt;&lt;h3 id=&quot;0-自我介绍&quot;&gt;&lt;a href=&quot;#0-自我介绍&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="面试" scheme="https://lailin.xyz/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="秋招" scheme="https://lailin.xyz/tags/%E7%A7%8B%E6%8B%9B/"/>
+    
+      <category term="百度" scheme="https://lailin.xyz/tags/%E7%99%BE%E5%BA%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>选择排序</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/"/>
+    <id>https://lailin.xyz/post/算法/选择排序/</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.707Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/mohuishou/go-sort&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>遗传算法</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/"/>
+    <id>https://lailin.xyz/post/算法/遗传算法/</id>
+    <published>2017-04-16T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.707Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;实现示例-Golang&quot;&gt;&lt;a href=&quot;#实现示例-Golang&quot; class=&quot;headerlink&quot; title=&quot;实现示例-Golang&quot;&gt;&lt;/a&gt;实现示例-Golang&lt;/h2&gt;&lt;p&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="算法" scheme="https://lailin.xyz/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="遗传算法" scheme="https://lailin.xyz/tags/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>最短路径算法SPFA</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95-SPFA/"/>
+    <id>https://lailin.xyz/post/算法/最短路径算法-SPFA/</id>
+    <published>2017-04-15T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.706Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;前面说了单源最短路径算法Dijkstra，以及多源最短路径算法Floyd，但是都不能适用于有负权边存在的情况，这里实现一下是西南交通大学段凡丁于1994年发表的SPFA（Shortest Path Faster
+        
+      
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="算法" scheme="https://lailin.xyz/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="图" scheme="https://lailin.xyz/tags/%E5%9B%BE/"/>
+    
+      <category term="最短路径" scheme="https://lailin.xyz/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/"/>
+    
+      <category term="spfa" scheme="https://lailin.xyz/tags/spfa/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>最短路径算法-Floyd</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95-Floyd/"/>
+    <id>https://lailin.xyz/post/算法/最短路径算法-Floyd/</id>
+    <published>2017-04-11T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.706Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;在上一篇当中讲了Dijkstra算法，Dijkstra适用于对于单源路径的求取，但是对于任意两个点之间的最小路径呢？首先想到的当然是直接使用多次的Dijkstra算法来求取任意两点之间的最短路径，但是这样下来时间复杂度会比较大，所以使用一种新的算法
+        
+      
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="算法" scheme="https://lailin.xyz/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="图" scheme="https://lailin.xyz/tags/%E5%9B%BE/"/>
+    
+      <category term="最短路径" scheme="https://lailin.xyz/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>邻接表-Golang</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E9%82%BB%E6%8E%A5%E8%A1%A8-Golang/"/>
+    <id>https://lailin.xyz/post/算法/邻接表-Golang/</id>
+    <published>2017-04-09T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.707Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;最简单直接的办法一般就是使用邻接矩阵的办法来表示图，但是对于稀疏图来说边的数目想对来说比较少的情况下，使用邻接矩阵的办法会比较浪费资源，所以这里采用邻接表&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;Github&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="算法" scheme="https://lailin.xyz/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="图" scheme="https://lailin.xyz/tags/%E5%9B%BE/"/>
+    
+      <category term="邻接表" scheme="https://lailin.xyz/tags/%E9%82%BB%E6%8E%A5%E8%A1%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>最短路径算法-Dijkstra</title>
+    <link href="https://lailin.xyz/post/%E7%AE%97%E6%B3%95/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95-Dijkstra/"/>
+    <id>https://lailin.xyz/post/算法/最短路径算法-Dijkstra/</id>
+    <published>2017-04-08T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.706Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;算法描述&quot;&gt;&lt;a href=&quot;#算法描述&quot; class=&quot;headerlink&quot; title=&quot;算法描述&quot;&gt;&lt;/a&gt;算法描述&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;这个算法是通过为每个顶点 v 保留目前为止所找到的从 s 到 v
+        
+      
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="算法" scheme="https://lailin.xyz/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="华为软挑" scheme="https://lailin.xyz/tags/%E5%8D%8E%E4%B8%BA%E8%BD%AF%E6%8C%91/"/>
+    
+      <category term="图" scheme="https://lailin.xyz/tags/%E5%9B%BE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>华为软挑2017</title>
+    <link href="https://lailin.xyz/post/notes/%E5%8D%8E%E4%B8%BA%E8%BD%AF%E6%8C%912017/"/>
+    <id>https://lailin.xyz/post/notes/华为软挑2017/</id>
+    <published>2017-04-08T00:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.701Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;稍稍总结一下最近差不多几天的心路历程，虽然最后没有拿到名次，但是从最开始的连最短路径是什么都不知道，到现在的已经可以利用遗传算法+最小费用最大流算法求出一些可行的解，就短短的不到一周的时间，学习到了可以说之前一个学期也未必能够学习到的知识。&lt;/p&gt;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="算法" scheme="https://lailin.xyz/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="华为软挑" scheme="https://lailin.xyz/tags/%E5%8D%8E%E4%B8%BA%E8%BD%AF%E6%8C%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>利用vbox在win下搭建linux开发环境</title>
+    <link href="https://lailin.xyz/post/notes/%E5%88%A9%E7%94%A8vbox%E5%9C%A8win%E4%B8%8B%E6%90%AD%E5%BB%BAlinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
+    <id>https://lailin.xyz/post/notes/利用vbox在win下搭建linux开发环境/</id>
+    <published>2016-11-24T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.700Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;之前一直在用 deepin，但是最近因为要使用 win 下的一些软件就直接切到 win 了，想了想可不可以直接搭建一个 linux 环境，在 windows 下编码呢&lt;br&gt;第一次尝试的是 docker 的方案，但是最后放弃了，因为 docker
+        
+      
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://lailin.xyz/tags/linux/"/>
+    
+      <category term="虚拟机" scheme="https://lailin.xyz/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在windows安装dockertool，并且配置文件夹共享</title>
+    <link href="https://lailin.xyz/post/notes/%E5%9C%A8windows%E5%AE%89%E8%A3%85dockertool%EF%BC%8C%E5%B9%B6%E4%B8%94%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%A4%B9%E5%85%B1%E4%BA%AB/"/>
+    <id>https://lailin.xyz/post/notes/在windows安装dockertool，并且配置文件夹共享/</id>
+    <published>2016-11-19T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.701Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;今天折腾了好久，终于好了，但是还是有点小遗憾。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;实现下面几个点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装 dockertool(通过 boot2docker 以及 vbox 驱动)&lt;/li&gt;
+&lt;li&gt;使用
+        
+      
+    
+    </summary>
+    
+    
+      <category term="docker" scheme="https://lailin.xyz/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在laravel/lumen之外使用Eloquent</title>
+    <link href="https://lailin.xyz/post/php/%E5%9C%A8laravel-lumen%E4%B9%8B%E5%A4%96%E4%BD%BF%E7%94%A8Eloquent/"/>
+    <id>https://lailin.xyz/post/php/在laravel-lumen之外使用Eloquent/</id>
+    <published>2016-11-18T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.704Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套App的制作。整个一块都用socket进行数据传输，但是其中涉及到的数据库的操作，最近lumen用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。&lt;/p&gt;
+
+        
+      
+    
+    </summary>
+    
+    
+      <category term="laravel" scheme="https://lailin.xyz/tags/laravel/"/>
+    
+      <category term="lumen" scheme="https://lailin.xyz/tags/lumen/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>java笔记1</title>
+    <link href="https://lailin.xyz/post/notes/java%E7%AC%94%E8%AE%B01/"/>
+    <id>https://lailin.xyz/post/notes/java笔记1/</id>
+    <published>2016-11-10T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.699Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;java初学笔记，随手记录&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;单引号表示字符&lt;code&gt;char&lt;/code&gt;类型(&lt;em&gt;不常用&lt;/em&gt;)，双引号才是字符串&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;float类型后面要添加f
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java" scheme="https://lailin.xyz/tags/java/"/>
+    
+      <category term="笔记" scheme="https://lailin.xyz/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一键迁移typecho到hexo</title>
+    <link href="https://lailin.xyz/post/notes/%E4%B8%80%E9%94%AE%E8%BF%81%E7%A7%BBtypecho%E5%88%B0hexo/"/>
+    <id>https://lailin.xyz/post/notes/一键迁移typecho到hexo/</id>
+    <published>2016-10-12T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.700Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;为了更好的写博客，最近打算把博客静态化，发现了node写的hexo。顺便也可以直接利用github和coding的pages来搭建博客同时把之前闲置的未备案域名&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="hexo" scheme="https://lailin.xyz/tags/hexo/"/>
+    
+      <category term="typecho" scheme="https://lailin.xyz/tags/typecho/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在deepin下安装shadowsocks-qt5</title>
+    <link href="https://lailin.xyz/post/notes/%E5%9C%A8deepin%E4%B8%8B%E5%AE%89%E8%A3%85shadowsocks-qt5/"/>
+    <id>https://lailin.xyz/post/notes/在deepin下安装shadowsocks-qt5/</id>
+    <published>2016-10-09T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.701Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;在deepin下安装ss-qt5&quot;&gt;&lt;a href=&quot;#在deepin下安装ss-qt5&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="linux" scheme="https://lailin.xyz/categories/linux/"/>
+    
+    
+      <category term="ss" scheme="https://lailin.xyz/tags/ss/"/>
+    
+      <category term="deepin" scheme="https://lailin.xyz/tags/deepin/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>四川大学锐捷windows解除多网卡限制</title>
+    <link href="https://lailin.xyz/post/notes/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6%E9%94%90%E6%8D%B7windows%E8%A7%A3%E9%99%A4%E5%A4%9A%E7%BD%91%E5%8D%A1%E9%99%90%E5%88%B6/"/>
+    <id>https://lailin.xyz/post/notes/四川大学锐捷windows解除多网卡限制/</id>
+    <published>2016-09-06T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.701Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;搬到望江校区之后校园网快了好多，但是需要锐捷认证，锐捷这个坑货需要限制多网卡，而且程序的占用实在太大，十分的不方便。使用
+        
+      
+    
+    </summary>
+    
+      <category term="大学" scheme="https://lailin.xyz/categories/%E5%A4%A7%E5%AD%A6/"/>
+    
+    
+      <category term="破解" scheme="https://lailin.xyz/tags/%E7%A0%B4%E8%A7%A3/"/>
+    
+      <category term="四川大学" scheme="https://lailin.xyz/tags/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6/"/>
+    
+      <category term="锐捷" scheme="https://lailin.xyz/tags/%E9%94%90%E6%8D%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>php设计模式（一）工厂模式</title>
+    <link href="https://lailin.xyz/post/php/php%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88%E4%B8%80%EF%BC%89%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/"/>
+    <id>https://lailin.xyz/post/php/php设计模式（一）工厂模式/</id>
+    <published>2016-08-06T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.703Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;PHP设计模式（一）工厂模式&quot;&gt;&lt;a href=&quot;#PHP设计模式（一）工厂模式&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="设计模式" scheme="https://lailin.xyz/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>四川大学望江校区使用mentohust认证上网</title>
+    <link href="https://lailin.xyz/post/notes/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6%E6%9C%9B%E6%B1%9F%E6%A0%A1%E5%8C%BA%E4%BD%BF%E7%94%A8mentohust%E8%AE%A4%E8%AF%81%E4%B8%8A%E7%BD%91/"/>
+    <id>https://lailin.xyz/post/notes/四川大学望江校区使用mentohust认证上网/</id>
+    <published>2016-07-18T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.701Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;刚刚解决完天翼飞扬的上网问题，结果就搬校区了，按照上一篇文章的方法在这边也是可以用的，但是校园网使用的锐捷认证已经提供了
+        
+      
+    
+    </summary>
+    
+      <category term="大学" scheme="https://lailin.xyz/categories/%E5%A4%A7%E5%AD%A6/"/>
+    
+    
+      <category term="四川大学" scheme="https://lailin.xyz/tags/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6/"/>
+    
+      <category term="mentohust" scheme="https://lailin.xyz/tags/mentohust/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux下天翼飞扬认证上网的一个解决方法</title>
+    <link href="https://lailin.xyz/post/notes/linux%E4%B8%8B%E5%A4%A9%E7%BF%BC%E9%A3%9E%E6%89%AC%E8%AE%A4%E8%AF%81%E4%B8%8A%E7%BD%91%E7%9A%84%E4%B8%80%E4%B8%AA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/"/>
+    <id>https://lailin.xyz/post/notes/linux下天翼飞扬认证上网的一个解决方法/</id>
+    <published>2016-07-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.699Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;博主尝试过许多的方法一直没有解决这个问题，例如：虚拟机桥接 ，crossover、wine 模拟，很早以前的
+        
+      
+    
+    </summary>
+    
+      <category term="大学" scheme="https://lailin.xyz/categories/%E5%A4%A7%E5%AD%A6/"/>
+    
+    
+      <category term="天翼飞扬" scheme="https://lailin.xyz/tags/%E5%A4%A9%E7%BF%BC%E9%A3%9E%E6%89%AC/"/>
+    
+      <category term="linux" scheme="https://lailin.xyz/tags/linux/"/>
+    
+      <category term="网络" scheme="https://lailin.xyz/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>迁移laravel框架项目到虚拟主机</title>
+    <link href="https://lailin.xyz/post/php/%E8%BF%81%E7%A7%BBlaravel%E6%A1%86%E6%9E%B6%E9%A1%B9%E7%9B%AE%E5%88%B0%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/"/>
+    <id>https://lailin.xyz/post/php/迁移laravel框架项目到虚拟主机/</id>
+    <published>2016-07-14T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.704Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h3&gt;&lt;p&gt;laravel版本：&lt;code&gt;5.2&lt;/code&gt;&lt;br&gt;虚拟主机：万网&lt;/p&gt;
+&lt;h3 id=&quot;迁移&quot;&gt;&lt;a href=&quot;#迁移&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="laravel" scheme="https://lailin.xyz/tags/laravel/"/>
+    
+      <category term="虚拟主机" scheme="https://lailin.xyz/tags/%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘</title>
+    <link href="https://lailin.xyz/post/notes/%E4%BD%BF%E7%94%A8lnmp+owncloud+ossfs+oss%E6%90%AD%E5%BB%BA%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84%E7%A7%81%E6%9C%89%E4%BA%91%E7%9B%98/"/>
+    <id>https://lailin.xyz/post/notes/使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘/</id>
+    <published>2016-06-27T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.700Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的oss可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="lnmp" scheme="https://lailin.xyz/tags/lnmp/"/>
+    
+      <category term="云盘" scheme="https://lailin.xyz/tags/%E4%BA%91%E7%9B%98/"/>
+    
+      <category term="owncloud" scheme="https://lailin.xyz/tags/owncloud/"/>
+    
+      <category term="oss" scheme="https://lailin.xyz/tags/oss/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>四川大学评教开源代码</title>
+    <link href="https://lailin.xyz/post/notes/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6%E8%AF%84%E6%95%99%E5%BC%80%E6%BA%90%E4%BB%A3%E7%A0%81/"/>
+    <id>https://lailin.xyz/post/notes/四川大学评教开源代码/</id>
+    <published>2016-06-02T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.701Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+      <category term="大学" scheme="https://lailin.xyz/categories/%E5%A4%A7%E5%AD%A6/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="四川大学" scheme="https://lailin.xyz/tags/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Composer上线前的优化</title>
+    <link href="https://lailin.xyz/post/php/Composer%E4%B8%8A%E7%BA%BF%E5%89%8D%E7%9A%84%E4%BC%98%E5%8C%96/"/>
+    <id>https://lailin.xyz/post/php/Composer上线前的优化/</id>
+    <published>2016-05-09T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.702Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;更新之后或者上线前别忘了执行下面的命令&lt;br&gt;否则少则损失20%-50%的性能，多则程序直接报错&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="composer" scheme="https://lailin.xyz/tags/composer/"/>
+    
+      <category term="优化" scheme="https://lailin.xyz/tags/%E4%BC%98%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>php识别验证码（二）</title>
+    <link href="https://lailin.xyz/post/php/php%E8%AF%86%E5%88%AB%E9%AA%8C%E8%AF%81%E7%A0%81%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
+    <id>https://lailin.xyz/post/php/php识别验证码（二）/</id>
+    <published>2016-05-03T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.703Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;在 php 识别验证码（一）当中说了基本的识别验证码的方法，及其关键的代码，但是最后我们留下了一个问题，就是对于有旋转的验证码的识别率及其低下的问题，下面来解决这个问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;标准化&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="图片" scheme="https://lailin.xyz/tags/%E5%9B%BE%E7%89%87/"/>
+    
+      <category term="验证码识别" scheme="https://lailin.xyz/tags/%E9%AA%8C%E8%AF%81%E7%A0%81%E8%AF%86%E5%88%AB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>php识别验证码（一）</title>
+    <link href="https://lailin.xyz/post/php/php%E8%AF%86%E5%88%AB%E9%AA%8C%E8%AF%81%E7%A0%81%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>https://lailin.xyz/post/php/php识别验证码（一）/</id>
+    <published>2016-05-02T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.703Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;想做一个针对联通优选在沃自动签到的小程序，但是登陆需要验证码，找了一下现有的一些博客或者是开源的验证码识别的代码，没有一个比较满意的，so，自己写了一个。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;需要识别的验证码&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="图片" scheme="https://lailin.xyz/tags/%E5%9B%BE%E7%89%87/"/>
+    
+      <category term="识别" scheme="https://lailin.xyz/tags/%E8%AF%86%E5%88%AB/"/>
+    
+      <category term="验证码识别" scheme="https://lailin.xyz/tags/%E9%AA%8C%E8%AF%81%E7%A0%81%E8%AF%86%E5%88%AB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>php利用curl保存图片</title>
+    <link href="https://lailin.xyz/post/php/php%E5%88%A9%E7%94%A8curl%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87/"/>
+    <id>https://lailin.xyz/post/php/php利用curl保存图片/</id>
+    <published>2016-05-02T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.703Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="图片" scheme="https://lailin.xyz/tags/%E5%9B%BE%E7%89%87/"/>
+    
+      <category term="curl" scheme="https://lailin.xyz/tags/curl/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>php-webhook利用php脚本自动化部署git项目</title>
+    <link href="https://lailin.xyz/post/php/php-webhook-%E5%88%A9%E7%94%A8php%E8%84%9A%E6%9C%AC%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2git%E9%A1%B9%E7%9B%AE/"/>
+    <id>https://lailin.xyz/post/php/php-webhook-利用php脚本自动化部署git项目/</id>
+    <published>2016-04-27T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.702Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;遇到权限的问题弄了好久，整理一下步骤简单的写一下&lt;br&gt;在阅读这篇文章的时候默认你的服务器上安装了web服务器和git&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;step1&quot;&gt;&lt;a href=&quot;#step1&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="git" scheme="https://lailin.xyz/tags/git/"/>
+    
+      <category term="webhook" scheme="https://lailin.xyz/tags/webhook/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx无法启动</title>
+    <link href="https://lailin.xyz/post/notes/nginx%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8/"/>
+    <id>https://lailin.xyz/post/notes/nginx无法启动/</id>
+    <published>2016-04-26T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.699Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;今天装了一个服务器但是nginx一直无法启动，google了各种答案，还是没有效果&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;例如：&quot;&gt;&lt;a href=&quot;#例如：&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="nginx" scheme="https://lailin.xyz/tags/nginx/"/>
+    
+      <category term="服务器" scheme="https://lailin.xyz/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx-php报502错误</title>
+    <link href="https://lailin.xyz/post/php/nginx-php-%E6%8A%A5502%E9%94%99%E8%AF%AF/"/>
+    <id>https://lailin.xyz/post/php/nginx-php-报502错误/</id>
+    <published>2016-04-24T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.702Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;正是悲催犯了一个超低级的错误&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在腾讯云新买了一个服务器，直接用了以前nginx的配置文件，但是装上之后先是404然后502，一直不知道为什么&lt;/p&gt;
+&lt;figure class=&quot;highlight
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="nginx" scheme="https://lailin.xyz/tags/nginx/"/>
+    
+      <category term="服务器" scheme="https://lailin.xyz/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C语言验证浮点数的二进制表示</title>
+    <link href="https://lailin.xyz/post/notes/C%E8%AF%AD%E8%A8%80%E9%AA%8C%E8%AF%81%E6%B5%AE%E7%82%B9%E6%95%B0%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA/"/>
+    <id>https://lailin.xyz/post/notes/C语言验证浮点数的二进制表示/</id>
+    <published>2016-02-28T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.698Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;验证浮点数&quot;&gt;&lt;a href=&quot;#验证浮点数&quot; class=&quot;headerlink&quot; title=&quot;验证浮点数&quot;&gt;&lt;/a&gt;验证浮点数&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;虽然以前也学过浮点数的表示原理，大致的原理还是清楚的，但是使用 C 语言的来进性验证还没有尝试过，下面是验证的过程&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&quot;思路&quot;&gt;&lt;a href=&quot;#思路&quot; class=&quot;headerlink&quot; title=&quot;思路&quot;&gt;&lt;/a&gt;思路&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;知道浮点数，是按照 32 位在内存中保存，其中第一位表示符号，后 8 位表示指数，最后 23 位表示小数&lt;/li&gt;
+&lt;li&gt;C 语言当中存在指针，可以直接通过指针来获取，变量的地址。&lt;/li&gt;
+&lt;li&gt;所以就先定义一个变量来储存浮点数，在定义一个指针来获取，浮点数的储存地址，在把 16 进制或者 10 进制的地址转化为 2 进制即可
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="C" scheme="https://lailin.xyz/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>js编码解码URL</title>
+    <link href="https://lailin.xyz/post/notes/js%E7%BC%96%E7%A0%81%E8%A7%A3%E7%A0%81URL/"/>
+    <id>https://lailin.xyz/post/notes/js编码解码URL/</id>
+    <published>2016-02-03T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.699Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;在js的URL编码解码当中有这两个函数，分别是&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;编码解码函数&quot;&gt;&lt;a href=&quot;#编码解码函数&quot; class=&quot;headerlink&quot; title=&quot;编码解码函数&quot;&gt;&lt;/a&gt;编码解码函数&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;编码&lt;code&gt;encodeURI(str)&lt;/code&gt;&lt;br&gt;解码&lt;code&gt;decodeURI(str)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;编码&lt;code&gt;encodeURIComponent&lt;/code&gt;&lt;br&gt;解码&lt;code&gt;decodeURIComponent&lt;/code&gt;
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="js" scheme="https://lailin.xyz/tags/js/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>css中权重与优先级</title>
+    <link href="https://lailin.xyz/post/notes/css%E4%B8%AD%E6%9D%83%E9%87%8D%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7/"/>
+    <id>https://lailin.xyz/post/notes/css中权重与优先级/</id>
+    <published>2016-01-03T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.698Z</updated>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;今天在写一个前端文件的时候发现有一个样式突然没有了作用，但是按照优先级来说应该后面的前面的才对。&lt;br&gt;然后研究了一下css当中的优先级到底是怎么回事，才发现原来都是权重的锅&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="css" scheme="https://lailin.xyz/tags/css/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>EmotionCamera</title>
+    <link href="https://lailin.xyz/post/notes/EmotionCamera/"/>
+    <id>https://lailin.xyz/post/notes/EmotionCamera/</id>
+    <published>2016-01-01T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.698Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;wiz_toc_0&quot;&gt;简单实现逻辑&lt;/h4&gt;
+
+&lt;ol&gt;&lt;br&gt;&lt;li&gt;首先识别脸部&lt;/li&gt;&lt;br&gt;&lt;li&gt;标识出关键点&lt;/li&gt;&lt;br&gt;&lt;li&gt;通过一定的算法捕抓表情&lt;/li&gt;&lt;br&gt;&lt;/ol&gt;
+
+&lt;h4
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="项目" scheme="https://lailin.xyz/tags/%E9%A1%B9%E7%9B%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>phpstrom10激活方法（JetBrains系列软件激活）</title>
+    <link href="https://lailin.xyz/post/php/phpstrom10%E6%BF%80%E6%B4%BB%E6%96%B9%E6%B3%95%EF%BC%88JetBrains%E7%B3%BB%E5%88%97%E8%BD%AF%E4%BB%B6%E6%BF%80%E6%B4%BB%EF%BC%89/"/>
+    <id>https://lailin.xyz/post/php/phpstrom10激活方法（JetBrains系列软件激活）/</id>
+    <published>2015-11-14T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.703Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;找到一个JetBrains系列软件的注册服务器&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;注册时选择“License server”输入“&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="破解" scheme="https://lailin.xyz/tags/%E7%A0%B4%E8%A7%A3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</title>
+    <link href="https://lailin.xyz/post/notes/NDK%E5%BC%80%E5%8F%91%E4%B8%AD%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AEandroid.support.v7.app.AppCompatActivity-%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"/>
+    <id>https://lailin.xyz/post/notes/NDK开发中无法访问android.support.v7.app.AppCompatActivity-解决办法/</id>
+    <published>2015-11-14T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.698Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;错误详情：&lt;br&gt;错误:
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="app" scheme="https://lailin.xyz/tags/app/"/>
+    
+      <category term="ndk" scheme="https://lailin.xyz/tags/ndk/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>phpsocket连接，UDP</title>
+    <link href="https://lailin.xyz/post/php/php-socket%E8%BF%9E%E6%8E%A5%EF%BC%8CUDP/"/>
+    <id>https://lailin.xyz/post/php/php-socket连接，UDP/</id>
+    <published>2015-11-08T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.702Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="socket" scheme="https://lailin.xyz/tags/socket/"/>
+    
+      <category term="udp" scheme="https://lailin.xyz/tags/udp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>appcan利用天翼rtc实现视频通话功能</title>
+    <link href="https://lailin.xyz/post/notes/appcan%E5%88%A9%E7%94%A8%E5%A4%A9%E7%BF%BCrtc%E5%AE%9E%E7%8E%B0%E8%A7%86%E9%A2%91%E9%80%9A%E8%AF%9D%E5%8A%9F%E8%83%BD/"/>
+    <id>https://lailin.xyz/post/notes/appcan利用天翼rtc实现视频通话功能/</id>
+    <published>2015-10-28T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.698Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本代码是在示例代码的基础上进行了一些简化，并将其单独做了一个vedio.js文件，只需要两个按钮，即可完成接听和拨打的需求&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;attention：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="app" scheme="https://lailin.xyz/tags/app/"/>
+    
+      <category term="appcan" scheme="https://lailin.xyz/tags/appcan/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>java中字符串相等的判断</title>
+    <link href="https://lailin.xyz/post/notes/java%E4%B8%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E7%AD%89%E7%9A%84%E5%88%A4%E6%96%AD/"/>
+    <id>https://lailin.xyz/post/notes/java中字符串相等的判断/</id>
+    <published>2015-10-26T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.699Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;今天需要写一个Java的小程序需要判断一下从控制台输入的字符串是否相等，在使用的过程中发现直接使用“==”来判断是没有办法判断出来的，Google&amp;amp;百度了一下，找到一个解决办法&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="java" scheme="https://lailin.xyz/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>office2016激活工具</title>
+    <link href="https://lailin.xyz/post/notes/office2016%E6%BF%80%E6%B4%BB%E5%B7%A5%E5%85%B7/"/>
+    <id>https://lailin.xyz/post/notes/office2016激活工具/</id>
+    <published>2015-10-21T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.699Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;可以用于激活-windows-office2010-2013-2016-全系列版本&quot;&gt;&lt;a href=&quot;#可以用于激活-windows-office2010-2013-2016-全系列版本&quot; class=&quot;headerlink&quot; title=&quot;可以用于激活
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="破解" scheme="https://lailin.xyz/tags/%E7%A0%B4%E8%A7%A3/"/>
+    
+      <category term="软件" scheme="https://lailin.xyz/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用MITAPPInventor2web客户端组件保存数据至云端</title>
+    <link href="https://lailin.xyz/post/notes/%E4%BD%BF%E7%94%A8MIT-APP-Inventor2-web%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%BB%84%E4%BB%B6%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E8%87%B3%E4%BA%91%E7%AB%AF/"/>
+    <id>https://lailin.xyz/post/notes/使用MIT-APP-Inventor2-web客户端组件保存数据至云端/</id>
+    <published>2015-10-19T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.700Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;接着前面的说，蓝牙接收到数据之后需要将数据处理分析然后保存下来，但是AI2并没有直接写代码来的方便快捷，并且我们的现在处于云计算的时代，数据无价，所以我们需要想办法将数据保存到云端。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="app" scheme="https://lailin.xyz/tags/app/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>php如何实现整除</title>
+    <link href="https://lailin.xyz/post/php/php%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%95%B4%E9%99%A4/"/>
+    <id>https://lailin.xyz/post/php/php如何实现整除/</id>
+    <published>2015-10-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.703Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;php如何实现整除&quot;&gt;&lt;a href=&quot;#php如何实现整除&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>phpstrom9可用注册码一枚</title>
+    <link href="https://lailin.xyz/post/php/phpstrom9-%E5%8F%AF%E7%94%A8%E6%B3%A8%E5%86%8C%E7%A0%81%E4%B8%80%E6%9E%9A/"/>
+    <id>https://lailin.xyz/post/php/phpstrom9-可用注册码一枚/</id>
+    <published>2015-10-17T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.703Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;phpstrom9-可用注册码一枚&quot;&gt;&lt;a href=&quot;#phpstrom9-可用注册码一枚&quot; class=&quot;headerlink&quot; title=&quot;phpstrom9 可用注册码一枚&quot;&gt;&lt;/a&gt;phpstrom9
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="破解" scheme="https://lailin.xyz/tags/%E7%A0%B4%E8%A7%A3/"/>
+    
+      <category term="注册码" scheme="https://lailin.xyz/tags/%E6%B3%A8%E5%86%8C%E7%A0%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【福利】至善网媒体素材一键评价</title>
+    <link href="https://lailin.xyz/post/notes/%E3%80%90%E7%A6%8F%E5%88%A9%E3%80%91%E8%87%B3%E5%96%84%E7%BD%91%E5%AA%92%E4%BD%93%E7%B4%A0%E6%9D%90%E4%B8%80%E9%94%AE%E8%AF%84%E4%BB%B7/"/>
+    <id>https://lailin.xyz/post/notes/【福利】至善网媒体素材一键评价/</id>
+    <published>2015-10-16T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.699Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;最近做至善网上面的题时候，发现媒体素材需要一个一个的评价实在是有点烦；所以开挂写了一个JS的小插件，直接一次性搞定&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;方法一：直接将下面这个链接拖入书签栏，然后在你需要一件评价媒体素材的地方点
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="js" scheme="https://lailin.xyz/tags/js/"/>
+    
+      <category term="工具" scheme="https://lailin.xyz/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CoreThink图片轮播插件【ImageSlider】</title>
+    <link href="https://lailin.xyz/post/php/CoreThink%E5%9B%BE%E7%89%87%E8%BD%AE%E6%92%AD%E6%8F%92%E4%BB%B6%E3%80%90ImageSlider%E3%80%91/"/>
+    <id>https://lailin.xyz/post/php/CoreThink图片轮播插件【ImageSlider】/</id>
+    <published>2015-10-15T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.702Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;移植于OT插件，原文地址&lt;a href=&quot;http://www.topthink.com/topic/6244.html&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="corethink" scheme="https://lailin.xyz/tags/corethink/"/>
+    
+      <category term="插件" scheme="https://lailin.xyz/tags/%E6%8F%92%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Corethink瀑布流插件</title>
+    <link href="https://lailin.xyz/post/php/Corethink%E7%80%91%E5%B8%83%E6%B5%81%E6%8F%92%E4%BB%B6/"/>
+    <id>https://lailin.xyz/post/php/Corethink瀑布流插件/</id>
+    <published>2015-10-15T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.702Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;【原创插件】瀑布流&quot;&gt;&lt;a href=&quot;#【原创插件】瀑布流&quot; class=&quot;headerlink&quot; title=&quot;【原创插件】瀑布流&quot;&gt;&lt;/a&gt;【原创插件】瀑布流&lt;/h2&gt;&lt;h3 id=&quot;1、前台界面&quot;&gt;&lt;a href=&quot;#1、前台界面&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="corethink" scheme="https://lailin.xyz/tags/corethink/"/>
+    
+      <category term="插件" scheme="https://lailin.xyz/tags/%E6%8F%92%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何使用MITAPPInventor2快速创建一个蓝牙串口app</title>
+    <link href="https://lailin.xyz/post/notes/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8MIT-APP-Inventor2-%E5%BF%AB%E9%80%9F%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%93%9D%E7%89%99%E4%B8%B2%E5%8F%A3app/"/>
+    <id>https://lailin.xyz/post/notes/如何使用MIT-APP-Inventor2-快速创建一个蓝牙串口app/</id>
+    <published>2015-10-15T16:00:00.000Z</published>
+    <updated>2019-03-30T10:15:55.702Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;如何使用-MIT-APP-Inventor2-快速创建一个蓝牙串口-app&quot;&gt;&lt;a href=&quot;#如何使用-MIT-APP-Inventor2-快速创建一个蓝牙串口-app&quot; class=&quot;headerlink&quot; title=&quot;如何使用 MIT APP
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="app" scheme="https://lailin.xyz/tags/app/"/>
+    
+  </entry>
+  
+</feed>
