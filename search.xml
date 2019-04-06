@@ -186,27 +186,27 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[插入排序]]></title>
-    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2F%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[插入排序说明插入排序的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。 步骤 从第一个元素开始，该元素可以认为已经被排序 取出下一个元素，在已经排序的元素序列中从后向前扫描 如果该元素（已排序）大于新元素，将该元素移到下一位置 重复步骤3，直到找到已排序的元素小于或者等于新元素的位置 将新元素插入到该位置后 重复步骤2~5 图片示例 程序示例（go）12345678910111213141516171819202122//SortInt 插入排序func SortInt(a []int) ([]int, int) &#123; n := 0 aLen := len(a) //从i=1开始，第一个数不用排序，一个数相当于已经有序了 for i := 1; i &lt; aLen; i++ &#123; //取出新数（类似摸牌） tmp := a[i] //将新数和之前的数从后往前（从大到小）一次比较，如果新数更小,就将以前的数往后移一位 j := i for ; (j &gt; 0) &amp;&amp; (tmp &lt; a[j-1]); j-- &#123; n++ a[j] = a[j-1] //后移一位 &#125; //新数插入 a[j] = tmp &#125; return a, n&#125;]]></content>
-      <tags>
-        <tag>排序</tag>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[堆排序]]></title>
-    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2F%E5%A0%86%E6%8E%92%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[说明堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。 步骤 建堆，建堆是不断调整堆的过程，从len/2处开始调整，一直到第一个节点，此处len是堆中元素的个数。建堆的过程是线性的过程，从len/2到0处一直调用调整堆的过程，相当于o(h1)+o(h2)…+o(hlen/2) 其中h表示节点的深度，len/2表示节点的个数，这是一个求和的过程，结果是线性的O(n)。 调整堆：调整堆在构建堆的过程中会用到，而且在堆排序过程中也会用到。利用的思想是比较节点i和它的孩子节点left(i),right(i)，选出三者最大(或者最小)者，如果最大（小）值不是节点i而是它的一个孩子节点，那边交互节点i和该节点，然后再调用调整堆过程，这是一个递归的过程。调整堆的过程时间复杂度与堆的深度有关系，是lgn的操作，因为是沿着深度方向进行调整的。 堆排序：堆排序是利用上面的两个过程来进行的。首先是根据元素构建堆。然后将堆的根节点取出(一般是与最后一个节点进行交换)，将前面len-1个节点继续进行堆调整的过程，然后再将根节点取出，这样一直到所有节点都取出。堆排序过程的时间复杂度是O(nlgn)。因为建堆的时间复杂度是O(n)（调用一次）；调整堆的时间复杂度是lgn，调用了n-1次，所以堆排序的时间复杂度是O(nlgn)[2] 注意: 根节点在数组当中存放的位置是0，所以第i个节点的左孩子是2i+1,右孩子是2i+2 示例 实现12345678910111213141516171819202122232425262728293031323334package HeapSortimport ( "fmt")//HeapSort 堆排序func HeapSort(arr []int) &#123; LEN := len(arr) for i := LEN/2 - 1; i &gt;= 0; i-- &#123; HeapAjust(arr, i, LEN) &#125; for i := LEN - 1; i &gt; 0; i-- &#123; arr[i], arr[0] = arr[0], arr[i] HeapAjust(arr, 0, i) &#125;&#125;//HeapAjust 堆调整func HeapAjust(arr []int, start int, length int) &#123; tmp := arr[start] for i := 2*start + 1; i &lt; length; i = i * 2 &#123; if i+1 &lt; length &amp;&amp; arr[i] &lt; arr[i+1] &#123; i++ &#125; if tmp &gt; arr[i] &#123; break &#125; arr[start] = arr[i] start = i &#125; arr[start] = tmp&#125;]]></content>
-      <tags>
-        <tag>排序</tag>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[归并排序]]></title>
     <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2F%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%2F</url>
     <content type="text"><![CDATA[说明归并排序:是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用 步骤 申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列 设定两个指针，最初位置分别为两个已经排序序列的起始位置 比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置 重复步骤3直到某一指针达到序列尾 将另一序列剩下的所有元素直接复制到合并序列尾 效果 示例1234567891011121314151617181920212223242526272829303132333435363738package merge//INFINITY 一个比较大的值用作哨兵const INFINITY = 0xfffffunc merge(arr []int, start, end int) &#123; if start &lt; end &#123; //从中间划分，分别左右两边排序 mid := (end + start) / 2 merge(arr, start, mid) merge(arr, mid+1, end) //下面进行归并操作，将两个长度较小但是已经排序完成的数组合并成一个较长长度的排序数组 //新建一个数组用于存放左边的值 arr1 := make([]int, mid-start+2) copy(arr1, arr[start:mid+1]) arr1[mid-start+1] = INFINITY //新建一个数组用于存放右边的值 arr2 := make([]int, end-mid+1) copy(arr2, arr[mid+1:end+1]) arr2[end-mid] = INFINITY //比较大小 j, k := 0, 0 for i := start; i &lt;= end; i++ &#123; if arr1[j] &lt;= arr2[k] &#123; arr[i] = arr1[j] j++ &#125; else &#123; arr[i] = arr2[k] k++ &#125; &#125; &#125;&#125;]]></content>
+      <tags>
+        <tag>排序</tag>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[选择排序]]></title>
+    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2F%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[https://github.com/mohuishou/go-sort 说明选择排序(Selection sort)是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小元素，然后放到排序序列末尾。以此类推，直到所有元素均排序完毕。 示例 实现123456789101112131415161718package selection//Sort 选择排序func Sort(arr []int) &#123; var LEN = len(arr) minIndex := 0 for i := 0; i &lt; LEN; i++ &#123; minIndex = i for j := i; j &lt; LEN; j++ &#123; if arr[minIndex] &gt; arr[j] &#123; minIndex = j &#125; &#125; if minIndex != i &#123; arr[minIndex], arr[i] = arr[i], arr[minIndex] &#125; &#125;&#125;]]></content>
+      <tags>
+        <tag>排序</tag>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[shell排序]]></title>
+    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2Fshell%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[Shell 排序说明希尔排序通过将比较的全部元素分为几个区域来提升插入排序的性能。这样可以让一个元素可以一次性地朝最终位置前进一大步。然后算法再取越来越小的步长进行排序，算法的最后一步就是普通的插入排序，但是到了这步，需排序的数据几乎是已排好的了（此时插入排序较快）。 步骤 设置间隔（传统间隔为 N/2） 插入排序 图片示例 程序示例传统实现12345678910111213141516171819202122//SortInt 传统shell排序,间隔为N/2//相邻间隔可能不互质，可能会出现前置排序无用的情况func SortInt(a []int) ([]int, int) &#123; n := 0 aLen := len(a) //定义间隔 for i := aLen / 2; i &gt; 0; i = i / 2 &#123; //插入排序 for j := i; j &lt; aLen; j++ &#123; tmp := a[j] k := j for ; k &gt;= i &amp;&amp; tmp &lt; a[k-i]; k = k - i &#123; a[k] = a[k-i] n++ &#125; a[k] = tmp &#125; &#125; return a, n&#125; Hibbard 算法1234567891011121314151617181920212223//SortHibbardInt Hibbard算法，间隔为2^k-1func SortHibbardInt(a []int) ([]int, int) &#123; n, i := 0, 0 aLen := len(a) for i = 1; i &lt;= aLen-1; i = i*2 + 1 &#123; &#125; //定义间隔 for ; i &gt; 0; i = (i - 1) / 2 &#123; // println(i) //插入排序 for j := i; j &lt; aLen; j++ &#123; tmp := a[j] k := j for ; k &gt;= i &amp;&amp; tmp &lt; a[k-i]; k = k - i &#123; a[k] = a[k-i] n++ &#125; a[k] = tmp &#125; &#125; return a, n&#125;]]></content>
       <tags>
         <tag>排序</tag>
         <tag>Go</tag>
@@ -222,18 +222,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[快速排序]]></title>
-    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2F%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[https://github.com/mohuishou/go-sort 说明快速排序是由东尼·霍尔所发展的一种排序算法。在平均状况下，排序 n 个项目要Ο(n log n)次比较。在最坏状况下则需要Ο(n2)次比较，但这种状况并不常见。事实上，快速排序通常明显比其他Ο(n log n) 算法更快，因为它的内部循环（inner loop）可以在大部分的架构上很有效率地被实现出来，且在大部分真实世界的数据，可以决定设计的选择，减少所需时间的二次方项之可能性。 步骤 从数列中挑出一个元素，称为 “基准”（pivot）， 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作。 递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。 注意: 基准点采用三元素原则法，三元素选择之后一头一尾就已经有序了 示例 实现123456789101112131415161718192021222324252627282930313233343536373839404142434445464748package quik//Sort 快速排序func Sort(arr []int) &#123; Quik(arr, 0, len(arr)-1)&#125;//Quik 快速排序递归实现func Quik(arr []int, left int, right int) &#123; if right-left &lt; 2 &#123; return &#125; p := middle3(arr, left, right) i := left + 1 j := right - 2 for &#123; for arr[i] &lt; p &#123; i++ &#125; for arr[j] &gt; p &#123; j-- &#125; if i &lt; j &#123; arr[i], arr[j] = arr[j], arr[i] &#125; else &#123; break &#125; &#125; arr[i], arr[right-1] = arr[right-1], arr[i] Quik(arr, left, i-1) Quik(arr, i+1, right)&#125;func middle3(arr []int, left int, right int) int &#123; center := (right + left) / 2 if arr[left] &gt; arr[center] &#123; arr[left], arr[center] = arr[center], arr[left] &#125; if arr[left] &gt; arr[right] &#123; arr[left], arr[right] = arr[right], arr[left] &#125; if arr[center] &gt; arr[right] &#123; arr[center], arr[right] = arr[right], arr[center] &#125; arr[center], arr[right-1] = arr[right-1], arr[center] return arr[right-1]&#125;]]></content>
-      <tags>
-        <tag>排序</tag>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[shell排序]]></title>
-    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2Fshell%E6%8E%92%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[Shell 排序说明希尔排序通过将比较的全部元素分为几个区域来提升插入排序的性能。这样可以让一个元素可以一次性地朝最终位置前进一大步。然后算法再取越来越小的步长进行排序，算法的最后一步就是普通的插入排序，但是到了这步，需排序的数据几乎是已排好的了（此时插入排序较快）。 步骤 设置间隔（传统间隔为 N/2） 插入排序 图片示例 程序示例传统实现12345678910111213141516171819202122//SortInt 传统shell排序,间隔为N/2//相邻间隔可能不互质，可能会出现前置排序无用的情况func SortInt(a []int) ([]int, int) &#123; n := 0 aLen := len(a) //定义间隔 for i := aLen / 2; i &gt; 0; i = i / 2 &#123; //插入排序 for j := i; j &lt; aLen; j++ &#123; tmp := a[j] k := j for ; k &gt;= i &amp;&amp; tmp &lt; a[k-i]; k = k - i &#123; a[k] = a[k-i] n++ &#125; a[k] = tmp &#125; &#125; return a, n&#125; Hibbard 算法1234567891011121314151617181920212223//SortHibbardInt Hibbard算法，间隔为2^k-1func SortHibbardInt(a []int) ([]int, int) &#123; n, i := 0, 0 aLen := len(a) for i = 1; i &lt;= aLen-1; i = i*2 + 1 &#123; &#125; //定义间隔 for ; i &gt; 0; i = (i - 1) / 2 &#123; // println(i) //插入排序 for j := i; j &lt; aLen; j++ &#123; tmp := a[j] k := j for ; k &gt;= i &amp;&amp; tmp &lt; a[k-i]; k = k - i &#123; a[k] = a[k-i] n++ &#125; a[k] = tmp &#125; &#125; return a, n&#125;]]></content>
+    <title><![CDATA[堆排序]]></title>
+    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2F%E5%A0%86%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[说明堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。 步骤 建堆，建堆是不断调整堆的过程，从len/2处开始调整，一直到第一个节点，此处len是堆中元素的个数。建堆的过程是线性的过程，从len/2到0处一直调用调整堆的过程，相当于o(h1)+o(h2)…+o(hlen/2) 其中h表示节点的深度，len/2表示节点的个数，这是一个求和的过程，结果是线性的O(n)。 调整堆：调整堆在构建堆的过程中会用到，而且在堆排序过程中也会用到。利用的思想是比较节点i和它的孩子节点left(i),right(i)，选出三者最大(或者最小)者，如果最大（小）值不是节点i而是它的一个孩子节点，那边交互节点i和该节点，然后再调用调整堆过程，这是一个递归的过程。调整堆的过程时间复杂度与堆的深度有关系，是lgn的操作，因为是沿着深度方向进行调整的。 堆排序：堆排序是利用上面的两个过程来进行的。首先是根据元素构建堆。然后将堆的根节点取出(一般是与最后一个节点进行交换)，将前面len-1个节点继续进行堆调整的过程，然后再将根节点取出，这样一直到所有节点都取出。堆排序过程的时间复杂度是O(nlgn)。因为建堆的时间复杂度是O(n)（调用一次）；调整堆的时间复杂度是lgn，调用了n-1次，所以堆排序的时间复杂度是O(nlgn)[2] 注意: 根节点在数组当中存放的位置是0，所以第i个节点的左孩子是2i+1,右孩子是2i+2 示例 实现12345678910111213141516171819202122232425262728293031323334package HeapSortimport ( "fmt")//HeapSort 堆排序func HeapSort(arr []int) &#123; LEN := len(arr) for i := LEN/2 - 1; i &gt;= 0; i-- &#123; HeapAjust(arr, i, LEN) &#125; for i := LEN - 1; i &gt; 0; i-- &#123; arr[i], arr[0] = arr[0], arr[i] HeapAjust(arr, 0, i) &#125;&#125;//HeapAjust 堆调整func HeapAjust(arr []int, start int, length int) &#123; tmp := arr[start] for i := 2*start + 1; i &lt; length; i = i * 2 &#123; if i+1 &lt; length &amp;&amp; arr[i] &lt; arr[i+1] &#123; i++ &#125; if tmp &gt; arr[i] &#123; break &#125; arr[start] = arr[i] start = i &#125; arr[start] = tmp&#125;]]></content>
       <tags>
         <tag>排序</tag>
         <tag>Go</tag>
@@ -250,9 +241,18 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[选择排序]]></title>
-    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2F%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[https://github.com/mohuishou/go-sort 说明选择排序(Selection sort)是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小元素，然后放到排序序列末尾。以此类推，直到所有元素均排序完毕。 示例 实现123456789101112131415161718package selection//Sort 选择排序func Sort(arr []int) &#123; var LEN = len(arr) minIndex := 0 for i := 0; i &lt; LEN; i++ &#123; minIndex = i for j := i; j &lt; LEN; j++ &#123; if arr[minIndex] &gt; arr[j] &#123; minIndex = j &#125; &#125; if minIndex != i &#123; arr[minIndex], arr[i] = arr[i], arr[minIndex] &#125; &#125;&#125;]]></content>
+    <title><![CDATA[快速排序]]></title>
+    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2F%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[https://github.com/mohuishou/go-sort 说明快速排序是由东尼·霍尔所发展的一种排序算法。在平均状况下，排序 n 个项目要Ο(n log n)次比较。在最坏状况下则需要Ο(n2)次比较，但这种状况并不常见。事实上，快速排序通常明显比其他Ο(n log n) 算法更快，因为它的内部循环（inner loop）可以在大部分的架构上很有效率地被实现出来，且在大部分真实世界的数据，可以决定设计的选择，减少所需时间的二次方项之可能性。 步骤 从数列中挑出一个元素，称为 “基准”（pivot）， 重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作。 递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。 注意: 基准点采用三元素原则法，三元素选择之后一头一尾就已经有序了 示例 实现123456789101112131415161718192021222324252627282930313233343536373839404142434445464748package quik//Sort 快速排序func Sort(arr []int) &#123; Quik(arr, 0, len(arr)-1)&#125;//Quik 快速排序递归实现func Quik(arr []int, left int, right int) &#123; if right-left &lt; 2 &#123; return &#125; p := middle3(arr, left, right) i := left + 1 j := right - 2 for &#123; for arr[i] &lt; p &#123; i++ &#125; for arr[j] &gt; p &#123; j-- &#125; if i &lt; j &#123; arr[i], arr[j] = arr[j], arr[i] &#125; else &#123; break &#125; &#125; arr[i], arr[right-1] = arr[right-1], arr[i] Quik(arr, left, i-1) Quik(arr, i+1, right)&#125;func middle3(arr []int, left int, right int) int &#123; center := (right + left) / 2 if arr[left] &gt; arr[center] &#123; arr[left], arr[center] = arr[center], arr[left] &#125; if arr[left] &gt; arr[right] &#123; arr[left], arr[right] = arr[right], arr[left] &#125; if arr[center] &gt; arr[right] &#123; arr[center], arr[right] = arr[right], arr[center] &#125; arr[center], arr[right-1] = arr[right-1], arr[center] return arr[right-1]&#125;]]></content>
+      <tags>
+        <tag>排序</tag>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[插入排序]]></title>
+    <url>%2Fpost%2F%E7%AE%97%E6%B3%95%2F%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[插入排序说明插入排序的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。 步骤 从第一个元素开始，该元素可以认为已经被排序 取出下一个元素，在已经排序的元素序列中从后向前扫描 如果该元素（已排序）大于新元素，将该元素移到下一位置 重复步骤3，直到找到已排序的元素小于或者等于新元素的位置 将新元素插入到该位置后 重复步骤2~5 图片示例 程序示例（go）12345678910111213141516171819202122//SortInt 插入排序func SortInt(a []int) ([]int, int) &#123; n := 0 aLen := len(a) //从i=1开始，第一个数不用排序，一个数相当于已经有序了 for i := 1; i &lt; aLen; i++ &#123; //取出新数（类似摸牌） tmp := a[i] //将新数和之前的数从后往前（从大到小）一次比较，如果新数更小,就将以前的数往后移一位 j := i for ; (j &gt; 0) &amp;&amp; (tmp &lt; a[j-1]); j-- &#123; n++ a[j] = a[j-1] //后移一位 &#125; //新数插入 a[j] = tmp &#125; return a, n&#125;]]></content>
       <tags>
         <tag>排序</tag>
         <tag>Go</tag>
@@ -496,6 +496,19 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[php利用curl保存图片]]></title>
+    <url>%2Fpost%2Fphp%2Fphp%E5%88%A9%E7%94%A8curl%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87%2F</url>
+    <content type="text"><![CDATA[做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数 123456789101112131415161718/*** @author mohuishou&lt;1@lailin.xyz&gt;* @param string $url 获取图片的网址* @param string $fileName 保存的地址以及文件名*/function getImg($url, $fileName) &#123; $ch = curl_init(); $fp = fopen($fileName, 'w+'); curl_setopt($ch, CURLOPT_URL, $url); curl_setopt($ch, CURLOPT_HEADER, 0); curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0); curl_setopt($ch, CURLOPT_TIMEOUT, 60); curl_setopt($ch, CURLOPT_FILE,$fp); curl_exec($ch); curl_close($ch); fclose($fp); &#125; 使用的时候发现，需要保存验证码的cookies，留作验证，必要的时候还需要加上header 12345678910111213141516171819202122/*** @author mohuishou&lt;1@lailin.xyz&gt;* @param string $url* @param string $fileName*/function getCode($url = 'http://www.169ol.com/Mall/Code/getCode', $fileName = './img/code.png') &#123; $this-&gt;_code_cookie = dirname(__FILE__)."/pic.cookie"; $ch = curl_init(); $fp = fopen($fileName, 'w+'); curl_setopt($ch, CURLOPT_URL, $url); curl_setopt($ch, CURLOPT_HEADER, 0); curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0); curl_setopt($ch, CURLOPT_TIMEOUT, 60); curl_setopt($ch, CURLOPT_FILE,$fp); curl_setopt($ch, CURLOPT_COOKIEJAR, $this-&gt;_code_cookie); curl_exec($ch); curl_close($ch); fclose($fp); &#125;]]></content>
+      <categories>
+        <category>PHP</category>
+      </categories>
+      <tags>
+        <tag>php</tag>
+        <tag>图片</tag>
+        <tag>curl</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[php识别验证码（一）]]></title>
     <url>%2Fpost%2Fphp%2Fphp%E8%AF%86%E5%88%AB%E9%AA%8C%E8%AF%81%E7%A0%81%EF%BC%88%E4%B8%80%EF%BC%89%2F</url>
     <content type="text"><![CDATA[想做一个针对联通优选在沃自动签到的小程序，但是登陆需要验证码，找了一下现有的一些博客或者是开源的验证码识别的代码，没有一个比较满意的，so，自己写了一个。 需要识别的验证码 第一种： 第二种 分析像上图的验证码一般来说的话，我们需要识别的是 4 个数字，但是验证码为了防止自动识别程序添加了许多的干扰项，例如背景色、雪花、干扰线等等 去除背景我们通过分析该验证码图片可以知道，数字的 rgb 值一般处在 180~190 以下，而背景色和雪花的 rgb 值一般处在 200 以上，so，我们只要在处理图片的时候只取 190 以下的 rgb 值保存就 ok 了，这样就可以去除掉绝大部分的干扰项 二值化把干扰信息去除之后，只留下二进制（也就是 0 和 1 表示）的点阵 123456789101112131415161718192021/** * 二值化，排除背景色，雪花等干扰项 * @author mohuishou&lt;1@lailin.xyz&gt; */public function imageHash()&#123; for($i = 0; $i &lt; $this-&gt;_image_h; $i++) &#123; for ($j = 0; $j &lt; $this-&gt;_image_w; $j++) &#123; $rgb = imagecolorat($this-&gt;_in_img,$j,$i); $rgb_array = imagecolorsforindex($this-&gt;_in_img, $rgb); if($rgb_array['red']&lt;190&amp;&amp;$rgb_array['green']&lt;190&amp;&amp;$rgb_array['blue']&lt;190)&#123; $data[$i][$j]=1; &#125;else&#123; $data[$i][$j]=0; &#125; &#125; &#125;&#125; 点阵化之后的截图 去噪点图像二值化之后可能还存在很多噪点，噪点的特点一般是孤立无援的，这时候我们只需要判断以这个 1 点为中心的点，周围的 1 点个数小于一个阈值（我把它设为 3），就确认它为噪点并将之去除 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950/** * 去除噪点 * @author mohuishou&lt;1@lailin.xyz&gt; * @param $hash_data * @return mixed */public function removeHotSpots($hash_data)&#123; for($i = 0; $i &lt; $this-&gt;_image_h; $i++) &#123; for ($j = 0; $j &lt; $this-&gt;_image_w; $j++) &#123; if($hash_data[$i][$j])&#123; if($this-&gt;isHotSpots($i,$j,$hash_data)) $hash_data[$i][$j]=0; &#125; &#125; &#125; return $hash_data;&#125;/** * 判断是否是噪点 * @author mohuishou&lt;1@lailin.xyz&gt; * @param $i * @param $j * @param $hash_data * @return bool ture:是噪点,false:不是 */public function isHotSpots($i,$j,$hash_data)&#123; if($i == 0 || $j == 0 || $i == ($this-&gt;_image_h - 1) || $j == ($this-&gt;_image_w - 1)) return true; //待检查点为中心的九个点 $points[0]=$hash_data[$i-1][$j-1]; $points[1]=$hash_data[$i-1][$j]; $points[2]=$hash_data[$i-1][$j+1]; $points[3]=$hash_data[$i][$j-1]; $points[4]=$hash_data[$i][$j];//待检查点 $points[5]=$hash_data[$i][$j+1]; $points[6]=$hash_data[$i+1][$j-1]; $points[7]=$hash_data[$i+1][$j]; $points[8]=$hash_data[$i+1][$j+1]; $count=0; foreach ($points as $v)&#123; if($v)&#123; $count++; &#125; &#125; return $count&lt;4;&#125; 去除噪点之后 去除干扰线通过去除噪点之后的图像，我们可以发现，大部分的干扰线，其实已经被去除掉了，所以我们可以将，去除噪点的方法当做一个滤镜，多过滤几次，干扰线基本上可以去除完毕（这里测试去除三次的效果是最好的） 分割验证码这个验证码的每个数字其实都是等分的，所以我们可以采用等分的方法去分割它 12345678910111213141516171819202122232425262728293031323334/** * @author mohuishou&lt;1@lailin.xyz&gt; * @param $n * @return array */public function splitImage($n)&#123; $data=[]; $a=$this-&gt;_image_w/self::CHAR_NUM; for($i=$n*$a;$i&lt;($n+1)*$a;$i++)&#123; $column=array_column($this-&gt;_hash_data,$i); if(implode("",$column)!=0)&#123; $data[]=$column; &#125; &#125; $out_img_w=count($data)+4; $out_img_h=count($data[0])+4; $out_img = imagecreatetruecolor($out_img_w,$out_img_h);//创建一幅真彩色图像 $bg=imagecolorallocate($out_img, 255, 255, 255);//背景色画为白色 imagefill($out_img, 0,0, $bg); //一列一列的进行画图 foreach ($data as $k=&gt;$v)&#123; foreach ($v as $key=&gt; $val)&#123; $color=255; if($val) $color=0; $c = imagecolorallocate($out_img, $color, $color, $color); imagesetpixel($out_img, $k+2,$key+2, $c); &#125; &#125; return $out_img;&#125; 保存&amp;对比识别 最后将分割好的图片二值化，通过一个数组保存下来，作为一个标准，然后后之后需要验证的验证码，通过和之前的数组求交集，比较最相近的数字得出结果即可 更多其实到这一步之后已经能够识别一些验证码了，对于第二种验证码已经可以达到很好的识别效果，但是对于第一种验证码的识别率很低很低，大概只有5%-15%，基本不能投入使用，下一篇文章针对这种验证码，怎么更好的识别，主要是标准化和特征库的建立]]></content>
@@ -507,19 +520,6 @@
         <tag>图片</tag>
         <tag>识别</tag>
         <tag>验证码识别</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[php利用curl保存图片]]></title>
-    <url>%2Fpost%2Fphp%2Fphp%E5%88%A9%E7%94%A8curl%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87%2F</url>
-    <content type="text"><![CDATA[做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数 123456789101112131415161718/*** @author mohuishou&lt;1@lailin.xyz&gt;* @param string $url 获取图片的网址* @param string $fileName 保存的地址以及文件名*/function getImg($url, $fileName) &#123; $ch = curl_init(); $fp = fopen($fileName, 'w+'); curl_setopt($ch, CURLOPT_URL, $url); curl_setopt($ch, CURLOPT_HEADER, 0); curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0); curl_setopt($ch, CURLOPT_TIMEOUT, 60); curl_setopt($ch, CURLOPT_FILE,$fp); curl_exec($ch); curl_close($ch); fclose($fp); &#125; 使用的时候发现，需要保存验证码的cookies，留作验证，必要的时候还需要加上header 12345678910111213141516171819202122/*** @author mohuishou&lt;1@lailin.xyz&gt;* @param string $url* @param string $fileName*/function getCode($url = 'http://www.169ol.com/Mall/Code/getCode', $fileName = './img/code.png') &#123; $this-&gt;_code_cookie = dirname(__FILE__)."/pic.cookie"; $ch = curl_init(); $fp = fopen($fileName, 'w+'); curl_setopt($ch, CURLOPT_URL, $url); curl_setopt($ch, CURLOPT_HEADER, 0); curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0); curl_setopt($ch, CURLOPT_TIMEOUT, 60); curl_setopt($ch, CURLOPT_FILE,$fp); curl_setopt($ch, CURLOPT_COOKIEJAR, $this-&gt;_code_cookie); curl_exec($ch); curl_close($ch); fclose($fp); &#125;]]></content>
-      <categories>
-        <category>PHP</category>
-      </categories>
-      <tags>
-        <tag>php</tag>
-        <tag>图片</tag>
-        <tag>curl</tag>
       </tags>
   </entry>
   <entry>
@@ -555,9 +555,9 @@
         <category>程序</category>
       </categories>
       <tags>
-        <tag>php</tag>
         <tag>nginx</tag>
         <tag>服务器</tag>
+        <tag>php</tag>
       </tags>
   </entry>
   <entry>
@@ -612,8 +612,8 @@
         <category>程序</category>
       </categories>
       <tags>
-        <tag>php</tag>
         <tag>破解</tag>
+        <tag>php</tag>
       </tags>
   </entry>
   <entry>
@@ -707,8 +707,8 @@
         <category>程序</category>
       </categories>
       <tags>
-        <tag>php</tag>
         <tag>破解</tag>
+        <tag>php</tag>
         <tag>注册码</tag>
       </tags>
   </entry>
@@ -725,9 +725,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[CoreThink图片轮播插件【ImageSlider】]]></title>
-    <url>%2Fpost%2Fphp%2FCoreThink%E5%9B%BE%E7%89%87%E8%BD%AE%E6%92%AD%E6%8F%92%E4%BB%B6%E3%80%90ImageSlider%E3%80%91%2F</url>
-    <content type="text"><![CDATA[移植于OT插件，原文地址http://www.topthink.com/topic/6244.html 1、支持unslider\flexslider切换选择 2、支持推荐位选择 3、支持多图 4、切换时间&amp;方向选择 5、自定义容器宽度&amp;高度 *使用说明***1、请先将下面这段代码复制到Application\common\controller\addon.class.php /* 获取件所需的钩子是否存在，没有则新增 * @param string $str 钩子名称 * @param string $addons 插件名称 * @param string $addons 件简介 */ public function existHook($str, $addons, $msg=&apos;&apos;){ $hook_mod = M(&apos;addon_hook&apos;); $where[&apos;name&apos;] = $str; $gethook = $hook_mod-&gt;where($where)-&gt;find(); if(!$gethook || empty($gethook) || !is_array($gethook)){ $data[&apos;name&apos;] = $str; $data[&apos;description&apos;] = $msg; $data[&apos;type&apos;] = 1; $data[&apos;update_time&apos;] = NOW_TIME; $data[&apos;addons&apos;] = $addons; if( false !== $hook_mod-&gt;create($data) ){ $hook_mod-&gt;add(); } } } /** * delete钩子 * @param string $hook 钩子名称 */ public function deleteHook($hook){ $model = M(&apos;addon_hook&apos;); $condition = array( &apos;name&apos; =&gt; $hook, ); $model-&gt;where($condition)-&gt;delete(); } 2、调用方法 1&#123;:hook(&apos;ImageSlider&apos;)&#125; 3、如果出现显示不出图片，路径错误的情况 请改一下那个unslider\flexslider.html的图片路径，因为安装的路径不同可能出现意外]]></content>
+    <title><![CDATA[Corethink瀑布流插件]]></title>
+    <url>%2Fpost%2Fphp%2FCorethink%E7%80%91%E5%B8%83%E6%B5%81%E6%8F%92%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[【原创插件】瀑布流1、前台界面 2、前台大图预览 3、后台设置支持容器宽度自定义，高度随宽度按比例改变 4、后台管理界面作者，内容为选填项，其余为必填项 5、新增界面 ***使用说明**1、前台调用 钩子{:hook(&apos;WaterFall&apos;)} 2、安装说明 如果默认表前缀不是ct_，请在插件目录下WaterFallAddon.class.php中的ct_改为你的表前缀 -&gt;where(&apos;ct_addon_waterfall.status=1&apos;) 3、安装说明2如果不能安装是不存在钩子原因，解决办法请看我上一个OT移植插件ImageSlider中的使用方法 ImageSlider ps： 感谢三生石上的前端瀑布流教程]]></content>
       <categories>
         <category>程序</category>
       </categories>
@@ -738,9 +738,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Corethink瀑布流插件]]></title>
-    <url>%2Fpost%2Fphp%2FCorethink%E7%80%91%E5%B8%83%E6%B5%81%E6%8F%92%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[【原创插件】瀑布流1、前台界面 2、前台大图预览 3、后台设置支持容器宽度自定义，高度随宽度按比例改变 4、后台管理界面作者，内容为选填项，其余为必填项 5、新增界面 ***使用说明**1、前台调用 钩子{:hook(&apos;WaterFall&apos;)} 2、安装说明 如果默认表前缀不是ct_，请在插件目录下WaterFallAddon.class.php中的ct_改为你的表前缀 -&gt;where(&apos;ct_addon_waterfall.status=1&apos;) 3、安装说明2如果不能安装是不存在钩子原因，解决办法请看我上一个OT移植插件ImageSlider中的使用方法 ImageSlider ps： 感谢三生石上的前端瀑布流教程]]></content>
+    <title><![CDATA[CoreThink图片轮播插件【ImageSlider】]]></title>
+    <url>%2Fpost%2Fphp%2FCoreThink%E5%9B%BE%E7%89%87%E8%BD%AE%E6%92%AD%E6%8F%92%E4%BB%B6%E3%80%90ImageSlider%E3%80%91%2F</url>
+    <content type="text"><![CDATA[移植于OT插件，原文地址http://www.topthink.com/topic/6244.html 1、支持unslider\flexslider切换选择 2、支持推荐位选择 3、支持多图 4、切换时间&amp;方向选择 5、自定义容器宽度&amp;高度 *使用说明***1、请先将下面这段代码复制到Application\common\controller\addon.class.php /* 获取件所需的钩子是否存在，没有则新增 * @param string $str 钩子名称 * @param string $addons 插件名称 * @param string $addons 件简介 */ public function existHook($str, $addons, $msg=&apos;&apos;){ $hook_mod = M(&apos;addon_hook&apos;); $where[&apos;name&apos;] = $str; $gethook = $hook_mod-&gt;where($where)-&gt;find(); if(!$gethook || empty($gethook) || !is_array($gethook)){ $data[&apos;name&apos;] = $str; $data[&apos;description&apos;] = $msg; $data[&apos;type&apos;] = 1; $data[&apos;update_time&apos;] = NOW_TIME; $data[&apos;addons&apos;] = $addons; if( false !== $hook_mod-&gt;create($data) ){ $hook_mod-&gt;add(); } } } /** * delete钩子 * @param string $hook 钩子名称 */ public function deleteHook($hook){ $model = M(&apos;addon_hook&apos;); $condition = array( &apos;name&apos; =&gt; $hook, ); $model-&gt;where($condition)-&gt;delete(); } 2、调用方法 1&#123;:hook(&apos;ImageSlider&apos;)&#125; 3、如果出现显示不出图片，路径错误的情况 请改一下那个unslider\flexslider.html的图片路径，因为安装的路径不同可能出现意外]]></content>
       <categories>
         <category>程序</category>
       </categories>

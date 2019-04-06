@@ -51,16 +51,14 @@
 <link rel="stylesheet" href="/css/main.css?v=7.1.0">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/touch-icon-apple.png?v=7.1.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.1.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.1.0">
 
-
-  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
 
 
 
@@ -365,7 +363,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mohuishou">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/icons/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -490,7 +488,7 @@
 <p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190116000345.png" alt></p>
 <h3 id="创建Action"><a href="#创建Action" class="headerlink" title="创建Action"></a>创建Action</h3><p>Action其实就是Docker镜像，按照Docker镜像的写法即可，需要关注以下几点</p>
 <h4 id="1-Dockerfile-Lables"><a href="#1-Dockerfile-Lables" class="headerlink" title="1. Dockerfile Lables"></a>1. Dockerfile Lables</h4><p>github actions 会读取dockerfile的label在Workflow GUI上做一些展示</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"com.github.actions.name"</span>=<span class="string">""</span> <span class="comment">#Github action 的名字</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"com.github.actions.description"</span>=<span class="string">"desc"</span> <span class="comment">#说明</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"com.github.actions.icon"</span>=<span class="string">"mic"</span> <span class="comment">#GUI上展示的图标</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"com.github.actions.color"</span>=<span class="string">"purple"</span> <span class="comment"># GUI上展示的颜色</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"repository"</span>=<span class="string">"http://github.com/mohuishou/hugo-action"</span> <span class="comment"># 仓库地址</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"homepage"</span>=<span class="string">"http://github.com/mohuishou"</span> <span class="comment"># 主页</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"maintainer"</span>=<span class="string">"mohuishou &lt;1@lailin.xyz&gt;"</span> <span class="comment"># 作者</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">LABEL</span> "com.github.actions.name"="" #Github action 的名字</span><br><span class="line"><span class="keyword">LABEL</span> "com.github.actions.description"="desc" #说明</span><br><span class="line"><span class="keyword">LABEL</span> "com.github.actions.icon"="mic" #GUI上展示的图标</span><br><span class="line"><span class="keyword">LABEL</span> "com.github.actions.color"="purple" # GUI上展示的颜色</span><br><span class="line"></span><br><span class="line"><span class="keyword">LABEL</span> "repository"="http://github.com/mohuishou/hugo-action" # 仓库地址</span><br><span class="line"><span class="keyword">LABEL</span> "homepage"="http://github.com/mohuishou" # 主页</span><br><span class="line"><span class="keyword">LABEL</span> "maintainer"="mohuishou &lt;1@lailin.xyz&gt;" # 作者</span><br></pre></td></tr></table></figure>
 <h4 id="2-Env"><a href="#2-Env" class="headerlink" title="2. Env"></a>2. Env</h4><p>默认的环境变量，以及如何读取</p>
 <h5 id="默认环境变量"><a href="#默认环境变量" class="headerlink" title="默认环境变量"></a>默认环境变量</h5><p>所有的默认值可以参考这里 <a href="https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#environment-variables" target="_blank" rel="noopener">Environment variables</a></p>
 <p>常用的主要有</p>
@@ -706,6 +704,8 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/icons/avatar.jpg" alt="Mohuishou">
             
               <p class="site-author-name" itemprop="name">Mohuishou</p>
               <div class="site-description motion-element" itemprop="description"></div>
@@ -949,23 +949,19 @@
                 <span class="links-of-author-item">
                   
                   
-                    
-                  
                   
                     
                   
-                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
                 </span>
               
                 <span class="links-of-author-item">
                   
                   
-                    
-                  
                   
                     
                   
-                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
                 </span>
               
             </div>
@@ -975,10 +971,10 @@
 
           
           
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
               <div class="links-of-blogroll-title">
                 <i class="fa  fa-fw fa-link"></i>
-                值得关注的Blog
+                Friend's Blog
               </div>
               <ul class="links-of-blogroll-list">
                 
@@ -1189,7 +1185,7 @@
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
     repo: 'blogComment',
     owner: 'scuplus',
-    admin: ['mohuishou,scuplus'],
+    admin: ['mohuishou'],
     id: md5(location.pathname),
     
       language: 'zh-CN',

@@ -51,16 +51,14 @@
 <link rel="stylesheet" href="/css/main.css?v=7.1.0">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/touch-icon-apple.png?v=7.1.0">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.1.0">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.1.0">
 
-
-  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
 
 
 
@@ -99,7 +97,7 @@
 
 
   <meta name="description" content="正是悲催犯了一个超低级的错误  在腾讯云新买了一个服务器，直接用了以前nginx的配置文件，但是装上之后先是404然后502，一直不知道为什么 1404是因为本来要报502的错误，但是502的页面没有放进去.... 502的错误在网上搜索了很多答案都没有解决，然后后面发现我自己竟然没有看错误日志，翻日志的时候发现是：12016/04/25 04:32:42 [crit] 251#251: *16">
-<meta name="keywords" content="php,nginx,服务器">
+<meta name="keywords" content="nginx,服务器,php">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx-php报502错误">
 <meta property="og:url" content="https://lailin.xyz/post/php/nginx-php-报502错误/index.html">
@@ -360,7 +358,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mohuishou">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/icons/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -496,11 +494,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/php/" rel="tag"># php</a>
-          
             <a href="/tags/nginx/" rel="tag"># nginx</a>
           
             <a href="/tags/服务器/" rel="tag"># 服务器</a>
+          
+            <a href="/tags/php/" rel="tag"># php</a>
           
         </div>
       
@@ -628,6 +626,8 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/icons/avatar.jpg" alt="Mohuishou">
             
               <p class="site-author-name" itemprop="name">Mohuishou</p>
               <div class="site-description motion-element" itemprop="description"></div>
@@ -871,23 +871,19 @@
                 <span class="links-of-author-item">
                   
                   
-                    
-                  
                   
                     
                   
-                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
                 </span>
               
                 <span class="links-of-author-item">
                   
                   
-                    
-                  
                   
                     
                   
-                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
                 </span>
               
             </div>
@@ -897,10 +893,10 @@
 
           
           
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
               <div class="links-of-blogroll-title">
                 <i class="fa  fa-fw fa-link"></i>
-                值得关注的Blog
+                Friend's Blog
               </div>
               <ul class="links-of-blogroll-list">
                 
@@ -1111,7 +1107,7 @@
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
     repo: 'blogComment',
     owner: 'scuplus',
-    admin: ['mohuishou,scuplus'],
+    admin: ['mohuishou'],
     id: md5(location.pathname),
     
       language: 'zh-CN',
