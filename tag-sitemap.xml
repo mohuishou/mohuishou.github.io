@@ -17,14 +17,14 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/C/</loc>
+        <loc>https://lailin.xyz/tags/%E9%A1%B9%E7%9B%AE/</loc>
         <lastmod>2019-03-30T10:15:55.698Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/%E9%A1%B9%E7%9B%AE/</loc>
+        <loc>https://lailin.xyz/tags/C/</loc>
         <lastmod>2019-03-30T10:15:55.698Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -38,14 +38,14 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/css/</loc>
+        <loc>https://lailin.xyz/tags/appcan/</loc>
         <lastmod>2019-03-30T10:15:55.698Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/appcan/</loc>
+        <loc>https://lailin.xyz/tags/css/</loc>
         <lastmod>2019-03-30T10:15:55.698Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -129,20 +129,6 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/%E7%88%AC%E8%99%AB/</loc>
-        <lastmod>2019-03-30T10:15:55.700Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://lailin.xyz/tags/chromedp/</loc>
-        <lastmod>2019-03-30T10:15:55.700Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://lailin.xyz/tags/ci/</loc>
         <lastmod>2019-03-30T10:15:55.700Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -151,6 +137,20 @@
 
     <url>
         <loc>https://lailin.xyz/tags/hugo/</loc>
+        <lastmod>2019-03-30T10:15:55.700Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/tags/%E7%88%AC%E8%99%AB/</loc>
+        <lastmod>2019-03-30T10:15:55.700Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/tags/chromedp/</loc>
         <lastmod>2019-03-30T10:15:55.700Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -409,13 +409,6 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/tool/</loc>
-        <lastmod>2019-03-30T10:15:55.704Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://lailin.xyz/tags/%E8%A7%84%E5%88%92/</loc>
         <lastmod>2019-03-30T10:15:55.704Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -424,6 +417,13 @@
 
     <url>
         <loc>https://lailin.xyz/tags/%E6%80%BB%E7%BB%93/</loc>
+        <lastmod>2019-03-30T10:15:55.704Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/tags/tool/</loc>
         <lastmod>2019-03-30T10:15:55.704Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -472,14 +472,14 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/</loc>
+        <loc>https://lailin.xyz/tags/spfa/</loc>
         <lastmod>2019-03-30T10:15:55.706Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/spfa/</loc>
+        <loc>https://lailin.xyz/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/</loc>
         <lastmod>2019-03-30T10:15:55.706Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -528,27 +528,6 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/docker/</loc>
-        <lastmod>2019-04-06T12:56:21.475Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://lailin.xyz/tags/cloud/</loc>
-        <lastmod>2019-04-06T12:56:21.475Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://lailin.xyz/tags/blog/</loc>
-        <lastmod>2019-04-06T14:10:45.660Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://lailin.xyz/tags/go/</loc>
         <lastmod>2019-04-06T14:10:59.335Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -565,6 +544,27 @@
     <url>
         <loc>https://lailin.xyz/tags/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/</loc>
         <lastmod>2019-04-06T14:10:59.335Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/tags/blog/</loc>
+        <lastmod>2019-04-06T15:29:01.857Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/tags/docker/</loc>
+        <lastmod>2019-04-06T15:29:01.857Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/tags/cloud/</loc>
+        <lastmod>2019-04-06T15:29:01.857Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
