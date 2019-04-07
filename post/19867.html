@@ -490,7 +490,7 @@
       
 
       
-        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//服务器信息</span></span><br><span class="line">$server = <span class="string">'udp://192.168.253.1:9998'</span>;</span><br><span class="line"><span class="comment">//消息结束符号</span></span><br><span class="line">$msg_eof = <span class="string">"\n"</span>;</span><br><span class="line">$socket = stream_socket_server($server, $errno, $errstr, STREAM_SERVER_BIND);</span><br><span class="line"><span class="keyword">if</span> (!$socket) &#123;</span><br><span class="line">	<span class="keyword">die</span>(<span class="string">"$errstr ($errno)"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">	<span class="comment">//接收客户端发来的信息</span></span><br><span class="line">	$inMsg = stream_socket_recvfrom($socket, <span class="number">1024</span>, <span class="number">0</span>, $peer);</span><br><span class="line">	<span class="comment">//服务端打印出相关信息</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"Client : $peer\n"</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"Receive : &#123;$inMsg&#125;"</span>;</span><br><span class="line">	<span class="comment">//给客户端发送信息</span></span><br><span class="line">	$outMsg = substr($inMsg, <span class="number">0</span>, (strrpos($inMsg, $msg_eof))).<span class="string">' -- '</span>.date(<span class="string">"D M j H:i:s Y\r\n"</span>);</span><br><span class="line"></span><br><span class="line">	stream_socket_sendto($socket, $outMsg, <span class="number">0</span>, $peer);</span><br><span class="line">	</span><br><span class="line">&#125; <span class="keyword">while</span> ($inMsg !== <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//服务器信息</span></span><br><span class="line">$server = <span class="string">'udp://192.168.253.1:9998'</span>;</span><br><span class="line"><span class="comment">//消息结束符号</span></span><br><span class="line">$msg_eof = <span class="string">"\n"</span>;</span><br><span class="line">$socket = stream_socket_server($server, $errno, $errstr, STREAM_SERVER_BIND);</span><br><span class="line"><span class="keyword">if</span> (!$socket) &#123;</span><br><span class="line">	<span class="keyword">die</span>(<span class="string">"$errstr ($errno)"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">	<span class="comment">//接收客户端发来的信息</span></span><br><span class="line">	$inMsg = stream_socket_recvfrom($socket, <span class="number">1024</span>, <span class="number">0</span>, $peer);</span><br><span class="line">	<span class="comment">//服务端打印出相关信息</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"Client : $peer\n"</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"Receive : &#123;$inMsg&#125;"</span>;</span><br><span class="line">	<span class="comment">//给客户端发送信息</span></span><br><span class="line">	$outMsg = substr($inMsg, <span class="number">0</span>, (strrpos($inMsg, $msg_eof))).<span class="string">' -- '</span>.date(<span class="string">"D M j H:i:s Y\r\n"</span>);</span><br><span class="line"></span><br><span class="line">	stream_socket_sendto($socket, $outMsg, <span class="number">0</span>, $peer);</span><br><span class="line">	</span><br><span class="line">&#125; <span class="keyword">while</span> ($inMsg !== <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure><div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/31503.html">四川大学评教开源代码</a></li><li><a href="https://lailin.xyz/post/36128.html">Composer上线前的优化</a></li></ul></div>
       
     </div>
 
@@ -582,8 +582,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/post/28397.html" rel="prev" title="phpstrom10激活方法（JetBrains系列软件激活）">
-                phpstrom10激活方法（JetBrains系列软件激活） <i class="fa fa-chevron-right"></i>
+              <a href="/post/64902.html" rel="prev" title="NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法">
+                NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -632,8 +632,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -930,6 +939,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">1.</span> <span class="nav-text">推荐阅读</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       

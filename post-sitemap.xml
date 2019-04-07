@@ -96,14 +96,6 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/post/50190.html</loc>
-        <lastmod>2019-04-07T12:46:30.836Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://lailin.xyz/post/13459.html</loc>
         <lastmod>2019-04-07T12:46:30.836Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -112,8 +104,8 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/post/11306.html</loc>
-        <lastmod>2019-04-07T12:46:30.835Z</lastmod>
+        <loc>https://lailin.xyz/post/50190.html</loc>
+        <lastmod>2019-04-07T12:46:30.836Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -121,6 +113,14 @@
 
     <url>
         <loc>https://lailin.xyz/post/63711.html</loc>
+        <lastmod>2019-04-07T12:46:30.835Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/post/11306.html</loc>
         <lastmod>2019-04-07T12:46:30.835Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -416,7 +416,7 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/post/59080.html</loc>
+        <loc>https://lailin.xyz/post/35791.html</loc>
         <lastmod>2019-04-07T12:46:30.779Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -424,7 +424,7 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/post/35791.html</loc>
+        <loc>https://lailin.xyz/post/59080.html</loc>
         <lastmod>2019-04-07T12:46:30.779Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -456,7 +456,7 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/post/50628.html</loc>
+        <loc>https://lailin.xyz/post/62847.html</loc>
         <lastmod>2019-04-07T12:46:30.774Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -464,7 +464,7 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/post/62847.html</loc>
+        <loc>https://lailin.xyz/post/50628.html</loc>
         <lastmod>2019-04-07T12:46:30.774Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>

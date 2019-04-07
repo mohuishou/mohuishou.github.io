@@ -498,7 +498,7 @@
 <p>用scanner类获取字符串来比较的时候：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Scanner input=<span class="keyword">new</span> Scanner(System.in);<span class="comment">//新建input对象，用于实现输入功能</span></span><br><span class="line">String a=<span class="string">"exit"</span>;<span class="comment">//定义一个字符串</span></span><br><span class="line">System.out.println(<span class="string">"请输入您想输入的字符串："</span>);</span><br><span class="line">String get=input.nextLine();<span class="comment">//获取输入得的字符串的值</span></span><br><span class="line"><span class="keyword">if</span>(get==a)&#123;</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;<span class="comment">//这个时候没有输出值</span></span><br></pre></td></tr></table></figure></p>
 <h4 id="2-用equals方法，该方法比较的是字符串的内容是否相同"><a href="#2-用equals方法，该方法比较的是字符串的内容是否相同" class="headerlink" title="2. 用equals方法，该方法比较的是字符串的内容是否相同"></a>2. 用equals方法，该方法比较的是字符串的内容是否相同</h4><p>比如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String a=<span class="keyword">new</span> String(<span class="string">"abc"</span>);</span><br><span class="line">String b=<span class="keyword">new</span> String(<span class="string">"abc"</span>);</span><br><span class="line">a.equals(b);<span class="comment">//将返回true。</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>所以通常情况下，为了避免出现上述问题，判断字符串是否相等使用equals方法。</strong></p>
-
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/52826.html">java笔记1</a></li></ul></div>
       
     </div>
 
@@ -954,7 +954,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-用“-”运算符，该运算符表示指向字符串的引用是否相同"><span class="nav-number">1.</span> <span class="nav-text">1. 用“==”运算符，该运算符表示指向字符串的引用是否相同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-用equals方法，该方法比较的是字符串的内容是否相同"><span class="nav-number">2.</span> <span class="nav-text">2. 用equals方法，该方法比较的是字符串的内容是否相同</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-用“-”运算符，该运算符表示指向字符串的引用是否相同"><span class="nav-number">1.</span> <span class="nav-text">1. 用“==”运算符，该运算符表示指向字符串的引用是否相同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-用equals方法，该方法比较的是字符串的内容是否相同"><span class="nav-number">2.</span> <span class="nav-text">2. 用equals方法，该方法比较的是字符串的内容是否相同</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number"></span> <span class="nav-text">推荐阅读</span></a></li></div>
             
 
           </div>

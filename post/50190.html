@@ -485,7 +485,7 @@
 </ol>
 <h2 id="图片示例"><a href="#图片示例" class="headerlink" title="图片示例"></a>图片示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141645.gif" alt></p>
 <h2 id="程序示例（go）"><a href="#程序示例（go）" class="headerlink" title="程序示例（go）"></a>程序示例（go）</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//SortInt 插入排序</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SortInt</span><span class="params">(a []<span class="keyword">int</span>)</span> <span class="params">([]<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	n := <span class="number">0</span></span><br><span class="line">	aLen := <span class="built_in">len</span>(a)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//从i=1开始，第一个数不用排序，一个数相当于已经有序了</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt; aLen; i++ &#123;</span><br><span class="line">		<span class="comment">//取出新数（类似摸牌）</span></span><br><span class="line">		tmp := a[i]</span><br><span class="line"></span><br><span class="line">		<span class="comment">//将新数和之前的数从后往前（从大到小）一次比较，如果新数更小,就将以前的数往后移一位</span></span><br><span class="line">		j := i</span><br><span class="line">		<span class="keyword">for</span> ; (j &gt; <span class="number">0</span>) &amp;&amp; (tmp &lt; a[j<span class="number">-1</span>]); j-- &#123;</span><br><span class="line">			n++</span><br><span class="line">			a[j] = a[j<span class="number">-1</span>] <span class="comment">//后移一位</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//新数插入</span></span><br><span class="line">		a[j] = tmp</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> a, n</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/27243.html">shell排序</a></li><li><a href="https://lailin.xyz/post/21238.html">冒泡排序</a></li><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li></ul></div>
       
     </div>
 
@@ -565,8 +565,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/11306.html" rel="next" title="快速排序">
-                <i class="fa fa-chevron-left"></i> 快速排序
+              <a href="/post/63711.html" rel="next" title="归并排序">
+                <i class="fa fa-chevron-left"></i> 归并排序
               </a>
             
           </div>
@@ -575,8 +575,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/post/1358.html" rel="prev" title="招银网络面试总结">
-                招银网络面试总结 <i class="fa fa-chevron-right"></i>
+              <a href="/post/51203.html" rel="prev" title="选择排序">
+                选择排序 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -943,7 +943,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#插入排序"><span class="nav-number">1.</span> <span class="nav-text">插入排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">1.1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤"><span class="nav-number">1.2.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图片示例"><span class="nav-number">1.3.</span> <span class="nav-text">图片示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例（go）"><span class="nav-number">1.4.</span> <span class="nav-text">程序示例（go）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#插入排序"><span class="nav-number">1.</span> <span class="nav-text">插入排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">1.1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤"><span class="nav-number">1.2.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图片示例"><span class="nav-number">1.3.</span> <span class="nav-text">图片示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序示例（go）"><span class="nav-number">1.4.</span> <span class="nav-text">程序示例（go）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">1.5.</span> <span class="nav-text">推荐阅读</span></a></li></ol></li></ol></div>
             
 
           </div>
