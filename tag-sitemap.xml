@@ -17,14 +17,14 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/%E9%A1%B9%E7%9B%AE/</loc>
+        <loc>https://lailin.xyz/tags/C/</loc>
         <lastmod>2019-03-30T10:15:55.698Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/C/</loc>
+        <loc>https://lailin.xyz/tags/%E9%A1%B9%E7%9B%AE/</loc>
         <lastmod>2019-03-30T10:15:55.698Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -59,13 +59,6 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/%E7%AC%94%E8%AE%B0/</loc>
-        <lastmod>2019-03-30T10:15:55.699Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://lailin.xyz/tags/js/</loc>
         <lastmod>2019-03-30T10:15:55.699Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -88,6 +81,13 @@
 
     <url>
         <loc>https://lailin.xyz/tags/%E8%BD%AF%E4%BB%B6/</loc>
+        <lastmod>2019-03-30T10:15:55.699Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/tags/%E7%AC%94%E8%AE%B0/</loc>
         <lastmod>2019-03-30T10:15:55.699Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -255,13 +255,6 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/%E6%9D%82%E8%AE%B0/</loc>
-        <lastmod>2019-03-30T10:15:55.702Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://lailin.xyz/tags/composer/</loc>
         <lastmod>2019-03-30T10:15:55.702Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -284,6 +277,13 @@
 
     <url>
         <loc>https://lailin.xyz/tags/%E6%8F%92%E4%BB%B6/</loc>
+        <lastmod>2019-03-30T10:15:55.702Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/tags/%E6%9D%82%E8%AE%B0/</loc>
         <lastmod>2019-03-30T10:15:55.702Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -472,14 +472,14 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/spfa/</loc>
+        <loc>https://lailin.xyz/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/</loc>
         <lastmod>2019-03-30T10:15:55.706Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>https://lailin.xyz/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/</loc>
+        <loc>https://lailin.xyz/tags/spfa/</loc>
         <lastmod>2019-03-30T10:15:55.706Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>

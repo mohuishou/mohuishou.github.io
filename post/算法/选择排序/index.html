@@ -472,7 +472,7 @@
 <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>选择排序(Selection sort)是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小元素，然后放到排序序列末尾。以此类推，直到所有元素均排序完毕。</p>
 <h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141643.gif" alt="示例图片"></p>
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> selection</span><br><span class="line"></span><br><span class="line"><span class="comment">//Sort 选择排序</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sort</span><span class="params">(arr []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> LEN = <span class="built_in">len</span>(arr)</span><br><span class="line">	minIndex := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; LEN; i++ &#123;</span><br><span class="line">		minIndex = i</span><br><span class="line">		<span class="keyword">for</span> j := i; j &lt; LEN; j++ &#123;</span><br><span class="line">			<span class="keyword">if</span> arr[minIndex] &gt; arr[j] &#123;</span><br><span class="line">				minIndex = j</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> minIndex != i &#123;</span><br><span class="line">			arr[minIndex], arr[i] = arr[i], arr[minIndex]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<div><h2>推荐文章<span style="font-size:0.45em; color:#999">（由<a style="font-size:0.45em; color:#999" href="https://github.com/huiwang/hexo-recommended-posts">hexo文章推荐插件</a>驱动）</span></h2><ul><li><a href="https://lailin.xyz/post/算法/shell排序/">shell排序</a></li><li><a href="https://lailin.xyz/post/算法/冒泡排序/">冒泡排序</a></li><li><a href="https://lailin.xyz/post/算法/堆排序/">堆排序</a></li><li><a href="https://lailin.xyz/post/算法/归并排序/">归并排序</a></li><li><a href="https://lailin.xyz/post/算法/快速排序/">快速排序</a></li><li><a href="https://hushhw.cn/posts/learn/61237.html">排序算法</a></li></ul></div>
       
     </div>
 
@@ -552,8 +552,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/算法/归并排序/" rel="next" title="归并排序">
-                <i class="fa fa-chevron-left"></i> 归并排序
+              <a href="/post/算法/遗传算法/" rel="next" title="遗传算法">
+                <i class="fa fa-chevron-left"></i> 遗传算法
               </a>
             
           </div>
@@ -562,8 +562,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/post/校招/招银网络面试总结/" rel="prev" title="招银网络面试总结">
-                招银网络面试总结 <i class="fa fa-chevron-right"></i>
+              <a href="/post/算法/插入排序/" rel="prev" title="插入排序">
+                插入排序 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -930,7 +930,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">推荐文章（由hexo文章推荐插件驱动）</span></a></li></ol></div>
             
 
           </div>
