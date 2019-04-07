@@ -616,7 +616,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-30 18:15:55" itemprop="dateModified" datetime="2019-03-30T18:15:55+08:00">2019-03-30</time>
+                <time title="修改时间：2019-04-07 17:46:23" itemprop="dateModified" datetime="2019-04-07T17:46:23+08:00">2019-04-07</time>
               
             
           </span>
@@ -651,7 +651,7 @@
 
       
         
-          <p>在GORM的<a href="http://gorm.io/docs/update.html" target="_blank" rel="noopener">文档</a>当中有说明，使用<code>Update</code>, <code>Updates</code>时只会更新改变的字段，但是出现关联关系的时候情况似乎有了一些微妙的变化</p>
+          <p>在 GORM 的<a href="http://gorm.io/docs/update.html" target="_blank" rel="noopener">文档</a>当中有说明，使用<code>Update</code>, <code>Updates</code>时只会更新改变的字段，但是出现关联关系的时候情况似乎有了一些微妙的变化</p>
 <blockquote>
 <p>If you only want to update changed Fields, you could use <code>Update</code>, <code>Updates</code></p>
 </blockquote>
@@ -1761,7 +1761,7 @@ func main() &#123;	r := gin.Default()	r.GET("/download", func(context *gin.Conte
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-30 18:15:55" itemprop="dateModified" datetime="2019-03-30T18:15:55+08:00">2019-03-30</time>
+                <time title="修改时间：2019-04-07 17:47:33" itemprop="dateModified" datetime="2019-04-07T17:47:33+08:00">2019-04-07</time>
               
             
           </span>
@@ -1815,7 +1815,7 @@ func main() &#123;	r := gin.Default()	r.GET("/download", func(context *gin.Conte
       
         
           <p>[toc]</p>
-<h3 id="复现代码"><a href="#复现代码" class="headerlink" title="复现代码"></a>复现代码</h3><p>这个代码的触发条件比较严苛，首先必须要保证gorm执行的一行必须为<code>updates</code>语句，并且在<code>updates(struct)</code>,并且传入的这个<code>struct</code>必须要包含一个直接或者间接关联的一个多态表，这些条件缺一不可</p>
+<h2 id="复现代码"><a href="#复现代码" class="headerlink" title="复现代码"></a>复现代码</h2><p>这个代码的触发条件比较严苛，首先必须要保证 gorm 执行的一行必须为<code>updates</code>语句，并且在<code>updates(struct)</code>,并且传入的这个<code>struct</code>必须要包含一个直接或者间接关联的一个多态表，这些条件缺一不可</p>
           <!--noindex-->
           
             <div class="post-button text-center">
