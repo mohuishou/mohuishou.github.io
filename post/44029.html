@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="ZSplzl9A1CIGe2GS">
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/touch-icon-apple.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.1.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'WB3PJKK4Q5',
+      apiKey: '0f4e5abf708587974517054f9c1aaf73',
+      indexName: 'Blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到内容, 换个关键词试试: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="在上一篇文章当中阅读了Go语言的一个高性能的Web框架Gin，Web框架当中最重要的功能之一是路由，Gin的路由就是由httprouter这个包实现的 地址 https://github.com/julienschmidt/httprouter https://godoc.org/github.com/julienschmidt/httprouter  特性 基于基数树实现的高性能路由框架 仅支持">
+<meta name="keywords" content="go,路由">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Httprouter介绍及源码阅读">
+<meta property="og:url" content="https://lailin.xyz/post/44029.html">
+<meta property="og:site_name" content="Mohuishou">
+<meta property="og:description" content="在上一篇文章当中阅读了Go语言的一个高性能的Web框架Gin，Web框架当中最重要的功能之一是路由，Gin的路由就是由httprouter这个包实现的 地址 https://github.com/julienschmidt/httprouter https://godoc.org/github.com/julienschmidt/httprouter  特性 基于基数树实现的高性能路由框架 仅支持">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-07T16:49:34.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Httprouter介绍及源码阅读">
+<meta name="twitter:description" content="在上一篇文章当中阅读了Go语言的一个高性能的Web框架Gin，Web框架当中最重要的功能之一是路由，Gin的路由就是由httprouter这个包实现的 地址 https://github.com/julienschmidt/httprouter https://godoc.org/github.com/julienschmidt/httprouter  特性 基于基数树实现的高性能路由框架 仅支持">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mohuishou" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://lailin.xyz/post/44029">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Httprouter介绍及源码阅读 | Mohuishou</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-137859264-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-137859264-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mohuishou</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A New Life</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/44029.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mohuishou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/icons/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mohuishou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Httprouter介绍及源码阅读
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-02 14:46:01" itemprop="dateCreated datePublished" datetime="2018-08-02T14:46:01+00:00">2018-08-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-07 16:49:34" itemprop="dateModified" datetime="2019-04-07T16:49:34+00:00">2019-04-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在上一篇文章当中阅读了Go语言的一个高性能的Web框架Gin，Web框架当中最重要的功能之一是路由，Gin的路由就是由httprouter这个包实现的</p>
+<h2 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h2><ul>
+<li><a href="https://github.com/julienschmidt/httprouter" target="_blank" rel="noopener">https://github.com/julienschmidt/httprouter</a></li>
+<li><a href="https://godoc.org/github.com/julienschmidt/httprouter" target="_blank" rel="noopener">https://godoc.org/github.com/julienschmidt/httprouter</a></li>
+</ul>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li>基于基数树实现的高性能路由框架</li>
+<li>仅支持精确匹配</li>
+<li>不必关心URL结尾的斜线</li>
+<li>路径自动校正，例如在url路径当中有<code>../</code>,<code>//</code>的时候</li>
+<li>可以在URL当中设置参数，例如<code>/user/:id</code></li>
+<li>零内存分配</li>
+<li>不存在服务器崩溃，可以通过设置<code>panic handler</code>使服务器从panic当中恢复</li>
+<li>适合API构建</li>
+</ul>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><h3 id="两个问题"><a href="#两个问题" class="headerlink" title="两个问题"></a>两个问题</h3><p>解决两个问题，就基本明白了这个路由框架</p>
+<ul>
+<li>路由是是如何注册？如何保存的？</li>
+<li>当请求到来之后，路由是如何匹配，如何查找的？</li>
+</ul>
+<h3 id="一个Demo"><a href="#一个Demo" class="headerlink" title="一个Demo"></a>一个Demo</h3><p>还是从一个<code>Hello World</code>讲起<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	r := httprouter.New()</span><br><span class="line">	r.GET(<span class="string">"/:name"</span>, <span class="function"><span class="keyword">func</span><span class="params">(writer http.ResponseWriter, request *http.Request, params httprouter.Params)</span></span> &#123;</span><br><span class="line">        fmt.Fprintf(writer, <span class="string">"hello, %s!\n"</span>, params.ByName(<span class="string">"name"</span>))</span><br><span class="line">	&#125;)</span><br><span class="line">	http.ListenAndServe(<span class="string">":8080"</span>,r)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>httprouter.New()</code>初始化了一个Router，下面直接看一下Router的结构</p>
+<h3 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h3><p>在Router的源码当中有十分详尽的注释，这里按照我个人的理解注释一下</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Router实现了Http.Handler接口，用于注册分发路由</span></span><br><span class="line"><span class="keyword">type</span> Router <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// trees 是一个基数树集合，每一个HTTP方法对应一棵单独的路由树</span></span><br><span class="line">    <span class="comment">// node是基数树的根节点</span></span><br><span class="line">	trees <span class="keyword">map</span>[<span class="keyword">string</span>]*node</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用于开启上文提到的自动处理URL尾部斜杆的特性</span></span><br><span class="line">    <span class="comment">// 这个值为true时，如果/foo/没有被匹配到，会尝试匹配/foo</span></span><br><span class="line">	RedirectTrailingSlash <span class="keyword">bool</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 用于开启上文提到的路由校正的特性</span></span><br><span class="line">    <span class="comment">// 这个值为true时，会对../和//这种路径进行校正</span></span><br><span class="line">	RedirectFixedPath <span class="keyword">bool</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这个值为true时，如果当前方法的路由没有被匹配到，会尝试匹配其他方法的路由，</span></span><br><span class="line">    <span class="comment">// 如果匹配到了则返回405，如果没有，就交给NotFound Handler处理</span></span><br><span class="line">	HandleMethodNotAllowed <span class="keyword">bool</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 这个值为true时，将开启OPTIONS自动匹配，注意: 手动匹配优先级更高</span></span><br><span class="line">	HandleOPTIONS <span class="keyword">bool</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 没有匹配到相应路由的时候会调用这个方法</span></span><br><span class="line">    <span class="comment">// 如果没有注册这个方法会返回 NotFound</span></span><br><span class="line">	NotFound http.Handler</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 没有匹配到相应路由并且HandleMethodNotAllowed为true时会调用这个方法</span></span><br><span class="line">	MethodNotAllowed http.Handler</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用于从panic当中恢复</span></span><br><span class="line">    <span class="comment">// 需要返回500错误，并且渲染相应的错误页面</span></span><br><span class="line">	PanicHandler <span class="function"><span class="keyword">func</span><span class="params">(http.ResponseWriter, *http.Request, <span class="keyword">interface</span>&#123;&#125;)</span></span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>初始化Router之后看看路由是如何保存并且注册的</p>
+<h3 id="路由是如何保存的"><a href="#路由是如何保存的" class="headerlink" title="路由是如何保存的?"></a>路由是如何保存的?</h3><p>这里以官方Readme当中的例子说明：<br>如果注册了以下路由<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">r.GET(<span class="string">"/"</span>, f1)</span><br><span class="line">r.GET(<span class="string">"/search/"</span>, f2)</span><br><span class="line">r.GET(<span class="string">"/support/"</span>, f3)</span><br><span class="line">r.GET(<span class="string">"/blog/"</span>, f4)</span><br><span class="line">r.GET(<span class="string">"/blog/:post/"</span>, f5)</span><br><span class="line">r.GET(<span class="string">"/about_us/"</span>, f6)</span><br><span class="line">r.GET(<span class="string">"/about_us/team/"</span>, f7)</span><br><span class="line">r.GET(<span class="string">"/contact/"</span>, f8)</span><br></pre></td></tr></table></figure></p>
+<p>那么这些路由会如下方所示，以一颗树的形式保存，并且这些路由的公共前缀会被抽离并且变为上一层节点<br>Priority 表示加上自身一共有多少个节点<br>Path 表示路径<br>Handle 表示路由注册的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Priority   Path             Handle</span><br><span class="line">9          \                *&lt;1&gt;</span><br><span class="line">3          ├s               nil</span><br><span class="line">2          |├earch\         *&lt;2&gt;</span><br><span class="line">1          |└upport\        *&lt;3&gt;</span><br><span class="line">2          ├blog\           *&lt;4&gt;</span><br><span class="line">1          |    └:post      nil</span><br><span class="line">1          |         └\     *&lt;5&gt;</span><br><span class="line">2          ├about-us\       *&lt;6&gt;</span><br><span class="line">1          |        └team\  *&lt;7&gt;</span><br><span class="line">1          └contact\        *&lt;8&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="r-Handle"><a href="#r-Handle" class="headerlink" title="r.Handle"></a>r.Handle</h3><p><code>r.Get</code>, <code>r.Post</code>等方法实质都是通过调用r.Handle实现的</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Router)</span> <span class="title">Handle</span><span class="params">(method, path <span class="keyword">string</span>, handle Handle)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 路径注册必须从/开始，否则直接报错</span></span><br><span class="line">	<span class="keyword">if</span> path[<span class="number">0</span>] != <span class="string">'/'</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">"path must begin with '/' in path '"</span> + path + <span class="string">"'"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 路由树map不存在需要新建</span></span><br><span class="line">	<span class="keyword">if</span> r.trees == <span class="literal">nil</span> &#123;</span><br><span class="line">		r.trees = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]*node)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取当前方法所对应树的根节点，不存在则新建一个</span></span><br><span class="line">	root := r.trees[method]</span><br><span class="line">	<span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">		root = <span class="built_in">new</span>(node)</span><br><span class="line">		r.trees[method] = root</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向路由树当中添加一条一条路由</span></span><br><span class="line">	root.addRoute(path, handle)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="node"><a href="#node" class="headerlink" title="node"></a>node</h3><p>路由是注册到一颗路由树当中的，先看看节点的源码，再来分析，是如何添加路由的</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> node <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 当前节点的路径</span></span><br><span class="line">    path      <span class="keyword">string</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 是否为参数节点，参数节点用:name表示</span></span><br><span class="line">    wildChild <span class="keyword">bool</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 当前节点类型， 一共有4种</span></span><br><span class="line">    <span class="comment">// static: 静态节点，默认类型</span></span><br><span class="line">	<span class="comment">// root: 根节点</span></span><br><span class="line">	<span class="comment">// param: 其他节点</span></span><br><span class="line">	<span class="comment">// catchAll: 带有*的节点，这里*的作用和正则当中的*一样</span></span><br><span class="line">    nType     nodeType</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 当前路径上最大参数的个数，不能超过255</span></span><br><span class="line">    maxParams <span class="keyword">uint8</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 代表分支的首字母</span></span><br><span class="line">    <span class="comment">// 上面的例子，当前节点为s</span></span><br><span class="line">    <span class="comment">// 那么indices = eu</span></span><br><span class="line">    <span class="comment">// ├s               nil</span></span><br><span class="line">    <span class="comment">// |├earch\         *&lt;2&gt;</span></span><br><span class="line">    <span class="comment">// |└upport\        *&lt;3&gt;</span></span><br><span class="line">    indices   <span class="keyword">string</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 孩子节点</span></span><br><span class="line">    children  []*node</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 注册的路由</span></span><br><span class="line">    handle    Handle</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 权重，表示当前节点加上所有子节点的数目</span></span><br><span class="line">	priority  <span class="keyword">uint32</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="路由树是如何生成的？"><a href="#路由树是如何生成的？" class="headerlink" title="路由树是如何生成的？"></a>路由树是如何生成的？</h3><p>未完待续</p>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/60163.html">GORM避坑指南之含关联关系的更新</a></li><li><a href="https://lailin.xyz/post/44107.html">记一次net http内存泄漏</a></li><li><a href="https://lailin.xyz/post/5431.html">使用chromedp解决反爬虫问题</a></li></ul></div>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"># go</a>
+          
+            <a href="/tags/路由/" rel="tag"># 路由</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+              <div>
+                
+
+<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
+
+
+  
+
+
+<div class="likely">
+	
+ 	 	<div class="twitter">Tweet</div>
+	
+ 	 	<div class="linkedin">Link</div>
+	
+ 	 	<div class="telegram">Send</div>
+	
+ 	 	<div class="pinterest">Pin</div>
+	
+</div>
+
+              </div>
+            
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/12338.html" rel="next" title="Gin源码阅读 从0.1开始">
+                <i class="fa fa-chevron-left"></i> Gin源码阅读 从0.1开始
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/37449.html" rel="prev" title="一个十分边缘的gorm的bug">
+                一个十分边缘的gorm的bug <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/icons/avatar.jpg" alt="Mohuishou">
+            
+              <p class="site-author-name" itemprop="name">Mohuishou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">81</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Friend's Blog
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jingwei.link/" title="https://jingwei.link/" rel="noopener" target="_blank">敬维</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jiajunhuang.com/" title="https://jiajunhuang.com/" rel="noopener" target="_blank">JiaJun的编程随想</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#地址"><span class="nav-number">1.</span> <span class="nav-text">地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特性"><span class="nav-number">2.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码"><span class="nav-number">3.</span> <span class="nav-text">源码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两个问题"><span class="nav-number">3.1.</span> <span class="nav-text">两个问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个Demo"><span class="nav-number">3.2.</span> <span class="nav-text">一个Demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Router"><span class="nav-number">3.3.</span> <span class="nav-text">Router</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由是如何保存的"><span class="nav-number">3.4.</span> <span class="nav-text">路由是如何保存的?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#r-Handle"><span class="nav-number">3.5.</span> <span class="nav-text">r.Handle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#node"><span class="nav-number">3.6.</span> <span class="nav-text">node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由树是如何生成的？"><span class="nav-number">3.7.</span> <span class="nav-text">路由树是如何生成的？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">4.</span> <span class="nav-text">推荐阅读</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mohuishou</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="//cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
+
+  
+  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.min.js"></script>
+
+  
+  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.ui.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+  
+
+<script src="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.css">
+
+
+
+  
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '28db4ab78d0b5277990f',
+    clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
+    repo: 'blogComment',
+    owner: 'scuplus',
+    admin: ['mohuishou'],
+    id: md5(location.pathname),
+    
+      language: 'zh-CN',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+  
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.css">
+
+  
+  
+    
+  
+  <script src="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.js"></script>
+  
+
+  <script src="/js/algolia-search.js?v=7.1.0"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

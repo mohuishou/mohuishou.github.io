@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="ZSplzl9A1CIGe2GS">
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/touch-icon-apple.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.1.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'WB3PJKK4Q5',
+      apiKey: '0f4e5abf708587974517054f9c1aaf73',
+      indexName: 'Blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到内容, 换个关键词试试: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="序 最近准备学习一下 golang 的标准库，详细的阅读部分源码，这个目录记录一下学习的过程和心得  go 语言的ioutil包提供了很多方便的 io 操作的工具集，本文主要详细分析ReadAll方法的源码实现。 ReadAll是很常用的一个方法，用来一次性的读取io.Reader当中的数据。 源码实现1. ReadAll阅读下方的源码我们可以发现，ReadAll其实调用了一个非导出的方法，我们一">
+<meta name="keywords" content="go,go标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go标准库——ioutil.ReadAll的实现">
+<meta property="og:url" content="https://lailin.xyz/post/47700.html">
+<meta property="og:site_name" content="Mohuishou">
+<meta property="og:description" content="序 最近准备学习一下 golang 的标准库，详细的阅读部分源码，这个目录记录一下学习的过程和心得  go 语言的ioutil包提供了很多方便的 io 操作的工具集，本文主要详细分析ReadAll方法的源码实现。 ReadAll是很常用的一个方法，用来一次性的读取io.Reader当中的数据。 源码实现1. ReadAll阅读下方的源码我们可以发现，ReadAll其实调用了一个非导出的方法，我们一">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-142743.png">
+<meta property="og:updated_time" content="2019-04-07T16:49:34.202Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="go标准库——ioutil.ReadAll的实现">
+<meta name="twitter:description" content="序 最近准备学习一下 golang 的标准库，详细的阅读部分源码，这个目录记录一下学习的过程和心得  go 语言的ioutil包提供了很多方便的 io 操作的工具集，本文主要详细分析ReadAll方法的源码实现。 ReadAll是很常用的一个方法，用来一次性的读取io.Reader当中的数据。 源码实现1. ReadAll阅读下方的源码我们可以发现，ReadAll其实调用了一个非导出的方法，我们一">
+<meta name="twitter:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-142743.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mohuishou" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://lailin.xyz/post/47700">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>go标准库——ioutil.ReadAll的实现 | Mohuishou</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-137859264-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-137859264-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mohuishou</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A New Life</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/47700.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mohuishou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/icons/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mohuishou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">go标准库——ioutil.ReadAll的实现
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-03-20 01:53:06" itemprop="dateCreated datePublished" datetime="2018-03-20T01:53:06+00:00">2018-03-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-07 16:49:34" itemprop="dateModified" datetime="2019-04-07T16:49:34+00:00">2019-04-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><blockquote>
+<p>最近准备学习一下 golang 的标准库，详细的阅读部分源码，这个目录记录一下学习的过程和心得</p>
+</blockquote>
+<p>go 语言的<code>ioutil</code>包提供了很多方便的 io 操作的工具集，本文主要详细分析<code>ReadAll</code>方法的源码实现。</p>
+<p><code>ReadAll</code>是很常用的一个方法，用来一次性的读取<code>io.Reader</code>当中的数据。</p>
+<h2 id="源码实现"><a href="#源码实现" class="headerlink" title="源码实现"></a>源码实现</h2><h5 id="1-ReadAll"><a href="#1-ReadAll" class="headerlink" title="1. ReadAll"></a>1. ReadAll</h5><p>阅读下方的源码我们可以发现，<code>ReadAll</code>其实调用了一个非导出的方法，我们一步一步的追踪</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ReadAll reads from r until an error or EOF and returns the data it read.</span></span><br><span class="line"><span class="comment">// A successful call returns err == nil, not err == EOF. Because ReadAll is</span></span><br><span class="line"><span class="comment">// defined to read from src until EOF, it does not treat an EOF from Read</span></span><br><span class="line"><span class="comment">// as an error to be reported.</span></span><br><span class="line"><span class="comment">// ReadAll从r读取数据直到EOF或遇到error，返回读取的数据和遇到的错误。</span></span><br><span class="line"><span class="comment">// 成功的调用返回的err为nil而非EOF。</span></span><br><span class="line"><span class="comment">// 因为本函数定义为读取r直到EOF，它不会将读取返回的EOF视为应报告的错误。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ReadAll</span><span class="params">(r io.Reader)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> readAll(r, bytes.MinRead)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="2-readAll"><a href="#2-readAll" class="headerlink" title="2. readAll"></a>2. readAll</h5><p>阅读这个函数代码，可以发现，<code>ioutil.ReadAll</code>实质上是使用<code>bytes.buffer</code>实现的，在这里面调用了两个<code>bytes.buffer</code>的方法，一个用来初始化<code>buffer</code>的容量，一个用于读取所有的<code>io.Reader</code>数据</p>
+<p>除此之外我们还可以学习到 go 当中 panic recover 的使用方法，在<code>buffer</code>当中，如果无法分配足够的内存的时候，会直接<code>panic bytes.ErrTooLarge</code>的错误，但是，这个方法我们期望把这个错误给返回回来，这个时候就可以使用<code>defer recover</code>从<code>panic</code>当中恢复回来</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// readAll reads from r until an error or EOF and returns the data it read</span></span><br><span class="line"><span class="comment">// from the internal buffer allocated with a specified capacity.</span></span><br><span class="line"><span class="comment">// readAll从r读取到一个错误或EOF，并返回从指定容量分配的内部缓冲区中读取的数据。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readAll</span><span class="params">(r io.Reader, capacity <span class="keyword">int64</span>)</span> <span class="params">(b []<span class="keyword">byte</span>, err error)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 新建了一个buffer</span></span><br><span class="line">	<span class="keyword">var</span> buf bytes.Buffer</span><br><span class="line">	<span class="comment">// If the buffer overflows, we will get bytes.ErrTooLarge.</span></span><br><span class="line">    <span class="comment">// Return that as an error. Any other panic remains.</span></span><br><span class="line">    <span class="comment">// 如果buffer溢出了，会得到一个bytes.ErrTooLarge的错误</span></span><br><span class="line">    <span class="comment">// 如果得到的是bytes.ErrTooLarge错误，将其返回，其他panic错误，仍然panic</span></span><br><span class="line">	<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		e := <span class="built_in">recover</span>()</span><br><span class="line">		<span class="keyword">if</span> e == <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> panicErr, ok := e.(error); ok &amp;&amp; panicErr == bytes.ErrTooLarge &#123;</span><br><span class="line">			err = panicErr</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="built_in">panic</span>(e)</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="comment">// 判断capacity的值是否超过了int类型的上限</span></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">int64</span>(<span class="keyword">int</span>(capacity)) == capacity &#123;</span><br><span class="line">		<span class="comment">// 向buffer当中增加capacity的容量</span></span><br><span class="line">		buf.Grow(<span class="keyword">int</span>(capacity))</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 使用buffer ReadFrom 方法读取所有的io.Reader数据</span></span><br><span class="line">	_, err = buf.ReadFrom(r)</span><br><span class="line">	<span class="keyword">return</span> buf.Bytes(), err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3-buffer"><a href="#3-buffer" class="headerlink" title="3. buffer"></a>3. buffer</h5><p>要看<code>buffer</code>相关函数的实现，先看看<code>buffer</code>的定义，不然到时候可能会懵 B</p>
+<p>主要会用到两个字段，一个是<code>buf</code>,<code>buf</code>的内容是用<code>off</code>到<code>len(buf)</code>的，<code>off</code>之前的表示已经读取了数据，<code>off</code>表示当前位置，<code>buffer</code>的<code>write和read</code>方法都会从这个位置开始</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A Buffer is a variable-sized buffer of bytes with Read and Write methods.</span></span><br><span class="line"><span class="comment">// The zero value for Buffer is an empty buffer ready to use.</span></span><br><span class="line"><span class="comment">// Buffer是一个实现了读写方法的可变大小的字节缓冲。</span></span><br><span class="line"><span class="comment">// 本类型的零值是一个空的可用于读写的缓冲。</span></span><br><span class="line"><span class="keyword">type</span> Buffer <span class="keyword">struct</span> &#123;</span><br><span class="line">	buf      []<span class="keyword">byte</span> <span class="comment">// contents are the bytes buf[off : len(buf)]</span></span><br><span class="line">	off      <span class="keyword">int</span>    <span class="comment">// read at &amp;buf[off], write at &amp;buf[len(buf)]</span></span><br><span class="line">	lastRead readOp <span class="comment">// last read operation, so that Unread* can work correctly.</span></span><br><span class="line">	<span class="comment">// <span class="doctag">FIXME:</span> lastRead can fit in a single byte</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// memory to hold first slice; helps small buffers avoid allocation.</span></span><br><span class="line">	<span class="comment">// <span class="doctag">FIXME:</span> it would be advisable to align Buffer to cachelines to avoid false</span></span><br><span class="line">	<span class="comment">// sharing.</span></span><br><span class="line">	bootstrap [<span class="number">64</span>]<span class="keyword">byte</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4-buffer-Grow"><a href="#4-buffer-Grow" class="headerlink" title="4. buffer.Grow"></a>4. buffer.Grow</h5><p>这个方法主要用来增加缓冲区的内存，实际还是调用了非导出的<code>grow</code>方法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Grow grows the buffer's capacity, if necessary, to guarantee space for</span></span><br><span class="line"><span class="comment">// another n bytes. After Grow(n), at least n bytes can be written to the</span></span><br><span class="line"><span class="comment">// buffer without another allocation.</span></span><br><span class="line"><span class="comment">// If n is negative, Grow will panic.</span></span><br><span class="line"><span class="comment">// If the buffer can't grow it will panic with ErrTooLarge.</span></span><br><span class="line"><span class="comment">// 必要时会增加缓冲的容量，以保证n字节的剩余空间。</span></span><br><span class="line"><span class="comment">// 调用Grow(n)后至少可以向缓冲中写入n字节数据而无需申请内存。</span></span><br><span class="line"><span class="comment">// 如果n小于零或者不能增加容量都会panic ErrTooLarge 错误。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(b *Buffer)</span> <span class="title">Grow</span><span class="params">(n <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">"bytes.Buffer.Grow: negative count"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	m := b.grow(n)</span><br><span class="line">	b.buf = b.buf[<span class="number">0</span>:m]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="5-buffer-ReadFrom"><a href="#5-buffer-ReadFrom" class="headerlink" title="5. buffer.ReadFrom"></a>5. buffer.ReadFrom</h5><p>主要看看这个方法的实现，实现了从<code>io.Reader</code>读取所有数据。</p>
+<p>示意图:<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-142743.png" alt="示意图"></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ReadFrom reads data from r until EOF and appends it to the buffer, growing</span></span><br><span class="line"><span class="comment">// the buffer as needed. The return value n is the number of bytes read. Any</span></span><br><span class="line"><span class="comment">// error except io.EOF encountered during the read is also returned. If the</span></span><br><span class="line"><span class="comment">// buffer becomes too large, ReadFrom will panic with ErrTooLarge.</span></span><br><span class="line"><span class="comment">// ReadFrom从r中读取数据直到结束并将读取的数据写入缓冲中，如必要会增加缓冲容量。</span></span><br><span class="line"><span class="comment">// 返回值n为从r读取并写入b的字节数；会返回读取时遇到的除了io.EOF之外的错误。</span></span><br><span class="line"><span class="comment">// 如果缓冲太大，ReadFrom会采用错误值ErrTooLarge引发panic。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(b *Buffer)</span> <span class="title">ReadFrom</span><span class="params">(r io.Reader)</span> <span class="params">(n <span class="keyword">int64</span>, err error)</span></span> &#123;</span><br><span class="line">    <span class="comment">// const opInvalid = 0  // Non-read operation. 表示之前没有读操作</span></span><br><span class="line">	b.lastRead = opInvalid</span><br><span class="line">    <span class="comment">// If buffer is empty, reset to recover space.</span></span><br><span class="line">    <span class="comment">// 如果缓冲区为空，重置为恢复空间。</span></span><br><span class="line">	<span class="keyword">if</span> b.off &gt;= <span class="built_in">len</span>(b.buf) &#123;</span><br><span class="line">		b.Reset()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 循环读取io.Reader 的数据</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">        <span class="comment">// 判断当前剩余空间是否小于MinRead，MinRead = 512</span></span><br><span class="line">		<span class="keyword">if</span> free := <span class="built_in">cap</span>(b.buf) - <span class="built_in">len</span>(b.buf); free &lt; MinRead &#123;</span><br><span class="line">            <span class="comment">// not enough space at end</span></span><br><span class="line">            <span class="comment">// 空间不足</span></span><br><span class="line">            <span class="comment">// 新建一个buf</span></span><br><span class="line">            newBuf := b.buf</span><br><span class="line">            <span class="comment">// 判断实际剩余容量是否小于MinRead = 512</span></span><br><span class="line">			<span class="keyword">if</span> b.off+free &lt; MinRead &#123;</span><br><span class="line">				<span class="comment">// not enough space using beginning of buffer;</span></span><br><span class="line">                <span class="comment">// double buffer capacity</span></span><br><span class="line">                <span class="comment">// 实际剩余空间不足，分配双倍的缓冲空间，缓冲的最小值为MinRead所以加上一个MinRead，避免双倍之后仍然比MinRead小</span></span><br><span class="line">                <span class="comment">// makeSlice函数用于分配缓冲空间，如果分配失败会panic ErrTooLarge 错误</span></span><br><span class="line">				newBuf = makeSlice(<span class="number">2</span>*<span class="built_in">cap</span>(b.buf) + MinRead)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 将原有buf数据复制到新的buf</span></span><br><span class="line">            <span class="built_in">copy</span>(newBuf, b.buf[b.off:])</span><br><span class="line">            <span class="comment">// len(b.buf)-b.off 就等于buf当前内容的长度</span></span><br><span class="line">            <span class="comment">// 例子: a:=make([]byte,20)</span></span><br><span class="line">            <span class="comment">//      b:=a[:10]</span></span><br><span class="line">            <span class="comment">//      len(b) // 10</span></span><br><span class="line">            <span class="comment">//      cap(b) //20</span></span><br><span class="line">            b.buf = newBuf[:<span class="built_in">len</span>(b.buf)-b.off]</span><br><span class="line">            <span class="comment">// 将off置0</span></span><br><span class="line">			b.off = <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 从io.Reader当中读取数据，传入buf的剩余空间</span></span><br><span class="line">        <span class="comment">// 第一种情况，数据读取完毕，返回读取长度m以及,io.EOF错误</span></span><br><span class="line">        <span class="comment">// 第二种情况, 数据未读完，遇到错误</span></span><br><span class="line">        <span class="comment">// 第三种情况，数据未读完，缓冲区容量不够，返回读取数据长度m以及nil</span></span><br><span class="line">        m, e := r.Read(b.buf[<span class="built_in">len</span>(b.buf):<span class="built_in">cap</span>(b.buf)])</span><br><span class="line">        <span class="comment">// 只获取有数据的buf，无数据的空间转化为cap</span></span><br><span class="line">		b.buf = b.buf[<span class="number">0</span> : <span class="built_in">len</span>(b.buf)+m]</span><br><span class="line">        n += <span class="keyword">int64</span>(m)</span><br><span class="line">        <span class="comment">// 数据读取完毕跳出循环</span></span><br><span class="line">		<span class="keyword">if</span> e == io.EOF &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 遇到错误返回</span></span><br><span class="line">		<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> n, e</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n, <span class="literal">nil</span> <span class="comment">// err is EOF, so return nil explicitly</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/60163.html">GORM避坑指南之含关联关系的更新</a></li><li><a href="https://lailin.xyz/post/44107.html">记一次net http内存泄漏</a></li><li><a href="https://lailin.xyz/post/5431.html">使用chromedp解决反爬虫问题</a></li></ul></div>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"># go</a>
+          
+            <a href="/tags/go标准库/" rel="tag"># go标准库</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+              <div>
+                
+
+<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
+
+
+  
+
+
+<div class="likely">
+	
+ 	 	<div class="twitter">Tweet</div>
+	
+ 	 	<div class="linkedin">Link</div>
+	
+ 	 	<div class="telegram">Send</div>
+	
+ 	 	<div class="pinterest">Pin</div>
+	
+</div>
+
+              </div>
+            
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/5431.html" rel="next" title="使用chromedp解决反爬虫问题">
+                <i class="fa fa-chevron-left"></i> 使用chromedp解决反爬虫问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/22757.html" rel="prev" title="2018年的一些小目标">
+                2018年的一些小目标 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/icons/avatar.jpg" alt="Mohuishou">
+            
+              <p class="site-author-name" itemprop="name">Mohuishou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">81</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Friend's Blog
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jingwei.link/" title="https://jingwei.link/" rel="noopener" target="_blank">敬维</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jiajunhuang.com/" title="https://jiajunhuang.com/" rel="noopener" target="_blank">JiaJun的编程随想</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码实现"><span class="nav-number">2.</span> <span class="nav-text">源码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-ReadAll"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">1. ReadAll</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-readAll"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">2. readAll</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-buffer"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">3. buffer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-buffer-Grow"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">4. buffer.Grow</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-buffer-ReadFrom"><span class="nav-number">2.0.0.5.</span> <span class="nav-text">5. buffer.ReadFrom</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">3.</span> <span class="nav-text">推荐阅读</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mohuishou</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="//cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
+
+  
+  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.min.js"></script>
+
+  
+  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.ui.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+  
+
+<script src="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.js"></script>
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.css">
+
+
+
+  
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '28db4ab78d0b5277990f',
+    clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
+    repo: 'blogComment',
+    owner: 'scuplus',
+    admin: ['mohuishou'],
+    id: md5(location.pathname),
+    
+      language: 'zh-CN',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+  
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.css">
+
+  
+  
+    
+  
+  <script src="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.js"></script>
+  
+
+  <script src="/js/algolia-search.js?v=7.1.0"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
