@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="ZSplzl9A1CIGe2GS">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/touch-icon-apple.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.1.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'WB3PJKK4Q5',
+      apiKey: '0f4e5abf708587974517054f9c1aaf73',
+      indexName: 'Blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到内容, 换个关键词试试: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="一面(40min)0. 自我介绍1. 介绍ImageOCR的项目2. 知道有哪些排序算法？冒泡、插入、shell、归并、快排、堆排序、选择排序等等  有没有不会写的，排雷排掉了堆排序  3. 手写插入排序并解释4. 上面的排序算法哪些是稳定的，哪些是不稳定的还有一些忘了二面(1.2h)0. 介绍简历上的另外一个项目1. PHP的基本数据类型以及基本数据类型内核如何实现?基本数据类型12345678">
+<meta name="keywords" content="面试,秋招,百度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="百度面试总结">
+<meta property="og:url" content="https://lailin.xyz/post/56757.html">
+<meta property="og:site_name" content="Mohuishou">
+<meta property="og:description" content="一面(40min)0. 自我介绍1. 介绍ImageOCR的项目2. 知道有哪些排序算法？冒泡、插入、shell、归并、快排、堆排序、选择排序等等  有没有不会写的，排雷排掉了堆排序  3. 手写插入排序并解释4. 上面的排序算法哪些是稳定的，哪些是不稳定的还有一些忘了二面(1.2h)0. 介绍简历上的另外一个项目1. PHP的基本数据类型以及基本数据类型内核如何实现?基本数据类型12345678">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-07T12:46:30.844Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="百度面试总结">
+<meta name="twitter:description" content="一面(40min)0. 自我介绍1. 介绍ImageOCR的项目2. 知道有哪些排序算法？冒泡、插入、shell、归并、快排、堆排序、选择排序等等  有没有不会写的，排雷排掉了堆排序  3. 手写插入排序并解释4. 上面的排序算法哪些是稳定的，哪些是不稳定的还有一些忘了二面(1.2h)0. 介绍简历上的另外一个项目1. PHP的基本数据类型以及基本数据类型内核如何实现?基本数据类型12345678">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mohuishou" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://lailin.xyz/post/56757">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>百度面试总结 | Mohuishou</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-137859264-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-137859264-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mohuishou</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A New Life</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/56757.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mohuishou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/icons/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mohuishou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">百度面试总结
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-09-18 00:00:00" itemprop="dateCreated datePublished" datetime="2017-09-18T00:00:00+08:00">2017-09-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-07 20:46:30" itemprop="dateModified" datetime="2019-04-07T20:46:30+08:00">2019-04-07</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一面-40min"><a href="#一面-40min" class="headerlink" title="一面(40min)"></a>一面(40min)</h2><h3 id="0-自我介绍"><a href="#0-自我介绍" class="headerlink" title="0. 自我介绍"></a>0. 自我介绍</h3><h3 id="1-介绍ImageOCR的项目"><a href="#1-介绍ImageOCR的项目" class="headerlink" title="1. 介绍ImageOCR的项目"></a>1. 介绍ImageOCR的项目</h3><h3 id="2-知道有哪些排序算法？"><a href="#2-知道有哪些排序算法？" class="headerlink" title="2. 知道有哪些排序算法？"></a>2. 知道有哪些排序算法？</h3><p>冒泡、插入、shell、归并、快排、堆排序、选择排序等等</p>
+<blockquote>
+<p>有没有不会写的，排雷排掉了堆排序</p>
+</blockquote>
+<h3 id="3-手写插入排序并解释"><a href="#3-手写插入排序并解释" class="headerlink" title="3. 手写插入排序并解释"></a>3. 手写插入排序并解释</h3><h3 id="4-上面的排序算法哪些是稳定的，哪些是不稳定的"><a href="#4-上面的排序算法哪些是稳定的，哪些是不稳定的" class="headerlink" title="4. 上面的排序算法哪些是稳定的，哪些是不稳定的"></a>4. 上面的排序算法哪些是稳定的，哪些是不稳定的</h3><h3 id="还有一些忘了"><a href="#还有一些忘了" class="headerlink" title="还有一些忘了"></a>还有一些忘了</h3><h2 id="二面-1-2h"><a href="#二面-1-2h" class="headerlink" title="二面(1.2h)"></a>二面(1.2h)</h2><h3 id="0-介绍简历上的另外一个项目"><a href="#0-介绍简历上的另外一个项目" class="headerlink" title="0. 介绍简历上的另外一个项目"></a>0. 介绍简历上的另外一个项目</h3><h3 id="1-PHP的基本数据类型以及基本数据类型内核如何实现"><a href="#1-PHP的基本数据类型以及基本数据类型内核如何实现" class="headerlink" title="1. PHP的基本数据类型以及基本数据类型内核如何实现?"></a>1. PHP的基本数据类型以及基本数据类型内核如何实现?</h3><p><strong>基本数据类型</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">boolean(布尔型)	布尔型是最简单的数据类型，只有两个值 false(假) 和true(真)</span><br><span class="line">string(字符串型)	字符串就是连续的字符序列，如 ehco &quot;string&quot;;</span><br><span class="line">integer(整型)	    整型数据类型只能包含整数，这些数据类型可以是负数或者正数</span><br><span class="line">folat(浮点型)	浮点型类型用于存储数字，和整型不同的是浮点型可以有小数点</span><br><span class="line">array（数组）	一组相同类型的集合</span><br><span class="line">object（对象）	对象是一个实力，使用new命令创建一个对象</span><br><span class="line">resource（资源）	资源是一种特殊的变量，保存在外部资源的一个应用，资源是通过函数来进行建立的</span><br><span class="line">null（ 空白）	特殊的值，表示变量没有值，任何变量的初始值都是null</span><br></pre></td></tr></table></figure></p>
+<p><strong>变量的在内核当中的保存方式：</strong></p>
+<ul>
+<li>php5.3: <a href="http://blog.csdn.net/qq_28602957/article/details/52959132" target="_blank" rel="noopener">http://blog.csdn.net/qq_28602957/article/details/52959132</a></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> _zvalue_value &#123;</span><br><span class="line">    <span class="keyword">long</span> lval;                  <span class="comment">/* long value */</span></span><br><span class="line">    <span class="keyword">double</span> dval;                <span class="comment">/* double value */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">        <span class="keyword">char</span> *val;</span><br><span class="line">        <span class="keyword">int</span> len;</span><br><span class="line">    &#125; str;</span><br><span class="line">    HashTable *ht;              <span class="comment">/* hash table value */</span></span><br><span class="line">    zend_object_value obj;</span><br><span class="line">    zend_ast *ast;</span><br><span class="line">&#125; zvalue_value;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">zval_struct</span> &#123;</span></span><br><span class="line">    <span class="comment">/* Variable information */</span></span><br><span class="line">    zvalue_value value;     <span class="comment">/* value */</span></span><br><span class="line">    zend_uint refcount__gc;</span><br><span class="line">    zend_uchar type;    <span class="comment">/* active type */</span></span><br><span class="line">    zend_uchar is_ref__gc;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">PHP语言层类型</th>
+<th style="text-align:center">存在zvalue_value的成员变量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">long,bool,resoure</td>
+<td style="text-align:center">lval</td>
+</tr>
+<tr>
+<td style="text-align:center">double</td>
+<td style="text-align:center">dval</td>
+</tr>
+<tr>
+<td style="text-align:center">string</td>
+<td style="text-align:center">str(len保存字符串的长度，val保存字符串的值)</td>
+</tr>
+<tr>
+<td style="text-align:center">array</td>
+<td style="text-align:center">ht（哈希表）</td>
+</tr>
+<tr>
+<td style="text-align:center">object</td>
+<td style="text-align:center">obj</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>php7: <a href="https://yq.aliyun.com/articles/27359" target="_blank" rel="noopener">https://yq.aliyun.com/articles/27359</a></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//存储变量的结构</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">zval_struct</span> &#123;</span></span><br><span class="line">    zend_value        value;            <span class="comment">/* value */</span></span><br><span class="line">    <span class="keyword">union</span> &#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            ZEND_ENDIAN_LOHI_4(</span><br><span class="line">                zend_uchar    type,         <span class="comment">/* active type */</span></span><br><span class="line">                zend_uchar    type_flags,</span><br><span class="line">                zend_uchar    const_flags,</span><br><span class="line">                zend_uchar    reserved)     <span class="comment">/* call info for EX(This) */</span></span><br><span class="line">        &#125; v;</span><br><span class="line">        <span class="keyword">uint32_t</span> type_info;</span><br><span class="line">    &#125; u1;</span><br><span class="line">    <span class="keyword">union</span> &#123;</span><br><span class="line">        <span class="keyword">uint32_t</span>     var_flags;</span><br><span class="line">        <span class="keyword">uint32_t</span>     next;                 <span class="comment">/* hash collision chain */</span></span><br><span class="line">        <span class="keyword">uint32_t</span>     cache_slot;           <span class="comment">/* literal cache slot */</span></span><br><span class="line">        <span class="keyword">uint32_t</span>     lineno;               <span class="comment">/* line number (for ast nodes) */</span></span><br><span class="line">        <span class="keyword">uint32_t</span>     num_args;             <span class="comment">/* arguments number for EX(This) */</span></span><br><span class="line">        <span class="keyword">uint32_t</span>     fe_pos;               <span class="comment">/* foreach position */</span></span><br><span class="line">        <span class="keyword">uint32_t</span>     fe_iter_idx;          <span class="comment">/* foreach iterator index */</span></span><br><span class="line">    &#125; u2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//变量的值</span></span><br><span class="line"><span class="comment">//通过上面的代码我们可以看到。变量是通过一个_zval_struct结构体方式存储的。其中结构体中的value存储的是变量的值。这个成员是zend_value类型的。zend_value类型的定义如下：</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> _zend_value &#123;</span><br><span class="line">    zend_long         lval;             <span class="comment">/* long value */</span></span><br><span class="line">    <span class="keyword">double</span>            dval;             <span class="comment">/* double value */</span></span><br><span class="line">    zend_refcounted  *counted;</span><br><span class="line">    zend_string      *str;</span><br><span class="line">    zend_array       *arr;</span><br><span class="line">    zend_object      *obj;</span><br><span class="line">    zend_resource    *res;</span><br><span class="line">    zend_reference   *ref;</span><br><span class="line">    zend_ast_ref     *ast;</span><br><span class="line">    zval             *zv;</span><br><span class="line">    <span class="keyword">void</span>             *ptr;</span><br><span class="line">    zend_class_entry *ce;</span><br><span class="line">    zend_function    *func;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">        <span class="keyword">uint32_t</span> w1;</span><br><span class="line">        <span class="keyword">uint32_t</span> w2;</span><br><span class="line">    &#125; ww;</span><br><span class="line">&#125; zend_value;</span><br></pre></td></tr></table></figure>
+<h3 id="2-PHP如何与nginx通信，通信方式有什么异同"><a href="#2-PHP如何与nginx通信，通信方式有什么异同" class="headerlink" title="2. PHP如何与nginx通信，通信方式有什么异同"></a>2. PHP如何与nginx通信，通信方式有什么异同</h3><ul>
+<li><a href="https://vsxen.github.io/2017/05/30/phpcgi-socks-vs-tcp/" target="_blank" rel="noopener">https://vsxen.github.io/2017/05/30/phpcgi-socks-vs-tcp/</a></li>
+</ul>
+<h4 id="CGI模式"><a href="#CGI模式" class="headerlink" title="CGI模式"></a>CGI模式</h4><p>CGI CGI（common gateway interface）通常翻译为共同网关接口，是HTTP服务器与机器上的其他程序进行通信的一个接口，让Web服务器必要时启动额外的程序处理动态内容。CGI是一种协议，它定义了Webserver与CGI程序的通信方式。Webserver接受客户端的HTTP请求，然后建立进程执行CGI程序，客户端的请求被传递给CGI程序，CGI执行后结果再返回Webserver。 CGI的出现让WEB从静态变为为动态，随着Web的越来越普及，很多的网站的都需要有动态的页面，以便与浏览者互交。随着网络技术的发展，CGI方式的缺点也越来越突出。每次客户端请求都需要建立和销毁进程。因为HTTP要生成一个动态页面，系统就必须启动一个新的进程以运行CGI程序，不断地fork是一项很消耗时间和资源的工作。</p>
+<h4 id="FastCGI"><a href="#FastCGI" class="headerlink" title="FastCGI"></a>FastCGI</h4><p>众所周知，CGI解释器的反复加载是CGI性能低下的主要原因，如果CGI解释器保持在内存中 并接受FastCGI进程管理器调度，则可以提供良好的性能、伸缩性、Fail-Over特性等等。</p>
+<p>FastCGI是一个常驻型的CGI，可以一直执行，只要激活后，不会每次都花时间去fork一次，而且还支持分布式运算（使得php程序解释执行可以单独交给php服务器），即可以在网站服务器以外的主机上执行并且接受来自其它网站服务器来的请求。</p>
+<p>1、Web Server 启动时载入FastCGI进程管理器（IIS ISAPI或Apache Module）;<br>2、FastCGI进程管理器自身初始化，启动多个CGI解释器进程 (在任务管理器中可见多个php-cgi.exe)并等待来自Web Server的连接。<br>3、当客户端请求到达Web Server时，FastCGI进程管理器选择并连接到一个CGI解释器。Web server将CGI环境变量和标准输入发送到FastCGI子进程php-cgi.exe。<br>4、FastCGI子进程完成处理后将标准输出和错误信息从同一连接返回Web Server。当FastCGI子进程关闭连接时，请求便告处理完成。FastCGI子进程接着等待并处理来自FastCGI进程管理器（运行在 WebServer中）的下一个连接。 在正常的CGI模式中，php-cgi.exe在此便退出了</p>
+<h4 id="Apache-模块"><a href="#Apache-模块" class="headerlink" title="Apache 模块"></a>Apache 模块</h4><p>MPM Multi Path Modules （多道处理模块）用于定义apache在响应多个用户请求时所工作的模型。有三种MPM模式：</p>
+<p>prefork（一个请求一个进程响应）</p>
+<p>worker（一个请求用一个线程响应，启动多个进程每个进程生成多个线程）</p>
+<p>event（一个进程处理多个请求）</p>
+<p>以模块安装的php没有独立的进程，是作为apache的模块和apache一起启动的。</p>
+<p>以上三种MPM模式，worker模式会比prefork模式占据更少的内存，高并发下的表现更好。而且使用多进程和多线程混合模式，即使有一个线程挂了，也只影响和该线程同进程的其他线程，不会影响到其他的进程。但是如果有特别多的线程都使用keep-alive的长连接方式，则线程会一直被占据直到超时才释放，导致在高并发场景下无可用线程。而event模式使用了一个专门的线程来处理这些keep-alive类线程，较好的解决了这个问题。</p>
+<h4 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h4><p>Nginx处理PHP文件 只有FastCGI 一种<br>不过Nginx连接fastcgi的方式有2种：TCP和unix domain socket<br>Unix domain socket 或者 IPC socket是一种终端，可以使同一台操作系统上的两个或多个进程进行数据通信。与管道相比，Unix domain sockets 既可以使用字节流和数据队列，而管道通信则只能通过字节流。Unix domain sockets的接口和Internet socket很像，但它不使用网络底层协议来通信。Unix domain socket 的功能是POSIX操作系统里的一种组件。<br>Unix domain sockets 使用系统文件的地址来作为自己的身份。它可以被系统进程引用。所以两个进程可以同时打开一个Unix domain sockets来进行通信。不过这种通信方式是发生在系统内核里而不会在网络里传播。<br>TCP和unix domain socket方式对比<br>TCP是使用TCP端口连接127.0.0.1:9000<br>Socket是使用unix domain socket连接套接字/dev/shm/php-cgi.sock（很多教程使用路径/tmp，而路径/dev/shm是个tmpfs，速度比磁盘快得多）<br>测试机是个1核的centos5.4，2用户并发时系统资源消耗50%左右，10用户资源就跑得很满了</p>
+<p>结论是在服务器压力不大的情况下，tcp和socket差别不大，但在压力比较满的时候，用套接字方式，效果确实比较好。<br>下面是php 5.3以上版本将TCP改成socket方式的配置方法：<br>修改php-fpm.conf（/usr/local/php/etc/php-fpm.conf）<br>;listen = 127.0.0.1:9000<br>listen = /dev/shm/php-cgi.sock<br>修改nginx配置文件server段的配置，将http的方式改为socket方式</p>
+<p>从原理上来说，unix socket方式肯定要比tcp的方式快而且消耗资源少，因为socket之间在nginx和php-fpm的进程之间通信，而tcp需要经过本地回环驱动，还要申请临时端口和tcp相关资源。<br>当然还是从原理上来说，unix socket会显得不是那么稳定，当并发连接数爆发时，会产生大量的长时缓存，在没有面向连接协议支撑的情况下，大数据包很有可能就直接出错并不会返回异常。而TCP这样的面向连接的协议，多少可以保证通信的正确性和完整性。 </p>
+<h3 id="3-PHP的执行模式有哪些"><a href="#3-PHP的执行模式有哪些" class="headerlink" title="3. PHP的执行模式有哪些"></a>3. PHP的执行模式有哪些</h3><ul>
+<li><a href="http://blog.csdn.net/xujingzhong0077/article/details/53316767" target="_blank" rel="noopener">http://blog.csdn.net/xujingzhong0077/article/details/53316767</a></li>
+</ul>
+<h4 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h4><p>关于PHP目前比较常见的五大运行模式：<br>1）CGI（通用网关接口/ Common Gateway Interface）<br>2）FastCGI（常驻型CGI / Long-Live CGI）<br>3）CLI（命令行运行 / Command Line Interface）<br>4）Web模块模式（Apache等Web服务器运行的模式）<br>5）ISAPI（Internet Server Application Program Interface）</p>
+<p>备注：在PHP5.3以后，PHP不再有ISAPI模式，安装后也不再有php5isapi.dll这个文件。要在IIS6上使用高版本PHP，必须安装FastCGI 扩展，然后使IIS6支持FastCGI。</p>
+<h4 id="1-1、CGI模式"><a href="#1-1、CGI模式" class="headerlink" title="1.1、CGI模式"></a>1.1、CGI模式</h4><p>CGI即通用网关接口（Common Gateway Interface），它是一段程序，通俗的讲CGI就象是一座桥，把网页和Web服务器中的执行程序连接起来，它把HTML接收的指令传递给服务器的执行程序，再把服务器执行程序的结果返还给HTML页。CGI 的跨平台性能极佳，几乎可以在任何操作系统上实现。CGI已经是比较老的模式了，这几年都很少用了。 </p>
+<p>   每有一个用户请求，都会先要创建CGI的子进程，然后处理请求，处理完后结束这个子进程，这就是Fork-And-Execute模式。 当用户请求数量非常多时，会大量挤占系统的资源如内存，CPU时间等，造成效能低下。所以用CGI方式的服务器有多少连接请求就会有多少CGI子进程，子进程反复加载是CGI性能低下的主要原因。 </p>
+<p>   如果不想把 PHP 嵌入到服务器端软件（如 Apache）作为一个模块安装的话，可以选择以 CGI 的模式安装。或者把 PHP 用于不同的 CGI 封装以便为代码创建安全的 chroot 和 setuid 环境。这样每个客户机请求一个PHP文件，Web服务器就调用php.exe（win下是php.exe,linux是php）去解释这个文件，然后再把解释的结果以网页的形式返回给客户机。 这种安装方式通常会把 PHP 的可执行文件安装到 web 服务器的 cgi-bin 目录。CERT 建议书 CA-96.11 建议不要把任何的解释器放到 cgi-bin 目录。   这种方式的好处是把Web Server和具体的程序处理独立开来，结构清晰，可控性强，同时缺点就是如果在高访问需求的情况下，CGI的进程Fork就会成为很大的服务器负担，想 象一下数百个并发请求导致服务器Fork出数百个进程就明白了。这也是为什么CGI一直背负性能低下，高资源消耗的恶名的原因。</p>
+<h4 id="1-2、FastCGI模式"><a href="#1-2、FastCGI模式" class="headerlink" title="1.2、FastCGI模式"></a>1.2、FastCGI模式</h4><p>FastCGI是CGI的升级版本，FastCGI像是一个常驻 (long-live)型的 CGI，它可以一直执行着，只要激活后，不会每次都要花费时间去 Fork 一次 （这是 CGI 最为人诟病的 fork-and-execute 模式）。<br>FastCGI是一个可伸缩地、高速地在HTTP server和动态脚本语言间通信的接口。多数流行的HTTP server都支持FastCGI，包括Apache、Nginx和lighttpd等，同时，FastCGI也被许多脚本语言所支持，其中就有PHP。<br>FastCGI接口方式采用C/S结构，可以将HTTP服务器和脚本解析服务器分开，同时在脚本解析服务器上启动一个或者多个脚本解析守护进程。当HTTP服务器每次遇到动态程序时，可以将其直接交付给FastCGI进程来执行，然后将得到的结果返回给浏览器。这种方式可以让HTTP服务器专一地处理静态请求或者将动态脚本服务器的结果返回给客户端，这在很大程度上提高了整个应用系统的性能。  </p>
+<p>【原理】<br>1）Web Server启动时载入FastCGI进程管理器（IIS ISAPI或Apache Module)；<br>2）FastCGI进程管理器自身初始化，启动多个CGI解释器进程 (可见多个php-cgi.exe或php-cig)并等待来自Web Server的连接；<br>3）当客户端请求到达Web Server时，FastCGI进程管理器选择并连接到一个CGI解释器。Web server将CGI环境变量和标准输入发送到FastCGI子进程php-cgi；<br>4）FastCGI子进程完成处理后将标准输出和错误信息从同一连接返回Web Server。当FastCGI子进程关闭连接时，请求便告处理完成。FastCGI子进程接着等待并处理来自FastCGI进程管理器（运行在 WebServer中）的下一个连接。在正常的CGI模式中，php-cgi.exe在此便退出了。<br>   在CGI模式中，你可以想象 CGI通常有多慢。每一个Web请求PHP都必须重新解析php.ini、重新载入全部dll扩展并重初始化全部数据结构。使用FastCGI，所有这些都只在进程启动时发生一次。一个额外的好处是，持续数据库连接（Persistent database connection）可以工作。 </p>
+<p>备注：PHP的FastCGI进程管理器是PHP-FPM（PHP-FastCGI Process Manager）<br>【优点】<br>1）从稳定性上看，FastCGI是以独立的进程池来运行CGI，单独一个进程死掉，系统可以很轻易的丢弃，然后重新分配新的进程来运行逻辑；<br>2）从安全性上看，FastCGI支持分布式运算。FastCGI和宿主的Server完全独立，FastCGI怎么down也不会把Server搞垮；<br>3）从性能上看，FastCGI把动态逻辑的处理从Server中分离出来，大负荷的IO处理还是留给宿主Server，这样宿主Server可以一心一意作IO，对于一个普通的动态网页来说, 逻辑处理可能只有一小部分，大量的是图片等静态。   </p>
+<p>【缺点】<br>   说完了好处，也来说说缺点。从我的实际使用来看，用FastCGI模式更适合生产环境的服务器。但对于开发用机器来说就不太合适。因为当使用 Zend Studio调试程序时，由于 FastCGI会认为 PHP进程超时，从而在页面返回 500错误。这一点让人非常恼火，所以我在开发机器上还是换回了 ISAPI模式。对某些服务器的新版本支持不好，对分布式负载均衡没要求的模块化安装是否是更好的选择。目前的FastCGI和Server沟通还不够智能，一个FastCGI进程如果执行时间过长会被当成是死进程杀掉重起，这样在处理长时间任务的时候很麻烦，这样做也使得FastCGI无法允许联机调试。因为是多进程，所以比CGI多线程消耗更多的服务器内存，PHP-CGI解释器每进程消耗7至25兆内存，将这个数字乘以50或100就是很大的内存数。 </p>
+<h4 id="1-3-CLI模式"><a href="#1-3-CLI模式" class="headerlink" title="1.3 CLI模式"></a>1.3 CLI模式</h4><p>   PHP-CLI是PHP Command Line Interface的简称，如同它名字的意思，就是PHP在命令行运行的接口，区别于在Web服务器上运行的PHP环境（PHP-CGI，ISAPI等）。 也就是说，PHP不单可以写前台网页，它还可以用来写后台的程序。 PHP的CLI Shell脚本适用于所有的PHP优势，使创建要么支持脚本或系统甚至与GUI应用程序的服务端，在Windows和Linux下都是支持PHP-CLI模式的。<br>【优点】<br>1）使用多进程，子进程结束以后，内核会负责回收资源；<br>2）使用多进程，子进程异常退出不会导致整个进程Thread退出，父进程还有机会重建流程；<br>3）一个常驻主进程，只负责任务分发，逻辑更清楚。<br>   我们在Linux下经常使用”php –m”查找PHP安装了那些扩展就是PHP命令行运行模式；有兴趣的同学可以输入”php –h”去深入研究该运行模式。 </p>
+<h4 id="1-4-模块模式"><a href="#1-4-模块模式" class="headerlink" title="1.4 模块模式"></a>1.4 模块模式</h4><p>   模块模式是以mod_php5模块的形式集成，此时mod_php5模块的作用是接收Apache传递过来的PHP文件请求，并处理这些请求，然后将处理后的结果返回给Apache。如果我们在Apache启动前在其配置文件中配置好了PHP模块<br>（mod_php5）， PHP模块通过注册apache2的ap_hook_post_config挂钩，在Apache启动的时候启动此模块以接受PHP文件的请求。<br>   除了这种启动时的加载方式，Apache的模块可以在运行的时候动态装载，这意味着对服务器可以进行功能扩展而不需要重新对源代码进行编译，甚至根本不需要停止服务器。我们所需要做的仅仅是给服务器发送信号HUP或者AP_SIG_GRACEFUL通知服务器重新载入模块。但是在动态加载之前，我们需要将模块编译成为动态链接库。此时的动态加载就是加载动态链接库。 Apache中对动态链接库的处理是通过模块mod_so来完成的，因此mod_so模块不能被动态加载，它只能被静态编译进Apache的核心。这意味着它是随着Apache一起启动的。<br>   Apache是如何加载模块的呢？我们以前面提到的mod_php5模块为例。首先我们需要在Apache的配置文件httpd.conf中添加一行：<br>LoadModule php5_module modules/mod_php5.so </p>
+<p>   这里我们使用了LoadModule命令，该命令的第一个参数是模块的名称，名称可以在模块实现的源码中找到。第二个选项是该模块所处的路径。如果需要在服务器运行时加载模块，可以通过发送信号HUP或者AP_SIG_GRACEFUL给服务器，一旦接受到该信号，Apache将重新装载模块，而不需要重新启动服务器。<br>   该运行模式是我们以前在windows环境下使用apache服务器经常使用的，而在模块化（DLL）中，PHP是与Web服务器一起启动并运行的。（它是apache在CGI的基础上进行的一种扩展，加快PHP的运行效率）。</p>
+<h4 id="1-5-ISAPI模式"><a href="#1-5-ISAPI模式" class="headerlink" title="1.5 ISAPI模式"></a>1.5 ISAPI模式</h4><p>   ISAPI（Internet Server Application Program Interface）是微软提供的一套面向Internet服务的API接口，一个ISAPI的DLL，可以在被用户请求激活后长驻内存，等待用户的另一个请求，还可以在一个DLL里设置多个用户请求处理函数，此外，ISAPI的DLL应用程序和WWW服务器处于同一个进程中，效率要显著高于CGI。（由于微软的排他性，只能运行于windows环境）<br>   PHP作为Apache模块，Apache服务器在系统启动后，预先生成多个进程副本驻留在内存中，一旦有请求出现，就立即使用这些空余的子进程进行处理，这样就不存在生成子进程造成的延迟了。这些服务器副本在处理完一次HTTP请求之后并不立即退出，而是停留在计算机中等待下次请求。对于客户浏览器的请求反应更快，性能较高。</p>
+<h3 id="4-PHP代码的执行流程"><a href="#4-PHP代码的执行流程" class="headerlink" title="4. PHP代码的执行流程"></a>4. PHP代码的执行流程</h3><ul>
+<li><a href="http://blog.csdn.net/a2534725767/article/details/55194582" target="_blank" rel="noopener">http://blog.csdn.net/a2534725767/article/details/55194582</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1.Scanning(Lexing) ,将PHP代码转换为语言片段(Tokens)  </span><br><span class="line">2.Parsing, 将Tokens转换成简单而有意义的表达式  </span><br><span class="line">3.Compilation, 将表达式编译成Opocdes  </span><br><span class="line">4.Execution, 顺次执行Opcodes，每次一条，从而实现PHP脚本的功能。</span><br></pre></td></tr></table></figure>
+<h3 id="5-PHP与Golang的区别"><a href="#5-PHP与Golang的区别" class="headerlink" title="5. PHP与Golang的区别"></a>5. PHP与Golang的区别</h3><h4 id="参考博文"><a href="#参考博文" class="headerlink" title="参考博文"></a>参考博文</h4><ul>
+<li><a href="http://www.yinwang.org/blog-cn/2014/04/18/golang" target="_blank" rel="noopener">对 Go 语言的综合评价</a></li>
+<li><a href="https://www.zhihu.com/question/21409296" target="_blank" rel="noopener">Go 语言的优势在哪里？</a></li>
+<li><a href="http://blog.csdn.net/liigo/article/details/23699459" target="_blank" rel="noopener">我为什么放弃Go语言</a></li>
+<li><a href="http://blog.csdn.net/a82168506/article/details/6664714" target="_blank" rel="noopener">php的优缺点</a></li>
+<li><a href="http://www.cnblogs.com/xiaotaoing/p/6687418.html" target="_blank" rel="noopener">php优缺点</a></li>
+</ul>
+<blockquote>
+<p>面试的时候基本上上面说到的都说到了一些但是面试的时候逻辑还是不够清晰</p>
+</blockquote>
+<h3 id="6-深度优先遍历与广度优先遍历"><a href="#6-深度优先遍历与广度优先遍历" class="headerlink" title="6. 深度优先遍历与广度优先遍历"></a>6. 深度优先遍历与广度优先遍历</h3><ul>
+<li><a href="http://www.cnblogs.com/biyeymyhjob/archive/2012/07/18/2596983.html" target="_blank" rel="noopener">http://www.cnblogs.com/biyeymyhjob/archive/2012/07/18/2596983.html</a></li>
+</ul>
+<h4 id="a-DFS"><a href="#a-DFS" class="headerlink" title="a. DFS"></a>a. DFS</h4><p>（1）访问顶点v；<br>（2）从v的未被访问的邻接点中选取一个顶点w，从w出发进行深度优先遍历；<br>（3）重复上述两步，直至图中所有和v有路径相通的顶点都被访问到。</p>
+<h4 id="b-BFS"><a href="#b-BFS" class="headerlink" title="b. BFS"></a>b. BFS</h4><p>（1）顶点v入队列。<br>（2）当队列非空时则继续执行，否则算法结束。<br>（3）出队列取得队头顶点v；访问顶点v并标记顶点v已被访问。<br>（4）查找顶点v的第一个邻接顶点col。<br>（5）若v的邻接顶点col未被访问过的，则col入队列。<br>（6）继续查找顶点v的另一个新的邻接顶点col，转到步骤（5）。<br>    直到顶点v的所有未被访问过的邻接点处理完。转到步骤（2）。<br>广度优先遍历图是以顶点v为起始点，由近至远，依次访问和v有路径相通而且路径长度为1，2，……的顶点。为了使“先被访问顶点的邻接点”先于“后被访问顶点的邻接点”被访问，需设置队列存储访问的顶点。</p>
+<h3 id="7-浏览器输入一个URL之后发生了什么事情"><a href="#7-浏览器输入一个URL之后发生了什么事情" class="headerlink" title="7. 浏览器输入一个URL之后发生了什么事情"></a>7. 浏览器输入一个URL之后发生了什么事情</h3><ul>
+<li><a href="http://www.cnblogs.com/wenanry/archive/2010/02/25/1673368.html" target="_blank" rel="noopener">http://www.cnblogs.com/wenanry/archive/2010/02/25/1673368.html</a></li>
+</ul>
+<h3 id="8-遍历一个目录下面所有的文件以及文件夹"><a href="#8-遍历一个目录下面所有的文件以及文件夹" class="headerlink" title="8. 遍历一个目录下面所有的文件以及文件夹"></a>8. 遍历一个目录下面所有的文件以及文件夹</h3><blockquote>
+<p>面试的时候写了一个DFS，一下被问到BFS怎么写的时候短路了，没有想起了，其实实现的方法不难，参考问题6</p>
+</blockquote>
+<h3 id="其实还有其他的问题，不过忘了"><a href="#其实还有其他的问题，不过忘了" class="headerlink" title="其实还有其他的问题，不过忘了"></a>其实还有其他的问题，不过忘了</h3><h2 id="三面-20min"><a href="#三面-20min" class="headerlink" title="三面[20min]"></a>三面[20min]</h2><blockquote>
+<p>三面没有被问到技术细节</p>
+</blockquote>
+<h3 id="0-自我介绍-1"><a href="#0-自我介绍-1" class="headerlink" title="0. 自我介绍"></a>0. 自我介绍</h3><h3 id="1-简单的介绍了一个项目"><a href="#1-简单的介绍了一个项目" class="headerlink" title="1. 简单的介绍了一个项目"></a>1. 简单的介绍了一个项目</h3><h3 id="2-在平时做项目的时候遇到的难点"><a href="#2-在平时做项目的时候遇到的难点" class="headerlink" title="2. 在平时做项目的时候遇到的难点"></a>2. 在平时做项目的时候遇到的难点</h3><p>几个方面简单讲了一下，团队协作的难点，技术难点，心理难点</p>
+<h3 id="3-团队合作当中如果碰到一个BUG，但是开发人员觉得不重要，你觉得重要怎么班？"><a href="#3-团队合作当中如果碰到一个BUG，但是开发人员觉得不重要，你觉得重要怎么班？" class="headerlink" title="3. 团队合作当中如果碰到一个BUG，但是开发人员觉得不重要，你觉得重要怎么班？"></a>3. 团队合作当中如果碰到一个BUG，但是开发人员觉得不重要，你觉得重要怎么班？</h3><p>坚持不放过为底线，换位思考，以产品和用户的角度劝说开发</p>
+<h3 id="4-对加班有什么看法？"><a href="#4-对加班有什么看法？" class="headerlink" title="4. 对加班有什么看法？"></a>4. 对加班有什么看法？</h3><p>正常现象，完全可以接受</p>
+<h3 id="5-为什么想去深圳？"><a href="#5-为什么想去深圳？" class="headerlink" title="5. 为什么想去深圳？"></a>5. 为什么想去深圳？</h3>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+            <a href="/tags/秋招/" rel="tag"># 秋招</a>
+          
+            <a href="/tags/百度/" rel="tag"># 百度</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+              <div>
+                
+
+<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
+
+
+  
+
+
+<div class="likely">
+	
+ 	 	<div class="twitter">Tweet</div>
+	
+ 	 	<div class="linkedin">Link</div>
+	
+ 	 	<div class="telegram">Send</div>
+	
+ 	 	<div class="pinterest">Pin</div>
+	
+</div>
+
+              </div>
+            
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/50190.html" rel="next" title="插入排序">
+                <i class="fa fa-chevron-left"></i> 插入排序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/63711.html" rel="prev" title="归并排序">
+                归并排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/icons/avatar.jpg" alt="Mohuishou">
+            
+              <p class="site-author-name" itemprop="name">Mohuishou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">81</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Friend's Blog
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jingwei.link/" title="https://jingwei.link/" rel="noopener" target="_blank">敬维</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jiajunhuang.com/" title="https://jiajunhuang.com/" rel="noopener" target="_blank">JiaJun的编程随想</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一面-40min"><span class="nav-number">1.</span> <span class="nav-text">一面(40min)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-自我介绍"><span class="nav-number">1.1.</span> <span class="nav-text">0. 自我介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-介绍ImageOCR的项目"><span class="nav-number">1.2.</span> <span class="nav-text">1. 介绍ImageOCR的项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-知道有哪些排序算法？"><span class="nav-number">1.3.</span> <span class="nav-text">2. 知道有哪些排序算法？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-手写插入排序并解释"><span class="nav-number">1.4.</span> <span class="nav-text">3. 手写插入排序并解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-上面的排序算法哪些是稳定的，哪些是不稳定的"><span class="nav-number">1.5.</span> <span class="nav-text">4. 上面的排序算法哪些是稳定的，哪些是不稳定的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#还有一些忘了"><span class="nav-number">1.6.</span> <span class="nav-text">还有一些忘了</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二面-1-2h"><span class="nav-number">2.</span> <span class="nav-text">二面(1.2h)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-介绍简历上的另外一个项目"><span class="nav-number">2.1.</span> <span class="nav-text">0. 介绍简历上的另外一个项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-PHP的基本数据类型以及基本数据类型内核如何实现"><span class="nav-number">2.2.</span> <span class="nav-text">1. PHP的基本数据类型以及基本数据类型内核如何实现?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-PHP如何与nginx通信，通信方式有什么异同"><span class="nav-number">2.3.</span> <span class="nav-text">2. PHP如何与nginx通信，通信方式有什么异同</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CGI模式"><span class="nav-number">2.3.1.</span> <span class="nav-text">CGI模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FastCGI"><span class="nav-number">2.3.2.</span> <span class="nav-text">FastCGI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Apache-模块"><span class="nav-number">2.3.3.</span> <span class="nav-text">Apache 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx"><span class="nav-number">2.3.4.</span> <span class="nav-text">Nginx</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-PHP的执行模式有哪些"><span class="nav-number">2.4.</span> <span class="nav-text">3. PHP的执行模式有哪些</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#运行模式"><span class="nav-number">2.4.1.</span> <span class="nav-text">运行模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1、CGI模式"><span class="nav-number">2.4.2.</span> <span class="nav-text">1.1、CGI模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2、FastCGI模式"><span class="nav-number">2.4.3.</span> <span class="nav-text">1.2、FastCGI模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-CLI模式"><span class="nav-number">2.4.4.</span> <span class="nav-text">1.3 CLI模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-模块模式"><span class="nav-number">2.4.5.</span> <span class="nav-text">1.4 模块模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-ISAPI模式"><span class="nav-number">2.4.6.</span> <span class="nav-text">1.5 ISAPI模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-PHP代码的执行流程"><span class="nav-number">2.5.</span> <span class="nav-text">4. PHP代码的执行流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-PHP与Golang的区别"><span class="nav-number">2.6.</span> <span class="nav-text">5. PHP与Golang的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考博文"><span class="nav-number">2.6.1.</span> <span class="nav-text">参考博文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-深度优先遍历与广度优先遍历"><span class="nav-number">2.7.</span> <span class="nav-text">6. 深度优先遍历与广度优先遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-DFS"><span class="nav-number">2.7.1.</span> <span class="nav-text">a. DFS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b-BFS"><span class="nav-number">2.7.2.</span> <span class="nav-text">b. BFS</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-浏览器输入一个URL之后发生了什么事情"><span class="nav-number">2.8.</span> <span class="nav-text">7. 浏览器输入一个URL之后发生了什么事情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-遍历一个目录下面所有的文件以及文件夹"><span class="nav-number">2.9.</span> <span class="nav-text">8. 遍历一个目录下面所有的文件以及文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其实还有其他的问题，不过忘了"><span class="nav-number">2.10.</span> <span class="nav-text">其实还有其他的问题，不过忘了</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三面-20min"><span class="nav-number">3.</span> <span class="nav-text">三面[20min]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-自我介绍-1"><span class="nav-number">3.1.</span> <span class="nav-text">0. 自我介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简单的介绍了一个项目"><span class="nav-number">3.2.</span> <span class="nav-text">1. 简单的介绍了一个项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-在平时做项目的时候遇到的难点"><span class="nav-number">3.3.</span> <span class="nav-text">2. 在平时做项目的时候遇到的难点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-团队合作当中如果碰到一个BUG，但是开发人员觉得不重要，你觉得重要怎么班？"><span class="nav-number">3.4.</span> <span class="nav-text">3. 团队合作当中如果碰到一个BUG，但是开发人员觉得不重要，你觉得重要怎么班？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-对加班有什么看法？"><span class="nav-number">3.5.</span> <span class="nav-text">4. 对加班有什么看法？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-为什么想去深圳？"><span class="nav-number">3.6.</span> <span class="nav-text">5. 为什么想去深圳？</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mohuishou</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '28db4ab78d0b5277990f',
+    clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
+    repo: 'blogComment',
+    owner: 'scuplus',
+    admin: ['mohuishou'],
+    id: md5(location.pathname),
+    
+      language: 'zh-CN',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/algolia-search.js?v=7.1.0"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

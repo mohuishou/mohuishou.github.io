@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="ZSplzl9A1CIGe2GS">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/touch-icon-apple.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.1.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'WB3PJKK4Q5',
+      apiKey: '0f4e5abf708587974517054f9c1aaf73',
+      indexName: 'Blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到内容, 换个关键词试试: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+<meta name="keywords" content="php,四川大学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四川大学评教开源代码">
+<meta property="og:url" content="https://lailin.xyz/post/31503.html">
+<meta property="og:site_name" content="Mohuishou">
+<meta property="og:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-07T12:46:30.802Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="四川大学评教开源代码">
+<meta name="twitter:description" content="12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989910010110210">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mohuishou" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://lailin.xyz/post/31503">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>四川大学评教开源代码 | Mohuishou</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-137859264-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-137859264-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mohuishou</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A New Life</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/31503.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mohuishou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/icons/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mohuishou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">四川大学评教开源代码
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-06-03 00:00:00" itemprop="dateCreated datePublished" datetime="2016-06-03T00:00:00+08:00">2016-06-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-07 20:46:30" itemprop="dateModified" datetime="2019-04-07T20:46:30+08:00">2019-04-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/大学/" itemprop="url" rel="index"><span itemprop="name">大学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">"login.php"</span>;</span><br><span class="line"><span class="keyword">require</span> <span class="string">"QueryList.class.php"</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">evaluate</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> $_listUrl=<span class="string">"http://202.115.47.141/jxpgXsAction.do?oper=listWj&amp;page="</span>;<span class="comment">//评教列表页面</span></span><br><span class="line">    <span class="keyword">private</span> $_formUrl=<span class="string">"http://202.115.47.141/jxpgXsAction.do?oper=wjShow&amp;"</span>;<span class="comment">//评教表单页面</span></span><br><span class="line">    <span class="keyword">private</span> $_postUrl=<span class="string">"http://202.115.47.141/jxpgXsAction.do?oper=wjpg&amp;"</span>;<span class="comment">//评教提交地址</span></span><br><span class="line">    <span class="keyword">private</span> $_yjpj;</span><br><span class="line">    <span class="keyword">private</span> $_successNo=<span class="number">0</span>;<span class="comment">//成功次数</span></span><br><span class="line">    <span class="keyword">private</span> $_failNo=<span class="number">0</span>;<span class="comment">//失败次数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($name,$pass)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;_yjpj=<span class="keyword">new</span> login($name,$pass);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取评教列表并且返回列表信息以及页码</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> mohuishou&lt;1<span class="doctag">@lailin</span>.xyz&gt;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> mixed</span></span><br><span class="line"><span class="comment">     *       $list=[</span></span><br><span class="line"><span class="comment">     *           'info'=&gt;[</span></span><br><span class="line"><span class="comment">     *               [</span></span><br><span class="line"><span class="comment">     *                   'param'=&gt;[</span></span><br><span class="line"><span class="comment">     *                       0 =&gt; '0000000038',</span></span><br><span class="line"><span class="comment">     *                       1 =&gt; '19873162',</span></span><br><span class="line"><span class="comment">     *                       2 =&gt; '高苹',</span></span><br><span class="line"><span class="comment">     *                       3 =&gt; '学评教',</span></span><br><span class="line"><span class="comment">     *                       4 =&gt; '马克思主义基本原理概论',</span></span><br><span class="line"><span class="comment">     *                       5 =&gt; '107021030',</span></span><br><span class="line"><span class="comment">     *                   ],</span></span><br><span class="line"><span class="comment">     *                   'status'=&gt;0</span></span><br><span class="line"><span class="comment">     *               ],</span></span><br><span class="line"><span class="comment">     *              ......</span></span><br><span class="line"><span class="comment">     *           ],</span></span><br><span class="line"><span class="comment">     *           'page'=&gt;[</span></span><br><span class="line"><span class="comment">     *               [</span></span><br><span class="line"><span class="comment">     *                   'page'=&gt;'2'</span></span><br><span class="line"><span class="comment">     *               ]</span></span><br><span class="line"><span class="comment">     *           ]</span></span><br><span class="line"><span class="comment">     *       ];</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span>  <span class="title">getList</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">/*--------------获取第一页的评教列表页面---------------*/</span></span><br><span class="line">        $listContent=<span class="keyword">$this</span>-&gt;_yjpj-&gt;show(<span class="keyword">$this</span>-&gt;_listUrl.<span class="string">"1"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*------------获取评教分页信息--------------*/</span></span><br><span class="line">        $pageReg=[</span><br><span class="line">            <span class="string">'page'</span>=&gt;[<span class="string">'script:eq(3)'</span>,<span class="string">'html'</span>,<span class="string">''</span>,<span class="function"><span class="keyword">function</span><span class="params">($page)</span></span>&#123;</span><br><span class="line">                $pattern=<span class="string">"/document\.all\.pageNo\.value&gt;(.)/"</span>;</span><br><span class="line">                preg_match($pattern,$page,$no);</span><br><span class="line">                <span class="keyword">if</span>($no[<span class="number">1</span>])&#123;</span><br><span class="line">                    <span class="keyword">return</span> $no[<span class="number">1</span>];</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;]</span><br><span class="line">        ];</span><br><span class="line">        $page=QueryList::Query($listContent,$pageReg);</span><br><span class="line">        $page=$page-&gt;jsonArr[<span class="number">0</span>][<span class="string">'page'</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*---------获取评教老师信息--------------*/</span></span><br><span class="line">        $listReg=[</span><br><span class="line">            <span class="string">'param'</span>=&gt;[<span class="string">'img'</span>,<span class="string">'name'</span>,<span class="string">''</span>,<span class="function"><span class="keyword">function</span><span class="params">($a)</span></span>&#123;</span><br><span class="line">                <span class="keyword">if</span>($a)&#123;</span><br><span class="line">                    <span class="keyword">return</span> explode(<span class="string">'#@'</span>,$a);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;],</span><br><span class="line">            <span class="string">'status'</span>=&gt;[<span class="string">'img'</span>,<span class="string">'onclick'</span>,<span class="string">''</span>,<span class="function"><span class="keyword">function</span><span class="params">($a)</span></span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(trim($a)==<span class="string">"evaluation(this)"</span>)&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;],</span><br><span class="line">        ];</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*[优化]：减少重复抓取列表页，大大提高效率*/</span></span><br><span class="line">        $c=QueryList::Query($listContent,$listReg);</span><br><span class="line">        $list[]=$c-&gt;jsonArr;</span><br><span class="line">        <span class="keyword">if</span>($page&gt;<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span>($i=<span class="number">2</span>;$i&lt;=$page;$i++)&#123;</span><br><span class="line">                $listContent=<span class="keyword">$this</span>-&gt;_yjpj-&gt;show(<span class="keyword">$this</span>-&gt;_listUrl.$i);</span><br><span class="line">                $c=QueryList::Query($listContent,$listReg);</span><br><span class="line">                $list[]=$c-&gt;jsonArr;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> $list;<span class="comment">//获取到的评教信息</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getPostInfo</span><span class="params">($list)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line"><span class="comment">//        print_r($list);</span></span><br><span class="line">        <span class="keyword">foreach</span>($list <span class="keyword">as</span>  $listVal)&#123;</span><br><span class="line"><span class="comment">//            print_r($listVal);</span></span><br><span class="line">            <span class="keyword">foreach</span>($listVal <span class="keyword">as</span> $listkey =&gt; $listValue)&#123;</span><br><span class="line">                <span class="keyword">if</span>($listValue[<span class="string">'status'</span>]==<span class="number">1</span>)&#123;</span><br><span class="line"><span class="comment">//                    print_r($listValue);</span></span><br><span class="line">                    $param=[</span><br><span class="line">                        <span class="string">'wjbm'</span>=&gt;$listValue[<span class="string">'param'</span>][<span class="number">0</span>],</span><br><span class="line">                        <span class="string">'bpr'</span>=&gt;$listValue[<span class="string">'param'</span>][<span class="number">1</span>],</span><br><span class="line">                        <span class="string">'pgnr'</span>=&gt;$listValue[<span class="string">'param'</span>][<span class="number">5</span>],</span><br><span class="line">                    ];</span><br><span class="line">                    $param=http_build_query($param);</span><br><span class="line">                    $url=<span class="keyword">$this</span>-&gt;_formUrl.$param;</span><br><span class="line"><span class="comment">//                    echo $url;</span></span><br><span class="line">                    $formContent=<span class="keyword">$this</span>-&gt;_yjpj-&gt;show($url);</span><br><span class="line"><span class="comment">//                    print_r($formContent);</span></span><br><span class="line">                    $res=QueryList::Query($formContent,[<span class="string">'name'</span>=&gt;[<span class="string">'[value=10_1]'</span>,<span class="string">'name'</span>]]);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">/*--------------将获取的表单信息整理成为即将post的参数-------------*/</span></span><br><span class="line">                    <span class="keyword">foreach</span>($res-&gt;jsonArr <span class="keyword">as</span> $postKey =&gt; $postValue)&#123;</span><br><span class="line">                        $postParam[$postValue[<span class="string">'name'</span>]]=<span class="string">"10_1"</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    $postParam[<span class="string">'wjbm'</span>]=$listValue[<span class="string">'param'</span>][<span class="number">0</span>];</span><br><span class="line">                    $postParam[<span class="string">'bpr'</span>]=$listValue[<span class="string">'param'</span>][<span class="number">1</span>];</span><br><span class="line">                    $postParam[<span class="string">'pgnr'</span>]=$listValue[<span class="string">'param'</span>][<span class="number">5</span>];</span><br><span class="line">                    $postParam[<span class="string">'zgpj'</span>]=<span class="string">"very good teacher!!"</span>;</span><br><span class="line">                    <span class="keyword">$this</span>-&gt;post($postParam);</span><br><span class="line"><span class="comment">//                    return 0;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">post</span><span class="params">($param)</span></span>&#123;</span><br><span class="line">        $param=http_build_query($param);</span><br><span class="line">        $url=<span class="keyword">$this</span>-&gt;_postUrl.$param;</span><br><span class="line"><span class="comment">//        echo $url;</span></span><br><span class="line">        $evalContent=<span class="keyword">$this</span>-&gt;_yjpj-&gt;show($url);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*--------------------抓取提交之后的数据查看是否成功提交--------------------*/</span></span><br><span class="line">        $res=QueryList::Query($evalContent,[<span class="string">'info'</span>=&gt;[<span class="string">'script'</span>,<span class="string">'html'</span>,<span class="string">''</span>,<span class="function"><span class="keyword">function</span><span class="params">($a)</span></span>&#123;</span><br><span class="line">            $pattern=<span class="string">'/alert\("(.+)"\)/'</span>;</span><br><span class="line">            preg_match_all($pattern,$a,$res);</span><br><span class="line">            $success=<span class="string">'评估成功！'</span>;</span><br><span class="line">            <span class="keyword">if</span>($res[<span class="number">1</span>][<span class="number">0</span>]==$success)&#123;</span><br><span class="line">                $a=[</span><br><span class="line">                    <span class="string">'message'</span>=&gt;$res[<span class="number">1</span>][<span class="number">0</span>],</span><br><span class="line">                    <span class="string">'status'</span>=&gt;<span class="number">1</span></span><br><span class="line">                ];</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                $a=[</span><br><span class="line">                    <span class="string">'message'</span>=&gt;$res[<span class="number">1</span>][<span class="number">0</span>],</span><br><span class="line">                    <span class="string">'status'</span>=&gt;<span class="number">0</span></span><br><span class="line">                ];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> $a;</span><br><span class="line">        &#125;]]);</span><br><span class="line">        $status=$res-&gt;jsonArr[<span class="number">0</span>][<span class="string">'info'</span>][<span class="string">'status'</span>];</span><br><span class="line">        <span class="keyword">if</span>($status==<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;_successNo+=<span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;_failNo+=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">//        print_r($res-&gt;jsonArr);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">action</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;getPostInfo(<span class="keyword">$this</span>-&gt;getList());</span><br><span class="line">        <span class="keyword">$this</span>-&gt;count();</span><br><span class="line">      	<span class="keyword">return</span> [<span class="string">'success'</span>=&gt;<span class="keyword">$this</span>-&gt;_successNo,<span class="string">'fail'</span>=&gt;<span class="keyword">$this</span>-&gt;_failNo];</span><br><span class="line">        <span class="comment">//return '评教成功，成功：'.$this-&gt;_successNo.'位，'.'失败：'.$this-&gt;_failNo."位";</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/四川大学/" rel="tag"># 四川大学</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+              <div>
+                
+
+<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
+
+
+  
+
+
+<div class="likely">
+	
+ 	 	<div class="twitter">Tweet</div>
+	
+ 	 	<div class="linkedin">Link</div>
+	
+ 	 	<div class="telegram">Send</div>
+	
+ 	 	<div class="pinterest">Pin</div>
+	
+</div>
+
+              </div>
+            
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/36128.html" rel="next" title="Composer上线前的优化">
+                <i class="fa fa-chevron-left"></i> Composer上线前的优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/8013.html" rel="prev" title="使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘">
+                使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/icons/avatar.jpg" alt="Mohuishou">
+            
+              <p class="site-author-name" itemprop="name">Mohuishou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">81</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Friend's Blog
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jingwei.link/" title="https://jingwei.link/" rel="noopener" target="_blank">敬维</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jiajunhuang.com/" title="https://jiajunhuang.com/" rel="noopener" target="_blank">JiaJun的编程随想</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mohuishou</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '28db4ab78d0b5277990f',
+    clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
+    repo: 'blogComment',
+    owner: 'scuplus',
+    admin: ['mohuishou'],
+    id: md5(location.pathname),
+    
+      language: 'zh-CN',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/algolia-search.js?v=7.1.0"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

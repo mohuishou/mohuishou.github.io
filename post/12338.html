@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="ZSplzl9A1CIGe2GS">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/touch-icon-apple.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png?v=7.1.0">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'WB3PJKK4Q5',
+      apiKey: '0f4e5abf708587974517054f9c1aaf73',
+      indexName: 'Blog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到内容, 换个关键词试试: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="最近打算开始学习一下Gin的源代码，现在Gin已经是一个十分成熟的框架了，代码量也不少，阅读起来还是有一定的难度，所以我打算从0.1版本开始阅读学习，一直到最新的一个版本。跟随着Gin的源码一步一步的学习成长。  目录结构Gin 0.1的代码量十分的少, 主要代码一共也只有五个文件，代码中的注释也比较详细 123456│  auth.go│  gin.go│  logger.go│  READM">
+<meta name="keywords" content="go,gin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gin源码阅读 从0.1开始">
+<meta property="og:url" content="https://lailin.xyz/post/12338.html">
+<meta property="og:site_name" content="Mohuishou">
+<meta property="og:description" content="最近打算开始学习一下Gin的源代码，现在Gin已经是一个十分成熟的框架了，代码量也不少，阅读起来还是有一定的难度，所以我打算从0.1版本开始阅读学习，一直到最新的一个版本。跟随着Gin的源码一步一步的学习成长。  目录结构Gin 0.1的代码量十分的少, 主要代码一共也只有五个文件，代码中的注释也比较详细 123456│  auth.go│  gin.go│  logger.go│  READM">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-07T12:46:30.843Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gin源码阅读 从0.1开始">
+<meta name="twitter:description" content="最近打算开始学习一下Gin的源代码，现在Gin已经是一个十分成熟的框架了，代码量也不少，阅读起来还是有一定的难度，所以我打算从0.1版本开始阅读学习，一直到最新的一个版本。跟随着Gin的源码一步一步的学习成长。  目录结构Gin 0.1的代码量十分的少, 主要代码一共也只有五个文件，代码中的注释也比较详细 123456│  auth.go│  gin.go│  logger.go│  READM">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mohuishou" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://lailin.xyz/post/12338">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Gin源码阅读 从0.1开始 | Mohuishou</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-137859264-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-137859264-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mohuishou</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">A New Life</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/12338.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mohuishou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/icons/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mohuishou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Gin源码阅读 从0.1开始
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-21 15:03:19" itemprop="dateCreated datePublished" datetime="2018-07-21T15:03:19+08:00">2018-07-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-07 20:46:30" itemprop="dateModified" datetime="2019-04-07T20:46:30+08:00">2019-04-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>最近打算开始学习一下Gin的源代码，现在Gin已经是一个十分成熟的框架了，代码量也不少，阅读起来还是有一定的难度，所以我打算从0.1版本开始阅读学习，一直到最新的一个版本。跟随着Gin的源码一步一步的学习成长。</p>
+</blockquote>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p>Gin 0.1的代码量十分的少, 主要代码一共也只有五个文件，代码中的注释也比较详细</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">│  auth.go</span><br><span class="line">│  gin.go</span><br><span class="line">│  logger.go</span><br><span class="line">│  README.md</span><br><span class="line">│  recovery.go</span><br><span class="line">│  validation.go</span><br></pre></td></tr></table></figure>
+<h2 id="跑起来"><a href="#跑起来" class="headerlink" title="跑起来"></a>跑起来</h2><p>Gin 0.1的代码量十分的少，但是还是先从<code>readme</code>的示例开始说起</p>
+<p>首先下面这一段代码是直接跑不起来的，不知道是代码本身的bug还是因为Go语言的版本变化导致的，首先我们需要修改几个地方<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/gin-gonic/gin"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    r := gin.Default()</span><br><span class="line">    r.GET(<span class="string">"ping"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span>&#123;</span><br><span class="line">        c.String(<span class="string">"pong"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Listen and server on 0.0.0.0:8080</span></span><br><span class="line">    r.Run(<span class="string">":80"</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="第一次修改"><a href="#第一次修改" class="headerlink" title="第一次修改"></a>第一次修改</h3><p><code>main.go</code><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/gin-gonic/gin"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    r := gin.Default()</span><br><span class="line">    <span class="comment">// 在这儿必须在ping，前加上/，不然会导致panic</span></span><br><span class="line">	r.GET(<span class="string">"/ping"</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span>&#123;</span><br><span class="line">        <span class="comment">// String 方法接受两个参数，但是实例只写了一个</span></span><br><span class="line">		c.String(http.StatusOK,<span class="string">"pong"</span>)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Listen and server on 0.0.0.0:8080</span></span><br><span class="line">	r.Run(<span class="string">":80"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>gin.go</code><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Returns a new blank Engine instance without any middleware attached.</span></span><br><span class="line"><span class="comment">// The most basic configuration</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span><span class="params">()</span> *<span class="title">Engine</span></span> &#123;</span><br><span class="line">	engine := &amp;Engine&#123;&#125;</span><br><span class="line">	engine.RouterGroup = &amp;RouterGroup&#123;<span class="literal">nil</span>, <span class="string">""</span>, <span class="literal">nil</span>, engine&#125;</span><br><span class="line">    engine.router = httprouter.New()</span><br><span class="line">    <span class="comment">// NotFound 是一个http.Handler的接口，但是源码当中赋值了一个方法给他</span></span><br><span class="line">    engine.router.NotFound = engine</span><br><span class="line">    <span class="comment">// engine.router.NotFound = engine.handle404</span></span><br><span class="line">	<span class="keyword">return</span> engine</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>好了修改完成之后就可以运行, <code>go run main.go</code>成功运行了，但是还有一个bug，只能访问一次，就会因为<code>stack overflow</code>退出</p>
+<p>查看一下<code>gin.go</code>, <code>ServeHTTP</code>可以发现，gin是直接调用了<code>httprouter</code>的<code>ServeHTTP</code>方法<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ServeHTTP makes the router implement the http.Handler interface.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(engine *Engine)</span> <span class="title">ServeHTTP</span><span class="params">(w http.ResponseWriter, req *http.Request)</span></span> &#123;</span><br><span class="line">	engine.router.ServeHTTP(w, req)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>继续追踪，可以发现在<code>httprouter</code>的<code>ServeHTTP</code>方法最后有一段判定404的代码，这时候就可以发现这是之前修改<code>gin.go`</code> engine.router.NotFound = engine<code>这段代码造成的，由于Chrome浏览器访问的时候会尝试访问</code>/favicon.ico<code>这个文件，然而我们在路由当中并没有定义，此时就是404，这时候由于之前我们在初始化的时候，给</code>router<code>传递的</code>NotFound<code>为</code>engine<code>，而</code>engine.ServeHTTP<code>调用了</code>router.ServeHTTP`这时候就造成了无限递归，导致最后退出<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Handle 404</span></span><br><span class="line"><span class="keyword">if</span> r.NotFound != <span class="literal">nil</span> &#123;</span><br><span class="line">	r.NotFound.ServeHTTP(w, req)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	http.NotFound(w, req)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="第二次修改"><a href="#第二次修改" class="headerlink" title="第二次修改"></a>第二次修改</h3><p><code>gin.go</code><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Returns a new blank Engine instance without any middleware attached.</span></span><br><span class="line"><span class="comment">// The most basic configuration</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span><span class="params">()</span> *<span class="title">Engine</span></span> &#123;</span><br><span class="line">	engine := &amp;Engine&#123;&#125;</span><br><span class="line">	engine.RouterGroup = &amp;RouterGroup&#123;<span class="literal">nil</span>, <span class="string">""</span>, <span class="literal">nil</span>, engine&#125;</span><br><span class="line">    engine.router = httprouter.New()</span><br><span class="line">    <span class="comment">// NotFound 是一个http.Handler的接口，但是源码当中赋值了一个方法给他</span></span><br><span class="line">    <span class="comment">// 注释掉即可</span></span><br><span class="line">    <span class="comment">// engine.router.NotFound = engine.handle404</span></span><br><span class="line">	<span class="keyword">return</span> engine</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>go run main.go</code>成功运行，就没有问题了</p>
+<h2 id="Gin源码分析"><a href="#Gin源码分析" class="headerlink" title="Gin源码分析"></a>Gin源码分析</h2><p>跑起来之后就具体看看源码,初始版本的Gin当中拥有三个比较重要的<code>struct</code>，也是核心的组成部分</p>
+<p><code>Context</code><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Context是gin当中最为重要的一部分</span></span><br><span class="line"><span class="comment">// 它用于在中间件当中传递变量，管理流程。例如接受json请求，并返回json</span></span><br><span class="line"><span class="comment">// Context is the most important part of gin. It allows us to pass variables between middleware,</span></span><br><span class="line"><span class="comment">// manage the flow, validate the JSON of a request and render a JSON response for example.</span></span><br><span class="line">Context <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// ServeHTTP 第二个参数，请求体</span></span><br><span class="line">    Req      *http.Request</span><br><span class="line">    <span class="comment">// ServeHTTP 第一次参数，响应</span></span><br><span class="line">    Writer   http.ResponseWriter</span><br><span class="line">    <span class="comment">// 可以设置的值</span></span><br><span class="line">    Keys     <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">    <span class="comment">// 错误信息</span></span><br><span class="line">    Errors   []ErrorMsg</span><br><span class="line">    <span class="comment">// 请求参数</span></span><br><span class="line">    Params   httprouter.Params</span><br><span class="line">    <span class="comment">// = 中间件 + 请求处理函数(最后一个)</span></span><br><span class="line">    handlers []HandlerFunc</span><br><span class="line">    <span class="comment">// Engine 实例</span></span><br><span class="line">    engine   *Engine</span><br><span class="line">    <span class="comment">// 当前处理到的Handler下标</span></span><br><span class="line">    index    <span class="keyword">int8</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 下一个中间件</span></span><br><span class="line">Next()</span><br><span class="line"><span class="comment">// 终止处理，直接返回</span></span><br><span class="line">Abort(code <span class="keyword">int</span>)</span><br><span class="line"><span class="comment">// 添加错误信息，并且终止处理</span></span><br><span class="line">Fail(code <span class="keyword">int</span>, err error)</span><br><span class="line"><span class="comment">// 添加错误信息</span></span><br><span class="line">Error(err error, meta <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 给Context.Keys添加值</span></span><br><span class="line">Set(key <span class="keyword">string</span>, item <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line"><span class="comment">// 获取Context.Keys的值，如果不存在会导致panic</span></span><br><span class="line">Get(key <span class="keyword">string</span>) <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将请求体的参数作为json解析</span></span><br><span class="line">ParseBody(item <span class="keyword">interface</span>&#123;&#125;) error</span><br><span class="line"><span class="comment">// 同ParseBody，但是如果不是一个可解析的json会调用Fail(400)终止请求</span></span><br><span class="line">EnsureBody(item <span class="keyword">interface</span>&#123;&#125;) <span class="keyword">bool</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 下面是和返回相关的函数，code 参数均表示http status</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回json </span></span><br><span class="line">JSON(code <span class="keyword">int</span>, obj <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line"><span class="comment">// 返回xml</span></span><br><span class="line">XML(code <span class="keyword">int</span>, obj <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line"><span class="comment">// HTML模板渲染，使用golang标准库的模板库</span></span><br><span class="line">HTML(code <span class="keyword">int</span>, name <span class="keyword">string</span>, data <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line"><span class="comment">// 返回字符串</span></span><br><span class="line">String(code <span class="keyword">int</span>, msg <span class="keyword">string</span>)</span><br><span class="line"><span class="comment">// 返回流数据</span></span><br><span class="line">Data(code <span class="keyword">int</span>, data []<span class="keyword">byte</span>)</span><br></pre></td></tr></table></figure></p>
+<p><code>RouterGroup</code><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RouterGroup用于管理路由，一个RouterGroup和一个前缀以及一组中间件关联</span></span><br><span class="line"><span class="comment">// Used internally to configure router, a RouterGroup is associated with a prefix</span></span><br><span class="line"><span class="comment">// and an array of handlers (middlewares)</span></span><br><span class="line">RouterGroup <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 中间件</span></span><br><span class="line">    Handlers []HandlerFunc</span><br><span class="line">    <span class="comment">// 路径前缀</span></span><br><span class="line">    prefix   <span class="keyword">string</span></span><br><span class="line">    parent   *RouterGroup</span><br><span class="line">    <span class="comment">// Engine 实例</span></span><br><span class="line">    engine   *Engine</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 新建一个Context，用于传递这个路由组的数据</span></span><br><span class="line">createContext(w http.ResponseWriter, req *http.Request, params httprouter.Params, handlers []HandlerFunc) *Context</span><br><span class="line"><span class="comment">// 添加一个中间件到这个路由组</span></span><br><span class="line">Use(middlewares ...HandlerFunc)</span><br><span class="line"><span class="comment">// 新建一个路由组</span></span><br><span class="line">Group(component <span class="keyword">string</span>, handlers ...HandlerFunc) *RouterGroup</span><br><span class="line"><span class="comment">// 注册一个路由</span></span><br><span class="line">Handle(method, p <span class="keyword">string</span>, handlers []HandlerFunc)</span><br><span class="line"><span class="comment">// 调用Handle方法注册一个POST路由</span></span><br><span class="line">POST(path <span class="keyword">string</span>, handlers ...HandlerFunc)</span><br><span class="line"><span class="comment">// 调用Handle方法注册一个GET路由</span></span><br><span class="line">GET(path <span class="keyword">string</span>, handlers ...HandlerFunc)</span><br><span class="line"><span class="comment">// 调用Handle方法注册一个DELETE路由</span></span><br><span class="line">DELETE(path <span class="keyword">string</span>, handlers ...HandlerFunc)</span><br><span class="line"><span class="comment">// 调用Handle方法注册一个PATCH路由</span></span><br><span class="line">PATCH(path <span class="keyword">string</span>, handlers ...HandlerFunc)</span><br><span class="line"><span class="comment">// 调用Handle方法注册一个PUT路由</span></span><br><span class="line">PUT(path <span class="keyword">string</span>, handlers ...HandlerFunc)</span><br><span class="line"><span class="comment">// 组合中间件，将传入的Handlers放在已有的Handlers后面</span></span><br><span class="line">combineHandlers(handlers []HandlerFunc) []HandlerFunc</span><br></pre></td></tr></table></figure></p>
+<p><code>Engine</code><br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用于表示Web框架，包含了fast HTTProuter和一个全局的中间件列表</span></span><br><span class="line"><span class="comment">// Represents the web framework, it wrappers the blazing fast httprouter multiplexer and a list of global middlewares.</span></span><br><span class="line">Engine <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 路由组</span></span><br><span class="line">    *RouterGroup</span><br><span class="line">    <span class="comment">// 404 处理</span></span><br><span class="line">    handlers404   []HandlerFunc</span><br><span class="line">    <span class="comment">// http router 实例</span></span><br><span class="line">    router        *httprouter.Router</span><br><span class="line">    <span class="comment">// 模板</span></span><br><span class="line">    HTMLTemplates *template.Template</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 加载HTML模板</span></span><br><span class="line">LoadHTMLTemplates(pattern <span class="keyword">string</span>)</span><br><span class="line"><span class="comment">// 设置404方法</span></span><br><span class="line">NotFound404(handlers ...HandlerFunc)</span><br><span class="line"><span class="comment">// 默认的404方法，但是这个版本并没有使用上</span></span><br><span class="line">handle404(w http.ResponseWriter, req *http.Request)</span><br><span class="line"><span class="comment">// 保存文件</span></span><br><span class="line">ServeFiles(path <span class="keyword">string</span>, root http.FileSystem)</span><br><span class="line"><span class="comment">// 实现http.Handler接口</span></span><br><span class="line">ServeHTTP(w http.ResponseWriter, req *http.Request)</span><br><span class="line"><span class="comment">// 调用http.ListenAndServe启动服务器</span></span><br><span class="line">Run(addr <span class="keyword">string</span>)</span><br></pre></td></tr></table></figure></p>
+<p>0.1版本的gin只是一个极小，极为简单的工具箱，主要提供了一个简单的路由和简单的中间件实现，搞清楚下面这两个问题这个框架的也就明白了。</p>
+<ol>
+<li><p>一个使用了<code>Gin</code>的Web应用，从初始化到启动的流程？</p>
+</li>
+<li><p>一个请求从接收到返回经历了什么？</p>
+</li>
+</ol>
+<h3 id="应用流程"><a href="#应用流程" class="headerlink" title="应用流程"></a>应用流程</h3><p>1.首先创建了一个<code>engine</code>实例，注册了两个两个基本的中间件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gin.Default() -&gt; gin.New() -&gt; engine.Use(Recovery(), Logger())</span><br></pre></td></tr></table></figure>
+<p>2.然后使用<code>group.Handle</code>方法注册路由, 关键代码如下，将路由添加到http router的树中，当执行handler方法的时候，会创建一个<code>Context</code>并且从头开始执行</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">group.engine.router.Handle(method, p, </span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, req *http.Request, params httprouter.Params)</span></span> &#123;</span><br><span class="line">    group.createContext(w, req, params, handlers).Next()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>3.调用<code>http.ListenAndServe</code>监听指定端口，启动服务器</p>
+<h3 id="请求流程"><a href="#请求流程" class="headerlink" title="请求流程"></a>请求流程</h3><ol>
+<li>当服务器收到请求时，会调用之前注册的<code>engine.ServeHTTP</code>方法，查找路由</li>
+<li><code>engine.ServeHTTP</code>方法使用了<code>httprouter</code>的<code>ServeHTTP</code>方法，这是会通过请求的path从已注册的路由树上获取对应的路由，并且执行其handler方法，如上所示，handler方法内部通过创建一个router group对应的Context从头开始执行所有的中间件以及注册路由时注册的请求处理函数</li>
+<li>从请求处理函数中返回信息</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"># go</a>
+          
+            <a href="/tags/gin/" rel="tag"># gin</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+              <div>
+                
+
+<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
+
+
+  
+
+
+<div class="likely">
+	
+ 	 	<div class="twitter">Tweet</div>
+	
+ 	 	<div class="linkedin">Link</div>
+	
+ 	 	<div class="telegram">Send</div>
+	
+ 	 	<div class="pinterest">Pin</div>
+	
+</div>
+
+              </div>
+            
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/61686.html" rel="next" title="纯技术人员和投资者的一些区别">
+                <i class="fa fa-chevron-left"></i> 纯技术人员和投资者的一些区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/44029.html" rel="prev" title="Httprouter介绍及源码阅读">
+                Httprouter介绍及源码阅读 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/icons/avatar.jpg" alt="Mohuishou">
+            
+              <p class="site-author-name" itemprop="name">Mohuishou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">69</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">81</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Friend's Blog
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jingwei.link/" title="https://jingwei.link/" rel="noopener" target="_blank">敬维</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://jiajunhuang.com/" title="https://jiajunhuang.com/" rel="noopener" target="_blank">JiaJun的编程随想</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#跑起来"><span class="nav-number">2.</span> <span class="nav-text">跑起来</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次修改"><span class="nav-number">2.1.</span> <span class="nav-text">第一次修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二次修改"><span class="nav-number">2.2.</span> <span class="nav-text">第二次修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gin源码分析"><span class="nav-number">3.</span> <span class="nav-text">Gin源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用流程"><span class="nav-number">3.1.</span> <span class="nav-text">应用流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求流程"><span class="nav-number">3.2.</span> <span class="nav-text">请求流程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mohuishou</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '28db4ab78d0b5277990f',
+    clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
+    repo: 'blogComment',
+    owner: 'scuplus',
+    admin: ['mohuishou'],
+    id: md5(location.pathname),
+    
+      language: 'zh-CN',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/algolia-search.js?v=7.1.0"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

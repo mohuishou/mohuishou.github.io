@@ -18,8 +18,8 @@
   
   <entry>
     <title>docker镜像瘦身&amp;优化</title>
-    <link href="https://lailin.xyz/post/51252/"/>
-    <id>https://lailin.xyz/post/51252/</id>
+    <link href="https://lailin.xyz/post/51252.html"/>
+    <id>https://lailin.xyz/post/51252.html</id>
     <published>2019-03-30T08:10:10.000Z</published>
     <updated>2019-04-07T12:46:30.840Z</updated>
     
@@ -44,8 +44,8 @@
   
   <entry>
     <title>GORM避坑指南之含关联关系的更新</title>
-    <link href="https://lailin.xyz/post/60163/"/>
-    <id>https://lailin.xyz/post/60163/</id>
+    <link href="https://lailin.xyz/post/60163.html"/>
+    <id>https://lailin.xyz/post/60163.html</id>
     <published>2019-01-29T06:08:52.000Z</published>
     <updated>2019-04-07T12:46:30.768Z</updated>
     
@@ -71,8 +71,8 @@
   
   <entry>
     <title>Github Actions介绍&amp;自动构建Github Pages博客</title>
-    <link href="https://lailin.xyz/post/28054/"/>
-    <id>https://lailin.xyz/post/28054/</id>
+    <link href="https://lailin.xyz/post/28054.html"/>
+    <id>https://lailin.xyz/post/28054.html</id>
     <published>2019-01-14T09:11:19.000Z</published>
     <updated>2019-04-07T12:46:30.770Z</updated>
     
@@ -91,8 +91,8 @@
   
   <entry>
     <title>在blog中内嵌在线PPT</title>
-    <link href="https://lailin.xyz/post/7944/"/>
-    <id>https://lailin.xyz/post/7944/</id>
+    <link href="https://lailin.xyz/post/7944.html"/>
+    <id>https://lailin.xyz/post/7944.html</id>
     <published>2018-12-08T00:44:03.000Z</published>
     <updated>2019-04-07T12:46:30.803Z</updated>
     
@@ -109,8 +109,8 @@
   
   <entry>
     <title>记一次net http内存泄漏</title>
-    <link href="https://lailin.xyz/post/44107/"/>
-    <id>https://lailin.xyz/post/44107/</id>
+    <link href="https://lailin.xyz/post/44107.html"/>
+    <id>https://lailin.xyz/post/44107.html</id>
     <published>2018-12-08T00:31:20.000Z</published>
     <updated>2019-04-07T12:46:30.769Z</updated>
     
@@ -140,8 +140,8 @@
   
   <entry>
     <title>pprof go性能分析工具</title>
-    <link href="https://lailin.xyz/post/40393/"/>
-    <id>https://lailin.xyz/post/40393/</id>
+    <link href="https://lailin.xyz/post/40393.html"/>
+    <id>https://lailin.xyz/post/40393.html</id>
     <published>2018-12-07T19:05:01.000Z</published>
     <updated>2019-04-07T12:46:30.767Z</updated>
     
@@ -158,8 +158,8 @@
   
   <entry>
     <title>使用TravisCI自动部署Blog</title>
-    <link href="https://lailin.xyz/post/52061/"/>
-    <id>https://lailin.xyz/post/52061/</id>
+    <link href="https://lailin.xyz/post/52061.html"/>
+    <id>https://lailin.xyz/post/52061.html</id>
     <published>2018-09-25T03:09:59.000Z</published>
     <updated>2019-04-07T12:46:30.780Z</updated>
     
@@ -186,8 +186,8 @@
   
   <entry>
     <title>使用Goland调试Go程序</title>
-    <link href="https://lailin.xyz/post/37623/"/>
-    <id>https://lailin.xyz/post/37623/</id>
+    <link href="https://lailin.xyz/post/37623.html"/>
+    <id>https://lailin.xyz/post/37623.html</id>
     <published>2018-09-23T06:35:51.000Z</published>
     <updated>2019-04-07T12:46:30.830Z</updated>
     
@@ -208,8 +208,8 @@
   
   <entry>
     <title>一个十分边缘的gorm的bug</title>
-    <link href="https://lailin.xyz/post/37449/"/>
-    <id>https://lailin.xyz/post/37449/</id>
+    <link href="https://lailin.xyz/post/37449.html"/>
+    <id>https://lailin.xyz/post/37449.html</id>
     <published>2018-09-21T02:46:58.000Z</published>
     <updated>2019-04-07T12:46:30.841Z</updated>
     
@@ -235,8 +235,8 @@
   
   <entry>
     <title>Httprouter介绍及源码阅读</title>
-    <link href="https://lailin.xyz/post/44029/"/>
-    <id>https://lailin.xyz/post/44029/</id>
+    <link href="https://lailin.xyz/post/44029.html"/>
+    <id>https://lailin.xyz/post/44029.html</id>
     <published>2018-08-02T06:46:01.000Z</published>
     <updated>2019-04-07T12:46:30.833Z</updated>
     
@@ -264,8 +264,8 @@
   
   <entry>
     <title>Gin源码阅读 从0.1开始</title>
-    <link href="https://lailin.xyz/post/12338/"/>
-    <id>https://lailin.xyz/post/12338/</id>
+    <link href="https://lailin.xyz/post/12338.html"/>
+    <id>https://lailin.xyz/post/12338.html</id>
     <published>2018-07-21T07:03:19.000Z</published>
     <updated>2019-04-07T12:46:30.843Z</updated>
     
@@ -295,8 +295,8 @@
   
   <entry>
     <title>纯技术人员和投资者的一些区别</title>
-    <link href="https://lailin.xyz/post/61686/"/>
-    <id>https://lailin.xyz/post/61686/</id>
+    <link href="https://lailin.xyz/post/61686.html"/>
+    <id>https://lailin.xyz/post/61686.html</id>
     <published>2018-07-21T02:46:58.000Z</published>
     <updated>2019-04-07T12:46:30.805Z</updated>
     
@@ -325,8 +325,8 @@
   
   <entry>
     <title>2018年的一些小目标</title>
-    <link href="https://lailin.xyz/post/22757/"/>
-    <id>https://lailin.xyz/post/22757/</id>
+    <link href="https://lailin.xyz/post/22757.html"/>
+    <id>https://lailin.xyz/post/22757.html</id>
     <published>2018-07-19T07:42:08.000Z</published>
     <updated>2019-04-07T12:46:30.832Z</updated>
     
@@ -355,8 +355,8 @@
   
   <entry>
     <title>go标准库——ioutil.ReadAll的实现</title>
-    <link href="https://lailin.xyz/post/47700/"/>
-    <id>https://lailin.xyz/post/47700/</id>
+    <link href="https://lailin.xyz/post/47700.html"/>
+    <id>https://lailin.xyz/post/47700.html</id>
     <published>2018-03-19T17:53:06.000Z</published>
     <updated>2019-04-07T12:46:30.845Z</updated>
     
@@ -382,8 +382,8 @@
   
   <entry>
     <title>使用chromedp解决反爬虫问题</title>
-    <link href="https://lailin.xyz/post/5431/"/>
-    <id>https://lailin.xyz/post/5431/</id>
+    <link href="https://lailin.xyz/post/5431.html"/>
+    <id>https://lailin.xyz/post/5431.html</id>
     <published>2018-03-13T17:40:48.000Z</published>
     <updated>2019-04-07T12:46:30.781Z</updated>
     
@@ -412,8 +412,8 @@
   
   <entry>
     <title>We川大开发笔记@0.2.0</title>
-    <link href="https://lailin.xyz/post/62925/"/>
-    <id>https://lailin.xyz/post/62925/</id>
+    <link href="https://lailin.xyz/post/62925.html"/>
+    <id>https://lailin.xyz/post/62925.html</id>
     <published>2018-01-24T01:55:25.000Z</published>
     <updated>2019-04-07T12:46:30.829Z</updated>
     
@@ -436,8 +436,8 @@
   
   <entry>
     <title>We川大开发笔记@0.1.0</title>
-    <link href="https://lailin.xyz/post/62781/"/>
-    <id>https://lailin.xyz/post/62781/</id>
+    <link href="https://lailin.xyz/post/62781.html"/>
+    <id>https://lailin.xyz/post/62781.html</id>
     <published>2018-01-24T01:12:56.000Z</published>
     <updated>2019-04-07T12:46:30.815Z</updated>
     
@@ -460,8 +460,8 @@
   
   <entry>
     <title>招银网络面试总结</title>
-    <link href="https://lailin.xyz/post/1358/"/>
-    <id>https://lailin.xyz/post/1358/</id>
+    <link href="https://lailin.xyz/post/1358.html"/>
+    <id>https://lailin.xyz/post/1358.html</id>
     <published>2017-09-22T10:46:42.000Z</published>
     <updated>2019-04-07T12:46:30.831Z</updated>
     
@@ -488,11 +488,11 @@
   </entry>
   
   <entry>
-    <title>冒泡排序</title>
-    <link href="https://lailin.xyz/post/21238/"/>
-    <id>https://lailin.xyz/post/21238/</id>
+    <title>快速排序</title>
+    <link href="https://lailin.xyz/post/11306.html"/>
+    <id>https://lailin.xyz/post/11306.html</id>
     <published>2017-09-17T16:00:00.000Z</published>
-    <updated>2019-04-07T12:46:30.834Z</updated>
+    <updated>2019-04-07T12:46:30.835Z</updated>
     
     <summary type="html">
     
@@ -500,33 +500,8 @@
       
         
         
-          &lt;h1 id=&quot;冒泡排序&quot;&gt;&lt;a href=&quot;#冒泡排序&quot; class=&quot;headerlink&quot; title=&quot;冒泡排序&quot;&gt;&lt;/a&gt;冒泡排序&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shell排序</title>
-    <link href="https://lailin.xyz/post/27243/"/>
-    <id>https://lailin.xyz/post/27243/</id>
-    <published>2017-09-17T16:00:00.000Z</published>
-    <updated>2019-04-07T12:46:30.833Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Shell-排序&quot;&gt;&lt;a href=&quot;#Shell-排序&quot; class=&quot;headerlink&quot; title=&quot;Shell 排序&quot;&gt;&lt;/a&gt;Shell 排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
+          &lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/mohuishou/go-sort&quot; target=&quot;_blank&quot;
         
       
     
@@ -541,8 +516,8 @@
   
   <entry>
     <title>选择排序</title>
-    <link href="https://lailin.xyz/post/51203/"/>
-    <id>https://lailin.xyz/post/51203/</id>
+    <link href="https://lailin.xyz/post/51203.html"/>
+    <id>https://lailin.xyz/post/51203.html</id>
     <published>2017-09-17T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.838Z</updated>
     
@@ -567,9 +542,61 @@
   </entry>
   
   <entry>
+    <title>shell排序</title>
+    <link href="https://lailin.xyz/post/27243.html"/>
+    <id>https://lailin.xyz/post/27243.html</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-04-07T12:46:30.833Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Shell-排序&quot;&gt;&lt;a href=&quot;#Shell-排序&quot; class=&quot;headerlink&quot; title=&quot;Shell 排序&quot;&gt;&lt;/a&gt;Shell 排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>冒泡排序</title>
+    <link href="https://lailin.xyz/post/21238.html"/>
+    <id>https://lailin.xyz/post/21238.html</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-04-07T12:46:30.834Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;冒泡排序&quot;&gt;&lt;a href=&quot;#冒泡排序&quot; class=&quot;headerlink&quot; title=&quot;冒泡排序&quot;&gt;&lt;/a&gt;冒泡排序&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
     <title>堆排序</title>
-    <link href="https://lailin.xyz/post/46698/"/>
-    <id>https://lailin.xyz/post/46698/</id>
+    <link href="https://lailin.xyz/post/46698.html"/>
+    <id>https://lailin.xyz/post/46698.html</id>
     <published>2017-09-17T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.834Z</updated>
     
@@ -594,8 +621,8 @@
   
   <entry>
     <title>归并排序</title>
-    <link href="https://lailin.xyz/post/63711/"/>
-    <id>https://lailin.xyz/post/63711/</id>
+    <link href="https://lailin.xyz/post/63711.html"/>
+    <id>https://lailin.xyz/post/63711.html</id>
     <published>2017-09-17T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.835Z</updated>
     
@@ -619,62 +646,9 @@
   </entry>
   
   <entry>
-    <title>快速排序</title>
-    <link href="https://lailin.xyz/post/11306/"/>
-    <id>https://lailin.xyz/post/11306/</id>
-    <published>2017-09-17T16:00:00.000Z</published>
-    <updated>2019-04-07T12:46:30.835Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/mohuishou/go-sort&quot; target=&quot;_blank&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>插入排序</title>
-    <link href="https://lailin.xyz/post/50190/"/>
-    <id>https://lailin.xyz/post/50190/</id>
-    <published>2017-09-17T16:00:00.000Z</published>
-    <updated>2019-04-07T12:46:30.836Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;插入排序&quot;&gt;&lt;a href=&quot;#插入排序&quot; class=&quot;headerlink&quot; title=&quot;插入排序&quot;&gt;&lt;/a&gt;插入排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
     <title>百度面试总结</title>
-    <link href="https://lailin.xyz/post/56757/"/>
-    <id>https://lailin.xyz/post/56757/</id>
+    <link href="https://lailin.xyz/post/56757.html"/>
+    <id>https://lailin.xyz/post/56757.html</id>
     <published>2017-09-17T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.844Z</updated>
     
@@ -700,9 +674,35 @@
   </entry>
   
   <entry>
+    <title>插入排序</title>
+    <link href="https://lailin.xyz/post/50190.html"/>
+    <id>https://lailin.xyz/post/50190.html</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2019-04-07T12:46:30.836Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;插入排序&quot;&gt;&lt;a href=&quot;#插入排序&quot; class=&quot;headerlink&quot; title=&quot;插入排序&quot;&gt;&lt;/a&gt;插入排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
     <title>遗传算法</title>
-    <link href="https://lailin.xyz/post/34642/"/>
-    <id>https://lailin.xyz/post/34642/</id>
+    <link href="https://lailin.xyz/post/34642.html"/>
+    <id>https://lailin.xyz/post/34642.html</id>
     <published>2017-04-16T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.838Z</updated>
     
@@ -729,8 +729,8 @@
   
   <entry>
     <title>最短路径算法SPFA</title>
-    <link href="https://lailin.xyz/post/21230/"/>
-    <id>https://lailin.xyz/post/21230/</id>
+    <link href="https://lailin.xyz/post/21230.html"/>
+    <id>https://lailin.xyz/post/21230.html</id>
     <published>2017-04-15T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.837Z</updated>
     
@@ -762,8 +762,8 @@
   
   <entry>
     <title>最短路径算法-Floyd</title>
-    <link href="https://lailin.xyz/post/60101/"/>
-    <id>https://lailin.xyz/post/60101/</id>
+    <link href="https://lailin.xyz/post/60101.html"/>
+    <id>https://lailin.xyz/post/60101.html</id>
     <published>2017-04-11T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.837Z</updated>
     
@@ -793,8 +793,8 @@
   
   <entry>
     <title>邻接表-Golang</title>
-    <link href="https://lailin.xyz/post/18885/"/>
-    <id>https://lailin.xyz/post/18885/</id>
+    <link href="https://lailin.xyz/post/18885.html"/>
+    <id>https://lailin.xyz/post/18885.html</id>
     <published>2017-04-09T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.839Z</updated>
     
@@ -826,8 +826,8 @@
   
   <entry>
     <title>最短路径算法-Dijkstra</title>
-    <link href="https://lailin.xyz/post/13459/"/>
-    <id>https://lailin.xyz/post/13459/</id>
+    <link href="https://lailin.xyz/post/13459.html"/>
+    <id>https://lailin.xyz/post/13459.html</id>
     <published>2017-04-08T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.836Z</updated>
     
@@ -857,8 +857,8 @@
   
   <entry>
     <title>华为软挑2017</title>
-    <link href="https://lailin.xyz/post/4976/"/>
-    <id>https://lailin.xyz/post/4976/</id>
+    <link href="https://lailin.xyz/post/4976.html"/>
+    <id>https://lailin.xyz/post/4976.html</id>
     <published>2017-04-08T00:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.782Z</updated>
     
@@ -884,8 +884,8 @@
   
   <entry>
     <title>利用vbox在win下搭建linux开发环境</title>
-    <link href="https://lailin.xyz/post/50696/"/>
-    <id>https://lailin.xyz/post/50696/</id>
+    <link href="https://lailin.xyz/post/50696.html"/>
+    <id>https://lailin.xyz/post/50696.html</id>
     <published>2016-11-24T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.781Z</updated>
     
@@ -911,8 +911,8 @@
   
   <entry>
     <title>在windows安装dockertool，并且配置文件夹共享</title>
-    <link href="https://lailin.xyz/post/7964/"/>
-    <id>https://lailin.xyz/post/7964/</id>
+    <link href="https://lailin.xyz/post/7964.html"/>
+    <id>https://lailin.xyz/post/7964.html</id>
     <published>2016-11-19T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.803Z</updated>
     
@@ -941,8 +941,8 @@
   
   <entry>
     <title>在laravel/lumen之外使用Eloquent</title>
-    <link href="https://lailin.xyz/post/29454/"/>
-    <id>https://lailin.xyz/post/29454/</id>
+    <link href="https://lailin.xyz/post/29454.html"/>
+    <id>https://lailin.xyz/post/29454.html</id>
     <published>2016-11-18T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.816Z</updated>
     
@@ -969,8 +969,8 @@
   
   <entry>
     <title>java笔记1</title>
-    <link href="https://lailin.xyz/post/52826/"/>
-    <id>https://lailin.xyz/post/52826/</id>
+    <link href="https://lailin.xyz/post/52826.html"/>
+    <id>https://lailin.xyz/post/52826.html</id>
     <published>2016-11-10T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.773Z</updated>
     
@@ -1001,8 +1001,8 @@
   
   <entry>
     <title>一键迁移typecho到hexo</title>
-    <link href="https://lailin.xyz/post/59080/"/>
-    <id>https://lailin.xyz/post/59080/</id>
+    <link href="https://lailin.xyz/post/59080.html"/>
+    <id>https://lailin.xyz/post/59080.html</id>
     <published>2016-10-12T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.779Z</updated>
     
@@ -1030,8 +1030,8 @@
   
   <entry>
     <title>在deepin下安装shadowsocks-qt5</title>
-    <link href="https://lailin.xyz/post/46155/"/>
-    <id>https://lailin.xyz/post/46155/</id>
+    <link href="https://lailin.xyz/post/46155.html"/>
+    <id>https://lailin.xyz/post/46155.html</id>
     <published>2016-10-09T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.804Z</updated>
     
@@ -1058,8 +1058,8 @@
   
   <entry>
     <title>四川大学锐捷windows解除多网卡限制</title>
-    <link href="https://lailin.xyz/post/18280/"/>
-    <id>https://lailin.xyz/post/18280/</id>
+    <link href="https://lailin.xyz/post/18280.html"/>
+    <id>https://lailin.xyz/post/18280.html</id>
     <published>2016-09-06T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.802Z</updated>
     
@@ -1089,8 +1089,8 @@
   
   <entry>
     <title>php设计模式（一）工厂模式</title>
-    <link href="https://lailin.xyz/post/43893/"/>
-    <id>https://lailin.xyz/post/43893/</id>
+    <link href="https://lailin.xyz/post/43893.html"/>
+    <id>https://lailin.xyz/post/43893.html</id>
     <published>2016-08-06T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.812Z</updated>
     
@@ -1117,8 +1117,8 @@
   
   <entry>
     <title>四川大学望江校区使用mentohust认证上网</title>
-    <link href="https://lailin.xyz/post/51466/"/>
-    <id>https://lailin.xyz/post/51466/</id>
+    <link href="https://lailin.xyz/post/51466.html"/>
+    <id>https://lailin.xyz/post/51466.html</id>
     <published>2016-07-18T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.782Z</updated>
     
@@ -1146,8 +1146,8 @@
   
   <entry>
     <title>linux下天翼飞扬认证上网的一个解决方法</title>
-    <link href="https://lailin.xyz/post/50628/"/>
-    <id>https://lailin.xyz/post/50628/</id>
+    <link href="https://lailin.xyz/post/50628.html"/>
+    <id>https://lailin.xyz/post/50628.html</id>
     <published>2016-07-17T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.774Z</updated>
     
@@ -1177,8 +1177,8 @@
   
   <entry>
     <title>迁移laravel框架项目到虚拟主机</title>
-    <link href="https://lailin.xyz/post/13242/"/>
-    <id>https://lailin.xyz/post/13242/</id>
+    <link href="https://lailin.xyz/post/13242.html"/>
+    <id>https://lailin.xyz/post/13242.html</id>
     <published>2016-07-14T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.825Z</updated>
     
@@ -1208,8 +1208,8 @@
   
   <entry>
     <title>使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘</title>
-    <link href="https://lailin.xyz/post/8013/"/>
-    <id>https://lailin.xyz/post/8013/</id>
+    <link href="https://lailin.xyz/post/8013.html"/>
+    <id>https://lailin.xyz/post/8013.html</id>
     <published>2016-06-27T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.842Z</updated>
     
@@ -1245,8 +1245,8 @@
   
   <entry>
     <title>四川大学评教开源代码</title>
-    <link href="https://lailin.xyz/post/31503/"/>
-    <id>https://lailin.xyz/post/31503/</id>
+    <link href="https://lailin.xyz/post/31503.html"/>
+    <id>https://lailin.xyz/post/31503.html</id>
     <published>2016-06-02T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.802Z</updated>
     
@@ -1273,8 +1273,8 @@
   
   <entry>
     <title>Composer上线前的优化</title>
-    <link href="https://lailin.xyz/post/36128/"/>
-    <id>https://lailin.xyz/post/36128/</id>
+    <link href="https://lailin.xyz/post/36128.html"/>
+    <id>https://lailin.xyz/post/36128.html</id>
     <published>2016-05-09T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.805Z</updated>
     
@@ -1304,8 +1304,8 @@
   
   <entry>
     <title>php识别验证码（二）</title>
-    <link href="https://lailin.xyz/post/10661/"/>
-    <id>https://lailin.xyz/post/10661/</id>
+    <link href="https://lailin.xyz/post/10661.html"/>
+    <id>https://lailin.xyz/post/10661.html</id>
     <published>2016-05-03T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.814Z</updated>
     
@@ -1336,9 +1336,42 @@
   </entry>
   
   <entry>
+    <title>php利用curl保存图片</title>
+    <link href="https://lailin.xyz/post/58471.html"/>
+    <id>https://lailin.xyz/post/58471.html</id>
+    <published>2016-05-02T16:00:00.000Z</published>
+    <updated>2019-04-07T12:46:30.811Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="图片" scheme="https://lailin.xyz/tags/%E5%9B%BE%E7%89%87/"/>
+    
+      <category term="curl" scheme="https://lailin.xyz/tags/curl/"/>
+    
+  </entry>
+  
+  <entry>
     <title>php识别验证码（一）</title>
-    <link href="https://lailin.xyz/post/47583/"/>
-    <id>https://lailin.xyz/post/47583/</id>
+    <link href="https://lailin.xyz/post/47583.html"/>
+    <id>https://lailin.xyz/post/47583.html</id>
     <published>2016-05-02T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.826Z</updated>
     
@@ -1371,42 +1404,9 @@
   </entry>
   
   <entry>
-    <title>php利用curl保存图片</title>
-    <link href="https://lailin.xyz/post/58471/"/>
-    <id>https://lailin.xyz/post/58471/</id>
-    <published>2016-05-02T16:00:00.000Z</published>
-    <updated>2019-04-07T12:46:30.811Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="图片" scheme="https://lailin.xyz/tags/%E5%9B%BE%E7%89%87/"/>
-    
-      <category term="curl" scheme="https://lailin.xyz/tags/curl/"/>
-    
-  </entry>
-  
-  <entry>
     <title>php-webhook利用php脚本自动化部署git项目</title>
-    <link href="https://lailin.xyz/post/61468/"/>
-    <id>https://lailin.xyz/post/61468/</id>
+    <link href="https://lailin.xyz/post/61468.html"/>
+    <id>https://lailin.xyz/post/61468.html</id>
     <published>2016-04-27T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.809Z</updated>
     
@@ -1438,8 +1438,8 @@
   
   <entry>
     <title>nginx无法启动</title>
-    <link href="https://lailin.xyz/post/33991/"/>
-    <id>https://lailin.xyz/post/33991/</id>
+    <link href="https://lailin.xyz/post/33991.html"/>
+    <id>https://lailin.xyz/post/33991.html</id>
     <published>2016-04-26T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.775Z</updated>
     
@@ -1469,8 +1469,8 @@
   
   <entry>
     <title>nginx-php报502错误</title>
-    <link href="https://lailin.xyz/post/59269/"/>
-    <id>https://lailin.xyz/post/59269/</id>
+    <link href="https://lailin.xyz/post/59269.html"/>
+    <id>https://lailin.xyz/post/59269.html</id>
     <published>2016-04-24T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.807Z</updated>
     
@@ -1503,8 +1503,8 @@
   
   <entry>
     <title>C语言验证浮点数的二进制表示</title>
-    <link href="https://lailin.xyz/post/48100/"/>
-    <id>https://lailin.xyz/post/48100/</id>
+    <link href="https://lailin.xyz/post/48100.html"/>
+    <id>https://lailin.xyz/post/48100.html</id>
     <published>2016-02-28T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.769Z</updated>
     
@@ -1529,8 +1529,8 @@
   
   <entry>
     <title>js编码解码URL</title>
-    <link href="https://lailin.xyz/post/62847/"/>
-    <id>https://lailin.xyz/post/62847/</id>
+    <link href="https://lailin.xyz/post/62847.html"/>
+    <id>https://lailin.xyz/post/62847.html</id>
     <published>2016-02-03T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.774Z</updated>
     
@@ -1554,8 +1554,8 @@
   
   <entry>
     <title>css中权重与优先级</title>
-    <link href="https://lailin.xyz/post/39494/"/>
-    <id>https://lailin.xyz/post/39494/</id>
+    <link href="https://lailin.xyz/post/39494.html"/>
+    <id>https://lailin.xyz/post/39494.html</id>
     <published>2016-01-03T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.772Z</updated>
     
@@ -1576,8 +1576,8 @@
   
   <entry>
     <title>EmotionCamera</title>
-    <link href="https://lailin.xyz/post/16707/"/>
-    <id>https://lailin.xyz/post/16707/</id>
+    <link href="https://lailin.xyz/post/16707.html"/>
+    <id>https://lailin.xyz/post/16707.html</id>
     <published>2016-01-01T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.768Z</updated>
     
@@ -1605,38 +1605,9 @@
   </entry>
   
   <entry>
-    <title>NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</title>
-    <link href="https://lailin.xyz/post/64902/"/>
-    <id>https://lailin.xyz/post/64902/</id>
-    <published>2015-11-14T16:00:00.000Z</published>
-    <updated>2019-04-07T12:46:30.770Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;错误详情：&lt;br&gt;错误:
-        
-      
-    
-    </summary>
-    
-      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
-    
-    
-      <category term="app" scheme="https://lailin.xyz/tags/app/"/>
-    
-      <category term="ndk" scheme="https://lailin.xyz/tags/ndk/"/>
-    
-  </entry>
-  
-  <entry>
     <title>phpstrom10激活方法（JetBrains系列软件激活）</title>
-    <link href="https://lailin.xyz/post/28397/"/>
-    <id>https://lailin.xyz/post/28397/</id>
+    <link href="https://lailin.xyz/post/28397.html"/>
+    <id>https://lailin.xyz/post/28397.html</id>
     <published>2015-11-14T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.810Z</updated>
     
@@ -1665,9 +1636,38 @@
   </entry>
   
   <entry>
+    <title>NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</title>
+    <link href="https://lailin.xyz/post/64902.html"/>
+    <id>https://lailin.xyz/post/64902.html</id>
+    <published>2015-11-14T16:00:00.000Z</published>
+    <updated>2019-04-07T12:46:30.770Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;错误详情：&lt;br&gt;错误:
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="app" scheme="https://lailin.xyz/tags/app/"/>
+    
+      <category term="ndk" scheme="https://lailin.xyz/tags/ndk/"/>
+    
+  </entry>
+  
+  <entry>
     <title>phpsocket连接，UDP</title>
-    <link href="https://lailin.xyz/post/19867/"/>
-    <id>https://lailin.xyz/post/19867/</id>
+    <link href="https://lailin.xyz/post/19867.html"/>
+    <id>https://lailin.xyz/post/19867.html</id>
     <published>2015-11-08T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.808Z</updated>
     
@@ -1696,8 +1696,8 @@
   
   <entry>
     <title>appcan利用天翼rtc实现视频通话功能</title>
-    <link href="https://lailin.xyz/post/34934/"/>
-    <id>https://lailin.xyz/post/34934/</id>
+    <link href="https://lailin.xyz/post/34934.html"/>
+    <id>https://lailin.xyz/post/34934.html</id>
     <published>2015-10-28T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.771Z</updated>
     
@@ -1729,8 +1729,8 @@
   
   <entry>
     <title>java中字符串相等的判断</title>
-    <link href="https://lailin.xyz/post/62897/"/>
-    <id>https://lailin.xyz/post/62897/</id>
+    <link href="https://lailin.xyz/post/62897.html"/>
+    <id>https://lailin.xyz/post/62897.html</id>
     <published>2015-10-26T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.772Z</updated>
     
@@ -1758,8 +1758,8 @@
   
   <entry>
     <title>office2016激活工具</title>
-    <link href="https://lailin.xyz/post/37989/"/>
-    <id>https://lailin.xyz/post/37989/</id>
+    <link href="https://lailin.xyz/post/37989.html"/>
+    <id>https://lailin.xyz/post/37989.html</id>
     <published>2015-10-21T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.776Z</updated>
     
@@ -1786,8 +1786,8 @@
   
   <entry>
     <title>使用MITAPPInventor2web客户端组件保存数据至云端</title>
-    <link href="https://lailin.xyz/post/35791/"/>
-    <id>https://lailin.xyz/post/35791/</id>
+    <link href="https://lailin.xyz/post/35791.html"/>
+    <id>https://lailin.xyz/post/35791.html</id>
     <published>2015-10-19T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.779Z</updated>
     
@@ -1814,9 +1814,37 @@
   </entry>
   
   <entry>
+    <title>php如何实现整除</title>
+    <link href="https://lailin.xyz/post/28942.html"/>
+    <id>https://lailin.xyz/post/28942.html</id>
+    <published>2015-10-17T16:00:00.000Z</published>
+    <updated>2019-04-07T12:46:30.814Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;php如何实现整除&quot;&gt;&lt;a href=&quot;#php如何实现整除&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>phpstrom9可用注册码一枚</title>
-    <link href="https://lailin.xyz/post/19314/"/>
-    <id>https://lailin.xyz/post/19314/</id>
+    <link href="https://lailin.xyz/post/19314.html"/>
+    <id>https://lailin.xyz/post/19314.html</id>
     <published>2015-10-17T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.810Z</updated>
     
@@ -1844,37 +1872,9 @@
   </entry>
   
   <entry>
-    <title>php如何实现整除</title>
-    <link href="https://lailin.xyz/post/28942/"/>
-    <id>https://lailin.xyz/post/28942/</id>
-    <published>2015-10-17T16:00:00.000Z</published>
-    <updated>2019-04-07T12:46:30.814Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;php如何实现整除&quot;&gt;&lt;a href=&quot;#php如何实现整除&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
     <title>【福利】至善网媒体素材一键评价</title>
-    <link href="https://lailin.xyz/post/59875/"/>
-    <id>https://lailin.xyz/post/59875/</id>
+    <link href="https://lailin.xyz/post/59875.html"/>
+    <id>https://lailin.xyz/post/59875.html</id>
     <published>2015-10-16T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.778Z</updated>
     
@@ -1904,8 +1904,8 @@
   
   <entry>
     <title>Corethink瀑布流插件</title>
-    <link href="https://lailin.xyz/post/54589/"/>
-    <id>https://lailin.xyz/post/54589/</id>
+    <link href="https://lailin.xyz/post/54589.html"/>
+    <id>https://lailin.xyz/post/54589.html</id>
     <published>2015-10-15T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.807Z</updated>
     
@@ -1934,8 +1934,8 @@
   
   <entry>
     <title>CoreThink图片轮播插件【ImageSlider】</title>
-    <link href="https://lailin.xyz/post/15278/"/>
-    <id>https://lailin.xyz/post/15278/</id>
+    <link href="https://lailin.xyz/post/15278.html"/>
+    <id>https://lailin.xyz/post/15278.html</id>
     <published>2015-10-15T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.806Z</updated>
     
@@ -1964,8 +1964,8 @@
   
   <entry>
     <title>如何使用MITAPPInventor2快速创建一个蓝牙串口app</title>
-    <link href="https://lailin.xyz/post/23045/"/>
-    <id>https://lailin.xyz/post/23045/</id>
+    <link href="https://lailin.xyz/post/23045.html"/>
+    <id>https://lailin.xyz/post/23045.html</id>
     <published>2015-10-15T16:00:00.000Z</published>
     <updated>2019-04-07T12:46:30.804Z</updated>
     
