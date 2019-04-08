@@ -87,7 +87,7 @@
       apiKey: '0f4e5abf708587974517054f9c1aaf73',
       indexName: 'Blog',
       hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到内容, 换个关键词试试: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到和 ${query} 相关的内容, 换个关键词试试","hits_stats":"为您找到 ${hits} 条内容, 耗时: ${time} ms"}
     }
   };
 </script>
@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="页面链接可能改变，请点击左侧搜索查找你想要的内容      setTimeout(() =&amp;gt; {         // 打开搜索页面         let nav = document.querySelector(&quot;#header &amp;gt; div &amp;gt; div &amp;gt; div.site-nav-toggle &amp;gt; button&quot;)         nav.click()         let search">
+  <meta name="description" content="页面链接可能改变，请点击左侧搜索查找你想要的内容      window.onload=function(){         // 打开搜索页面         let nav = document.querySelector(&quot;#header &amp;gt; div &amp;gt; div &amp;gt; div.site-nav-toggle &amp;gt; button&quot;)         nav.click()         let">
 <meta name="keywords" content="Go, Docker, PHP">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Page Not Found">
 <meta property="og:url" content="https://lailin.xyz/404.html">
 <meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="页面链接可能改变，请点击左侧搜索查找你想要的内容      setTimeout(() =&amp;gt; {         // 打开搜索页面         let nav = document.querySelector(&quot;#header &amp;gt; div &amp;gt; div &amp;gt; div.site-nav-toggle &amp;gt; button&quot;)         nav.click()         let search">
+<meta property="og:description" content="页面链接可能改变，请点击左侧搜索查找你想要的内容      window.onload=function(){         // 打开搜索页面         let nav = document.querySelector(&quot;#header &amp;gt; div &amp;gt; div &amp;gt; div.site-nav-toggle &amp;gt; button&quot;)         nav.click()         let">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-08T15:09:50.609Z">
+<meta property="og:updated_time" content="2019-04-08T15:28:59.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Page Not Found">
-<meta name="twitter:description" content="页面链接可能改变，请点击左侧搜索查找你想要的内容      setTimeout(() =&amp;gt; {         // 打开搜索页面         let nav = document.querySelector(&quot;#header &amp;gt; div &amp;gt; div &amp;gt; div.site-nav-toggle &amp;gt; button&quot;)         nav.click()         let search">
+<meta name="twitter:description" content="页面链接可能改变，请点击左侧搜索查找你想要的内容      window.onload=function(){         // 打开搜索页面         let nav = document.querySelector(&quot;#header &amp;gt; div &amp;gt; div &amp;gt; div.site-nav-toggle &amp;gt; button&quot;)         nav.click()         let">
 
 
   
@@ -412,7 +412,7 @@
         
           <p>页面链接可能改变，请点击左侧搜索查找你想要的内容</p>
 <script>
-    setTimeout(() => {
+    window.onload=function(){
         // 打开搜索页面
         let nav = document.querySelector("#header > div > div > div.site-nav-toggle > button")
         nav.click()
@@ -434,15 +434,14 @@
         res.insertBefore(div,stat)
         input.addEventListener('input', console.log, false);
         let event = new InputEvent('input');
+        input.value = arr[arr.length - 1];
         input.dispatchEvent(event)
         setTimeout(_ => {
             input.value = arr[arr.length - 1];
             input.dispatchEvent(event)
-        }, 1000)
-
+        }, 500)
         console.log("404")
-    }, 1000);
-
+    }
 </script>
 
         
