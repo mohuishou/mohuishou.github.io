@@ -1813,7 +1813,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #c7ffd1;
+  background: #49cbff;
 }
 .feed-link,
 .chat {
@@ -3156,4 +3156,15 @@ ul.breadcrumb li+li:last-child {
   .pagination {
     margin: 8px 0 0;
   }
+}
+em {
+  color: #f00;
+  font-style: normal;
+}
+.algolia-hit-item-title {
+  font-weight: bold;
+}
+.algolia-hit-item-content {
+  font-size: 0.8em;
+  color: #555;
 }

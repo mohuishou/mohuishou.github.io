@@ -39,7 +39,8 @@ $(document).ready(function() {
           var link = data.permalink ? data.permalink : CONFIG.root + data.path;
           return (
             '<a href="' + link + '" class="algolia-hit-item-link">'
-          + data._highlightResult.title.value
+          + '<div class="algolia-hit-item-title">' + data._highlightResult.title.value + '</div>'
+          + '<div class="algolia-hit-item-content">' + data._snippetResult.raw.value + '</div>'
           + '</a>'
           );
         },
