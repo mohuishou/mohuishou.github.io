@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="为什么在存储如此便宜的今天我们仍然需要对 Docker 镜像进行瘦身?">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-14T09:26:36.808Z">
+<meta property="og:updated_time" content="2019-04-19T01:02:10.334Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker镜像瘦身&amp;优化">
 <meta name="twitter:description" content="为什么在存储如此便宜的今天我们仍然需要对 Docker 镜像进行瘦身?">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-14 09:26:36" itemprop="dateModified" datetime="2019-04-14T09:26:36+00:00">2019-04-14</time>
+                <time title="修改时间：2019-04-19 01:02:10" itemprop="dateModified" datetime="2019-04-19T01:02:10+00:00">2019-04-19</time>
               
             
           </span>
@@ -550,7 +550,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ruby   latest   a5d26127d8d0        4 weeks ago         881MB</span><br><span class="line">ruby   alpine   8d8f7d19d1fa        4 weeks ago         47.8MB</span><br><span class="line">ruby   slim     58dd4d3c99da        4 weeks ago         125MB</span><br></pre></td></tr></table></figure>
 <h2 id="减少层，去除非必要的文件"><a href="#减少层，去除非必要的文件" class="headerlink" title="减少层，去除非必要的文件"></a>减少层，去除非必要的文件</h2><ol>
 <li><p>删除文件不要跨行</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dockerfile 1</span></span><br><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://github.com/mohuishou/scuplus-wechat/archive/1.0.0.zip &amp;&amp;  rm 1.0.0.zip</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># dockerfile 2</span></span><br><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://github.com/mohuishou/scuplus-wechat/archive/1.0.0.zip</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> rm 1.0.0.zip</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># dockerfile 3</span></span><br><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://github.com/mohuishou/scuplus-wechat/archive/1.0.0.zip &amp;&amp;  rm 1.0.0.zip</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dockerfile 1</span></span><br><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://github.com/mohuishou/scuplus-wechat/archive/1.0.0.zip</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># dockerfile 2</span></span><br><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://github.com/mohuishou/scuplus-wechat/archive/1.0.0.zip</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> rm 1.0.0.zip</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># dockerfile 3</span></span><br><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://github.com/mohuishou/scuplus-wechat/archive/1.0.0.zip &amp;&amp;  rm 1.0.0.zip</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">test</span>   3  351a80e99c22        5 seconds ago        5.53MB</span><br><span class="line"><span class="built_in">test</span>   2  ad27e625b8e5        49 seconds ago       6.1MB</span><br><span class="line"><span class="built_in">test</span>   1  165e2e0df1d3        About a minute ago   6.1MB</span><br></pre></td></tr></table></figure>
 <p>可以发现 1，2 两个大小一样，但是 3 小了 0.5MB，这是因为 docker 几乎每一行命令都会生成一个层，删除文件的时候：因为底下各层都是只读的，当需要删除这些层中的文件时，AUFS 使用 whiteout 机制，它的实现是通过在上层的可写的目录下建立对应的 whiteout 隐藏文件来实现的，所以在当前层去删除上一层的文件，只是会把这个文件隐藏掉罢了</p>
 </li>
@@ -595,7 +595,7 @@
 </li>
 </ol>
 <p>上述内容可以结合<strong>多阶段构建</strong>实现</p>
-<h3 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h3><p>Golang 在使用多阶段构建之后，只剩下了一个二进制文件，这时候再要优化，就只有使用<code>npx</code>之类的工具压缩二进制文件的体积了</p>
+<h3 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h3><p>Golang 在使用多阶段构建之后，只剩下了一个二进制文件，这时候再要优化，就只有使用<code>upx</code>之类的工具压缩二进制文件的体积了</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
 <li><a href="http://dockone.io/article/8174" target="_blank" rel="noopener">Docker 容器镜像瘦身的三个小窍门</a></li>
 <li><a href="https://liulantao.com/docker-base-images.html" target="_blank" rel="noopener">基础镜像 | 再谈 Docker 瘦身</a></li>
