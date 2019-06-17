@@ -107,7 +107,7 @@
 <meta property="og:description" content="插入排序说明插入排序的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。 步骤 从第一个元素开始，该元素可以认为已经被排序 取出下一个元素，在已经排序的元素序列中从后向前扫描 如果该元素（已排序）大于新元素，将该元素移到下一位置 重复步骤3，直到找到已排序的元素小于或者等于新元素的位置 将新元素插入到该位置后 重复步骤2~5  图片示例 程序示例（go）1">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141645.gif">
-<meta property="og:updated_time" content="2019-06-05T16:38:52.154Z">
+<meta property="og:updated_time" content="2019-06-17T16:43:45.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="插入排序">
 <meta name="twitter:description" content="插入排序说明插入排序的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。 步骤 从第一个元素开始，该元素可以认为已经被排序 取出下一个元素，在已经排序的元素序列中从后向前扫描 如果该元素（已排序）大于新元素，将该元素移到下一位置 重复步骤3，直到找到已排序的元素小于或者等于新元素的位置 将新元素插入到该位置后 重复步骤2~5  图片示例 程序示例（go）1">
@@ -440,7 +440,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-05 16:38:52" itemprop="dateModified" datetime="2019-06-05T16:38:52+00:00">2019-06-05</time>
+                <time title="修改时间：2019-06-17 16:43:45" itemprop="dateModified" datetime="2019-06-17T16:43:45+00:00">2019-06-17</time>
               
             
           </span>
@@ -485,7 +485,7 @@
 </ol>
 <h2 id="图片示例"><a href="#图片示例" class="headerlink" title="图片示例"></a>图片示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141645.gif" alt></p>
 <h2 id="程序示例（go）"><a href="#程序示例（go）" class="headerlink" title="程序示例（go）"></a>程序示例（go）</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//SortInt 插入排序</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SortInt</span><span class="params">(a []<span class="keyword">int</span>)</span> <span class="params">([]<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	n := <span class="number">0</span></span><br><span class="line">	aLen := <span class="built_in">len</span>(a)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//从i=1开始，第一个数不用排序，一个数相当于已经有序了</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt; aLen; i++ &#123;</span><br><span class="line">		<span class="comment">//取出新数（类似摸牌）</span></span><br><span class="line">		tmp := a[i]</span><br><span class="line"></span><br><span class="line">		<span class="comment">//将新数和之前的数从后往前（从大到小）一次比较，如果新数更小,就将以前的数往后移一位</span></span><br><span class="line">		j := i</span><br><span class="line">		<span class="keyword">for</span> ; (j &gt; <span class="number">0</span>) &amp;&amp; (tmp &lt; a[j<span class="number">-1</span>]); j-- &#123;</span><br><span class="line">			n++</span><br><span class="line">			a[j] = a[j<span class="number">-1</span>] <span class="comment">//后移一位</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//新数插入</span></span><br><span class="line">		a[j] = tmp</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> a, n</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/27243.html">shell排序</a></li><li><a href="https://lailin.xyz/post/21238.html">冒泡排序</a></li><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li><li><a href="https://lailin.xyz/post/51203.html">选择排序</a></li><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li></ul></div>
       
     </div>
 

@@ -110,7 +110,7 @@
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190410234453.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190411000323.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190410235215.png">
-<meta property="og:updated_time" content="2019-06-05T16:38:52.150Z">
+<meta property="og:updated_time" content="2019-06-17T16:43:45.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo-next-algolia-search全文搜索">
 <meta name="twitter:description" content="在hexo中通过algolia实现全文搜索">
@@ -443,7 +443,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-05 16:38:52" itemprop="dateModified" datetime="2019-06-05T16:38:52+00:00">2019-06-05</time>
+                <time title="修改时间：2019-06-17 16:43:45" itemprop="dateModified" datetime="2019-06-17T16:43:45+00:00">2019-06-17</time>
               
             
           </span>
@@ -523,7 +523,7 @@
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>原理其实很简单，获取文章原始<code>markdown</code>内容，判断大小如果超过指定大小(默认8K)就进行截断</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取原始内容</span></span><br><span class="line"><span class="keyword">var</span> rawBuf = <span class="keyword">new</span> Buffer(data.raw)</span><br><span class="line"><span class="comment">// 获取大小限制</span></span><br><span class="line"><span class="keyword">var</span> rowSize = options.maxRawSize * <span class="number">1024</span></span><br><span class="line"><span class="keyword">if</span> (rawBuf.length &gt; rowSize) &#123;</span><br><span class="line">  <span class="comment">// 超出限制，进行截断</span></span><br><span class="line">  storedPost.raw = rawBuf.toString(<span class="string">"utf8"</span>, <span class="number">0</span>, rowSize)</span><br><span class="line">  <span class="comment">// 去除最后一个字符</span></span><br><span class="line">  <span class="comment">// 由于截断是按照字节截断的，但是一个中文字符不止一个字节，可能会导致最后一个字符乱码</span></span><br><span class="line">  storedPost.raw = storedPost.raw.substring(<span class="number">0</span>, storedPost.raw.length - <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>详情可以查看PR: <a href="https://github.com/oncletom/hexo-algolia/pull/39/files" target="_blank" rel="noopener">Feature/add raw max len</a></p>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/60163.html">GORM避坑指南之含关联关系的更新</a></li><li><a href="https://lailin.xyz/post/40393.html">pprof go性能分析工具</a></li><li><a href="https://lailin.xyz/post/28054.html">Github Actions介绍&自动构建Github Pages博客</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/51252.html">docker镜像瘦身&优化</a></li><li><a href="https://lailin.xyz/post/60163.html">GORM避坑指南之含关联关系的更新</a></li><li><a href="https://lailin.xyz/post/7944.html">在blog中内嵌在线PPT</a></li></ul></div>
       
     </div>
 
