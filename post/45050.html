@@ -99,7 +99,7 @@
 
 
   <meta name="description" content="POSTMAN 是我在开发过程当中最常用到的 API 测试工具之一，虽然并不完美，但也是目前个人认为在API测试时最好用的客户端工具之一。 本文适用于后端，前端，移动端以及测试的同学，分三大部分从最简单的界面操作开讲，然后涉及到变量、脚本以及一些云服务相关的功能，最后将适配几个案例讲解怎么使用 POSTMAN 提高我们的工作效率。本文前半部分包含较多基础功能讲解，对已经比较熟悉使用的同学，可以选择">
-<meta name="keywords" content="tool,postman,api,rest">
+<meta name="keywords" content="tool,postman,api,rest,test,gatway">
 <meta property="og:type" content="article">
 <meta property="og:title" content="善用工具之postman高级用法概述">
 <meta property="og:url" content="https://lailin.xyz/post/45050.html">
@@ -110,7 +110,7 @@
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190605235605.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190605235911.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190606000414.png">
-<meta property="og:image" content="c:/Users/laili/AppData/Roaming/Typora/typora-user-images/1559750920570.png">
+<meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/1559750920570.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190606001204.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190606001837.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190606002811.png">
@@ -134,7 +134,7 @@
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190710233355.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190712002216.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190712003222.png">
-<meta property="og:updated_time" content="2019-07-11T17:07:08.547Z">
+<meta property="og:updated_time" content="2019-07-11T17:13:51.375Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="善用工具之postman高级用法概述">
 <meta name="twitter:description" content="POSTMAN 是我在开发过程当中最常用到的 API 测试工具之一，虽然并不完美，但也是目前个人认为在API测试时最好用的客户端工具之一。 本文适用于后端，前端，移动端以及测试的同学，分三大部分从最简单的界面操作开讲，然后涉及到变量、脚本以及一些云服务相关的功能，最后将适配几个案例讲解怎么使用 POSTMAN 提高我们的工作效率。本文前半部分包含较多基础功能讲解，对已经比较熟悉使用的同学，可以选择">
@@ -467,7 +467,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-07-11 17:07:08" itemprop="dateModified" datetime="2019-07-11T17:07:08+00:00">2019-07-11</time>
+                <time title="修改时间：2019-07-11 17:13:51" itemprop="dateModified" datetime="2019-07-11T17:13:51+00:00">2019-07-11</time>
               
             
           </span>
@@ -535,7 +535,7 @@
 <p>通过上图我们可以发现，默认选项是从父目录中继承，所以如下图所示，其实我们可以在一个 Collection 或者是下面的文件夹中设置认证方式，这时候整个目录下的所有的 API 默认都可以通过认证</p>
 <p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190606000414.png" alt></p>
 <h4 id="2-2-2、参数"><a href="#2-2-2、参数" class="headerlink" title="2.2.2、参数"></a>2.2.2、参数</h4><p>所有 K-V 模式的参数都可以批量编辑, 包括QueryString, Body, Header, 批量编辑的功能可以快速复制浏览器中的请求参数信息到 postman 中</p>
-<p><img src="C:\Users\laili\AppData\Roaming\Typora\typora-user-images\1559750920570.png" alt="1559750920570"></p>
+<p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/1559750920570.png" alt></p>
 <p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190606001204.png" alt></p>
 <h3 id="2-3、变量"><a href="#2-3、变量" class="headerlink" title="2.3、变量"></a>2.3、变量</h3><p>postman 中一共存在五种变量类型， 全局变量，Collection/文件夹中的变量，环境变量，数据变量，本地变量</p>
 <p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190606001837.png" alt></p>
@@ -687,6 +687,10 @@
             <a href="/tags/api/" rel="tag"># api</a>
           
             <a href="/tags/rest/" rel="tag"># rest</a>
+          
+            <a href="/tags/test/" rel="tag"># test</a>
+          
+            <a href="/tags/gatway/" rel="tag"># gatway</a>
           
         </div>
       
@@ -1046,7 +1050,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">89</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">91</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
