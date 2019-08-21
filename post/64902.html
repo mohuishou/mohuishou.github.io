@@ -15,7 +15,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -107,7 +107,7 @@
 <meta property="og:description" content="错误详情：错误: 无法访问android.support.v7.app.AppCompatActivity找不到android.support.v7.app.AppCompatActivity的类文件  为了这个问题纠结2天了，在网上找了很多的解决办法都不行，几乎所有的办法都试过了 无意中查看sdk Manager的时候发现我的“android support library”没有安装，然后当即">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141647.png">
-<meta property="og:updated_time" content="2019-08-01T14:35:05.760Z">
+<meta property="og:updated_time" content="2019-08-21T17:18:51.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法">
 <meta name="twitter:description" content="错误详情：错误: 无法访问android.support.v7.app.AppCompatActivity找不到android.support.v7.app.AppCompatActivity的类文件  为了这个问题纠结2天了，在网上找了很多的解决办法都不行，几乎所有的办法都试过了 无意中查看sdk Manager的时候发现我的“android support library”没有安装，然后当即">
@@ -440,7 +440,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-01 14:35:05" itemprop="dateModified" datetime="2019-08-01T14:35:05+00:00">2019-08-01</time>
+                <time title="修改时间：2019-08-21 17:18:51" itemprop="dateModified" datetime="2019-08-21T17:18:51+00:00">2019-08-21</time>
               
             
           </span>
@@ -500,7 +500,7 @@
 <p>随后执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javah -d jni -classpath   F:\SoftInstall\Android\sdk\platforms\android-23\android.jar;F:\SoftInstall\android\sdk\extras\android\support\v4\android-support-v4.jar;F:\SoftInstall\android\sdk\extras\android\support\v7\appcompat\libs\android-support-v7-appcompat.jar;..\..\build\intermediates\classes\debug com.lxl520.demo3.MainActivity</span><br></pre></td></tr></table></figure></p>
 <p>即可</p>
 <p><strong>注意：</strong><br>如果发现你的sdk文件夹下面没有<strong>sdk\extras\android\support\</strong><br>这个文件夹的时候一定要检查一下你的<strong>“android support library”</strong>是否安装，<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141647.png" alt></p>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/35791.html">使用MITAPPInventor2web客户端组件保存数据至云端</a></li><li><a href="https://lailin.xyz/post/34934.html">appcan利用天翼rtc实现视频通话功能</a></li><li><a href="https://lailin.xyz/post/23045.html">如何使用MITAPPInventor2快速创建一个蓝牙串口app</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/34934.html">appcan利用天翼rtc实现视频通话功能</a></li><li><a href="https://lailin.xyz/post/35791.html">使用MITAPPInventor2web客户端组件保存数据至云端</a></li><li><a href="https://lailin.xyz/post/23045.html">如何使用MITAPPInventor2快速创建一个蓝牙串口app</a></li></ul></div>
       
     </div>
 
@@ -1189,6 +1189,9 @@
 <script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
 
 <script>
+  let path = location.pathname
+  if (path.indexOf('html') < 0) path += ".html"
+  
   var gitalk = new Gitalk({
     clientID: '28db4ab78d0b5277990f',
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',

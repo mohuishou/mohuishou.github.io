@@ -15,7 +15,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="简介 不会写前端的后端不是一个好厨师  2018 年毕业于四川大学，目前就职于深圳某大厂 技术栈后端: Golang/Docker/K8s/PHP/Node前端: Vue/微信小程序 个人项目 We 川大小程序We 川大小程序[scuplus] 使用 wepy 开发的完善的校园综合小程序, 40+页面，前后端开源，包括成绩、课表、失物招领、图书馆、新闻资讯等等常见校园场景功能We 川大小程序-后端">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-01T14:35:05.764Z">
+<meta property="og:updated_time" content="2019-08-21T17:18:51.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于我">
 <meta name="twitter:description" content="简介 不会写前端的后端不是一个好厨师  2018 年毕业于四川大学，目前就职于深圳某大厂 技术栈后端: Golang/Docker/K8s/PHP/Node前端: Vue/微信小程序 个人项目 We 川大小程序We 川大小程序[scuplus] 使用 wepy 开发的完善的校园综合小程序, 40+页面，前后端开源，包括成绩、课表、失物招领、图书馆、新闻资讯等等常见校园场景功能We 川大小程序-后端">
@@ -992,6 +992,9 @@
 <script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
 
 <script>
+  let path = location.pathname
+  if (path.indexOf('html') < 0) path += ".html"
+  
   var gitalk = new Gitalk({
     clientID: '28db4ab78d0b5277990f',
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',

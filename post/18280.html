@@ -15,7 +15,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -108,7 +108,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/4058054721.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/3439227638.png">
-<meta property="og:updated_time" content="2019-08-01T14:35:05.760Z">
+<meta property="og:updated_time" content="2019-08-21T17:18:51.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="四川大学锐捷windows解除多网卡限制">
 <meta name="twitter:description" content="序 搬到望江校区之后校园网快了好多，但是需要锐捷认证，锐捷这个坑货需要限制多网卡，而且程序的占用实在太大，十分的不方便。使用 wifi 共享软件可以开启 wifi 热点，但是会出现连接没多久没网的情况  我使用的锐捷版本是 v4.96 解决的问题理论上说多网卡限制的问题都可以解决掉：  wifi 热点共享 VPN（FQ） 虚拟机 host-only  使用方法1.首先你已经安装了锐捷的客户端并且使">
@@ -441,7 +441,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-01 14:35:05" itemprop="dateModified" datetime="2019-08-01T14:35:05+00:00">2019-08-01</time>
+                <time title="修改时间：2019-08-21 17:18:51" itemprop="dateModified" datetime="2019-08-21T17:18:51+00:00">2019-08-21</time>
               
             
           </span>
@@ -508,7 +508,7 @@
 <p>2.然后下载 mentohust win 版本（<a href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/MentoHUST%EF%BC%88WINDOWS%E7%89%88%EF%BC%89.rar" target="_blank" rel="noopener">点击下载</a>）<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/4058054721.png" alt="1ecdddfa-ec9a-473b-9a13-3b2e5c3b4fdb.png"></p>
 <p>3.mentohust 的使用方法网上有很多了这里不在赘述，<a href="http://jingyan.baidu.com/article/47a29f2416ba37c015239957.html" target="_blank" rel="noopener">百度经验</a> </p>
 <p>4.需要注意这里有不一样的地方，直接按照上面链接的方法是没有办法认证成功的，在设置好之后点击认证前，需要先使用锐捷成功认证上网，然后再使用这个软件认证 5.认证成功之后打开任务管理器，找到 8021.exe 这个进程干掉就可以了 6.然后使用 win10 自带的移动热点也可以开启热点不需要单独下载 wifi 共享软件<br>(如果没有，<del>使用 wifi 软件,测试猎豹 wifi 还是会出现没有网的情况</del> 或者直接用命令行开启也是可以的)<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/3439227638.png" alt="1610c2cb-221c-42b6-8824-c47176e27cde.png"></p>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/28397.html">phpstrom10激活方法（JetBrains系列软件激活）</a></li><li><a href="https://lailin.xyz/post/19314.html">phpstrom9可用注册码一枚</a></li><li><a href="https://lailin.xyz/post/5431.html">使用chromedp解决反爬虫问题</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/5431.html">使用chromedp解决反爬虫问题</a></li><li><a href="https://lailin.xyz/post/51466.html">四川大学望江校区使用mentohust认证上网</a></li><li><a href="https://lailin.xyz/post/31503.html">四川大学评教开源代码</a></li></ul></div>
       
     </div>
 
@@ -1199,6 +1199,9 @@
 <script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
 
 <script>
+  let path = location.pathname
+  if (path.indexOf('html') < 0) path += ".html"
+  
   var gitalk = new Gitalk({
     clientID: '28db4ab78d0b5277990f',
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',

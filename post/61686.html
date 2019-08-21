@@ -15,7 +15,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="以下都是流水账，感慨一下… 今天有幸参加了一位师兄的校友聚会，也很巧合，和很多大佬一起吃了一个饭，听大佬们聊天受益颇多。 今天有一位做技术很厉害的，专家级的师兄想创业，聊起了他的项目，另外几个做企业的师兄在旁边听并且给出建议。让我产生一种很强烈的对比，做技术的师兄考虑的最多的是技术十分的牛，技术拥有不可复制，或者说很高的复制成本。但是没有说到具体的牛在什么地方，而其他几个师兄在帮忙理清项目的思路，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-01T14:35:05.760Z">
+<meta property="og:updated_time" content="2019-08-21T17:18:51.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="纯技术人员和投资者的一些区别">
 <meta name="twitter:description" content="以下都是流水账，感慨一下… 今天有幸参加了一位师兄的校友聚会，也很巧合，和很多大佬一起吃了一个饭，听大佬们聊天受益颇多。 今天有一位做技术很厉害的，专家级的师兄想创业，聊起了他的项目，另外几个做企业的师兄在旁边听并且给出建议。让我产生一种很强烈的对比，做技术的师兄考虑的最多的是技术十分的牛，技术拥有不可复制，或者说很高的复制成本。但是没有说到具体的牛在什么地方，而其他几个师兄在帮忙理清项目的思路，">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-01 14:35:05" itemprop="dateModified" datetime="2019-08-01T14:35:05+00:00">2019-08-01</time>
+                <time title="修改时间：2019-08-21 17:18:51" itemprop="dateModified" datetime="2019-08-21T17:18:51+00:00">2019-08-21</time>
               
             
           </span>
@@ -496,7 +496,7 @@
 <p>不同位置的人看问题的角度不一样，或许只有那个技术很牛的师兄一样才能把一门技术做到极致。</p>
 <p>但是反过来思考一下做技术需不需要有一定的产品思维，需不需要了解市场动态，需不需要良好的一个语言表述和组织能力，虽然这些肯定不是最重要的，但是应该也是不可或缺的吧。</p>
 <p>自勉</p>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/44107.html">记一次net http内存泄漏</a></li><li><a href="https://lailin.xyz/post/52061.html">使用TravisCI自动部署Blog</a></li><li><a href="https://lailin.xyz/post/28054.html">Github Actions介绍&自动构建Github Pages博客</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/28054.html">Github Actions介绍&自动构建Github Pages博客</a></li><li><a href="https://lailin.xyz/post/44107.html">记一次net http内存泄漏</a></li><li><a href="https://lailin.xyz/post/52061.html">使用TravisCI自动部署Blog</a></li></ul></div>
       
     </div>
 
@@ -1185,6 +1185,9 @@
 <script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
 
 <script>
+  let path = location.pathname
+  if (path.indexOf('html') < 0) path += ".html"
+  
   var gitalk = new Gitalk({
     clientID: '28db4ab78d0b5277990f',
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',

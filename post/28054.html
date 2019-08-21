@@ -15,7 +15,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -110,7 +110,7 @@
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190115224518.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190115230105.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190116000345.png">
-<meta property="og:updated_time" content="2019-08-01T14:35:05.756Z">
+<meta property="og:updated_time" content="2019-08-21T17:18:51.841Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Github Actions介绍&amp;自动构建Github Pages博客">
 <meta name="twitter:description" content="本文将主要讲述如何创建一个自定义的Github Actions， 并且使用Github Actions 完成 CI/CD的操作">
@@ -443,7 +443,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-01 14:35:05" itemprop="dateModified" datetime="2019-08-01T14:35:05+00:00">2019-08-01</time>
+                <time title="修改时间：2019-08-21 17:18:51" itemprop="dateModified" datetime="2019-08-21T17:18:51+00:00">2019-08-21</time>
               
             
           </span>
@@ -513,7 +513,7 @@
 <p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190116000345.png" alt></p>
 <h3 id="创建Action"><a href="#创建Action" class="headerlink" title="创建Action"></a>创建Action</h3><p>Action其实就是Docker镜像，按照Docker镜像的写法即可，需要关注以下几点</p>
 <h4 id="1-Dockerfile-Lables"><a href="#1-Dockerfile-Lables" class="headerlink" title="1. Dockerfile Lables"></a>1. Dockerfile Lables</h4><p>github actions 会读取dockerfile的label在Workflow GUI上做一些展示</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"com.github.actions.name"</span>=<span class="string">""</span> <span class="comment">#Github action 的名字</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"com.github.actions.description"</span>=<span class="string">"desc"</span> <span class="comment">#说明</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"com.github.actions.icon"</span>=<span class="string">"mic"</span> <span class="comment">#GUI上展示的图标</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"com.github.actions.color"</span>=<span class="string">"purple"</span> <span class="comment"># GUI上展示的颜色</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"repository"</span>=<span class="string">"http://github.com/mohuishou/hugo-action"</span> <span class="comment"># 仓库地址</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"homepage"</span>=<span class="string">"http://github.com/mohuishou"</span> <span class="comment"># 主页</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> <span class="string">"maintainer"</span>=<span class="string">"mohuishou &lt;1@lailin.xyz&gt;"</span> <span class="comment"># 作者</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">LABEL</span> "com.github.actions.name"="" #Github action 的名字</span><br><span class="line"><span class="keyword">LABEL</span> "com.github.actions.description"="desc" #说明</span><br><span class="line"><span class="keyword">LABEL</span> "com.github.actions.icon"="mic" #GUI上展示的图标</span><br><span class="line"><span class="keyword">LABEL</span> "com.github.actions.color"="purple" # GUI上展示的颜色</span><br><span class="line"></span><br><span class="line"><span class="keyword">LABEL</span> "repository"="http://github.com/mohuishou/hugo-action" # 仓库地址</span><br><span class="line"><span class="keyword">LABEL</span> "homepage"="http://github.com/mohuishou" # 主页</span><br><span class="line"><span class="keyword">LABEL</span> "maintainer"="mohuishou &lt;1@lailin.xyz&gt;" # 作者</span><br></pre></td></tr></table></figure>
 <h4 id="2-Env"><a href="#2-Env" class="headerlink" title="2. Env"></a>2. Env</h4><p>默认的环境变量，以及如何读取</p>
 <h5 id="默认环境变量"><a href="#默认环境变量" class="headerlink" title="默认环境变量"></a>默认环境变量</h5><p>所有的默认值可以参考这里 <a href="https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#environment-variables" target="_blank" rel="noopener">Environment variables</a></p>
 <p>常用的主要有</p>
@@ -576,7 +576,7 @@
 <li><a href="https://github.com/xitu/gold-miner/blob/master/TODO1/introducing-github-actions.md" target="_blank" rel="noopener">GitHub Actions 介绍，了解一下？</a></li>
 <li><a href="https://github.com/actions" target="_blank" rel="noopener">Github Actions Repo</a></li>
 </ol>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/44107.html">记一次net http内存泄漏</a></li><li><a href="https://lailin.xyz/post/51252.html">docker镜像瘦身&优化</a></li><li><a href="https://lailin.xyz/post/27142.html">hexo-next-algolia-search全文搜索</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/27142.html">hexo-next-algolia-search全文搜索</a></li><li><a href="https://lailin.xyz/post/51252.html">docker镜像瘦身&优化</a></li><li><a href="https://lailin.xyz/post/60163.html">GORM避坑指南之含关联关系的更新</a></li></ul></div>
       
     </div>
 
@@ -1265,6 +1265,9 @@
 <script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
 
 <script>
+  let path = location.pathname
+  if (path.indexOf('html') < 0) path += ".html"
+  
   var gitalk = new Gitalk({
     clientID: '28db4ab78d0b5277990f',
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',

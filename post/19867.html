@@ -15,7 +15,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="1234567891011121314151617181920212223242526&amp;lt;meta charset=&quot;utf-8&quot;&amp;gt;&amp;lt;?php//服务器信息$server = &apos;udp://192.168.253.1:9998&apos;;//消息结束符号$msg_eof = &quot;\n&quot;;$socket = stream_socket_server($server, $errno, $errs">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-01T14:35:05.760Z">
+<meta property="og:updated_time" content="2019-08-21T17:18:51.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="phpsocket连接，UDP">
 <meta name="twitter:description" content="1234567891011121314151617181920212223242526&amp;lt;meta charset=&quot;utf-8&quot;&amp;gt;&amp;lt;?php//服务器信息$server = &apos;udp://192.168.253.1:9998&apos;;//消息结束符号$msg_eof = &quot;\n&quot;;$socket = stream_socket_server($server, $errno, $errs">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-01 14:35:05" itemprop="dateModified" datetime="2019-08-01T14:35:05+00:00">2019-08-01</time>
+                <time title="修改时间：2019-08-21 17:18:51" itemprop="dateModified" datetime="2019-08-21T17:18:51+00:00">2019-08-21</time>
               
             
           </span>
@@ -490,7 +490,7 @@
       
 
       
-        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//服务器信息</span></span><br><span class="line">$server = <span class="string">'udp://192.168.253.1:9998'</span>;</span><br><span class="line"><span class="comment">//消息结束符号</span></span><br><span class="line">$msg_eof = <span class="string">"\n"</span>;</span><br><span class="line">$socket = stream_socket_server($server, $errno, $errstr, STREAM_SERVER_BIND);</span><br><span class="line"><span class="keyword">if</span> (!$socket) &#123;</span><br><span class="line">	<span class="keyword">die</span>(<span class="string">"$errstr ($errno)"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">	<span class="comment">//接收客户端发来的信息</span></span><br><span class="line">	$inMsg = stream_socket_recvfrom($socket, <span class="number">1024</span>, <span class="number">0</span>, $peer);</span><br><span class="line">	<span class="comment">//服务端打印出相关信息</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"Client : $peer\n"</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"Receive : &#123;$inMsg&#125;"</span>;</span><br><span class="line">	<span class="comment">//给客户端发送信息</span></span><br><span class="line">	$outMsg = substr($inMsg, <span class="number">0</span>, (strrpos($inMsg, $msg_eof))).<span class="string">' -- '</span>.date(<span class="string">"D M j H:i:s Y\r\n"</span>);</span><br><span class="line"></span><br><span class="line">	stream_socket_sendto($socket, $outMsg, <span class="number">0</span>, $peer);</span><br><span class="line">	</span><br><span class="line">&#125; <span class="keyword">while</span> ($inMsg !== <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure><div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/28397.html">phpstrom10激活方法（JetBrains系列软件激活）</a></li><li><a href="https://lailin.xyz/post/36128.html">Composer上线前的优化</a></li><li><a href="https://lailin.xyz/post/19314.html">phpstrom9可用注册码一枚</a></li></ul></div>
+        <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//服务器信息</span></span><br><span class="line">$server = <span class="string">'udp://192.168.253.1:9998'</span>;</span><br><span class="line"><span class="comment">//消息结束符号</span></span><br><span class="line">$msg_eof = <span class="string">"\n"</span>;</span><br><span class="line">$socket = stream_socket_server($server, $errno, $errstr, STREAM_SERVER_BIND);</span><br><span class="line"><span class="keyword">if</span> (!$socket) &#123;</span><br><span class="line">	<span class="keyword">die</span>(<span class="string">"$errstr ($errno)"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">	<span class="comment">//接收客户端发来的信息</span></span><br><span class="line">	$inMsg = stream_socket_recvfrom($socket, <span class="number">1024</span>, <span class="number">0</span>, $peer);</span><br><span class="line">	<span class="comment">//服务端打印出相关信息</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"Client : $peer\n"</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"Receive : &#123;$inMsg&#125;"</span>;</span><br><span class="line">	<span class="comment">//给客户端发送信息</span></span><br><span class="line">	$outMsg = substr($inMsg, <span class="number">0</span>, (strrpos($inMsg, $msg_eof))).<span class="string">' -- '</span>.date(<span class="string">"D M j H:i:s Y\r\n"</span>);</span><br><span class="line"></span><br><span class="line">	stream_socket_sendto($socket, $outMsg, <span class="number">0</span>, $peer);</span><br><span class="line">	</span><br><span class="line">&#125; <span class="keyword">while</span> ($inMsg !== <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure><div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div>
       
     </div>
 
@@ -1181,6 +1181,9 @@
 <script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
 
 <script>
+  let path = location.pathname
+  if (path.indexOf('html') < 0) path += ".html"
+  
   var gitalk = new Gitalk({
     clientID: '28db4ab78d0b5277990f',
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',

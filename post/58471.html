@@ -15,7 +15,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数  123456789101112131415161718/*** @author mohuishou&amp;lt;1@lailin.xyz&amp;gt;* @param string $url 获取图片的网址* @param string $fileName 保存的地址以及文件名*/function getImg($url, $fileName">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-01T14:35:05.760Z">
+<meta property="og:updated_time" content="2019-08-21T17:18:51.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="php利用curl保存图片">
 <meta name="twitter:description" content="做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数  123456789101112131415161718/*** @author mohuishou&amp;lt;1@lailin.xyz&amp;gt;* @param string $url 获取图片的网址* @param string $fileName 保存的地址以及文件名*/function getImg($url, $fileName">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-01 14:35:05" itemprop="dateModified" datetime="2019-08-01T14:35:05+00:00">2019-08-01</time>
+                <time title="修改时间：2019-08-21 17:18:51" itemprop="dateModified" datetime="2019-08-21T17:18:51+00:00">2019-08-21</time>
               
             
           </span>
@@ -497,7 +497,7 @@
 <blockquote>
 <p>使用的时候发现，需要保存验证码的cookies，留作验证，必要的时候还需要加上header</p>
 </blockquote>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* <span class="doctag">@author</span> mohuishou&lt;1<span class="doctag">@lailin</span>.xyz&gt;</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> string $url</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> string $fileName</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getCode</span><span class="params">($url = <span class="string">'http://www.169ol.com/Mall/Code/getCode'</span>, $fileName = <span class="string">'./img/code.png'</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;_code_cookie = dirname(<span class="keyword">__FILE__</span>).<span class="string">"/pic.cookie"</span>;</span><br><span class="line">        $ch = curl_init();</span><br><span class="line">        $fp = fopen($fileName, <span class="string">'w+'</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_URL, $url);</span><br><span class="line">        curl_setopt($ch, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, <span class="number">0</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_TIMEOUT, <span class="number">60</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_FILE,$fp);</span><br><span class="line">        curl_setopt($ch, CURLOPT_COOKIEJAR, <span class="keyword">$this</span>-&gt;_code_cookie);</span><br><span class="line"></span><br><span class="line">        curl_exec($ch);</span><br><span class="line">        curl_close($ch);</span><br><span class="line">        fclose($fp);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/28397.html">phpstrom10激活方法（JetBrains系列软件激活）</a></li><li><a href="https://lailin.xyz/post/36128.html">Composer上线前的优化</a></li><li><a href="https://lailin.xyz/post/19314.html">phpstrom9可用注册码一枚</a></li></ul></div>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* <span class="doctag">@author</span> mohuishou&lt;1<span class="doctag">@lailin</span>.xyz&gt;</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> string $url</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> string $fileName</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getCode</span><span class="params">($url = <span class="string">'http://www.169ol.com/Mall/Code/getCode'</span>, $fileName = <span class="string">'./img/code.png'</span>)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;_code_cookie = dirname(<span class="keyword">__FILE__</span>).<span class="string">"/pic.cookie"</span>;</span><br><span class="line">        $ch = curl_init();</span><br><span class="line">        $fp = fopen($fileName, <span class="string">'w+'</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_URL, $url);</span><br><span class="line">        curl_setopt($ch, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, <span class="number">0</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_TIMEOUT, <span class="number">60</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_FILE,$fp);</span><br><span class="line">        curl_setopt($ch, CURLOPT_COOKIEJAR, <span class="keyword">$this</span>-&gt;_code_cookie);</span><br><span class="line"></span><br><span class="line">        curl_exec($ch);</span><br><span class="line">        curl_close($ch);</span><br><span class="line">        fclose($fp);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div>
       
     </div>
 
@@ -1188,6 +1188,9 @@
 <script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
 
 <script>
+  let path = location.pathname
+  if (path.indexOf('html') < 0) path += ".html"
+  
   var gitalk = new Gitalk({
     clientID: '28db4ab78d0b5277990f',
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',

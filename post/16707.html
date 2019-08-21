@@ -15,7 +15,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="简单实现逻辑  首先识别脸部标识出关键点通过一定的算法捕抓表情  表情相机模块需要实现的任务  什么时候拍照？ 需要确定一个阈值导出一个静态库 ios和andriod  补充，ios需要涉及到mac系统还有OC；andriod需要涉及到Linux，安卓方面导出的静态库是.a格式；动态库为.so格式  最近两周需要完成的任务    现在的时间：2015年11月1日 23:34:33   两周后需要达">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-01T14:35:05.756Z">
+<meta property="og:updated_time" content="2019-08-21T17:18:51.841Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EmotionCamera">
 <meta name="twitter:description" content="简单实现逻辑  首先识别脸部标识出关键点通过一定的算法捕抓表情  表情相机模块需要实现的任务  什么时候拍照？ 需要确定一个阈值导出一个静态库 ios和andriod  补充，ios需要涉及到mac系统还有OC；andriod需要涉及到Linux，安卓方面导出的静态库是.a格式；动态库为.so格式  最近两周需要完成的任务    现在的时间：2015年11月1日 23:34:33   两周后需要达">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-01 14:35:05" itemprop="dateModified" datetime="2019-08-01T14:35:05+00:00">2019-08-01</time>
+                <time title="修改时间：2019-08-21 17:18:51" itemprop="dateModified" datetime="2019-08-21T17:18:51+00:00">2019-08-21</time>
               
             
           </span>
@@ -1193,6 +1193,9 @@
 <script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
 
 <script>
+  let path = location.pathname
+  if (path.indexOf('html') < 0) path += ".html"
+  
   var gitalk = new Gitalk({
     clientID: '28db4ab78d0b5277990f',
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',

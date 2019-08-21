@@ -15,7 +15,7 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="稍稍总结一下最近差不多几天的心路历程，虽然最后没有拿到名次，但是从最开始的连最短路径是什么都不知道，到现在的已经可以利用遗传算法+最小费用最大流算法求出一些可行的解，就短短的不到一周的时间，学习到了可以说之前一个学期也未必能够学习到的知识。  这两天会把最近学到的相关知识记录到博客当中，在这儿暂且先列一个大纲：  最短路径问题  Dijkstra Floyd SPFA   相关问题  最大流问题">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-01T14:35:05.760Z">
+<meta property="og:updated_time" content="2019-08-21T17:18:51.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="华为软挑2017">
 <meta name="twitter:description" content="稍稍总结一下最近差不多几天的心路历程，虽然最后没有拿到名次，但是从最开始的连最短路径是什么都不知道，到现在的已经可以利用遗传算法+最小费用最大流算法求出一些可行的解，就短短的不到一周的时间，学习到了可以说之前一个学期也未必能够学习到的知识。  这两天会把最近学到的相关知识记录到博客当中，在这儿暂且先列一个大纲：  最短路径问题  Dijkstra Floyd SPFA   相关问题  最大流问题">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-01 14:35:05" itemprop="dateModified" datetime="2019-08-01T14:35:05+00:00">2019-08-01</time>
+                <time title="修改时间：2019-08-21 17:18:51" itemprop="dateModified" datetime="2019-08-21T17:18:51+00:00">2019-08-21</time>
               
             
           </span>
@@ -500,7 +500,7 @@
 <p>但是大体的思路就是启发式算法确定服务器节点的数目以及位置，然后用最小费用最大流得到花费以及结果路径。</p>
 </li>
 </ul>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/60101.html">最短路径算法-Floyd</a></li><li><a href="https://lailin.xyz/post/13459.html">最短路径算法-Dijkstra</a></li><li><a href="https://lailin.xyz/post/34642.html">遗传算法</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/34642.html">遗传算法</a></li><li><a href="https://lailin.xyz/post/21230.html">最短路径算法SPFA</a></li><li><a href="https://lailin.xyz/post/60101.html">最短路径算法-Floyd</a></li></ul></div>
       
     </div>
 
@@ -1189,6 +1189,9 @@
 <script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
 
 <script>
+  let path = location.pathname
+  if (path.indexOf('html') < 0) path += ".html"
+  
   var gitalk = new Gitalk({
     clientID: '28db4ab78d0b5277990f',
     clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
