@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="[toc] 复现代码这个代码的触发条件比较严苛，首先必须要保证 gorm 执行的一行必须为updates语句，并且在updates(struct),并且传入的这个struct必须要包含一个直接或者间接关联的一个多态表，这些条件缺一不可">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-21T17:35:55.735Z">
+<meta property="og:updated_time" content="2019-10-26T08:45:32.431Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个十分边缘的gorm的bug">
 <meta name="twitter:description" content="[toc] 复现代码这个代码的触发条件比较严苛，首先必须要保证 gorm 执行的一行必须为updates语句，并且在updates(struct),并且传入的这个struct必须要包含一个直接或者间接关联的一个多态表，这些条件缺一不可">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -520,7 +520,7 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// GetModelStruct get value's model struct, relationships based on struct and tag definition</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(scope *Scope)</span> <span class="title">GetModelStruct</span><span class="params">()</span> *<span class="title">ModelStruct</span></span> &#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	<span class="comment">// Get Cached model struct</span></span><br><span class="line">	<span class="keyword">if</span> value := modelStructsMap.Get(reflectType); value != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> value</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="调试总结"><a href="#调试总结" class="headerlink" title="调试总结"></a>调试总结</h3><p>调试的过程比写来的要艰辛很多，由于调试的时候是从自身的代码开始，通过<code>Goland</code>的 debug 不断的打断点，一遍一遍的执行，查找整个执行的过程，导致忽略了最直接找到错误代码的方式。</p>
 <p>不过这也是一个宝贵的经历，这个 Bug 调试结束之后，<code>Goland</code>强大的调试功能已经可以玩的比较 6 了</p>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/41140.html">go generate and ast</a></li><li><a href="https://lailin.xyz/post/60163.html">GORM避坑指南之含关联关系的更新</a></li><li><a href="https://lailin.xyz/post/28054.html">Github Actions介绍&自动构建Github Pages博客</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/38237.html">【小技巧】简化Gin接口代码</a></li><li><a href="https://lailin.xyz/post/41140.html">go generate and ast</a></li><li><a href="https://lailin.xyz/post/60163.html">GORM避坑指南之含关联关系的更新</a></li></ul></div>
       
     </div>
 
@@ -715,7 +715,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">72</span>
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -941,7 +941,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">91</span>
+                      
+                    
+                    <span class="site-state-item-count">92</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

@@ -375,7 +375,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/58471.html">
+    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/10661.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mohuishou">
@@ -395,7 +395,7 @@
           <h2 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/post/58471.html" class="post-title-link" itemprop="url">php利用curl保存图片</a>
+                <a href="/post/10661.html" class="post-title-link" itemprop="url">php识别验证码（二）</a>
               
             
           </h2>
@@ -420,7 +420,7 @@
                 
               
 
-              <time title="创建时间：2016-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2016-05-03T00:00:00+00:00">2016-05-03</time>
+              <time title="创建时间：2016-05-04 00:00:00" itemprop="dateCreated datePublished" datetime="2016-05-04T00:00:00+00:00">2016-05-04</time>
             
 
             
@@ -437,7 +437,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -493,15 +493,16 @@
           
             <p>
               
-做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数
+在 php 识别验证码（一）当中说了基本的识别验证码的方法，及其关键的代码，但是最后我们留下了一个问题，就是对于有旋转的验证码的识别率及其低下的问题，下面来解决这个问题。
 
-/*** @author mohuishou&lt;1@lailin.xyz&gt;* @param string $url 获取图片的网址* @param string $fileName 保存的地址以及文件名*/function
+标准化
+解决类似于下面图片这种有旋转字符的验证码，我们首先要给出一种标准，让所有的分割后的图片都按照一个标准来摆放，最后对比
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/post/58471.html" rel="contents">
+              <a class="btn" href="/post/10661.html" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -623,7 +624,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -755,6 +756,192 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/58471.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mohuishou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/icons/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mohuishou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/58471.html" class="post-title-link" itemprop="url">php利用curl保存图片</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-05-03 00:00:00" itemprop="dateCreated datePublished" datetime="2016-05-03T00:00:00+00:00">2016-05-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              
+做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数
+
+/*** @author mohuishou&lt;1@lailin.xyz&gt;* @param string $url 获取图片的网址* @param string $fileName 保存的地址以及文件名*/function
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/58471.html" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/61468.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -817,7 +1004,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -1004,7 +1191,7 @@ step1
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -1190,7 +1377,7 @@ step1
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -1378,7 +1565,7 @@ step1
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -1563,7 +1750,7 @@ step1
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -1747,7 +1934,7 @@ step1
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -1928,7 +2115,7 @@ step1
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -2041,193 +2228,6 @@ step1
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/64902.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mohuishou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/icons/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mohuishou">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/64902.html" class="post-title-link" itemprop="url">NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2015-11-15 00:00:00" itemprop="dateCreated datePublished" datetime="2015-11-15T00:00:00+00:00">2015-11-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/程序/" itemprop="url" rel="index"><span itemprop="name">程序</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              
-错误详情：错误: 无法访问android.support.v7.app.AppCompatActivity找不到android.support.v7.app.AppCompatActivity的类文件
-
-为了这个问题纠结2天了，在网上找了很多的解决办法都不行，几乎所有的办法都试过了
-无意中查看sd
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/64902.html" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2276,7 +2276,7 @@ step1
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">72</span>
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2502,7 +2502,9 @@ step1
                     
                       
                     
-                    <span class="site-state-item-count">91</span>
+                      
+                    
+                    <span class="site-state-item-count">92</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

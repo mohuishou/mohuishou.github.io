@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="在上一篇文章当中阅读了Go语言的一个高性能的Web框架Gin，Web框架当中最重要的功能之一是路由，Gin的路由就是由httprouter这个包实现的 地址 https://github.com/julienschmidt/httprouter https://godoc.org/github.com/julienschmidt/httprouter  特性 基于基数树实现的高性能路由框架 仅支持">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-21T17:35:55.739Z">
+<meta property="og:updated_time" content="2019-10-26T08:45:32.431Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Httprouter介绍及源码阅读">
 <meta name="twitter:description" content="在上一篇文章当中阅读了Go语言的一个高性能的Web框架Gin，Web框架当中最重要的功能之一是路由，Gin的路由就是由httprouter这个包实现的 地址 https://github.com/julienschmidt/httprouter https://godoc.org/github.com/julienschmidt/httprouter  特性 基于基数树实现的高性能路由框架 仅支持">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-08-21 17:35:55" itemprop="dateModified" datetime="2019-08-21T17:35:55+00:00">2019-08-21</time>
+                <time title="修改时间：2019-10-26 08:45:32" itemprop="dateModified" datetime="2019-10-26T08:45:32+00:00">2019-10-26</time>
               
             
           </span>
@@ -522,7 +522,7 @@
 <h3 id="node"><a href="#node" class="headerlink" title="node"></a>node</h3><p>路由是注册到一颗路由树当中的，先看看节点的源码，再来分析，是如何添加路由的</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> node <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 当前节点的路径</span></span><br><span class="line">    path      <span class="keyword">string</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 是否为参数节点，参数节点用:name表示</span></span><br><span class="line">    wildChild <span class="keyword">bool</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 当前节点类型， 一共有4种</span></span><br><span class="line">    <span class="comment">// static: 静态节点，默认类型</span></span><br><span class="line">	<span class="comment">// root: 根节点</span></span><br><span class="line">	<span class="comment">// param: 其他节点</span></span><br><span class="line">	<span class="comment">// catchAll: 带有*的节点，这里*的作用和正则当中的*一样</span></span><br><span class="line">    nType     nodeType</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 当前路径上最大参数的个数，不能超过255</span></span><br><span class="line">    maxParams <span class="keyword">uint8</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 代表分支的首字母</span></span><br><span class="line">    <span class="comment">// 上面的例子，当前节点为s</span></span><br><span class="line">    <span class="comment">// 那么indices = eu</span></span><br><span class="line">    <span class="comment">// ├s               nil</span></span><br><span class="line">    <span class="comment">// |├earch\         *&lt;2&gt;</span></span><br><span class="line">    <span class="comment">// |└upport\        *&lt;3&gt;</span></span><br><span class="line">    indices   <span class="keyword">string</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 孩子节点</span></span><br><span class="line">    children  []*node</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 注册的路由</span></span><br><span class="line">    handle    Handle</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 权重，表示当前节点加上所有子节点的数目</span></span><br><span class="line">	priority  <span class="keyword">uint32</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="路由树是如何生成的？"><a href="#路由树是如何生成的？" class="headerlink" title="路由树是如何生成的？"></a>路由树是如何生成的？</h3><p>未完待续</p>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/41140.html">go generate and ast</a></li><li><a href="https://lailin.xyz/post/60163.html">GORM避坑指南之含关联关系的更新</a></li><li><a href="https://lailin.xyz/post/44107.html">记一次net http内存泄漏</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/38237.html">【小技巧】简化Gin接口代码</a></li><li><a href="https://lailin.xyz/post/41140.html">go generate and ast</a></li><li><a href="https://lailin.xyz/post/60163.html">GORM避坑指南之含关联关系的更新</a></li></ul></div>
       
     </div>
 
@@ -713,7 +713,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">72</span>
+                    <span class="site-state-item-count">73</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -939,7 +939,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">91</span>
+                      
+                    
+                    <span class="site-state-item-count">92</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
