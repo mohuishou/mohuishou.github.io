@@ -8,22 +8,22 @@
     </url>
     
     <url>
-        <loc>https://lailin.xyz/about/</loc>
-        <lastmod>2019-10-27T17:45:31.366Z</lastmod>
+        <loc>https://lailin.xyz/tags/</loc>
+        <lastmod>2019-10-27T18:35:01.032Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://lailin.xyz/tags/</loc>
-        <lastmod>2019-10-27T17:45:31.366Z</lastmod>
+        <loc>https://lailin.xyz/about/</loc>
+        <lastmod>2019-10-27T18:35:01.028Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
         <loc>https://lailin.xyz/404.html</loc>
-        <lastmod>2019-10-27T17:45:31.362Z</lastmod>
+        <lastmod>2019-10-27T18:35:01.024Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
