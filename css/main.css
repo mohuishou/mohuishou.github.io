@@ -1776,7 +1776,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ba3e9d;
+  background: #49ffff;
 }
 .feed-link,
 .chat {
@@ -2324,6 +2324,8 @@ pre .javascript .function {
   margin: 0;
   padding: 0;
   list-style: none;
+  display: flex;
+  flex-wrap: wrap;
 }
 .category-all-page .category-list-item {
   margin: 5px 10px;
@@ -2340,6 +2342,30 @@ pre .javascript .function {
   content: ") ";
 }
 .category-all-page .category-list-child {
+  padding-left: 10px;
+}
+.category-all-page .tag-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+.category-all-page .tag-list-item {
+  margin: 5px 10px;
+}
+.category-all-page .tag-list-count {
+  color: #bbb;
+}
+.category-all-page .tag-list-count:before {
+  display: inline;
+  content: " (";
+}
+.category-all-page .tag-list-count:after {
+  display: inline;
+  content: ") ";
+}
+.category-all-page .tag-list-child {
   padding-left: 10px;
 }
 #event-list {
