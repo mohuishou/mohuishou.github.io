@@ -134,7 +134,7 @@
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190710233355.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190712002216.png">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190712003222.png">
-<meta property="og:updated_time" content="2019-10-28T16:18:02.754Z">
+<meta property="og:updated_time" content="2019-11-03T08:11:46.525Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="善用工具之postman高级用法概述">
 <meta name="twitter:description" content="POSTMAN 是我在开发过程当中最常用到的 API 测试工具之一，虽然并不完美，但也是目前个人认为在API测试时最好用的客户端工具之一。 本文适用于后端，前端，移动端以及测试的同学，分三大部分从最简单的界面操作开讲，然后涉及到变量、脚本以及一些云服务相关的功能，最后将适配几个案例讲解怎么使用 POSTMAN 提高我们的工作效率。本文前半部分包含较多基础功能讲解，对已经比较熟悉使用的同学，可以选择">
@@ -467,7 +467,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-10-28 16:18:02" itemprop="dateModified" datetime="2019-10-28T16:18:02+00:00">2019-10-28</time>
+                <time title="修改时间：2019-11-03 08:11:46" itemprop="dateModified" datetime="2019-11-03T08:11:46+00:00">2019-11-03</time>
               
             
           </span>
@@ -608,7 +608,7 @@
 <p>接下来，我们以 gitlab ci/cd 为例，配置一个简单的接口回归</p>
 <p>newman 具体的使用方法可以查看官方的文档或者是<a href="https://github.com/postmanlabs/newman" target="_blank" rel="noopener">github 仓库</a>的介绍, 这里不再赘述，我们直接看一下简单的使用</p>
 <p>首先是 <code>.gitlab-ci.yml</code> 的配置</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">stages:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">api_test:</span></span><br><span class="line"><span class="attr">    stage:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">node:11.15.0</span></span><br><span class="line"><span class="attr">    before_script:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">npm</span> <span class="string">install</span> <span class="bullet">-g</span> <span class="string">newman</span></span><br><span class="line"><span class="attr">    script:</span></span><br><span class="line">      <span class="comment"># 此处执行的是官方的一个例子，run 后面可以是导出的Collection的文件，也可以是分享出来的Collection</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">newman</span> <span class="string">run</span> <span class="string">"https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65-JsLv"</span></span><br><span class="line"><span class="attr">    tags:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">gitlab-org</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">stages:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">api_test:</span></span><br><span class="line">    <span class="attr">stage:</span> <span class="string">test</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">node:11.15.0</span></span><br><span class="line">    <span class="attr">before_script:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">npm</span> <span class="string">install</span> <span class="string">-g</span> <span class="string">newman</span></span><br><span class="line">    <span class="attr">script:</span></span><br><span class="line">      <span class="comment"># 此处执行的是官方的一个例子，run 后面可以是导出的Collection的文件，也可以是分享出来的Collection</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">newman</span> <span class="string">run</span> <span class="string">"https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65-JsLv"</span></span><br><span class="line">    <span class="attr">tags:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">gitlab-org</span></span><br></pre></td></tr></table></figure>
 <p>如下图所示我们可以看到具体的执行结果，返回的信息也比较详细，和上文的 Test Script 脚本结合就可以达到我们想要的接口回归测试的效果</p>
 <p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/20190712002216.png" alt></p>
 <p><a href="https://gitlab.com/mohuishou/postman-ci/pipelines" target="_blank" rel="noopener">点击可以查看这个demo</a></p>
@@ -632,7 +632,7 @@
 <li><a href="https://gitlab.com/mohuishou/postman-ci/pipelines" target="_blank" rel="noopener">gitlab ci demo</a></li>
 <li><a href="https://github.com/thedevsaddam/docgen" target="_blank" rel="noopener">docgen</a></li>
 </ol>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/38237.html">【小技巧】简化Gin接口代码</a></li><li><a href="https://lailin.xyz/post/41140.html">go generate and ast</a></li><li><a href="https://lailin.xyz/post/37623.html">使用Goland调试Go程序</a></li></ul></div>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/38237.html">【Go Web 小技巧】一、简化Gin接口代码</a></li><li><a href="https://lailin.xyz/post/41140.html">go generate and ast</a></li><li><a href="https://lailin.xyz/post/37623.html">使用Goland调试Go程序</a></li></ul></div>
       
     </div>
 
@@ -712,8 +712,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/post/38237.html" rel="prev" title="【小技巧】简化Gin接口代码">
-                【小技巧】简化Gin接口代码 <i class="fa fa-chevron-right"></i>
+              <a href="/post/38237.html" rel="prev" title="【Go Web 小技巧】一、简化Gin接口代码">
+                【Go Web 小技巧】一、简化Gin接口代码 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -789,7 +789,7 @@
                 
                   <a href="/archives/index.html">
                 
-                    <span class="site-state-item-count">73</span>
+                    <span class="site-state-item-count">74</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
