@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="背景最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。">
+  <meta name="description" content="背景最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。 需求 单个仓库中包含多个 go module 模块 版本发布可以根据模块来发版，而不是整个仓库进行发版   实现 仓库结构假设我们现在有一个仓库 github.com/mohuishou/go-test-multi-m">
 <meta name="keywords" content="go,小技巧,go mod">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go Web小技巧（四）在单个仓库中支持多个 go mod 模块">
 <meta property="og:url" content="https://lailin.xyz/post/auxvv1.html">
 <meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="背景最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。">
+<meta property="og:description" content="背景最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。 需求 单个仓库中包含多个 go module 模块 版本发布可以根据模块来发版，而不是整个仓库进行发版   实现 仓库结构假设我们现在有一个仓库 github.com/mohuishou/go-test-multi-m">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-18T19:42:23.594Z">
+<meta property="og:updated_time" content="2020-04-18T19:49:29.209Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go Web小技巧（四）在单个仓库中支持多个 go mod 模块">
-<meta name="twitter:description" content="背景最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。">
+<meta name="twitter:description" content="背景最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。 需求 单个仓库中包含多个 go module 模块 版本发布可以根据模块来发版，而不是整个仓库进行发版   实现 仓库结构假设我们现在有一个仓库 github.com/mohuishou/go-test-multi-m">
 
 
 
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-04-18 19:42:23" itemprop="dateModified" datetime="2020-04-18T19:42:23+00:00">2020-04-18</time>
+                <time title="修改时间：2020-04-18 19:49:29" itemprop="dateModified" datetime="2020-04-18T19:49:29+00:00">2020-04-18</time>
               
             
           </span>
@@ -473,21 +473,23 @@
 
       
         <p><a name="okH3Z"></a></p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><br>最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。<br><br><a id="more"></a><br><a name="b9GY4"></a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><br>最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。<br><a name="b9GY4"></a></p>
 <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
 <li>单个仓库中包含多个 go module 模块</li>
-<li>版本发布可以根据模块来发版，而不是整个仓库进行发版<br><a name="pZ6g2"></a><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><a name="eTS3T"></a><h3 id="仓库结构"><a href="#仓库结构" class="headerlink" title="仓库结构"></a>仓库结构</h3>假设我们现在有一个仓库 <code>github.com/mohuishou/go-test-multi-module</code> 目录结构如下图所示<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── a</span><br><span class="line">│   ├── a.go</span><br><span class="line">│   └── go.mod</span><br><span class="line">└── b</span><br><span class="line">    ├── b.go</span><br><span class="line">    └── go.mod</span><br></pre></td></tr></table></figure>
-</li>
+<li>版本发布可以根据模块来发版，而不是整个仓库进行发版</li>
 </ol>
+<p><a name="pZ6g2"></a></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><a name="eTS3T"></a></p>
+<h3 id="仓库结构"><a href="#仓库结构" class="headerlink" title="仓库结构"></a>仓库结构</h3><p>假设我们现在有一个仓库 <code>github.com/mohuishou/go-test-multi-module</code> 目录结构如下图所示<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── a</span><br><span class="line">│   ├── a.go</span><br><span class="line">│   └── go.mod</span><br><span class="line">└── b</span><br><span class="line">    ├── b.go</span><br><span class="line">    └── go.mod</span><br></pre></td></tr></table></figure></p>
 <p>其中 <code>a/go.mod</code> 使用如下命令生成<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go mod init github.com/mohuishou/go-test-multi-module/a</span><br></pre></td></tr></table></figure></p>
-<p><a name="xjVUD"></a></p>
-<h3 id="版本发布"><a href="#版本发布" class="headerlink" title="版本发布**"></a>版本发布**</h3><p>对模块进行发版时，只需打上 <code>[模块名]/版本号</code>  即可<br>以我们的示例为例，对模块 <code>a</code> 进行发版时我们只需要打上 tag <code>a/v1.0.0</code> ，同理对模块 b 进行发版时，需要打上 tag <code>b/v1.0.0</code>  即可<br><a name="Mef5G"></a></p>
+<p><a name="UtHaM"></a></p>
+<h3 id="版本发布"><a href="#版本发布" class="headerlink" title="版本发布"></a>版本发布</h3><p>对模块进行发版时，只需打上 <code>[模块名]/版本号</code>  即可<br>以我们的示例为例，对模块 <code>a</code> 进行发版时我们只需要打上 tag <code>a/v1.0.0</code> ，同理对模块 b 进行发版时，需要打上 tag <code>b/v1.0.0</code>  即可<br><a name="Mef5G"></a></p>
 <h3 id="用户使用"><a href="#用户使用" class="headerlink" title="用户使用"></a>用户使用</h3><p>用户在安装的时候只需要和普通模块一样执行命令即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/mohuishou/go-test-multi-module/a</span><br></pre></td></tr></table></figure></p>
 <p><a name="CEEpi"></a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一般情况下不推荐采用这种方式，还是一个仓库一个模块比较好，便于管理，但是对于一些工具库里面包含了较多的工具，想要不同类型单独发版也可以采用本文提到的方式<br><a name="FSxR3"></a></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://github.com/mohuishou/go-test-multi-module" target="_blank" rel="noopener">本文的示例仓库</a></li>
-<li><a href="https://github.com/golang/tools/releases" target="_blank" rel="noopener">golang/tools</a> 官方的 gopls 也是这么发布版本的</li>
+<li><a href="https://github.com/golang/tools/releases" target="_blank" rel="noopener">golang/tools</a> [官方的 gopls 也是这么发布版本的]</li>
 </ul>
 <div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/11996.html">Go Web 小技巧（三）Gin 参数绑定</a></li><li><a href="https://lailin.xyz/post/17394.html">Go Web 小技巧（二）GORM 使用自定义类型</a></li><li><a href="https://lailin.xyz/post/38237.html">Go Web 小技巧（一）简化Gin接口代码</a></li></ul></div>
       
@@ -961,7 +963,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">2.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#仓库结构"><span class="nav-number">3.1.</span> <span class="nav-text">仓库结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本发布"><span class="nav-number">3.2.</span> <span class="nav-text">版本发布**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户使用"><span class="nav-number">3.3.</span> <span class="nav-text">用户使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">6.</span> <span class="nav-text">推荐阅读</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">2.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#仓库结构"><span class="nav-number">3.1.</span> <span class="nav-text">仓库结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本发布"><span class="nav-number">3.2.</span> <span class="nav-text">版本发布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户使用"><span class="nav-number">3.3.</span> <span class="nav-text">用户使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">6.</span> <span class="nav-text">推荐阅读</span></a></li></ol></div>
             
 
           </div>
