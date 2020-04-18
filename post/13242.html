@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="序laravel版本：5.2虚拟主机：万网 迁移1.先把所有文件复制到网站根目录2.由于访问的时候入口文件在public目录下面，这时候访问url会变成url/public/，重写规则跳转就行了,在根目录新建.hatcess文件12345&amp;lt;IfModule mod_rewrite.c&amp;gt;    RewriteEngine on    RewriteCond %&amp;#123;REQUEST_">
+  <meta name="description" content="序laravel 版本：5.2虚拟主机：万网 迁移1.先把所有文件复制到网站根目录 2.由于访问的时候入口文件在 public 目录下面，这时候访问 url 会变成 url/public/，重写规则跳转就行了,在根目录新建.hatcess 文件 12345&amp;lt;IfModule mod_rewrite.c&amp;gt;    RewriteEngine on    RewriteCond %&amp;#123">
 <meta name="keywords" content="php,laravel,虚拟主机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="迁移laravel框架项目到虚拟主机">
 <meta property="og:url" content="https://lailin.xyz/post/13242.html">
 <meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="序laravel版本：5.2虚拟主机：万网 迁移1.先把所有文件复制到网站根目录2.由于访问的时候入口文件在public目录下面，这时候访问url会变成url/public/，重写规则跳转就行了,在根目录新建.hatcess文件12345&amp;lt;IfModule mod_rewrite.c&amp;gt;    RewriteEngine on    RewriteCond %&amp;#123;REQUEST_">
+<meta property="og:description" content="序laravel 版本：5.2虚拟主机：万网 迁移1.先把所有文件复制到网站根目录 2.由于访问的时候入口文件在 public 目录下面，这时候访问 url 会变成 url/public/，重写规则跳转就行了,在根目录新建.hatcess 文件 12345&amp;lt;IfModule mod_rewrite.c&amp;gt;    RewriteEngine on    RewriteCond %&amp;#123">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-11T13:42:47.136Z">
+<meta property="og:updated_time" content="2020-04-18T13:47:38.039Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="迁移laravel框架项目到虚拟主机">
-<meta name="twitter:description" content="序laravel版本：5.2虚拟主机：万网 迁移1.先把所有文件复制到网站根目录2.由于访问的时候入口文件在public目录下面，这时候访问url会变成url/public/，重写规则跳转就行了,在根目录新建.hatcess文件12345&amp;lt;IfModule mod_rewrite.c&amp;gt;    RewriteEngine on    RewriteCond %&amp;#123;REQUEST_">
+<meta name="twitter:description" content="序laravel 版本：5.2虚拟主机：万网 迁移1.先把所有文件复制到网站根目录 2.由于访问的时候入口文件在 public 目录下面，这时候访问 url 会变成 url/public/，重写规则跳转就行了,在根目录新建.hatcess 文件 12345&amp;lt;IfModule mod_rewrite.c&amp;gt;    RewriteEngine on    RewriteCond %&amp;#123">
 
 
 
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -490,13 +490,17 @@
       
 
       
-        <h3 id="序"><a href="#序" class="headerlink" title="序"></a>序</h3><p>laravel版本：<code>5.2</code><br>虚拟主机：万网</p>
-<h3 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h3><p>1.先把所有文件复制到网站根目录<br>2.由于访问的时候入口文件在public目录下面，这时候访问url会变成url/public/，重写规则跳转就行了,在根目录新建.hatcess文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule mod_rewrite.c&gt;</span><br><span class="line">    RewriteEngine on</span><br><span class="line">    RewriteCond %&#123;REQUEST_URI&#125; !^public</span><br><span class="line">    RewriteRule ^(.*)$ public/$1 [L]</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure></p>
-<p>3.打开<code>config/app.php</code><br>将<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&apos;key&apos; =&gt; env(&apos;APP_KEY&apos;, &apos;...&apos;), //32位字符串</span><br><span class="line">&apos;cipher&apos; =&gt; &apos;AES-256-CBC&apos;,</span><br></pre></td></tr></table></figure></p>
-<p>改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&apos;key&apos; =&gt; env(&apos;APP_KEY&apos;, &apos;...&apos;),//16位字符串</span><br><span class="line">&apos;cipher&apos; =&gt; &apos;AES-128-CBC&apos;,</span><br></pre></td></tr></table></figure></p>
-<p><em>由于万网不支持’AES-256-CBC’所以用128位加密，256位加密使用32位字符串，128位使用16位字符串</em><br>4.到这一步基本就没有什么问题了，但是在使用ajax的时候，post方法有可能会被301跳转然后变成get<br>解决方案：<br>打开<code>public</code>目录下的<code>.htaccess</code>文件删除下面这一段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Redirect Trailing Slashes If Not A Folder...</span><br><span class="line">  RewriteCond %&#123;REQUEST_FILENAME&#125; !-d</span><br><span class="line">  RewriteRule ^(.*)/$ /$1 [L,R=301]</span><br></pre></td></tr></table></figure></p>
-<p>5.好了，我的使用过程中就没什么问题了（注：把在控制台把万网的php版本调到最高，现在是5.5）</p>
-<p><strong>补充一点很多人容易忽略的，配置文件不要卸载.env文件里面，虚拟机一般不支持，换到config目录下的相应配置文件下</strong></p>
+        <h3 id="序"><a href="#序" class="headerlink" title="序"></a>序</h3><p>laravel 版本：<code>5.2</code><br>虚拟主机：万网</p>
+<h3 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h3><p>1.先把所有文件复制到网站根目录 2.由于访问的时候入口文件在 public 目录下面，这时候访问 url 会变成 url/public/，重写规则跳转就行了,在根目录新建.hatcess 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule mod_rewrite.c&gt;</span><br><span class="line">    RewriteEngine on</span><br><span class="line">    RewriteCond %&#123;REQUEST_URI&#125; !^public</span><br><span class="line">    RewriteRule ^(.*)$ public/$1 [L]</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+<p>3.打开<code>config/app.php</code><br>将</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&apos;key&apos; =&gt; env(&apos;APP_KEY&apos;, &apos;...&apos;), //32位字符串</span><br><span class="line">&apos;cipher&apos; =&gt; &apos;AES-256-CBC&apos;,</span><br></pre></td></tr></table></figure>
+<p>改为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&apos;key&apos; =&gt; env(&apos;APP_KEY&apos;, &apos;...&apos;),//16位字符串</span><br><span class="line">&apos;cipher&apos; =&gt; &apos;AES-128-CBC&apos;,</span><br></pre></td></tr></table></figure>
+<p><em>由于万网不支持’AES-256-CBC’所以用 128 位加密，256 位加密使用 32 位字符串，128 位使用 16 位字符串</em> 4.到这一步基本就没有什么问题了，但是在使用 ajax 的时候，post 方法有可能会被 301 跳转然后变成 get<br>解决方案：<br>打开<code>public</code>目录下的<code>.htaccess</code>文件删除下面这一段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Redirect Trailing Slashes If Not A Folder...</span><br><span class="line">  RewriteCond %&#123;REQUEST_FILENAME&#125; !-d</span><br><span class="line">  RewriteRule ^(.*)/$ /$1 [L,R=301]</span><br></pre></td></tr></table></figure>
+<p>5.好了，我的使用过程中就没什么问题了（注：把在控制台把万网的 php 版本调到最高，现在是 5.5）</p>
+<p><strong>补充一点很多人容易忽略的，配置文件不要卸载.env 文件里面，虚拟机一般不支持，换到 config 目录下的相应配置文件下</strong></p>
 <div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/29454.html">在laravel/lumen之外使用Eloquent</a></li><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li></ul></div>
       
     </div>
@@ -648,7 +652,7 @@
                 
                   <a href="/archives/index.html">
                 
-                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-count">76</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -876,7 +880,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">92</span>
+                      
+                    
+                    <span class="site-state-item-count">93</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -992,7 +998,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

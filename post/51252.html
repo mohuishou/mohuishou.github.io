@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="为什么在存储如此便宜的今天我们仍然需要对 Docker 镜像进行瘦身?">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-11T13:42:47.136Z">
+<meta property="og:updated_time" content="2020-04-18T13:47:38.035Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker镜像瘦身&amp;优化">
 <meta name="twitter:description" content="为什么在存储如此便宜的今天我们仍然需要对 Docker 镜像进行瘦身?">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -549,14 +549,16 @@
 <p>似乎从上面看，感觉差距不大，实践中，不同语言的基础镜像都会提供一些采用不同基础镜像制作的 tag，下面我们以<code>ruby</code>的镜像为例，查看不同基础镜像的差异。可以看到默认的 latest 镜像<code>881MB</code>而<code>alpine</code>仅仅只有不到<code>50MB</code>这个差距就十分的可观了</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ruby   latest   a5d26127d8d0        4 weeks ago         881MB</span><br><span class="line">ruby   alpine   8d8f7d19d1fa        4 weeks ago         47.8MB</span><br><span class="line">ruby   slim     58dd4d3c99da        4 weeks ago         125MB</span><br></pre></td></tr></table></figure>
 <h2 id="减少层，去除非必要的文件"><a href="#减少层，去除非必要的文件" class="headerlink" title="减少层，去除非必要的文件"></a>减少层，去除非必要的文件</h2><ol>
-<li><p>删除文件不要跨行</p>
+<li>删除文件不要跨行</li>
+</ol>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dockerfile 1</span></span><br><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://github.com/mohuishou/scuplus-wechat/archive/1.0.0.zip</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># dockerfile 2</span></span><br><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://github.com/mohuishou/scuplus-wechat/archive/1.0.0.zip</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> rm 1.0.0.zip</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># dockerfile 3</span></span><br><span class="line"><span class="keyword">FROM</span> alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://github.com/mohuishou/scuplus-wechat/archive/1.0.0.zip &amp;&amp;  rm 1.0.0.zip</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">test</span>   3  351a80e99c22        5 seconds ago        5.53MB</span><br><span class="line"><span class="built_in">test</span>   2  ad27e625b8e5        49 seconds ago       6.1MB</span><br><span class="line"><span class="built_in">test</span>   1  165e2e0df1d3        About a minute ago   6.1MB</span><br></pre></td></tr></table></figure>
 <p>可以发现 1，2 两个大小一样，但是 3 小了 0.5MB，这是因为 docker 几乎每一行命令都会生成一个层，删除文件的时候：因为底下各层都是只读的，当需要删除这些层中的文件时，AUFS 使用 whiteout 机制，它的实现是通过在上层的可写的目录下建立对应的 whiteout 隐藏文件来实现的，所以在当前层去删除上一层的文件，只是会把这个文件隐藏掉罢了</p>
-</li>
-<li><p>使用单行命令</p>
+<ol start="2">
+<li>使用单行命令</li>
+</ol>
 <p>除了删除语句需要放在一行以外，由于层的机制，我们安装依赖的一些公共的语句最好也使用条<code>RUN</code>命令生成，减少最终的层数</p>
-</li>
+<ol start="3">
 <li><p>分离依赖包，以及源代码程序，充分利用层的缓存</p>
 <p>这是一个<strong>最佳实践</strong>，在实际的开发过程中，我们的依赖包往往是变动不大的，但是我们正在开发的源码的变动是较为频繁，如果我们实际的代码只有<code>10M</code>，但是依赖项有<code>1G</code>, 如果在<code>COPY</code>的时候直接<code>COPY . .</code>会导致每次修改代码都会时这一层的缓存失效，导致浪费复制以及推送到镜像仓库的时间，将 COPY 语句分开，每次 push 就可以只变更我们频繁修改的代码层，而不是连着依赖一起</p>
 </li>
@@ -574,8 +576,10 @@
 <li><p>使用<a href="https://github.com/docker-slim/docker-slim" target="_blank" rel="noopener">docker-slim</a> 可以自动帮助你减少镜像体积，对于 Web 应用较为有用</p>
 </li>
 <li><p>安装软件时去除依赖</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ubuntu</span></span><br><span class="line">apt-get install -y — no-install-recommends</span><br><span class="line"></span><br><span class="line"><span class="comment">#alpine</span></span><br><span class="line">apk add --no-cache &amp;&amp;  apk del build-dependencies</span><br><span class="line"></span><br><span class="line"><span class="comment"># centos</span></span><br><span class="line">yum install -y ... &amp;&amp; yum clean all</span><br></pre></td></tr></table></figure>
 </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ubuntu</span></span><br><span class="line">apt-get install -y — no-install-recommends</span><br><span class="line"></span><br><span class="line"><span class="comment">#alpine</span></span><br><span class="line">apk add --no-cache &amp;&amp;  apk del build-dependencies</span><br><span class="line"></span><br><span class="line"><span class="comment"># centos</span></span><br><span class="line">yum install -y ... &amp;&amp; yum clean all</span><br></pre></td></tr></table></figure>
+<ol start="4">
 <li><p>使用<code>--flatten</code>参数，减少层(不推荐)</p>
 </li>
 <li><p>使用<a href="https://github.com/jwilder/docker-squash" target="_blank" rel="noopener">docker-squash</a>压缩层</p>
@@ -588,12 +592,13 @@
 <li><p>只安装生产所需的依赖</p>
 </li>
 <li><p>删除不需要的依赖文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bundle install --without development:<span class="built_in">test</span>:assets -j4 --retry 3 --path=vendor/bundle \</span><br><span class="line">    <span class="comment"># Remove unneeded files (cached *.gem, *.o, *.c)</span></span><br><span class="line">    &amp;&amp; rm -rf vendor/bundle/ruby/2.5.0/cache/*.gem \</span><br><span class="line">    &amp;&amp; find vendor/bundle/ruby/2.5.0/gems/ -name <span class="string">"*.c"</span> -delete \</span><br><span class="line">    &amp;&amp; find vendor/bundle/ruby/2.5.0/gems/ -name <span class="string">"*.o"</span> -delete</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除前端的<code>node_modules</code>以及缓存文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf node_modules tmp/cache app/assets vendor/assets spec</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bundle install --without development:<span class="built_in">test</span>:assets -j4 --retry 3 --path=vendor/bundle \</span><br><span class="line">    <span class="comment"># Remove unneeded files (cached *.gem, *.o, *.c)</span></span><br><span class="line">    &amp;&amp; rm -rf vendor/bundle/ruby/2.5.0/cache/*.gem \</span><br><span class="line">    &amp;&amp; find vendor/bundle/ruby/2.5.0/gems/ -name <span class="string">"*.c"</span> -delete \</span><br><span class="line">    &amp;&amp; find vendor/bundle/ruby/2.5.0/gems/ -name <span class="string">"*.o"</span> -delete</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>删除前端的<code>node_modules</code>以及缓存文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf node_modules tmp/cache app/assets vendor/assets spec</span><br></pre></td></tr></table></figure>
 <p>上述内容可以结合<strong>多阶段构建</strong>实现</p>
 <h3 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h3><p>Golang 在使用多阶段构建之后，只剩下了一个二进制文件，这时候再要优化，就只有使用<code>upx</code>之类的工具压缩二进制文件的体积了</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
@@ -754,7 +759,7 @@
                 
                   <a href="/archives/index.html">
                 
-                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-count">76</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -982,7 +987,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">92</span>
+                      
+                    
+                    <span class="site-state-item-count">93</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1098,7 +1105,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

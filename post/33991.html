@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="今天装了一个服务器但是nginx一直无法启动，google了各种答案，还是没有效果  例如：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253nginx启动，重启，关闭命令停止操作停止操作是通过向nginx进程发送信号（什么是信号请参阅linux文 章）">
+  <meta name="description" content="今天装了一个服务器但是 nginx 一直无法启动，google 了各种答案，还是没有效果  例如：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253nginx启动，重启，关闭命令停止操作停止操作是通过向nginx进程发送信号（什么是信号请参阅linux文">
 <meta name="keywords" content="nginx,服务器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx无法启动">
 <meta property="og:url" content="https://lailin.xyz/post/33991.html">
 <meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="今天装了一个服务器但是nginx一直无法启动，google了各种答案，还是没有效果  例如：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253nginx启动，重启，关闭命令停止操作停止操作是通过向nginx进程发送信号（什么是信号请参阅linux文 章）">
+<meta property="og:description" content="今天装了一个服务器但是 nginx 一直无法启动，google 了各种答案，还是没有效果  例如：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253nginx启动，重启，关闭命令停止操作停止操作是通过向nginx进程发送信号（什么是信号请参阅linux文">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-11T13:42:47.136Z">
+<meta property="og:updated_time" content="2020-04-18T13:47:38.035Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx无法启动">
-<meta name="twitter:description" content="今天装了一个服务器但是nginx一直无法启动，google了各种答案，还是没有效果  例如：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253nginx启动，重启，关闭命令停止操作停止操作是通过向nginx进程发送信号（什么是信号请参阅linux文 章）">
+<meta name="twitter:description" content="今天装了一个服务器但是 nginx 一直无法启动，google 了各种答案，还是没有效果  例如：1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253nginx启动，重启，关闭命令停止操作停止操作是通过向nginx进程发送信号（什么是信号请参阅linux文">
 
 
 
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -491,10 +491,11 @@
 
       
         <blockquote>
-<p>今天装了一个服务器但是nginx一直无法启动，google了各种答案，还是没有效果</p>
+<p>今天装了一个服务器但是 nginx 一直无法启动，google 了各种答案，还是没有效果</p>
 </blockquote>
 <h3 id="例如："><a href="#例如：" class="headerlink" title="例如："></a>例如：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">nginx启动，重启，关闭命令</span><br><span class="line">停止操作</span><br><span class="line">停止操作是通过向nginx进程发送信号（什么是信号请参阅linux文 章）来进行的</span><br><span class="line">步骤1：查询nginx主进程号</span><br><span class="line">ps -ef | grep nginx</span><br><span class="line">在进程列表里 面找master进程，它的编号就是主进程号了。</span><br><span class="line">步骤2：发送信号</span><br><span class="line">从容停止Nginx：</span><br><span class="line">kill -QUIT 主进程号</span><br><span class="line">快速停止Nginx：</span><br><span class="line">kill -TERM 主进程号</span><br><span class="line">强制停止Nginx：</span><br><span class="line">pkill -9 nginx</span><br><span class="line"></span><br><span class="line">另外， 若在nginx.conf配置了pid文件存放路径则该文件存放的就是Nginx主进程号，如果没指定则放在nginx的logs目录下。有了pid文 件，我们就不用先查询Nginx的主进程号，而直接向Nginx发送信号了，命令如下：</span><br><span class="line">kill -信号类型 &apos;/usr/nginx/logs/nginx.pid&apos;</span><br><span class="line"></span><br><span class="line">平滑重启</span><br><span class="line">如果更改了配置就要重启Nginx，要先关闭Nginx再打开？不是的，可以向Nginx 发送信号，平滑重启。</span><br><span class="line">平滑重启命令：</span><br><span class="line">kill -HUP 住进称号或进程号文件路径</span><br><span class="line">或者使用</span><br><span class="line"></span><br><span class="line">/usr/nginx/sbin/nginx -s reload</span><br><span class="line"></span><br><span class="line">注意，修改了配置文件后最好先检查一下修改过的配置文件是否正 确，以免重启后Nginx出现错误影响服务器稳定运行。判断Nginx配置是否正确命令如下：</span><br><span class="line">nginx -t -c /usr/nginx/conf/nginx.conf</span><br><span class="line">或者</span><br><span class="line"></span><br><span class="line">/usr/nginx/sbin/nginx -t</span><br><span class="line"></span><br><span class="line">平滑升级</span><br><span class="line">如果服务器正在运行的Nginx要进行升级、添加或删除模块时，我们需 要停掉服务器并做相应修改，这样服务器就要在一段时间内停止服务，Nginx可以在不停机的情况下进行各种升级动作而不影响服务器运行。</span><br><span class="line">步骤1：</span><br><span class="line">如 果升级Nginx程序，先用新程序替换旧程序文件，编译安装的话新程序直接编译到Nginx安装目录中。</span><br><span class="line">步 骤2：执行命令</span><br><span class="line">kill -USR2 旧版程序的主进程号或进程文件名</span><br><span class="line">此时旧的Nginx主进程将会把自己的进程文件改名为.oldbin，然后执行新版 Nginx。新旧Nginx会同市运行，共同处理请求。</span><br><span class="line">这时要逐步停止旧版 Nginx，输入命令：</span><br><span class="line">kill -WINCH 旧版主进程号</span><br><span class="line">慢慢旧的工作进程就都会随着任务执行完毕而退出，新版的Nginx的工作进程会逐渐取代旧版 工作进程。</span><br><span class="line"></span><br><span class="line">此 时，我们可以决定使用新版还是恢复到旧版。</span><br><span class="line">不重载配置启动新/旧工作进程</span><br><span class="line">kill -HUP 旧/新版主进程号</span><br><span class="line">从容关闭旧/新进程</span><br><span class="line">kill -QUIT 旧/新主进程号</span><br><span class="line">如果此时报错，提示还有进程没有结束就用下面命令先关闭旧/新工作进程，再关闭主进程号：</span><br><span class="line">kill -TERM 旧/新工作进程号</span><br><span class="line"></span><br><span class="line">这样下来，如果要恢复到旧版本，只需要上面的几个步 骤都是操作新版主进程号，如果要用新版本就上面的几个步骤都操作旧版主进程号就行了。</span><br><span class="line"></span><br><span class="line">上面就是Nginx的一些基本的操作，希望以后Nginx能有更好的方法来处理这些操作， 最好是Nginx的命令而不是向Nginx进程发送系统信号。</span><br></pre></td></tr></table></figure>
-<h3 id="后面发现"><a href="#后面发现" class="headerlink" title="后面发现"></a>后面发现</h3><p>突然想起来会不会是配置文件有错误导致的无法启动，so<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -t -c /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure></p>
+<h3 id="后面发现"><a href="#后面发现" class="headerlink" title="后面发现"></a>后面发现</h3><p>突然想起来会不会是配置文件有错误导致的无法启动，so</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -t -c /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
 <p><strong>结果发现</strong>是配置项里面的日志文件目录不存在</p>
 <h3 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h3><p>以后遇到这种问题一定要先看看日志或者先测试一下语句</p>
 <div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/59269.html">nginx-php报502错误</a></li></ul></div>
@@ -646,7 +647,7 @@
                 
                   <a href="/archives/index.html">
                 
-                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-count">76</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -874,7 +875,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">92</span>
+                      
+                    
+                    <span class="site-state-item-count">93</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -990,7 +993,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

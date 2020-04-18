@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套App的制作。整个一块都用socket进行数据传输，但是其中涉及到的数据库的操作，最近lumen用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。  经过一番查找资料，主要分为两步进行 安装相应的数据库包这里使用5.2的包，可以更具自己的需求进行更换1composer require illuminate">
+  <meta name="description" content="这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套 App 的制作。整个一块都用 socket 进行数据传输，但是其中涉及到的数据库的操作，最近 lumen 用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。  经过一番查找资料，主要分为两步进行 安装相应的数据库包这里使用 5.2 的包，可以更具自己的需求进行更换 1composer require i">
 <meta name="keywords" content="laravel,lumen">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在laravel&#x2F;lumen之外使用Eloquent">
 <meta property="og:url" content="https://lailin.xyz/post/29454.html">
 <meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套App的制作。整个一块都用socket进行数据传输，但是其中涉及到的数据库的操作，最近lumen用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。  经过一番查找资料，主要分为两步进行 安装相应的数据库包这里使用5.2的包，可以更具自己的需求进行更换1composer require illuminate">
+<meta property="og:description" content="这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套 App 的制作。整个一块都用 socket 进行数据传输，但是其中涉及到的数据库的操作，最近 lumen 用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。  经过一番查找资料，主要分为两步进行 安装相应的数据库包这里使用 5.2 的包，可以更具自己的需求进行更换 1composer require i">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-11T13:42:47.136Z">
+<meta property="og:updated_time" content="2020-04-18T13:47:38.039Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在laravel&#x2F;lumen之外使用Eloquent">
-<meta name="twitter:description" content="这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套App的制作。整个一块都用socket进行数据传输，但是其中涉及到的数据库的操作，最近lumen用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。  经过一番查找资料，主要分为两步进行 安装相应的数据库包这里使用5.2的包，可以更具自己的需求进行更换1composer require illuminate">
+<meta name="twitter:description" content="这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套 App 的制作。整个一块都用 socket 进行数据传输，但是其中涉及到的数据库的操作，最近 lumen 用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。  经过一番查找资料，主要分为两步进行 安装相应的数据库包这里使用 5.2 的包，可以更具自己的需求进行更换 1composer require i">
 
 
 
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -473,11 +473,12 @@
 
       
         <blockquote>
-<p>这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套App的制作。整个一块都用socket进行数据传输，但是其中涉及到的数据库的操作，最近lumen用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。</p>
+<p>这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套 App 的制作。整个一块都用 socket 进行数据传输，但是其中涉及到的数据库的操作，最近 lumen 用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。</p>
 </blockquote>
 <p>经过一番查找资料，主要分为两步进行</p>
-<h2 id="安装相应的数据库包"><a href="#安装相应的数据库包" class="headerlink" title="安装相应的数据库包"></a>安装相应的数据库包</h2><p><em>这里使用5.2的包，可以更具自己的需求进行更换</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require illuminate/database ~5.2</span><br></pre></td></tr></table></figure></p>
-<h2 id="设置启动文件-start-php"><a href="#设置启动文件-start-php" class="headerlink" title="设置启动文件(start.php)"></a>设置启动文件(start.php)</h2><p>这里将配置文件与启动文件分开，也可以合并在一起。我直接使用了一个php文件返回数组，也可以引入<code>vlucas/phpdotenv</code>使用.env文件来配置变量</p>
+<h2 id="安装相应的数据库包"><a href="#安装相应的数据库包" class="headerlink" title="安装相应的数据库包"></a>安装相应的数据库包</h2><p><em>这里使用 5.2 的包，可以更具自己的需求进行更换</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require illuminate/database ~5.2</span><br></pre></td></tr></table></figure>
+<h2 id="设置启动文件-start-php"><a href="#设置启动文件-start-php" class="headerlink" title="设置启动文件(start.php)"></a>设置启动文件(start.php)</h2><p>这里将配置文件与启动文件分开，也可以合并在一起。我直接使用了一个 php 文件返回数组，也可以引入<code>vlucas/phpdotenv</code>使用.env 文件来配置变量</p>
 <h3 id="start-php"><a href="#start-php" class="headerlink" title="start.php"></a>start.php</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by mohuishou&lt;1<span class="doctag">@lailin</span>.xyz&gt;.</span></span><br><span class="line"><span class="comment"> * User: mohuishou&lt;1<span class="doctag">@lailin</span>.xyz&gt;</span></span><br><span class="line"><span class="comment"> * Date: 2016/11/14 0014</span></span><br><span class="line"><span class="comment"> * Time: 18:50</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">$database = <span class="keyword">require_once</span> <span class="string">"config.php"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Container</span>\<span class="title">Container</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Capsule</span>\<span class="title">Manager</span> <span class="title">as</span> <span class="title">Capsule</span>;</span><br><span class="line"></span><br><span class="line">$capsule = <span class="keyword">new</span> Capsule;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建链接</span></span><br><span class="line">$capsule-&gt;addConnection($database);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置全局静态可访问DB</span></span><br><span class="line">$capsule-&gt;setAsGlobal();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动Eloquent</span></span><br><span class="line">$capsule-&gt;bootEloquent();</span><br></pre></td></tr></table></figure>
 <h3 id="config-php"><a href="#config-php" class="headerlink" title="config.php"></a>config.php</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by PhpStorm.</span></span><br><span class="line"><span class="comment"> * User: lxl</span></span><br><span class="line"><span class="comment"> * Date: 16-11-17</span></span><br><span class="line"><span class="comment"> * Time: 下午8:38</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="string">'driver'</span> =&gt; <span class="string">'mysql'</span>,</span><br><span class="line">    <span class="string">'host'</span> =&gt; <span class="string">"localhost"</span>,</span><br><span class="line">    <span class="string">'database'</span> =&gt; <span class="string">"smart_lock"</span>,</span><br><span class="line">    <span class="string">'username'</span> =&gt; <span class="string">"root"</span>,</span><br><span class="line">    <span class="string">'password'</span> =&gt; <span class="string">"mima"</span>,</span><br><span class="line">    <span class="string">'charset'</span> =&gt; <span class="string">'utf8'</span>,</span><br><span class="line">    <span class="string">'collation'</span> =&gt; <span class="string">'utf8_unicode_ci'</span>,</span><br><span class="line">    <span class="string">'prefix'</span> =&gt; <span class="string">""</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
 <div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div>
@@ -629,7 +630,7 @@
                 
                   <a href="/archives/index.html">
                 
-                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-count">76</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -857,7 +858,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">92</span>
+                      
+                    
+                    <span class="site-state-item-count">93</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -973,7 +976,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

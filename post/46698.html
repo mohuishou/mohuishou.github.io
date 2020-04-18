@@ -98,19 +98,19 @@
 
 
 
-  <meta name="description" content="说明堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。 步骤 建堆，建堆是不断调整堆的过程，从len/2处开始调整，一直到第一个节点，此处len是堆中元素的个数。建堆的过程是线性的过程，从len/2到0处一直调用调整堆的过程，相当于o(h1)+o(h2)…+o(hlen/2) 其中h表示节点的">
+  <meta name="description" content="说明堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。 步骤 建堆，建堆是不断调整堆的过程，从 len/2 处开始调整，一直到第一个节点，此处 len 是堆中元素的个数。建堆的过程是线性的过程，从 len/2 到 0 处一直调用调整堆的过程，相当于 o(h1)+o(h2)…+o(hlen/2)">
 <meta name="keywords" content="排序,Go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="堆排序">
 <meta property="og:url" content="https://lailin.xyz/post/46698.html">
 <meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="说明堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。 步骤 建堆，建堆是不断调整堆的过程，从len/2处开始调整，一直到第一个节点，此处len是堆中元素的个数。建堆的过程是线性的过程，从len/2到0处一直调用调整堆的过程，相当于o(h1)+o(h2)…+o(hlen/2) 其中h表示节点的">
+<meta property="og:description" content="说明堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。 步骤 建堆，建堆是不断调整堆的过程，从 len/2 处开始调整，一直到第一个节点，此处 len 是堆中元素的个数。建堆的过程是线性的过程，从 len/2 到 0 处一直调用调整堆的过程，相当于 o(h1)+o(h2)…+o(hlen/2)">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141622.gif">
-<meta property="og:updated_time" content="2019-11-11T13:42:47.140Z">
+<meta property="og:updated_time" content="2020-04-18T13:47:38.039Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="堆排序">
-<meta name="twitter:description" content="说明堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。 步骤 建堆，建堆是不断调整堆的过程，从len/2处开始调整，一直到第一个节点，此处len是堆中元素的个数。建堆的过程是线性的过程，从len/2到0处一直调用调整堆的过程，相当于o(h1)+o(h2)…+o(hlen/2) 其中h表示节点的">
+<meta name="twitter:description" content="说明堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。 步骤 建堆，建堆是不断调整堆的过程，从 len/2 处开始调整，一直到第一个节点，此处 len 是堆中元素的个数。建堆的过程是线性的过程，从 len/2 到 0 处一直调用调整堆的过程，相当于 o(h1)+o(h2)…+o(hlen/2)">
 <meta name="twitter:image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141622.gif">
 
 
@@ -440,7 +440,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -476,13 +476,14 @@
       
         <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ul>
-<li>建堆，建堆是不断调整堆的过程，从len/2处开始调整，一直到第一个节点，此处len是堆中元素的个数。建堆的过程是线性的过程，从len/2到0处一直调用调整堆的过程，相当于o(h1)+o(h2)…+o(hlen/2) 其中h表示节点的深度，len/2表示节点的个数，这是一个求和的过程，结果是线性的O(n)。</li>
-<li>调整堆：调整堆在构建堆的过程中会用到，而且在堆排序过程中也会用到。利用的思想是比较节点i和它的孩子节点left(i),right(i)，选出三者最大(或者最小)者，如果最大（小）值不是节点i而是它的一个孩子节点，那边交互节点i和该节点，然后再调用调整堆过程，这是一个递归的过程。调整堆的过程时间复杂度与堆的深度有关系，是lgn的操作，因为是沿着深度方向进行调整的。</li>
-<li>堆排序：堆排序是利用上面的两个过程来进行的。首先是根据元素构建堆。然后将堆的根节点取出(一般是与最后一个节点进行交换)，将前面len-1个节点继续进行堆调整的过程，然后再将根节点取出，这样一直到所有节点都取出。堆排序过程的时间复杂度是O(nlgn)。因为建堆的时间复杂度是O(n)（调用一次）；调整堆的时间复杂度是lgn，调用了n-1次，所以堆排序的时间复杂度是O(nlgn)[2] </li>
+<li>建堆，建堆是不断调整堆的过程，从 len/2 处开始调整，一直到第一个节点，此处 len 是堆中元素的个数。建堆的过程是线性的过程，从 len/2 到 0 处一直调用调整堆的过程，相当于 o(h1)+o(h2)…+o(hlen/2) 其中 h 表示节点的深度，len/2 表示节点的个数，这是一个求和的过程，结果是线性的 O(n)。</li>
+<li>调整堆：调整堆在构建堆的过程中会用到，而且在堆排序过程中也会用到。利用的思想是比较节点 i 和它的孩子节点 left(i),right(i)，选出三者最大(或者最小)者，如果最大（小）值不是节点 i 而是它的一个孩子节点，那边交互节点 i 和该节点，然后再调用调整堆过程，这是一个递归的过程。调整堆的过程时间复杂度与堆的深度有关系，是 lgn 的操作，因为是沿着深度方向进行调整的。</li>
+<li>堆排序：堆排序是利用上面的两个过程来进行的。首先是根据元素构建堆。然后将堆的根节点取出(一般是与最后一个节点进行交换)，将前面 len-1 个节点继续进行堆调整的过程，然后再将根节点取出，这样一直到所有节点都取出。堆排序过程的时间复杂度是 O(nlgn)。因为建堆的时间复杂度是 O(n)（调用一次）；调整堆的时间复杂度是 lgn，调用了 n-1 次，所以堆排序的时间复杂度是 O(nlgn)[2]</li>
 </ul>
-<p><em>注意: 根节点在数组当中存放的位置是0，所以第i个节点的左孩子是2i+1,右孩子是2i+2</em></p>
+<p><em>注意: 根节点在数组当中存放的位置是 0，所以第 i 个节点的左孩子是 2i+1,右孩子是 2i+2</em></p>
 <h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141622.gif" alt="示例图片"></p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> HeapSort</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//HeapSort 堆排序</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HeapSort</span><span class="params">(arr []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	LEN := <span class="built_in">len</span>(arr)</span><br><span class="line">	<span class="keyword">for</span> i := LEN/<span class="number">2</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i-- &#123;</span><br><span class="line">		HeapAjust(arr, i, LEN)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := LEN - <span class="number">1</span>; i &gt; <span class="number">0</span>; i-- &#123;</span><br><span class="line">		arr[i], arr[<span class="number">0</span>] = arr[<span class="number">0</span>], arr[i]</span><br><span class="line">		HeapAjust(arr, <span class="number">0</span>, i)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//HeapAjust 堆调整</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HeapAjust</span><span class="params">(arr []<span class="keyword">int</span>, start <span class="keyword">int</span>, length <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	tmp := arr[start]</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">2</span>*start + <span class="number">1</span>; i &lt; length; i = i * <span class="number">2</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> i+<span class="number">1</span> &lt; length &amp;&amp; arr[i] &lt; arr[i+<span class="number">1</span>] &#123;</span><br><span class="line">			i++</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> tmp &gt; arr[i] &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		arr[start] = arr[i]</span><br><span class="line">		start = i</span><br><span class="line">	&#125;</span><br><span class="line">	arr[start] = tmp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li><li><a href="https://lailin.xyz/post/50190.html">插入排序</a></li></ul></div>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> HeapSort</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//HeapSort 堆排序</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HeapSort</span><span class="params">(arr []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	LEN := <span class="built_in">len</span>(arr)</span><br><span class="line">	<span class="keyword">for</span> i := LEN/<span class="number">2</span> - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i-- &#123;</span><br><span class="line">		HeapAjust(arr, i, LEN)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := LEN - <span class="number">1</span>; i &gt; <span class="number">0</span>; i-- &#123;</span><br><span class="line">		arr[i], arr[<span class="number">0</span>] = arr[<span class="number">0</span>], arr[i]</span><br><span class="line">		HeapAjust(arr, <span class="number">0</span>, i)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//HeapAjust 堆调整</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HeapAjust</span><span class="params">(arr []<span class="keyword">int</span>, start <span class="keyword">int</span>, length <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	tmp := arr[start]</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">2</span>*start + <span class="number">1</span>; i &lt; length; i = i * <span class="number">2</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> i+<span class="number">1</span> &lt; length &amp;&amp; arr[i] &lt; arr[i+<span class="number">1</span>] &#123;</span><br><span class="line">			i++</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> tmp &gt; arr[i] &#123;</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		arr[start] = arr[i]</span><br><span class="line">		start = i</span><br><span class="line">	&#125;</span><br><span class="line">	arr[start] = tmp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li><li><a href="https://lailin.xyz/post/50190.html">插入排序</a></li></ul></div>
       
     </div>
 
@@ -544,8 +545,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/51203.html" rel="next" title="选择排序">
-                <i class="fa fa-chevron-left"></i> 选择排序
+              <a href="/post/63711.html" rel="next" title="归并排序">
+                <i class="fa fa-chevron-left"></i> 归并排序
               </a>
             
           </div>
@@ -631,7 +632,7 @@
                 
                   <a href="/archives/index.html">
                 
-                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-count">76</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -859,7 +860,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">92</span>
+                      
+                    
+                    <span class="site-state-item-count">93</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -975,7 +978,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

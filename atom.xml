@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2019-11-11T13:42:47.136Z</updated>
+  <updated>2020-04-18T13:48:27.707Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -17,16 +17,45 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>在单个仓库中支持多个 go mod 模块</title>
+    <link href="https://lailin.xyz/post/auxvv1.html"/>
+    <id>https://lailin.xyz/post/auxvv1.html</id>
+    <published>2020-04-17T18:41:12.000Z</published>
+    <updated>2020-04-18T13:48:27.707Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致，更加直观所以想要再一个仓库中实现实现多个模块的发布&lt;br&gt;&lt;a name=&quot;b9GY4&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;需求清单&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://lailin.xyz/tags/go/"/>
+    
+      <category term="小技巧" scheme="https://lailin.xyz/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
+    
+      <category term="go mod" scheme="https://lailin.xyz/tags/go-mod/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go Web 小技巧（三）Gin 参数绑定</title>
     <link href="https://lailin.xyz/post/11996.html"/>
     <id>https://lailin.xyz/post/11996.html</id>
     <published>2019-11-06T21:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;楔-xie-子&quot;&gt;&lt;a href=&quot;#楔-xie-子&quot; class=&quot;headerlink&quot; title=&quot;楔(xiē)子&quot;&gt;&lt;/a&gt;楔(xiē)子&lt;/h2&gt;&lt;p&gt; 在第一篇文章 &lt;a href=&quot;https://lailin.xyz/post/38237.html&quot;&gt;简化Gin接口代码&lt;/a&gt; 当中为大家提供了一种抽象 &lt;code&gt;gin&lt;/code&gt; 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。&lt;/p&gt;
-&lt;p&gt;在我们写的绝大部分的API代码当中，其实都是需要传递参数的，无论是通过 &lt;code&gt;path&lt;/code&gt;、&lt;code&gt;query string&lt;/code&gt; 还是 &lt;code&gt;body&lt;/code&gt;，在 &lt;code&gt;gin&lt;/code&gt; 当中，为我们提供了一系列的 &lt;code&gt;binding&lt;/code&gt; 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 &lt;code&gt;struct tag&lt;/code&gt; 来对参数进行校验，不知道到大家曾今是否和遇到过相同的困惑：&lt;/p&gt;
+      &lt;h2 id=&quot;楔-xie-子&quot;&gt;&lt;a href=&quot;#楔-xie-子&quot; class=&quot;headerlink&quot; title=&quot;楔(xiē)子&quot;&gt;&lt;/a&gt;楔(xiē)子&lt;/h2&gt;&lt;p&gt;在第一篇文章 &lt;a href=&quot;https://lailin.xyz/post/38237.html&quot;&gt;简化 Gin 接口代码&lt;/a&gt; 当中为大家提供了一种抽象 &lt;code&gt;gin&lt;/code&gt; 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。&lt;/p&gt;
+&lt;p&gt;在我们写的绝大部分的 API 代码当中，其实都是需要传递参数的，无论是通过 &lt;code&gt;path&lt;/code&gt;、&lt;code&gt;query string&lt;/code&gt; 还是 &lt;code&gt;body&lt;/code&gt;，在 &lt;code&gt;gin&lt;/code&gt; 当中，为我们提供了一系列的 &lt;code&gt;binding&lt;/code&gt; 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 &lt;code&gt;struct tag&lt;/code&gt; 来对参数进行校验，不知道到大家曾今是否和遇到过相同的困惑：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;我创建/更新接口有时候就仅仅只相差一个 id，我是不是可以复用代码？&lt;/li&gt;
 &lt;li&gt;是否可以直接用 model 层的 struct 绑定参数？&lt;/li&gt;
@@ -38,11 +67,11 @@
     
       <category term="go" scheme="https://lailin.xyz/tags/go/"/>
     
+      <category term="小技巧" scheme="https://lailin.xyz/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
+    
       <category term="api" scheme="https://lailin.xyz/tags/api/"/>
     
       <category term="gin" scheme="https://lailin.xyz/tags/gin/"/>
-    
-      <category term="小技巧" scheme="https://lailin.xyz/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
@@ -51,7 +80,7 @@
     <link href="https://lailin.xyz/post/17394.html"/>
     <id>https://lailin.xyz/post/17394.html</id>
     <published>2019-11-03T18:12:26.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -74,7 +103,7 @@
     <link href="https://lailin.xyz/post/38237.html"/>
     <id>https://lailin.xyz/post/38237.html</id>
     <published>2019-10-26T10:10:10.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -90,11 +119,11 @@
     
       <category term="go" scheme="https://lailin.xyz/tags/go/"/>
     
+      <category term="小技巧" scheme="https://lailin.xyz/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
+    
       <category term="api" scheme="https://lailin.xyz/tags/api/"/>
     
       <category term="gin" scheme="https://lailin.xyz/tags/gin/"/>
-    
-      <category term="小技巧" scheme="https://lailin.xyz/tags/%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
@@ -103,11 +132,11 @@
     <link href="https://lailin.xyz/post/45050.html"/>
     <id>https://lailin.xyz/post/45050.html</id>
     <published>2019-07-11T23:05:01.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;POSTMAN 是我在开发过程当中最常用到的 API 测试工具之一，虽然并不完美，但也是目前个人认为在API测试时最好用的客户端工具之一。&lt;/p&gt;
+      &lt;p&gt;POSTMAN 是我在开发过程当中最常用到的 API 测试工具之一，虽然并不完美，但也是目前个人认为在 API 测试时最好用的客户端工具之一。&lt;/p&gt;
 &lt;p&gt;本文适用于后端，前端，移动端以及测试的同学，分三大部分从最简单的界面操作开讲，然后涉及到变量、脚本以及一些云服务相关的功能，最后将适配几个案例讲解怎么使用 POSTMAN 提高我们的工作效率。本文前半部分包含较多基础功能讲解，对已经比较熟悉使用的同学，可以选择性的跳过部分内容。&lt;/p&gt;
     
     </summary>
@@ -132,7 +161,7 @@
     <link href="https://lailin.xyz/post/41140.html"/>
     <id>https://lailin.xyz/post/41140.html</id>
     <published>2019-05-07T23:31:20.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -156,11 +185,11 @@
     <link href="https://lailin.xyz/post/27142.html"/>
     <id>https://lailin.xyz/post/27142.html</id>
     <published>2019-04-09T23:42:17.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;在hexo中通过algolia实现全文搜索&lt;/p&gt;
+      &lt;p&gt;在 hexo 中通过 algolia 实现全文搜索&lt;/p&gt;
     
     </summary>
     
@@ -182,7 +211,7 @@
     <link href="https://lailin.xyz/post/51252.html"/>
     <id>https://lailin.xyz/post/51252.html</id>
     <published>2019-03-30T16:10:10.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -208,7 +237,7 @@
     <link href="https://lailin.xyz/post/60163.html"/>
     <id>https://lailin.xyz/post/60163.html</id>
     <published>2019-01-29T14:08:52.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -235,11 +264,11 @@
     <link href="https://lailin.xyz/post/28054.html"/>
     <id>https://lailin.xyz/post/28054.html</id>
     <published>2019-01-14T17:11:19.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;本文将主要讲述如何创建一个自定义的Github Actions， 并且使用Github Actions 完成 CI/CD的操作&lt;/p&gt;
+      &lt;p&gt;本文将主要讲述如何创建一个自定义的 Github Actions， 并且使用 Github Actions 完成 CI/CD 的操作&lt;/p&gt;
     
     </summary>
     
@@ -255,7 +284,7 @@
     <link href="https://lailin.xyz/post/7944.html"/>
     <id>https://lailin.xyz/post/7944.html</id>
     <published>2018-12-08T08:44:03.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -273,7 +302,7 @@
     <link href="https://lailin.xyz/post/44107.html"/>
     <id>https://lailin.xyz/post/44107.html</id>
     <published>2018-12-08T08:31:20.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -304,7 +333,7 @@
     <link href="https://lailin.xyz/post/40393.html"/>
     <id>https://lailin.xyz/post/40393.html</id>
     <published>2018-12-08T03:05:01.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -322,7 +351,7 @@
     <link href="https://lailin.xyz/post/52061.html"/>
     <id>https://lailin.xyz/post/52061.html</id>
     <published>2018-09-25T11:09:59.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -330,7 +359,7 @@
       
         
         
-          &lt;p&gt;之前博客的更新一直都是在本地运行&lt;code&gt;hugo&lt;/code&gt;然后手动push到github仓库，虽然写了一个小脚本，但是本地还是多了一个public文件夹，最近看了travis ci可以和github完美的结合。关于travis ci
+          &lt;p&gt;之前博客的更新一直都是在本地运行&lt;code&gt;hugo&lt;/code&gt;然后手动 push 到 github 仓库，虽然写了一个小脚本，但是本地还是多了一个 public 文件夹，最近看了 travis ci 可以和 github 完美的结合。关于 travis ci
         
       
     
@@ -350,12 +379,12 @@
     <link href="https://lailin.xyz/post/37623.html"/>
     <id>https://lailin.xyz/post/37623.html</id>
     <published>2018-09-23T14:35:51.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;在上一篇Blog当中发现了一个十分边缘的GORM的bug，由于不熟悉工具，bug的调试过程还是比较麻烦，这一篇讲一讲如何使用Goland强大的debug功能调试Go程序&lt;/p&gt;
+&lt;p&gt;在上一篇 Blog 当中发现了一个十分边缘的 GORM 的 bug，由于不熟悉工具，bug 的调试过程还是比较麻烦，这一篇讲一讲如何使用 Goland 强大的 debug 功能调试 Go 程序&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
@@ -372,7 +401,7 @@
     <link href="https://lailin.xyz/post/37449.html"/>
     <id>https://lailin.xyz/post/37449.html</id>
     <published>2018-09-21T10:46:58.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -399,7 +428,7 @@
     <link href="https://lailin.xyz/post/44029.html"/>
     <id>https://lailin.xyz/post/44029.html</id>
     <published>2018-08-02T14:46:01.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -407,7 +436,7 @@
       
         
         
-          &lt;p&gt;在上一篇文章当中阅读了Go语言的一个高性能的Web框架Gin，Web框架当中最重要的功能之一是路由，Gin的路由就是由httprouter这个包实现的&lt;/p&gt;
+          &lt;p&gt;在上一篇文章当中阅读了 Go 语言的一个高性能的 Web 框架 Gin，Web 框架当中最重要的功能之一是路由，Gin 的路由就是由 httprouter 这个包实现的&lt;/p&gt;
 &lt;h2 id=&quot;地址&quot;&gt;&lt;a href=&quot;#地址&quot; class=&quot;headerlink&quot;
         
       
@@ -428,7 +457,7 @@
     <link href="https://lailin.xyz/post/12338.html"/>
     <id>https://lailin.xyz/post/12338.html</id>
     <published>2018-07-21T15:03:19.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -437,9 +466,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;最近打算开始学习一下Gin的源代码，现在Gin已经是一个十分成熟的框架了，代码量也不少，阅读起来还是有一定的难度，所以我打算从0.1版本开始阅读学习，一直到最新的一个版本。跟随着Gin的源码一步一步的学习成长。&lt;/p&gt;
-&lt;/blockquote&gt;
-
+&lt;p&gt;最近打算开始学习一下 Gin 的源代码，现在 Gin 已经是一个十分成熟的框架了，代码量也不少，阅读起来还是有一定的难度，所以我打算从 0.1 版本开始阅读学习，一直到最新的一个版本。跟随着 Gin
         
       
     
@@ -459,7 +486,7 @@
     <link href="https://lailin.xyz/post/61686.html"/>
     <id>https://lailin.xyz/post/61686.html</id>
     <published>2018-07-21T10:46:58.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -489,7 +516,7 @@
     <link href="https://lailin.xyz/post/22757.html"/>
     <id>https://lailin.xyz/post/22757.html</id>
     <published>2018-07-19T15:42:08.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -519,7 +546,7 @@
     <link href="https://lailin.xyz/post/47700.html"/>
     <id>https://lailin.xyz/post/47700.html</id>
     <published>2018-03-20T01:53:06.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -546,7 +573,7 @@
     <link href="https://lailin.xyz/post/5431.html"/>
     <id>https://lailin.xyz/post/5431.html</id>
     <published>2018-03-14T01:40:48.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -554,7 +581,7 @@
       
         
         
-          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;最近 We 川大上的教务处公告新闻已经很久没有更新了，想到可能是 ip 被封了，查了一下
         
       
     
@@ -576,7 +603,7 @@
     <link href="https://lailin.xyz/post/62925.html"/>
     <id>https://lailin.xyz/post/62925.html</id>
     <published>2018-01-24T09:55:25.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -584,7 +611,8 @@
       
         
         
-          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;可以搜索小程序&lt;code&gt;we川大&lt;/code&gt;直接体验&lt;/p&gt;
+&lt;p&gt;这不是刚刚发完 0.1.0 的笔记么？怎么 0.2.0
         
       
     
@@ -600,7 +628,7 @@
     <link href="https://lailin.xyz/post/62781.html"/>
     <id>https://lailin.xyz/post/62781.html</id>
     <published>2018-01-24T09:12:56.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -608,7 +636,7 @@
       
         
         
-          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;微信小程序已经出来一年左右了，然后之前也写过一个 scuplus 的 web
         
       
     
@@ -624,7 +652,7 @@
     <link href="https://lailin.xyz/post/1358.html"/>
     <id>https://lailin.xyz/post/1358.html</id>
     <published>2017-09-22T10:46:42.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -633,7 +661,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;三面同时进行，每一面间隔不超过五分钟，前面两面技术面最后一面HR，完全不会JAVA，结果一直问JAVA心态爆炸&lt;/p&gt;
+&lt;p&gt;三面同时进行，每一面间隔不超过五分钟，前面两面技术面最后一面 HR，完全不会 JAVA，结果一直问 JAVA 心态爆炸&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;一面-20min&quot;&gt;&lt;a href=&quot;#一面-20min&quot;
         
@@ -649,11 +677,144 @@
   </entry>
   
   <entry>
+    <title>选择排序</title>
+    <link href="https://lailin.xyz/post/51203.html"/>
+    <id>https://lailin.xyz/post/51203.html</id>
+    <published>2017-09-18T00:00:00.000Z</published>
+    <updated>2020-04-18T13:47:38.039Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/mohuishou/go-sort&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>百度面试总结</title>
+    <link href="https://lailin.xyz/post/56757.html"/>
+    <id>https://lailin.xyz/post/56757.html</id>
+    <published>2017-09-18T00:00:00.000Z</published>
+    <updated>2020-04-18T13:47:38.039Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;一面-40min&quot;&gt;&lt;a href=&quot;#一面-40min&quot; class=&quot;headerlink&quot; title=&quot;一面(40min)&quot;&gt;&lt;/a&gt;一面(40min)&lt;/h2&gt;&lt;h3 id=&quot;0-自我介绍&quot;&gt;&lt;a href=&quot;#0-自我介绍&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="面试" scheme="https://lailin.xyz/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="秋招" scheme="https://lailin.xyz/tags/%E7%A7%8B%E6%8B%9B/"/>
+    
+      <category term="百度" scheme="https://lailin.xyz/tags/%E7%99%BE%E5%BA%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>冒泡排序</title>
+    <link href="https://lailin.xyz/post/21238.html"/>
+    <id>https://lailin.xyz/post/21238.html</id>
+    <published>2017-09-18T00:00:00.000Z</published>
+    <updated>2020-04-18T13:47:38.039Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;冒泡排序&quot;&gt;&lt;a href=&quot;#冒泡排序&quot; class=&quot;headerlink&quot; title=&quot;冒泡排序&quot;&gt;&lt;/a&gt;冒泡排序&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>shell排序</title>
+    <link href="https://lailin.xyz/post/27243.html"/>
+    <id>https://lailin.xyz/post/27243.html</id>
+    <published>2017-09-18T00:00:00.000Z</published>
+    <updated>2020-04-18T13:47:38.039Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Shell-排序&quot;&gt;&lt;a href=&quot;#Shell-排序&quot; class=&quot;headerlink&quot; title=&quot;Shell 排序&quot;&gt;&lt;/a&gt;Shell 排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>插入排序</title>
+    <link href="https://lailin.xyz/post/50190.html"/>
+    <id>https://lailin.xyz/post/50190.html</id>
+    <published>2017-09-18T00:00:00.000Z</published>
+    <updated>2020-04-18T13:47:38.039Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;插入排序&quot;&gt;&lt;a href=&quot;#插入排序&quot; class=&quot;headerlink&quot; title=&quot;插入排序&quot;&gt;&lt;/a&gt;插入排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
     <title>快速排序</title>
     <link href="https://lailin.xyz/post/11306.html"/>
     <id>https://lailin.xyz/post/11306.html</id>
     <published>2017-09-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -680,7 +841,7 @@
     <link href="https://lailin.xyz/post/46698.html"/>
     <id>https://lailin.xyz/post/46698.html</id>
     <published>2017-09-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -702,144 +863,11 @@
   </entry>
   
   <entry>
-    <title>选择排序</title>
-    <link href="https://lailin.xyz/post/51203.html"/>
-    <id>https://lailin.xyz/post/51203.html</id>
-    <published>2017-09-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/mohuishou/go-sort&quot; target=&quot;_blank&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>插入排序</title>
-    <link href="https://lailin.xyz/post/50190.html"/>
-    <id>https://lailin.xyz/post/50190.html</id>
-    <published>2017-09-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;插入排序&quot;&gt;&lt;a href=&quot;#插入排序&quot; class=&quot;headerlink&quot; title=&quot;插入排序&quot;&gt;&lt;/a&gt;插入排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>百度面试总结</title>
-    <link href="https://lailin.xyz/post/56757.html"/>
-    <id>https://lailin.xyz/post/56757.html</id>
-    <published>2017-09-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;一面-40min&quot;&gt;&lt;a href=&quot;#一面-40min&quot; class=&quot;headerlink&quot; title=&quot;一面(40min)&quot;&gt;&lt;/a&gt;一面(40min)&lt;/h2&gt;&lt;h3 id=&quot;0-自我介绍&quot;&gt;&lt;a href=&quot;#0-自我介绍&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="面试" scheme="https://lailin.xyz/tags/%E9%9D%A2%E8%AF%95/"/>
-    
-      <category term="秋招" scheme="https://lailin.xyz/tags/%E7%A7%8B%E6%8B%9B/"/>
-    
-      <category term="百度" scheme="https://lailin.xyz/tags/%E7%99%BE%E5%BA%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shell排序</title>
-    <link href="https://lailin.xyz/post/27243.html"/>
-    <id>https://lailin.xyz/post/27243.html</id>
-    <published>2017-09-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Shell-排序&quot;&gt;&lt;a href=&quot;#Shell-排序&quot; class=&quot;headerlink&quot; title=&quot;Shell 排序&quot;&gt;&lt;/a&gt;Shell 排序&lt;/h1&gt;&lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>冒泡排序</title>
-    <link href="https://lailin.xyz/post/21238.html"/>
-    <id>https://lailin.xyz/post/21238.html</id>
-    <published>2017-09-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;冒泡排序&quot;&gt;&lt;a href=&quot;#冒泡排序&quot; class=&quot;headerlink&quot; title=&quot;冒泡排序&quot;&gt;&lt;/a&gt;冒泡排序&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
     <title>归并排序</title>
     <link href="https://lailin.xyz/post/63711.html"/>
     <id>https://lailin.xyz/post/63711.html</id>
     <published>2017-09-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -865,7 +893,7 @@
     <link href="https://lailin.xyz/post/34642.html"/>
     <id>https://lailin.xyz/post/34642.html</id>
     <published>2017-04-17T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -893,7 +921,7 @@
     <link href="https://lailin.xyz/post/21230.html"/>
     <id>https://lailin.xyz/post/21230.html</id>
     <published>2017-04-16T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -902,7 +930,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;前面说了单源最短路径算法Dijkstra，以及多源最短路径算法Floyd，但是都不能适用于有负权边存在的情况，这里实现一下是西南交通大学段凡丁于1994年发表的SPFA（Shortest Path Faster
+&lt;p&gt;前面说了单源最短路径算法 Dijkstra，以及多源最短路径算法 Floyd，但是都不能适用于有负权边存在的情况，这里实现一下是西南交通大学段凡丁于 1994 年发表的 SPFA（Shortest Path Faster
         
       
     
@@ -926,7 +954,7 @@
     <link href="https://lailin.xyz/post/60101.html"/>
     <id>https://lailin.xyz/post/60101.html</id>
     <published>2017-04-12T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -935,7 +963,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;在上一篇当中讲了Dijkstra算法，Dijkstra适用于对于单源路径的求取，但是对于任意两个点之间的最小路径呢？首先想到的当然是直接使用多次的Dijkstra算法来求取任意两点之间的最短路径，但是这样下来时间复杂度会比较大，所以使用一种新的算法
+&lt;p&gt;在上一篇当中讲了 Dijkstra 算法，Dijkstra 适用于对于单源路径的求取，但是对于任意两个点之间的最小路径呢？首先想到的当然是直接使用多次的 Dijkstra
         
       
     
@@ -957,7 +985,7 @@
     <link href="https://lailin.xyz/post/18885.html"/>
     <id>https://lailin.xyz/post/18885.html</id>
     <published>2017-04-10T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -990,7 +1018,7 @@
     <link href="https://lailin.xyz/post/13459.html"/>
     <id>https://lailin.xyz/post/13459.html</id>
     <published>2017-04-09T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.140Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1021,7 +1049,7 @@
     <link href="https://lailin.xyz/post/4976.html"/>
     <id>https://lailin.xyz/post/4976.html</id>
     <published>2017-04-08T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1048,7 +1076,7 @@
     <link href="https://lailin.xyz/post/50696.html"/>
     <id>https://lailin.xyz/post/50696.html</id>
     <published>2016-11-25T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1075,7 +1103,7 @@
     <link href="https://lailin.xyz/post/7964.html"/>
     <id>https://lailin.xyz/post/7964.html</id>
     <published>2016-11-20T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1105,7 +1133,7 @@
     <link href="https://lailin.xyz/post/29454.html"/>
     <id>https://lailin.xyz/post/29454.html</id>
     <published>2016-11-19T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1114,8 +1142,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套App的制作。整个一块都用socket进行数据传输，但是其中涉及到的数据库的操作，最近lumen用的比较多，觉得它的数据库的组件特别方便，所以就想看看能不能单独拿出来使用。&lt;/p&gt;
-
+&lt;p&gt;这周刚做完学校的一个智能硬件比赛的作品，我负责后端服务器，以及配套 App 的制作。整个一块都用 socket 进行数据传输，但是其中涉及到的数据库的操作，最近 lumen
         
       
     
@@ -1133,7 +1160,7 @@
     <link href="https://lailin.xyz/post/52826.html"/>
     <id>https://lailin.xyz/post/52826.html</id>
     <published>2016-11-11T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1142,12 +1169,12 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;java初学笔记，随手记录&lt;/p&gt;
+&lt;p&gt;java 初学笔记，随手记录&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;单引号表示字符&lt;code&gt;char&lt;/code&gt;类型(&lt;em&gt;不常用&lt;/em&gt;)，双引号才是字符串&lt;/p&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;float类型后面要添加f
+&lt;li&gt;&lt;p&gt;float
         
       
     
@@ -1165,7 +1192,7 @@
     <link href="https://lailin.xyz/post/59080.html"/>
     <id>https://lailin.xyz/post/59080.html</id>
     <published>2016-10-13T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1174,7 +1201,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;为了更好的写博客，最近打算把博客静态化，发现了node写的hexo。顺便也可以直接利用github和coding的pages来搭建博客同时把之前闲置的未备案域名&lt;a
+&lt;p&gt;为了更好的写博客，最近打算把博客静态化，发现了 node 写的 hexo。顺便也可以直接利用 github 和 coding 的 pages 来搭建博客同时把之前闲置的未备案域名&lt;a
         
       
     
@@ -1194,7 +1221,7 @@
     <link href="https://lailin.xyz/post/46155.html"/>
     <id>https://lailin.xyz/post/46155.html</id>
     <published>2016-10-10T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1202,7 +1229,7 @@
       
         
         
-          &lt;h1 id=&quot;在deepin下安装ss-qt5&quot;&gt;&lt;a href=&quot;#在deepin下安装ss-qt5&quot; class=&quot;headerlink&quot;
+          &lt;h1 id=&quot;在-deepin-下安装-ss-qt5&quot;&gt;&lt;a href=&quot;#在-deepin-下安装-ss-qt5&quot; class=&quot;headerlink&quot; title=&quot;在 deepin 下安装 ss-qt5&quot;&gt;&lt;/a&gt;在 deepin 下安装
         
       
     
@@ -1222,7 +1249,7 @@
     <link href="https://lailin.xyz/post/18280.html"/>
     <id>https://lailin.xyz/post/18280.html</id>
     <published>2016-09-07T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1253,7 +1280,7 @@
     <link href="https://lailin.xyz/post/43893.html"/>
     <id>https://lailin.xyz/post/43893.html</id>
     <published>2016-08-07T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1261,7 +1288,7 @@
       
         
         
-          &lt;h1 id=&quot;PHP设计模式（一）工厂模式&quot;&gt;&lt;a href=&quot;#PHP设计模式（一）工厂模式&quot; class=&quot;headerlink&quot;
+          &lt;h1 id=&quot;PHP-设计模式（一）工厂模式&quot;&gt;&lt;a href=&quot;#PHP-设计模式（一）工厂模式&quot; class=&quot;headerlink&quot; title=&quot;PHP 设计模式（一）工厂模式&quot;&gt;&lt;/a&gt;PHP
         
       
     
@@ -1281,7 +1308,7 @@
     <link href="https://lailin.xyz/post/51466.html"/>
     <id>https://lailin.xyz/post/51466.html</id>
     <published>2016-07-19T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1310,7 +1337,7 @@
     <link href="https://lailin.xyz/post/50628.html"/>
     <id>https://lailin.xyz/post/50628.html</id>
     <published>2016-07-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1341,7 +1368,7 @@
     <link href="https://lailin.xyz/post/13242.html"/>
     <id>https://lailin.xyz/post/13242.html</id>
     <published>2016-07-15T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1349,7 +1376,7 @@
       
         
         
-          &lt;h3 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h3&gt;&lt;p&gt;laravel版本：&lt;code&gt;5.2&lt;/code&gt;&lt;br&gt;虚拟主机：万网&lt;/p&gt;
+          &lt;h3 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h3&gt;&lt;p&gt;laravel 版本：&lt;code&gt;5.2&lt;/code&gt;&lt;br&gt;虚拟主机：万网&lt;/p&gt;
 &lt;h3 id=&quot;迁移&quot;&gt;&lt;a href=&quot;#迁移&quot;
         
       
@@ -1372,7 +1399,7 @@
     <link href="https://lailin.xyz/post/8013.html"/>
     <id>https://lailin.xyz/post/8013.html</id>
     <published>2016-06-28T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1381,7 +1408,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的oss可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑&lt;/p&gt;
+&lt;p&gt;经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的 oss 可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3
         
@@ -1409,7 +1436,7 @@
     <link href="https://lailin.xyz/post/31503.html"/>
     <id>https://lailin.xyz/post/31503.html</id>
     <published>2016-06-03T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1437,7 +1464,7 @@
     <link href="https://lailin.xyz/post/36128.html"/>
     <id>https://lailin.xyz/post/36128.html</id>
     <published>2016-05-10T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1445,7 +1472,7 @@
       
         
         
-          &lt;p&gt;更新之后或者上线前别忘了执行下面的命令&lt;br&gt;否则少则损失20%-50%的性能，多则程序直接报错&lt;/p&gt;
+          &lt;p&gt;更新之后或者上线前别忘了执行下面的命令&lt;br&gt;否则少则损失 20%-50%的性能，多则程序直接报错&lt;/p&gt;
 &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
         
       
@@ -1468,7 +1495,7 @@
     <link href="https://lailin.xyz/post/10661.html"/>
     <id>https://lailin.xyz/post/10661.html</id>
     <published>2016-05-04T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1497,11 +1524,44 @@
   </entry>
   
   <entry>
+    <title>php利用curl保存图片</title>
+    <link href="https://lailin.xyz/post/58471.html"/>
+    <id>https://lailin.xyz/post/58471.html</id>
+    <published>2016-05-03T00:00:00.000Z</published>
+    <updated>2020-04-18T13:47:38.039Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="图片" scheme="https://lailin.xyz/tags/%E5%9B%BE%E7%89%87/"/>
+    
+      <category term="curl" scheme="https://lailin.xyz/tags/curl/"/>
+    
+  </entry>
+  
+  <entry>
     <title>php识别验证码（一）</title>
     <link href="https://lailin.xyz/post/47583.html"/>
     <id>https://lailin.xyz/post/47583.html</id>
     <published>2016-05-03T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1532,44 +1592,11 @@
   </entry>
   
   <entry>
-    <title>php利用curl保存图片</title>
-    <link href="https://lailin.xyz/post/58471.html"/>
-    <id>https://lailin.xyz/post/58471.html</id>
-    <published>2016-05-03T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span
-        
-      
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="图片" scheme="https://lailin.xyz/tags/%E5%9B%BE%E7%89%87/"/>
-    
-      <category term="curl" scheme="https://lailin.xyz/tags/curl/"/>
-    
-  </entry>
-  
-  <entry>
     <title>php-webhook利用php脚本自动化部署git项目</title>
     <link href="https://lailin.xyz/post/61468.html"/>
     <id>https://lailin.xyz/post/61468.html</id>
     <published>2016-04-28T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1578,7 +1605,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;遇到权限的问题弄了好久，整理一下步骤简单的写一下&lt;br&gt;在阅读这篇文章的时候默认你的服务器上安装了web服务器和git&lt;/p&gt;
+&lt;p&gt;遇到权限的问题弄了好久，整理一下步骤简单的写一下&lt;br&gt;在阅读这篇文章的时候默认你的服务器上安装了 web 服务器和 git&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;step1&quot;&gt;&lt;a href=&quot;#step1&quot;
         
@@ -1602,7 +1629,7 @@
     <link href="https://lailin.xyz/post/33991.html"/>
     <id>https://lailin.xyz/post/33991.html</id>
     <published>2016-04-27T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1611,7 +1638,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;今天装了一个服务器但是nginx一直无法启动，google了各种答案，还是没有效果&lt;/p&gt;
+&lt;p&gt;今天装了一个服务器但是 nginx 一直无法启动，google 了各种答案，还是没有效果&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id=&quot;例如：&quot;&gt;&lt;a href=&quot;#例如：&quot; class=&quot;headerlink&quot;
         
@@ -1633,7 +1660,7 @@
     <link href="https://lailin.xyz/post/59269.html"/>
     <id>https://lailin.xyz/post/59269.html</id>
     <published>2016-04-25T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1644,8 +1671,8 @@
           &lt;blockquote&gt;
 &lt;p&gt;正是悲催犯了一个超低级的错误&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;在腾讯云新买了一个服务器，直接用了以前nginx的配置文件，但是装上之后先是404然后502，一直不知道为什么&lt;/p&gt;
-&lt;figure class=&quot;highlight
+&lt;p&gt;在腾讯云新买了一个服务器，直接用了以前 nginx 的配置文件，但是装上之后先是 404 然后 502，一直不知道为什么&lt;/p&gt;
+&lt;figure
         
       
     
@@ -1667,7 +1694,7 @@
     <link href="https://lailin.xyz/post/48100.html"/>
     <id>https://lailin.xyz/post/48100.html</id>
     <published>2016-02-29T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1693,16 +1720,17 @@
     <link href="https://lailin.xyz/post/62847.html"/>
     <id>https://lailin.xyz/post/62847.html</id>
     <published>2016-02-04T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;在js的URL编码解码当中有这两个函数，分别是&lt;/p&gt;
+&lt;p&gt;在 js 的 URL 编码解码当中有这两个函数，分别是&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&quot;编码解码函数&quot;&gt;&lt;a href=&quot;#编码解码函数&quot; class=&quot;headerlink&quot; title=&quot;编码解码函数&quot;&gt;&lt;/a&gt;编码解码函数&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;编码&lt;code&gt;encodeURI(str)&lt;/code&gt;&lt;br&gt;解码&lt;code&gt;decodeURI(str)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;编码&lt;code&gt;encodeURIComponent&lt;/code&gt;&lt;br&gt;解码&lt;code&gt;decodeURIComponent&lt;/code&gt;
+&lt;h3 id=&quot;编码解码函数&quot;&gt;&lt;a href=&quot;#编码解码函数&quot; class=&quot;headerlink&quot; title=&quot;编码解码函数&quot;&gt;&lt;/a&gt;编码解码函数&lt;/h3&gt;&lt;p&gt;1.&lt;/p&gt;
+&lt;p&gt;编码&lt;code&gt;encodeURI(str)&lt;/code&gt;&lt;br&gt;解码&lt;code&gt;decodeURI(str)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;2.&lt;/p&gt;
+&lt;p&gt;编码&lt;code&gt;encodeURIComponent&lt;/code&gt;&lt;br&gt;解码&lt;code&gt;decodeURIComponent&lt;/code&gt;&lt;/p&gt;
     
     </summary>
     
@@ -1718,12 +1746,12 @@
     <link href="https://lailin.xyz/post/39494.html"/>
     <id>https://lailin.xyz/post/39494.html</id>
     <published>2016-01-04T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;今天在写一个前端文件的时候发现有一个样式突然没有了作用，但是按照优先级来说应该后面的前面的才对。&lt;br&gt;然后研究了一下css当中的优先级到底是怎么回事，才发现原来都是权重的锅&lt;/p&gt;
+&lt;p&gt;今天在写一个前端文件的时候发现有一个样式突然没有了作用，但是按照优先级来说应该后面的前面的才对。&lt;br&gt;然后研究了一下 css 当中的优先级到底是怎么回事，才发现原来都是权重的锅&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
@@ -1740,7 +1768,7 @@
     <link href="https://lailin.xyz/post/16707.html"/>
     <id>https://lailin.xyz/post/16707.html</id>
     <published>2016-01-02T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1766,11 +1794,11 @@
   </entry>
   
   <entry>
-    <title>phpstrom10激活方法（JetBrains系列软件激活）</title>
-    <link href="https://lailin.xyz/post/28397.html"/>
-    <id>https://lailin.xyz/post/28397.html</id>
+    <title>NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</title>
+    <link href="https://lailin.xyz/post/64902.html"/>
+    <id>https://lailin.xyz/post/64902.html</id>
     <published>2015-11-15T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1779,7 +1807,36 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;找到一个JetBrains系列软件的注册服务器&lt;/p&gt;
+&lt;p&gt;错误详情：&lt;br&gt;错误: 无法访问 android.support.v7.app.AppCompatActivity&lt;br&gt;找不到 android.support.v7.app.AppCompatActivity
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="app" scheme="https://lailin.xyz/tags/app/"/>
+    
+      <category term="ndk" scheme="https://lailin.xyz/tags/ndk/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>phpstrom10激活方法（JetBrains系列软件激活）</title>
+    <link href="https://lailin.xyz/post/28397.html"/>
+    <id>https://lailin.xyz/post/28397.html</id>
+    <published>2015-11-15T00:00:00.000Z</published>
+    <updated>2020-04-18T13:47:38.039Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;找到一个 JetBrains 系列软件的注册服务器&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;注册时选择“License server”输入“&lt;a
         
@@ -1797,40 +1854,11 @@
   </entry>
   
   <entry>
-    <title>NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</title>
-    <link href="https://lailin.xyz/post/64902.html"/>
-    <id>https://lailin.xyz/post/64902.html</id>
-    <published>2015-11-15T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;错误详情：&lt;br&gt;错误:
-        
-      
-    
-    </summary>
-    
-      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
-    
-    
-      <category term="app" scheme="https://lailin.xyz/tags/app/"/>
-    
-      <category term="ndk" scheme="https://lailin.xyz/tags/ndk/"/>
-    
-  </entry>
-  
-  <entry>
     <title>phpsocket连接，UDP</title>
     <link href="https://lailin.xyz/post/19867.html"/>
     <id>https://lailin.xyz/post/19867.html</id>
     <published>2015-11-09T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -1860,7 +1888,7 @@
     <link href="https://lailin.xyz/post/34934.html"/>
     <id>https://lailin.xyz/post/34934.html</id>
     <published>2015-10-29T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1869,11 +1897,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;本代码是在示例代码的基础上进行了一些简化，并将其单独做了一个vedio.js文件，只需要两个按钮，即可完成接听和拨打的需求&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;strong&gt;attention：&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
+&lt;p&gt;本代码是在示例代码的基础上进行了一些简化，并将其单独做了一个 vedio.js
         
       
     
@@ -1893,7 +1917,7 @@
     <link href="https://lailin.xyz/post/62897.html"/>
     <id>https://lailin.xyz/post/62897.html</id>
     <published>2015-10-27T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1902,7 +1926,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;今天需要写一个Java的小程序需要判断一下从控制台输入的字符串是否相等，在使用的过程中发现直接使用“==”来判断是没有办法判断出来的，Google&amp;amp;百度了一下，找到一个解决办法&lt;/p&gt;
+&lt;p&gt;今天需要写一个 Java 的小程序需要判断一下从控制台输入的字符串是否相等，在使用的过程中发现直接使用“==”来判断是没有办法判断出来的，Google&amp;amp;百度了一下，找到一个解决办法&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h4
         
@@ -1922,7 +1946,7 @@
     <link href="https://lailin.xyz/post/37989.html"/>
     <id>https://lailin.xyz/post/37989.html</id>
     <published>2015-10-22T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1950,7 +1974,7 @@
     <link href="https://lailin.xyz/post/35791.html"/>
     <id>https://lailin.xyz/post/35791.html</id>
     <published>2015-10-20T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -1959,7 +1983,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;接着前面的说，蓝牙接收到数据之后需要将数据处理分析然后保存下来，但是AI2并没有直接写代码来的方便快捷，并且我们的现在处于云计算的时代，数据无价，所以我们需要想办法将数据保存到云端。&lt;/p&gt;
+&lt;p&gt;接着前面的说，蓝牙接收到数据之后需要将数据处理分析然后保存下来，但是 AI2 并没有直接写代码来的方便快捷，并且我们的现在处于云计算的时代，数据无价，所以我们需要想办法将数据保存到云端。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h4
         
@@ -1975,11 +1999,40 @@
   </entry>
   
   <entry>
+    <title>php如何实现整除</title>
+    <link href="https://lailin.xyz/post/28942.html"/>
+    <id>https://lailin.xyz/post/28942.html</id>
+    <published>2015-10-18T00:00:00.000Z</published>
+    <updated>2020-04-18T13:47:38.039Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;php-如何实现整除&quot;&gt;&lt;a href=&quot;#php-如何实现整除&quot; class=&quot;headerlink&quot; title=&quot;php 如何实现整除&quot;&gt;&lt;/a&gt;php 如何实现整除&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;以前在用
+        
+      
+    
+    </summary>
+    
+      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>phpstrom9可用注册码一枚</title>
     <link href="https://lailin.xyz/post/19314.html"/>
     <id>https://lailin.xyz/post/19314.html</id>
     <published>2015-10-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -2005,39 +2058,11 @@
   </entry>
   
   <entry>
-    <title>php如何实现整除</title>
-    <link href="https://lailin.xyz/post/28942.html"/>
-    <id>https://lailin.xyz/post/28942.html</id>
-    <published>2015-10-18T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;php如何实现整除&quot;&gt;&lt;a href=&quot;#php如何实现整除&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
     <title>【福利】至善网媒体素材一键评价</title>
     <link href="https://lailin.xyz/post/59875.html"/>
     <id>https://lailin.xyz/post/59875.html</id>
     <published>2015-10-17T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.035Z</updated>
     
     <summary type="html">
     
@@ -2046,9 +2071,7 @@
         
         
           &lt;blockquote&gt;
-&lt;p&gt;最近做至善网上面的题时候，发现媒体素材需要一个一个的评价实在是有点烦；所以开挂写了一个JS的小插件，直接一次性搞定&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;strong&gt;方法一：直接将下面这个链接拖入书签栏，然后在你需要一件评价媒体素材的地方点
+&lt;p&gt;最近做至善网上面的题时候，发现媒体素材需要一个一个的评价实在是有点烦；所以开挂写了一个 JS
         
       
     
@@ -2064,41 +2087,11 @@
   </entry>
   
   <entry>
-    <title>CoreThink图片轮播插件【ImageSlider】</title>
-    <link href="https://lailin.xyz/post/15278.html"/>
-    <id>https://lailin.xyz/post/15278.html</id>
-    <published>2015-10-16T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;移植于OT插件，原文地址&lt;a href=&quot;http://www.topthink.com/topic/6244.html&quot; target=&quot;_blank&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="corethink" scheme="https://lailin.xyz/tags/corethink/"/>
-    
-      <category term="插件" scheme="https://lailin.xyz/tags/%E6%8F%92%E4%BB%B6/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Corethink瀑布流插件</title>
     <link href="https://lailin.xyz/post/54589.html"/>
     <id>https://lailin.xyz/post/54589.html</id>
     <published>2015-10-16T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     
@@ -2124,11 +2117,41 @@
   </entry>
   
   <entry>
+    <title>CoreThink图片轮播插件【ImageSlider】</title>
+    <link href="https://lailin.xyz/post/15278.html"/>
+    <id>https://lailin.xyz/post/15278.html</id>
+    <published>2015-10-16T00:00:00.000Z</published>
+    <updated>2020-04-18T13:47:38.039Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;移植于 OT 插件，原文地址&lt;a href=&quot;http://www.topthink.com/topic/6244.html&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="程序" scheme="https://lailin.xyz/categories/%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
+    
+      <category term="corethink" scheme="https://lailin.xyz/tags/corethink/"/>
+    
+      <category term="插件" scheme="https://lailin.xyz/tags/%E6%8F%92%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>如何使用MITAPPInventor2快速创建一个蓝牙串口app</title>
     <link href="https://lailin.xyz/post/23045.html"/>
     <id>https://lailin.xyz/post/23045.html</id>
     <published>2015-10-16T00:00:00.000Z</published>
-    <updated>2019-11-11T13:42:47.136Z</updated>
+    <updated>2020-04-18T13:47:38.039Z</updated>
     
     <summary type="html">
     

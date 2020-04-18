@@ -375,6 +375,174 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/auxvv1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mohuishou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mohuishou">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/auxvv1.html" class="post-title-link" itemprop="url">在单个仓库中支持多个 go mod 模块</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-17 18:41:12" itemprop="dateCreated datePublished" datetime="2020-04-17T18:41:12+00:00">2020-04-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-18 13:48:27" itemprop="dateModified" datetime="2020-04-18T13:48:27+00:00">2020-04-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致，更加直观所以想要再一个仓库中实现实现多个模块的发布
+需求清单
+实现方式
+总结推荐阅读Go Web 小技巧（三）Gin 参数绑定Go Web 小技巧（二）GORM 使用自定义类型
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/post/auxvv1.html" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/11996.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -437,7 +605,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -472,8 +640,8 @@
 
       
         
-          <h2 id="楔-xie-子"><a href="#楔-xie-子" class="headerlink" title="楔(xiē)子"></a>楔(xiē)子</h2><p> 在第一篇文章 <a href="https://lailin.xyz/post/38237.html">简化Gin接口代码</a> 当中为大家提供了一种抽象 <code>gin</code> 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。</p>
-<p>在我们写的绝大部分的API代码当中，其实都是需要传递参数的，无论是通过 <code>path</code>、<code>query string</code> 还是 <code>body</code>，在 <code>gin</code> 当中，为我们提供了一系列的 <code>binding</code> 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 <code>struct tag</code> 来对参数进行校验，不知道到大家曾今是否和遇到过相同的困惑：</p>
+          <h2 id="楔-xie-子"><a href="#楔-xie-子" class="headerlink" title="楔(xiē)子"></a>楔(xiē)子</h2><p>在第一篇文章 <a href="https://lailin.xyz/post/38237.html">简化 Gin 接口代码</a> 当中为大家提供了一种抽象 <code>gin</code> 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。</p>
+<p>在我们写的绝大部分的 API 代码当中，其实都是需要传递参数的，无论是通过 <code>path</code>、<code>query string</code> 还是 <code>body</code>，在 <code>gin</code> 当中，为我们提供了一系列的 <code>binding</code> 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 <code>struct tag</code> 来对参数进行校验，不知道到大家曾今是否和遇到过相同的困惑：</p>
 <ul>
 <li>我创建/更新接口有时候就仅仅只相差一个 id，我是不是可以复用代码？</li>
 <li>是否可以直接用 model 层的 struct 绑定参数？</li>
@@ -604,7 +772,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -766,7 +934,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -932,7 +1100,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -967,7 +1135,7 @@
 
       
         
-          <p>POSTMAN 是我在开发过程当中最常用到的 API 测试工具之一，虽然并不完美，但也是目前个人认为在API测试时最好用的客户端工具之一。</p>
+          <p>POSTMAN 是我在开发过程当中最常用到的 API 测试工具之一，虽然并不完美，但也是目前个人认为在 API 测试时最好用的客户端工具之一。</p>
 <p>本文适用于后端，前端，移动端以及测试的同学，分三大部分从最简单的界面操作开讲，然后涉及到变量、脚本以及一些云服务相关的功能，最后将适配几个案例讲解怎么使用 POSTMAN 提高我们的工作效率。本文前半部分包含较多基础功能讲解，对已经比较熟悉使用的同学，可以选择性的跳过部分内容。</p>
           <!--noindex-->
           
@@ -1094,7 +1262,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -1255,7 +1423,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -1290,7 +1458,7 @@
 
       
         
-          <p>在hexo中通过algolia实现全文搜索</p>
+          <p>在 hexo 中通过 algolia 实现全文搜索</p>
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1416,7 +1584,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -1597,7 +1765,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -1761,7 +1929,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
+                <time title="修改时间：2020-04-18 13:47:38" itemprop="dateModified" datetime="2020-04-18T13:47:38+00:00">2020-04-18</time>
               
             
           </span>
@@ -1796,172 +1964,11 @@
 
       
         
-          <p>本文将主要讲述如何创建一个自定义的Github Actions， 并且使用Github Actions 完成 CI/CD的操作</p>
+          <p>本文将主要讲述如何创建一个自定义的 Github Actions， 并且使用 Github Actions 完成 CI/CD 的操作</p>
           <!--noindex-->
           
             <div class="post-button text-center">
               <a class="btn" href="/post/28054.html" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/7944.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mohuishou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mohuishou">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/7944.html" class="post-title-link" itemprop="url">在blog中内嵌在线PPT</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-12-08 08:44:03" itemprop="dateCreated datePublished" datetime="2018-12-08T08:44:03+00:00">2018-12-08</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-11-11 13:42:47" itemprop="dateModified" datetime="2019-11-11T13:42:47+00:00">2019-11-11</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>有时我们会做一些分享，分享之后可以把 PPT 脱敏之后放在博客上面，可以使用 office online 直接内嵌 PPT, 巨硬大法好</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/7944.html" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -2054,7 +2061,7 @@
                 
                   <a href="/archives/index.html">
                 
-                    <span class="site-state-item-count">75</span>
+                    <span class="site-state-item-count">76</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2282,7 +2289,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">92</span>
+                      
+                    
+                    <span class="site-state-item-count">93</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2381,7 +2390,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
