@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Mohuishou">
 <meta property="og:description" content="背景最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-18T19:52:55.930Z">
+<meta property="og:updated_time" content="2020-04-19T10:55:43.687Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go Web小技巧（四）在单个仓库中支持多个 go mod 模块">
 <meta name="twitter:description" content="背景最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-04-18 19:52:55" itemprop="dateModified" datetime="2020-04-18T19:52:55+00:00">2020-04-18</time>
+                <time title="修改时间：2020-04-19 10:55:43" itemprop="dateModified" datetime="2020-04-19T10:55:43+00:00">2020-04-19</time>
               
             
           </span>
@@ -472,21 +472,19 @@
       
 
       
-        <p><a name="okH3Z"></a></p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。<br><a id="more"></a><br><a name="b9GY4"></a></p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近在更新内部的工具库的时候发现，工具仓库中其实包含了很多的模块，但是现在的版本发布都是合并在在一起发的，为了管理更加细致和直观，所以想要在一个仓库中实现实现多个模块的发布。<a id="more"></a></p>
 <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ol>
 <li>单个仓库中包含多个 go module 模块</li>
 <li>版本发布可以根据模块来发版，而不是整个仓库进行发版</li>
 </ol>
-<p><a name="pZ6g2"></a></p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p><a name="eTS3T"></a></p>
-<h3 id="仓库结构"><a href="#仓库结构" class="headerlink" title="仓库结构"></a>仓库结构</h3><p>假设我们现在有一个仓库 <code>github.com/mohuishou/go-test-multi-module</code> 目录结构如下图所示<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── a</span><br><span class="line">│   ├── a.go</span><br><span class="line">│   └── go.mod</span><br><span class="line">└── b</span><br><span class="line">    ├── b.go</span><br><span class="line">    └── go.mod</span><br></pre></td></tr></table></figure></p>
-<p>其中 <code>a/go.mod</code> 使用如下命令生成<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go mod init github.com/mohuishou/go-test-multi-module/a</span><br></pre></td></tr></table></figure></p>
-<p><a name="UtHaM"></a></p>
-<h3 id="版本发布"><a href="#版本发布" class="headerlink" title="版本发布"></a>版本发布</h3><p>对模块进行发版时，只需打上 <code>[模块名]/版本号</code>  即可<br>以我们的示例为例，对模块 <code>a</code> 进行发版时我们只需要打上 tag <code>a/v1.0.0</code> ，同理对模块 b 进行发版时，需要打上 tag <code>b/v1.0.0</code>  即可<br><a name="Mef5G"></a></p>
-<h3 id="用户使用"><a href="#用户使用" class="headerlink" title="用户使用"></a>用户使用</h3><p>用户在安装的时候只需要和普通模块一样执行命令即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/mohuishou/go-test-multi-module/a</span><br></pre></td></tr></table></figure></p>
-<p><a name="CEEpi"></a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一般情况下不推荐采用这种方式，还是一个仓库一个模块比较好，便于管理，但是对于一些工具库里面包含了较多的工具，想要不同类型单独发版也可以采用本文提到的方式<br><a name="FSxR3"></a></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="仓库结构"><a href="#仓库结构" class="headerlink" title="仓库结构"></a>仓库结构</h3><p>假设我们现在有一个仓库 <code>github.com/mohuishou/go-test-multi-module</code>  目录结构如下图所示</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── a</span><br><span class="line">│   ├── a.go</span><br><span class="line">│   └── go.mod</span><br><span class="line">└── b</span><br><span class="line">    ├── b.go</span><br><span class="line">    └── go.mod</span><br></pre></td></tr></table></figure>
+<p>其中 <code>a/go.mod</code>  使用如下命令生成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go mod init github.com/mohuishou/go-test-multi-module/a</span><br></pre></td></tr></table></figure>
+<h3 id="版本发布"><a href="#版本发布" class="headerlink" title="版本发布"></a>版本发布</h3><p>对模块进行发版时，只需打上 <code>[模块名]/版本号</code>  即可<br>以我们的示例为例，对模块 <code>a</code>  进行发版时我们只需要打上 tag <code>a/v1.0.0</code> ，同理对模块 b 进行发版时，需要打上 tag <code>b/v1.0.0</code>  即可</p>
+<h3 id="用户使用"><a href="#用户使用" class="headerlink" title="用户使用"></a>用户使用</h3><p>用户在安装的时候只需要和普通模块一样执行命令即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/mohuishou/go-test-multi-module/a</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一般情况下不推荐采用这种方式，还是一个仓库一个模块比较好，便于管理，但是对于一些工具库里面包含了较多的工具，想要不同类型单独发版也可以采用本文提到的方式</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://github.com/mohuishou/go-test-multi-module" target="_blank" rel="noopener">本文的示例仓库</a></li>
 <li><a href="https://github.com/golang/tools/releases" target="_blank" rel="noopener">golang/tools</a> [官方的 gopls 也是这么发布版本的]</li>
@@ -555,8 +553,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/11996.html" rel="next" title="Go Web 小技巧（三）Gin 参数绑定">
-                <i class="fa fa-chevron-left"></i> Go Web 小技巧（三）Gin 参数绑定
+              <a href="/post/uvg6az.html" rel="next" title="博客模板">
+                <i class="fa fa-chevron-left"></i> 博客模板
               </a>
             
           </div>
@@ -638,7 +636,7 @@
                 
                   <a href="/archives/index.html">
                 
-                    <span class="site-state-item-count">76</span>
+                    <span class="site-state-item-count">77</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
