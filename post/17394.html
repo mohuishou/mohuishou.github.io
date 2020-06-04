@@ -1,1225 +1,139 @@
-<!DOCTYPE html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png"><link rel="icon" type="image/png" href="/icons/favicon-32x32.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content><meta name="author" content="Mohuishou"><meta name="keywords" content="Go, Docker, PHP"><title>Go Web 小技巧（二）GORM 使用自定义类型 - Mohuishou</title><link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css"><link rel="stylesheet" href="/css/main.css"><script src="/js/utils.js"></script></head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/"><i class="iconfont icon-home-fill"></i> 首页</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/categories/"><i class="iconfont icon-category-fill"></i> 分类</a></li><li class="nav-item"><a class="nav-link" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item"><a class="nav-link" href="/links/"><i class="iconfont icon-link-fill"></i> 友链</a></li><li class="nav-item"><a class="nav-link" href="/atom.xml"><i class="iconfont icon-rss"></i> rss</a></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i class="iconfont icon-search"></i>&nbsp;&nbsp;</a></li></ul></div></div></nav><div class="view intro-2" id="background" parallax="true" style="background:url(/img/bg.jpg) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="container text-center white-text fadeInUp"><span class="h2" id="subtitle"></span><div class="mt-3 post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2019-11-03 18:12">2019年11月3日 晚上</time></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 1.3k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 18 分钟</span></div></div></div></div></div></header><main><div class="container-fluid"><div class="row"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-md"><div class="container nopadding-md" id="board-ctn"><div class="py-5" id="board"><div class="post-content mx-auto" id="post"><article class="markdown-body"><p>不知道大家在使用 Gorm 的时候，是否有遇到过复杂类型 ( map, struct…) 如何映射到数据库的字段上的问题？</p><p>本文分别介绍通过实现通用接口和 Hook 的方式绑定复杂的数据类型。</p><a id="more"></a><h2 id="一、GORM-模型定义"><a href="#一、GORM-模型定义" class="headerlink" title="一、GORM 模型定义"></a>一、GORM 模型定义</h2><pre><code class="hljs go"><span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
+  gorm.Model
+  Name         <span class="hljs-keyword">string</span>
+  Age          sql.NullInt64
+  Birthday     *time.Time
+  Email        <span class="hljs-keyword">string</span>  <span class="hljs-string">`gorm:"type:varchar(100);unique_index"`</span>
+  Role         <span class="hljs-keyword">string</span>  <span class="hljs-string">`gorm:"size:255"`</span> <span class="hljs-comment">// 设置字段大小为255</span>
+  MemberNumber *<span class="hljs-keyword">string</span> <span class="hljs-string">`gorm:"unique;not null"`</span> <span class="hljs-comment">// 设置会员号（member number）唯一并且不为空</span>
+  Num          <span class="hljs-keyword">int</span>     <span class="hljs-string">`gorm:"AUTO_INCREMENT"`</span> <span class="hljs-comment">// 设置 num 为自增类型</span>
+  Address      <span class="hljs-keyword">string</span>  <span class="hljs-string">`gorm:"index:addr"`</span> <span class="hljs-comment">// 给address字段创建名为addr的索引</span>
+  IgnoreMe     <span class="hljs-keyword">int</span>     <span class="hljs-string">`gorm:"-"`</span> <span class="hljs-comment">// 忽略本字段</span>
+&#125;</code></pre><p>这是 GORM 官方文档当中模型定义的一个例子，但是我们在实际使用过程当中往往会遇到需要复杂类型例如 <code>map</code> 或者是一些自定义的类型进行绑定。</p><p>我们在文档的描述当中可以看到这么一段话：</p><blockquote><p>模型（Models）通常只是正常的 golang structs、基本的 go 类型或它们的指针。 同时也支持<a href="https://golang.org/pkg/database/sql/#Scanner" target="_blank" rel="noopener"><code>sql.Scanner</code></a>及<a href="https://golang.org/pkg/database/sql/driver/#Valuer" target="_blank" rel="noopener"><code>driver.Valuer</code></a> 接口（interfaces）。</p></blockquote><p>自已的数据类型只需要实现这两个接口就可以实现数据绑定了，文档只有一句话我们看看具体怎么做。</p><h2 id="二、通过实现-sql-Scanner-driver-Valuer-接口实现数据绑定"><a href="#二、通过实现-sql-Scanner-driver-Valuer-接口实现数据绑定" class="headerlink" title="二、通过实现 sql.Scanner,driver.Valuer 接口实现数据绑定"></a>二、通过实现 <code>sql.Scanner,driver.Valuer</code> 接口实现数据绑定</h2><h3 id="2-1-接口文档"><a href="#2-1-接口文档" class="headerlink" title="2.1 接口文档"></a>2.1 接口文档</h3><pre><code class="hljs go"><span class="hljs-comment">// sql.Scanner</span>
+<span class="hljs-keyword">type</span> Scanner <span class="hljs-keyword">interface</span> &#123;
+    <span class="hljs-comment">// Scan assigns a value from a database driver.</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// The src value will be of one of the following types:</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">//    int64</span>
+    <span class="hljs-comment">//    float64</span>
+    <span class="hljs-comment">//    bool</span>
+    <span class="hljs-comment">//    []byte</span>
+    <span class="hljs-comment">//    string</span>
+    <span class="hljs-comment">//    time.Time</span>
+    <span class="hljs-comment">//    nil - for NULL values</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// An error should be returned if the value cannot be stored</span>
+    <span class="hljs-comment">// without loss of information.</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// Reference types such as []byte are only valid until the next call to Scan</span>
+    <span class="hljs-comment">// and should not be retained. Their underlying memory is owned by the driver.</span>
+    <span class="hljs-comment">// If retention is necessary, copy their values before the next call to Scan.</span>
+    Scan(src <span class="hljs-keyword">interface</span>&#123;&#125;) error
+&#125;
 
+<span class="hljs-comment">// driver.Valuer</span>
+<span class="hljs-keyword">type</span> Valuer <span class="hljs-keyword">interface</span> &#123;
+    <span class="hljs-comment">// Value returns a driver Value.</span>
+    <span class="hljs-comment">// Value must not panic.</span>
+    Value() (Value, error)
+&#125;</code></pre><p>我们可以发现 <code>Valuer</code> 用于保存数据的时候，<code>Scaner</code> 用于数据从数据库映射到 model 的时候</p><h3 id="2-2-实现接口"><a href="#2-2-实现接口" class="headerlink" title="2.2 实现接口"></a>2.2 实现接口</h3><p>下面我们来一个实际的例子</p><pre><code class="hljs go"><span class="hljs-comment">// Args 参数</span>
+<span class="hljs-keyword">type</span> Args <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>
 
+<span class="hljs-comment">// Scan Scanner</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(args Args)</span> <span class="hljs-title">Scan</span><span class="hljs-params">(value <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">if</span> value == <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+	&#125;
 
+	b, ok := value.([]<span class="hljs-keyword">byte</span>)
+	<span class="hljs-keyword">if</span> !ok &#123;
+		<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">"value is not []byte, value: %v"</span>, value)
+	&#125;
 
+	<span class="hljs-keyword">return</span> json.Unmarshal(b, &amp;args)
+&#125;
 
+<span class="hljs-comment">// Value Valuer</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(args Args)</span> <span class="hljs-title">Value</span><span class="hljs-params">()</span> <span class="hljs-params">(driver.Value, error)</span></span> &#123;
+	<span class="hljs-keyword">if</span> args == <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>
+	&#125;
 
+	<span class="hljs-keyword">return</span> json.Marshal(args)
+&#125;</code></pre><p>在使用的时候我们只要再加上一个数据类型就 OK 了</p><pre><code class="hljs go"><span class="hljs-keyword">type</span> Data <span class="hljs-keyword">struct</span> &#123;
+  Args Args <span class="hljs-string">`json:"args" gorm:"type:text"`</span>
+&#125;</code></pre><h3 id="2-3-抽象通用工具函数"><a href="#2-3-抽象通用工具函数" class="headerlink" title="2.3 抽象通用工具函数"></a>2.3 抽象通用工具函数</h3><p>在实际的使用中我们可能会有许多的类型的需要这样存储，所以我们直接抽象一个公用的工具函数</p><pre><code class="hljs go"><span class="hljs-comment">// scan for scanner helper</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">scan</span><span class="hljs-params">(data <span class="hljs-keyword">interface</span>&#123;&#125;, value <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">if</span> value == <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+	&#125;
 
+	<span class="hljs-keyword">switch</span> value.(<span class="hljs-keyword">type</span>) &#123;
+	<span class="hljs-keyword">case</span> []<span class="hljs-keyword">byte</span>:
+		<span class="hljs-keyword">return</span> json.Unmarshal(value.([]<span class="hljs-keyword">byte</span>), data)
+	<span class="hljs-keyword">case</span> <span class="hljs-keyword">string</span>:
+		<span class="hljs-keyword">return</span> json.Unmarshal([]<span class="hljs-keyword">byte</span>(value.(<span class="hljs-keyword">string</span>)), data)
+	<span class="hljs-keyword">default</span>:
+		<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">"val type is valid, is %+v"</span>, value)
+	&#125;
+&#125;
 
+<span class="hljs-comment">// for valuer helper</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">value</span><span class="hljs-params">(data <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;
+	vi := reflect.ValueOf(data)
+	<span class="hljs-comment">// 判断是否为 0 值</span>
+	<span class="hljs-keyword">if</span> vi.IsZero() &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>
+	&#125;
+	<span class="hljs-keyword">return</span> json.Marshal(data)
+&#125;</code></pre><p>使用的时候只需要调用一下</p><pre><code class="hljs go"><span class="hljs-comment">// Args 参数</span>
+<span class="hljs-keyword">type</span> Args <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>
 
+<span class="hljs-comment">// Scan Scanner</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(args Args)</span> <span class="hljs-title">Scan</span><span class="hljs-params">(value <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">return</span> scan(&amp;args, value)
+&#125;
 
+<span class="hljs-comment">// Value Valuer</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(args Args)</span> <span class="hljs-title">Value</span><span class="hljs-params">()</span> <span class="hljs-params">(driver.Value, error)</span></span> &#123;
+	<span class="hljs-keyword">return</span> value(args)
+&#125;</code></pre><h2 id="三、通过-hook-实现数据绑定"><a href="#三、通过-hook-实现数据绑定" class="headerlink" title="三、通过 hook 实现数据绑定"></a>三、通过 hook 实现数据绑定</h2><p>除了上面的这种方法有没有其他的实现方式呢？</p><p>当然是有的，从上面的例子我们可以发现，实现方式就是保存数据的时候将数据转换为基本类型，然后在取出来绑定数据的时候再转换一下，这个过程我们也可以通过 <a href="http://gorm.io/docs/hooks.html" target="_blank" rel="noopener">GORM 的 Hook</a> 实现。利用 <code>BeforeSave</code> 在数据保存前转换，再利用 <code>AfterFind</code> 在数据取出来之后转换即可。但是这种方式我们需要在 struct 中定义一个用于实际映射数据库数据的字段。</p><pre><code class="hljs go"><span class="hljs-comment">// Data Data</span>
+<span class="hljs-keyword">type</span> Data <span class="hljs-keyword">struct</span> &#123;
+	Args    <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125; <span class="hljs-string">`json:"args" gorm:"-"`</span>
+	ArgsStr <span class="hljs-keyword">string</span>                 <span class="hljs-string">`json:"-" gorm:"column:args"`</span>
+&#125;
 
+<span class="hljs-comment">// BeforeSave 数据保存前</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(data *Data)</span> <span class="hljs-title">BeforeSave</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">if</span> data.Args == <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+	&#125;
 
-  
+	b, err := json.Marshal(&amp;data.Args)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> err
+	&#125;
 
+	data.ArgsStr = <span class="hljs-keyword">string</span>(b)
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
+<span class="hljs-comment">// AfterFind 查询之后</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(data *Data)</span> <span class="hljs-title">AfterFind</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">if</span> data.ArgsStr == <span class="hljs-string">""</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+	&#125;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <meta name="baidu-site-verification" content="xPjWsnjLMC">
-
-
-
-
-
-
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<link rel="stylesheet" href="/assets/main.min.css?v=7.1.0"/">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/touch-icon-apple.png?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/favicon-32x32.png?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/favicon-16x16.png?v=7.1.0">
-
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'WB3PJKK4Q5',
-      apiKey: '0f4e5abf708587974517054f9c1aaf73',
-      indexName: 'Blog',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到和 ${query} 相关的内容, 换个关键词试试","hits_stats":"为您找到 ${hits} 条内容, 耗时: ${time} ms"}
+	<span class="hljs-keyword">return</span> json.Unmarshal([]<span class="hljs-keyword">byte</span>(data.ArgsStr), &amp;data.Args)
+&#125;</code></pre><p>这样同样可以达到相似的效果</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章介绍了两种通用数据类型在 GORM 中的绑定方式：</p><ul><li>通过实现相关的接口实现，并且抽象了一个通用的辅助函数</li><li>通过 hook 实现</li></ul><p>一般推荐使用第一种方法，只是需要单独定义数据类型，第二种方法需要多一个辅助字段，这种方式如果相关的字段过多会很不优雅。</p><p>感谢阅读，这是 Go Web 小技巧系列的第二篇文章，下一篇为大家介绍参数绑定当中的一些小技巧</p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/auxvv1.html">Go Web小技巧（四）在单个仓库中支持多个 go mod 模块</a></li><li><a href="https://lailin.xyz/post/11996.html">Go Web 小技巧（三）Gin 参数绑定</a></li><li><a href="https://lailin.xyz/post/38237.html">Go Web 小技巧（一）简化Gin接口代码</a></li><li><a href="chunlife.top/2020/02/18/B站源码中的log-agent/">B站源码中的log-agent</a></li></ul></div></article><hr><div><div class="post-metas mb-3"><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/go/">go</a> <a class="hover-with-bg" href="/tags/gorm/">gorm</a> <a class="hover-with-bg" href="/tags/小技巧/">小技巧</a></div></div><p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p><div class="post-prevnext row"><div class="post-prev col-6"><a href="/post/11996.html"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Go Web 小技巧（三）Gin 参数绑定</span> <span class="visible-mobile">上一篇</span></a></div><div class="post-next col-6"><a href="/post/38237.html"><span class="hidden-mobile">Go Web 小技巧（一）简化Gin接口代码</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></div></div></div><div class="comments" id="comments"><div id="gitalk-container"></div><script type="text/javascript">function loadGitalk(){addScript("https://cdn.staticfile.org/gitalk/1.6.2/gitalk.min.js",function(){new Gitalk({clientID:"28db4ab78d0b5277990f",clientSecret:"ec365bd48160f2aa32665986af635199dbda4809",repo:"blogComment",owner:"scuplus",admin:"mohuishou,scuplus",id:"abe2f11339bee105f3f102052ebaa0c7",language:"zh-CN",perPage:15,pagerDirection:"last",createIssueManually:"false",distractionFreeMode:"false"}).render("gitalk-container")})}createObserver(loadGitalk,"gitalk-container")</script></div></div></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div id="tocbot"></div></div></div></div></div></main><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><footer class="mt-5"><div class="text-center py-3"><div><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div></div></footer><script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script><script src="/js/debouncer.js"></script><script src="/js/main.js"></script><script src="/js/lazyload.js"></script><script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script><script src="/js/clipboard-use.js"></script><script src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js"></script><script>$(document).ready(function(){var t=$("#board-ctn").offset().top;tocbot.init({tocSelector:"#tocbot",contentSelector:"article.markdown-body",headingSelector:"h1,h2,h3,h4,h5,h6",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:0,scrollSmooth:!0,headingsOffset:-t}),0<$(".toc-list-item").length&&$("#toc").css("visibility","visible")})</script><script src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js"></script><script>var typed=new Typed("#subtitle",{strings:["  ","Go Web 小技巧（二）GORM 使用自定义类型&nbsp;"],cursorChar:"_",typeSpeed:70,loop:!1});typed.stop(),$(document).ready(function(){$(".typed-cursor").addClass("h2"),typed.start()})</script><script src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js"></script><script>anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
     }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="不知道大家在使用 Gorm 的时候，是否有遇到过复杂类型 ( map, struct…) 如何映射到数据库的字段上的问题？ 本文分别介绍通过实现通用接口和 Hook 的方式绑定复杂的数据类型。">
-<meta name="keywords" content="go,gorm,小技巧">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Go Web 小技巧（二）GORM 使用自定义类型">
-<meta property="og:url" content="https://lailin.xyz/post/17394.html">
-<meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="不知道大家在使用 Gorm 的时候，是否有遇到过复杂类型 ( map, struct…) 如何映射到数据库的字段上的问题？ 本文分别介绍通过实现通用接口和 Hook 的方式绑定复杂的数据类型。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-19T11:03:16.097Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go Web 小技巧（二）GORM 使用自定义类型">
-<meta name="twitter:description" content="不知道大家在使用 Gorm 的时候，是否有遇到过复杂类型 ( map, struct…) 如何映射到数据库的字段上的问题？ 本文分别介绍通过实现通用接口和 Hook 的方式绑定复杂的数据类型。">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Mohuishou" type="application/atom+xml">
-
-
-
-  
-  
-  <link rel="canonical" href="https://lailin.xyz/post/17394.html">
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>Go Web 小技巧（二）GORM 使用自定义类型 | Mohuishou</title>
-  
-
-
-
-
-  <script async src="//www.googletagmanager.com/gtag/js?id=UA-137859264-1"></script>
-  <script>
-    var host = window.location.hostname;
-    if (host !== "localhost" || !true) {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-137859264-1');
-    }
-  </script>
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .motion-element,
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
-
-  .use-motion .logo,
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Mohuishou</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <h1 class="site-subtitle" itemprop="description">A New Life</h1>
-      
-    
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/about/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-            
-
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/17394.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mohuishou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mohuishou">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">Go Web 小技巧（二）GORM 使用自定义类型
-
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-03 18:12:26" itemprop="dateCreated datePublished" datetime="2019-11-03T18:12:26+00:00">2019-11-03</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-04-19 11:03:16" itemprop="dateModified" datetime="2020-04-19T11:03:16+00:00">2020-04-19</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>不知道大家在使用 Gorm 的时候，是否有遇到过复杂类型 ( map, struct…) 如何映射到数据库的字段上的问题？</p>
-<p>本文分别介绍通过实现通用接口和 Hook 的方式绑定复杂的数据类型。</p>
-<a id="more"></a>
-<h2 id="一、GORM-模型定义"><a href="#一、GORM-模型定义" class="headerlink" title="一、GORM 模型定义"></a>一、GORM 模型定义</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">  gorm.Model</span><br><span class="line">  Name         <span class="keyword">string</span></span><br><span class="line">  Age          sql.NullInt64</span><br><span class="line">  Birthday     *time.Time</span><br><span class="line">  Email        <span class="keyword">string</span>  <span class="string">`gorm:"type:varchar(100);unique_index"`</span></span><br><span class="line">  Role         <span class="keyword">string</span>  <span class="string">`gorm:"size:255"`</span> <span class="comment">// 设置字段大小为255</span></span><br><span class="line">  MemberNumber *<span class="keyword">string</span> <span class="string">`gorm:"unique;not null"`</span> <span class="comment">// 设置会员号（member number）唯一并且不为空</span></span><br><span class="line">  Num          <span class="keyword">int</span>     <span class="string">`gorm:"AUTO_INCREMENT"`</span> <span class="comment">// 设置 num 为自增类型</span></span><br><span class="line">  Address      <span class="keyword">string</span>  <span class="string">`gorm:"index:addr"`</span> <span class="comment">// 给address字段创建名为addr的索引</span></span><br><span class="line">  IgnoreMe     <span class="keyword">int</span>     <span class="string">`gorm:"-"`</span> <span class="comment">// 忽略本字段</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这是 GORM 官方文档当中模型定义的一个例子，但是我们在实际使用过程当中往往会遇到需要复杂类型例如 <code>map</code> 或者是一些自定义的类型进行绑定。</p>
-<p>我们在文档的描述当中可以看到这么一段话：</p>
-<blockquote>
-<p>模型（Models）通常只是正常的 golang structs、基本的 go 类型或它们的指针。 同时也支持<a href="https://golang.org/pkg/database/sql/#Scanner" target="_blank" rel="noopener"><code>sql.Scanner</code></a>及<a href="https://golang.org/pkg/database/sql/driver/#Valuer" target="_blank" rel="noopener"><code>driver.Valuer</code></a> 接口（interfaces）。</p>
-</blockquote>
-<p>自已的数据类型只需要实现这两个接口就可以实现数据绑定了，文档只有一句话我们看看具体怎么做。</p>
-<h2 id="二、通过实现-sql-Scanner-driver-Valuer-接口实现数据绑定"><a href="#二、通过实现-sql-Scanner-driver-Valuer-接口实现数据绑定" class="headerlink" title="二、通过实现 sql.Scanner,driver.Valuer 接口实现数据绑定"></a>二、通过实现 <code>sql.Scanner,driver.Valuer</code> 接口实现数据绑定</h2><h3 id="2-1-接口文档"><a href="#2-1-接口文档" class="headerlink" title="2.1 接口文档"></a>2.1 接口文档</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sql.Scanner</span></span><br><span class="line"><span class="keyword">type</span> Scanner <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="comment">// Scan assigns a value from a database driver.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// The src value will be of one of the following types:</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">//    int64</span></span><br><span class="line">    <span class="comment">//    float64</span></span><br><span class="line">    <span class="comment">//    bool</span></span><br><span class="line">    <span class="comment">//    []byte</span></span><br><span class="line">    <span class="comment">//    string</span></span><br><span class="line">    <span class="comment">//    time.Time</span></span><br><span class="line">    <span class="comment">//    nil - for NULL values</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// An error should be returned if the value cannot be stored</span></span><br><span class="line">    <span class="comment">// without loss of information.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Reference types such as []byte are only valid until the next call to Scan</span></span><br><span class="line">    <span class="comment">// and should not be retained. Their underlying memory is owned by the driver.</span></span><br><span class="line">    <span class="comment">// If retention is necessary, copy their values before the next call to Scan.</span></span><br><span class="line">    Scan(src <span class="keyword">interface</span>&#123;&#125;) error</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// driver.Valuer</span></span><br><span class="line"><span class="keyword">type</span> Valuer <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="comment">// Value returns a driver Value.</span></span><br><span class="line">    <span class="comment">// Value must not panic.</span></span><br><span class="line">    Value() (Value, error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们可以发现 <code>Valuer</code> 用于保存数据的时候，<code>Scaner</code> 用于数据从数据库映射到 model 的时候</p>
-<h3 id="2-2-实现接口"><a href="#2-2-实现接口" class="headerlink" title="2.2 实现接口"></a>2.2 实现接口</h3><p>下面我们来一个实际的例子</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Args 参数</span></span><br><span class="line"><span class="keyword">type</span> Args <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Scan Scanner</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(args Args)</span> <span class="title">Scan</span><span class="params">(value <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> value == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	b, ok := value.([]<span class="keyword">byte</span>)</span><br><span class="line">	<span class="keyword">if</span> !ok &#123;</span><br><span class="line">		<span class="keyword">return</span> fmt.Errorf(<span class="string">"value is not []byte, value: %v"</span>, value)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> json.Unmarshal(b, &amp;args)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Value Valuer</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(args Args)</span> <span class="title">Value</span><span class="params">()</span> <span class="params">(driver.Value, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> args == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> json.Marshal(args)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在使用的时候我们只要再加上一个数据类型就 OK 了</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Data <span class="keyword">struct</span> &#123;</span><br><span class="line">  Args Args <span class="string">`json:"args" gorm:"type:text"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-3-抽象通用工具函数"><a href="#2-3-抽象通用工具函数" class="headerlink" title="2.3 抽象通用工具函数"></a>2.3 抽象通用工具函数</h3><p>在实际的使用中我们可能会有许多的类型的需要这样存储，所以我们直接抽象一个公用的工具函数</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// scan for scanner helper</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">scan</span><span class="params">(data <span class="keyword">interface</span>&#123;&#125;, value <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> value == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">switch</span> value.(<span class="keyword">type</span>) &#123;</span><br><span class="line">	<span class="keyword">case</span> []<span class="keyword">byte</span>:</span><br><span class="line">		<span class="keyword">return</span> json.Unmarshal(value.([]<span class="keyword">byte</span>), data)</span><br><span class="line">	<span class="keyword">case</span> <span class="keyword">string</span>:</span><br><span class="line">		<span class="keyword">return</span> json.Unmarshal([]<span class="keyword">byte</span>(value.(<span class="keyword">string</span>)), data)</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">return</span> fmt.Errorf(<span class="string">"val type is valid, is %+v"</span>, value)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// for valuer helper</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">value</span><span class="params">(data <span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(<span class="keyword">interface</span>&#123;&#125;, error)</span></span> &#123;</span><br><span class="line">	vi := reflect.ValueOf(data)</span><br><span class="line">	<span class="comment">// 判断是否为 0 值</span></span><br><span class="line">	<span class="keyword">if</span> vi.IsZero() &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> json.Marshal(data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用的时候只需要调用一下</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Args 参数</span></span><br><span class="line"><span class="keyword">type</span> Args <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Scan Scanner</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(args Args)</span> <span class="title">Scan</span><span class="params">(value <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> scan(&amp;args, value)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Value Valuer</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(args Args)</span> <span class="title">Value</span><span class="params">()</span> <span class="params">(driver.Value, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> value(args)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="三、通过-hook-实现数据绑定"><a href="#三、通过-hook-实现数据绑定" class="headerlink" title="三、通过 hook 实现数据绑定"></a>三、通过 hook 实现数据绑定</h2><p>除了上面的这种方法有没有其他的实现方式呢？</p>
-<p>当然是有的，从上面的例子我们可以发现，实现方式就是保存数据的时候将数据转换为基本类型，然后在取出来绑定数据的时候再转换一下，这个过程我们也可以通过 <a href="http://gorm.io/docs/hooks.html" target="_blank" rel="noopener">GORM 的 Hook</a> 实现。利用 <code>BeforeSave</code> 在数据保存前转换，再利用 <code>AfterFind</code> 在数据取出来之后转换即可。但是这种方式我们需要在 struct 中定义一个用于实际映射数据库数据的字段。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Data Data</span></span><br><span class="line"><span class="keyword">type</span> Data <span class="keyword">struct</span> &#123;</span><br><span class="line">	Args    <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>&#123;&#125; <span class="string">`json:"args" gorm:"-"`</span></span><br><span class="line">	ArgsStr <span class="keyword">string</span>                 <span class="string">`json:"-" gorm:"column:args"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// BeforeSave 数据保存前</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(data *Data)</span> <span class="title">BeforeSave</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> data.Args == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	b, err := json.Marshal(&amp;data.Args)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	data.ArgsStr = <span class="keyword">string</span>(b)</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// AfterFind 查询之后</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(data *Data)</span> <span class="title">AfterFind</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> data.ArgsStr == <span class="string">""</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> json.Unmarshal([]<span class="keyword">byte</span>(data.ArgsStr), &amp;data.Args)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样同样可以达到相似的效果</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章介绍了两种通用数据类型在 GORM 中的绑定方式：</p>
-<ul>
-<li>通过实现相关的接口实现，并且抽象了一个通用的辅助函数</li>
-<li>通过 hook 实现</li>
-</ul>
-<p>一般推荐使用第一种方法，只是需要单独定义数据类型，第二种方法需要多一个辅助字段，这种方式如果相关的字段过多会很不优雅。</p>
-<p>感谢阅读，这是 Go Web 小技巧系列的第二篇文章，下一篇为大家介绍参数绑定当中的一些小技巧</p>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/auxvv1.html">Go Web小技巧（四）在单个仓库中支持多个 go mod 模块</a></li><li><a href="https://lailin.xyz/post/11996.html">Go Web 小技巧（三）Gin 参数绑定</a></li><li><a href="https://lailin.xyz/post/38237.html">Go Web 小技巧（一）简化Gin接口代码</a></li></ul></div>
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-      <div>
-        
-
-
-
-
-  
-
-
-
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>mohuishou <1@lailin.xyz></1@lailin.xyz></li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    
-    <a href="https://lailin.xyz/post/17394.html" title="Go Web 小技巧（二）GORM 使用自定义类型">https://lailin.xyz/post/17394.html</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/go/index.html" rel="tag"># go</a>
-          
-            <a href="/tags/gorm/index.html" rel="tag"># gorm</a>
-          
-            <a href="/tags/小技巧/index.html" rel="tag"># 小技巧</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/post/38237.html" rel="next" title="Go Web 小技巧（一）简化Gin接口代码">
-                <i class="fa fa-chevron-left"></i> Go Web 小技巧（一）简化Gin接口代码
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/11996.html" rel="prev" title="Go Web 小技巧（三）Gin 参数绑定">
-                Go Web 小技巧（三）Gin 参数绑定 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-    <div class="comments" id="gitalk-container">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg" alt="Mohuishou">
-            
-              <p class="site-author-name" itemprop="name">Mohuishou</p>
-              <div class="site-description motion-element" itemprop="description"></div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/index.html">
-                
-                    <span class="site-state-item-count">76</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">7</span>
-                    <span class="site-state-item-name">分类</span>
-                  
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/index.html">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">93</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
-                </span>
-              
-            </div>
-          
-
-          
-             <div class="cc-license motion-element" itemprop="license">
-              
-              
-                
-              
-              
-              
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-             </div>
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                Friend's Blog
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://jingwei.link/" title="https://jingwei.link/" rel="noopener" target="_blank">敬维</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://jiajunhuang.com/" title="https://jiajunhuang.com/" rel="noopener" target="_blank">JiaJun的编程随想</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、GORM-模型定义"><span class="nav-number">1.</span> <span class="nav-text">一、GORM 模型定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、通过实现-sql-Scanner-driver-Valuer-接口实现数据绑定"><span class="nav-number">2.</span> <span class="nav-text">二、通过实现 sql.Scanner,driver.Valuer 接口实现数据绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-接口文档"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 接口文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-实现接口"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 实现接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-抽象通用工具函数"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 抽象通用工具函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、通过-hook-实现数据绑定"><span class="nav-number">3.</span> <span class="nav-text">三、通过 hook 实现数据绑定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">5.</span> <span class="nav-text">推荐阅读</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Mohuishou</span>
-
-  
-
-  
-</div>
-
-
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="//cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
-
-  
-  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.min.js"></script>
-
-  
-  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.ui.min.js"></script>
-
-
-  <script type="text/javascript" src="/assets/main.min.js"></script>
-  
-
-
-
-  
-  
-
-
-
-  
-  
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-
-  
-    
-
-  
-
-<script src="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.js"></script>
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.css">
-
-
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
-
-<script>
-  let path = location.pathname
-  if (path.indexOf('html') < 0) path += ".html"
-  
-  var gitalk = new Gitalk({
-    clientID: '28db4ab78d0b5277990f',
-    clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
-    repo: 'blogComment',
-    owner: 'scuplus',
-    admin: ['mohuishou'],
-    id: md5(location.pathname),
-    
-      language: 'zh-CN',
-    
-    distractionFreeMode: 'true'
-  });
-  gitalk.render('gitalk-container');
-</script>
-
-  
-
-
-  
-
-
-
-  
-  
-  
-    
-  
-  <link rel="stylesheet" href="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.css">
-
-  
-  
-    
-  
-  <script src="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.js"></script>
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-</body>
-</html>
+    anchors.add(res.join(", "))</script><script src="/js/local-search.js"></script><script>var path="/local-search.xml",inputArea=document.querySelector("#local-search-input");inputArea.onclick=function(){searchFunc(path,"local-search-input","local-search-result"),this.onclick=null}</script><script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script><link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"><script>$("#post img:not(.no-zoom img, img[no-zoom]), img[zoom]").each(function(){var t=document.createElement("a");$(t).attr("data-fancybox","images"),$(t).attr("href",$(this).attr("src")),$(this).wrap(t)})</script><script defer>!function(e,a,t,n,g,c,o){e.GoogleAnalyticsObject="ga",e.ga=e.ga||function(){(e.ga.q=e.ga.q||[]).push(arguments)},e.ga.l=1*new Date,c=a.createElement(t),o=a.getElementsByTagName(t)[0],c.async=1,c.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(c,o)}(window,document,"script"),ga("create","UA-137859264-1","auto"),ga("send","pageview")</script></body></html>

@@ -1,1275 +1,148 @@
-<!DOCTYPE html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png"><link rel="icon" type="image/png" href="/icons/favicon-32x32.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content><meta name="author" content="Mohuishou"><meta name="keywords" content="Go, Docker, PHP"><title>使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘 - Mohuishou</title><link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css"><link rel="stylesheet" href="/css/main.css"><script src="/js/utils.js"></script></head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/"><i class="iconfont icon-home-fill"></i> 首页</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/categories/"><i class="iconfont icon-category-fill"></i> 分类</a></li><li class="nav-item"><a class="nav-link" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item"><a class="nav-link" href="/links/"><i class="iconfont icon-link-fill"></i> 友链</a></li><li class="nav-item"><a class="nav-link" href="/atom.xml"><i class="iconfont icon-rss"></i> rss</a></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i class="iconfont icon-search"></i>&nbsp;&nbsp;</a></li></ul></div></div></nav><div class="view intro-2" id="background" parallax="true" style="background:url(/img/bg.jpg) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="container text-center white-text fadeInUp"><span class="h2" id="subtitle"></span><div class="mt-3 post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2016-06-28 00:00">2016年6月28日 凌晨</time></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 2.1k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 28 分钟</span></div></div></div></div></div></header><main><div class="container-fluid"><div class="row"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-md"><div class="container nopadding-md" id="board-ctn"><div class="py-5" id="board"><div class="post-content mx-auto" id="post"><article class="markdown-body"><blockquote><p>经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的 oss 可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑</p></blockquote><h3 id="之前使用的云盘"><a href="#之前使用的云盘" class="headerlink" title="之前使用的云盘"></a>之前使用的云盘</h3><ol><li><p>坚果云<br>个人认为是现在市面上最好的同步盘了，支持增量同步，多平台有 linux 版本，可以使用 webdav。美中不足的免费版每个月限制上传下载流量，收费版不限制流量有空间限制。有段时间突然有大量文件需要备份导致流量不足，但是平时又用不了太多，开一个月专业版的空间又不够，用的有点憋屈所以就弃用了。</p></li><li><p>百度云等<br>在使用坚果云之前的主力网盘，同步盘功能竟然要会员才能用，而且同步盘做的很不好用，不过用来做资源分享之类的还不错</p></li></ol><h3 id="为什么使用-oss"><a href="#为什么使用-oss" class="headerlink" title="为什么使用 oss"></a>为什么使用 oss</h3><ol><li><p>数据的稳定性，我比较喜欢折腾所以服务器有时候就会重装这时候对于文件就非常的不好管理和备份，放在 oss 上面能够更好的管理</p></li><li><p>第二个就是便宜，不和其他几家的云服务对比仅仅和阿里云的云盘，就是买服务器的时候的一个选项，便宜很多。40g 的话一年也就差不多 10 多块的样子。而且和 ECS 搭配使用没有流量费用</p></li></ol><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>安装 lnmp 架构</p><blockquote><p>其实 owncloud 官方更加推荐 lamp，但是我个人更喜欢 nginx，要比 Apache 省资源一些，能够用 Apache 的也很不错，可以少踩很多配置的坑，owncloud 的 nginx 官方示例配置很多坑，之后会说到</p></blockquote><h3 id="安装-ossfs"><a href="#安装-ossfs" class="headerlink" title="安装 ossfs"></a>安装 ossfs</h3><blockquote><p>注意：在这之前你需要先开通 oss，最好是和你的 ECS 是一个地区的，当然不是用的 ECS 也可以用，只是速度会慢一些，还有就是下载会使用公网流量，上传没有</p></blockquote><p>1.<a href="https://help.aliyun.com/document_detail/32196.html" target="_blank" rel="noopener">点击打开 ossfs 的下载页面下载对应系统的安装包</a> 2.我已 Ubuntu 为例，安装 ossfs，其他系统看官方的文档就行</p><pre><code class="hljs bash">sudo apt-get update
+sudo apt-get install gdebi-core
+sudo gdebi your_ossfs_package</code></pre><p>3.将<code>my-bucket</code>这个 bucket 挂载到<code>/data/cloud</code>目录下，AccessKeyId 是<code>faint</code>， AccessKeySecret 是<code>123</code>，oss endpoint 是<code>http://oss-cn-hangzhou.aliyuncs.com</code></p><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> my-bucket:faint:123 &gt; /etc/passwd-ossfs
+chmod 640 /etc/passwd-ossfs
+mkdir /data/cloud</code></pre><p><strong>最后一步很重要，不能直接照官方文档上面的来，不然安装 owncloud 的时候可能会出现没有访问权限的问题</strong></p><ul><li>首先先看一下 nginx 的用户 id，以我的是<code>www</code>为例</li></ul><pre><code class="hljs bash">id www</code></pre><p>会返回给你用户的 uid 和 gid 等等,我假设返回的 uid 和 gid 都为 1001</p><pre><code class="hljs undefined">ossfs my-bucket /data/cloud <span class="hljs-attribute">-ourl</span>=http://oss-cn-hangzhou-internal.aliyuncs.com <span class="hljs-attribute">-ouid</span>=1001 <span class="hljs-attribute">-ogid</span>=1001 -o allow_other -o <span class="hljs-attribute">umask</span>=007</code></pre><p>这里面<code>allow_other</code>是允许其他用户访问，但是默认设置的是 777 权限这样 owncloud 会提示不安全，用<code>umask=007</code>挂载为 770 权限，不知道为啥这里 0 代表 7,7 表示 0</p><blockquote><p>到这里 ossfs 就安装完毕了下面开始安装 owncloud</p></blockquote><h3 id="安装-OWNCLOUD"><a href="#安装-OWNCLOUD" class="headerlink" title="安装 OWNCLOUD"></a>安装 OWNCLOUD</h3><blockquote><p>owncloud 的安装网上已经有很多的教程我就不多说了</p></blockquote><p>先打开<a href="https://owncloud.org/install/#instructions-server" target="_blank" rel="noopener">owncloud 的官网的服务器端的安装地址</a>，我安装的时候最新稳定版是<code>9.0.2</code>建议国内主机用迅雷之类的下载软件先下载下来上传到服务器，直接 wget 比较慢</p><p>1.下载并解压</p><pre><code class="hljs undefined">wget  https:<span class="hljs-regexp">//</span>download.owncloud.org<span class="hljs-regexp">/community/</span>owncloud-<span class="hljs-number">9.0</span>.<span class="hljs-number">2</span>.tar.bz2 <span class="hljs-regexp">//</span>手动上传这一步就不用了
+tar xvf owncloud-<span class="hljs-number">9.0</span>.<span class="hljs-number">2</span>.tar.bz2 <span class="hljs-regexp">//</span>以实际的文件名为准</code></pre><p>2.移动到站点目录,假设站点目录为<code>/data/wwwroot</code></p><pre><code class="hljs undefined">mv owncloud<span class="hljs-regexp">/ /</span>data<span class="hljs-regexp">/wwwroot/</span></code></pre><p><strong>3.设置目录权限，这一步很重要</strong></p><pre><code class="hljs bash">chown -R www:www /data/wwwroot/owncloud/
+chmod 777 /data/wwwroot/owncloud//config/</code></pre><h3 id="设置-nginx-规则（Apache-基本不用改，只需要自己去设置一下-ssl，和常规的设置就行了）"><a href="#设置-nginx-规则（Apache-基本不用改，只需要自己去设置一下-ssl，和常规的设置就行了）" class="headerlink" title="设置 nginx 规则（Apache 基本不用改，只需要自己去设置一下 ssl，和常规的设置就行了）"></a>设置 nginx 规则（Apache 基本不用改，只需要自己去设置一下 ssl，和常规的设置就行了）</h3><p><strong>注意规则设置好之后，安装的时候点高级设置，使用 mysql 或者其他数据库，<code>sqllite</code>的性能不够，然后就是数据文件目录填写之前你 ossfs 的挂载目录，我之前挂载的是<code>/data/cloud</code></strong></p><blockquote><p>后面有 9.x 官方的示例，我这儿提示一下有些坑的地方</p></blockquote><p>1.本身的设置里面没有 log 的设置，不方便 debug，access_log 可以不用，error_log 还是需要加上的 2.里面没有 index 的设置，如果打开首页一片空白，加上 index.php 之后没有问题的话，</p><pre><code class="hljs undefined"><span class="hljs-keyword">location</span> / &#123;
+		<span class="hljs-keyword">index</span> <span class="hljs-keyword">index</span>.php <span class="hljs-meta">#加上这一句</span>
+      rewrite ^ /<span class="hljs-keyword">index</span>.php$uri;
+&#125;</code></pre><p>3.如果你进入安装页面，按照提示安装好了之后出现说<code>找不到文件目录</code>之类的话，那么很有可能是你没有开启<code>pathinfo</code>，owncloud 需要 pathinfo 的支持(示例的配置里面是有 pathinfo 的设置的)</p><h3 id="NEXT"><a href="#NEXT" class="headerlink" title="NEXT"></a>NEXT</h3><blockquote><p>到这里基本上 owncloud 的安装应该就结束了，使用也没有什么问题，我建议开启 ssl，不知道为什么，我开了 ssl 之后访问的速度提升了好几倍</p></blockquote><p>附送官方插件的地址<a href="https://apps.owncloud.com/" target="_blank" rel="noopener">点我点我</a>,国内主机在线安装插件可能装不上，可以 FQ 之后在这里面下载相应插件包，上传到 apps 目录下即可，下一篇说一下用 owncloud 实现离线下载功能，现在 9.0.2 版本的使用 owncloud 的离线下载插件有问题，但是看了一下这个 bug 很早就有，只是好像一直没有修复。之后我改一下能够用了再写下一篇吧</p><h3 id="9-x-官方示例"><a href="#9-x-官方示例" class="headerlink" title="9.x 官方示例"></a>9.x 官方示例</h3><pre><code class="hljs undefined"> <span class="hljs-attribute">upstream</span> php-handler &#123;
+    <span class="hljs-attribute">server</span> <span class="hljs-number">127.0.0.1:9000</span>; <span class="hljs-comment">#注意一下你自己的php服务设置，这一行可能需要自己调整</span>
+    <span class="hljs-comment">#server unix:/var/run/php5-fpm.sock;</span>
+&#125;
+<span class="hljs-section">server</span> &#123;
+    <span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;
+    <span class="hljs-attribute">server_name</span> cloud.example.com;
+    <span class="hljs-comment"># enforce https</span>
+    <span class="hljs-attribute">return</span> <span class="hljs-number">301</span> https://<span class="hljs-variable">$server_name</span><span class="hljs-variable">$request_uri</span>;
+&#125;
+<span class="hljs-section">server</span> &#123;
+    <span class="hljs-attribute">listen</span> <span class="hljs-number">443</span> ssl;
+    <span class="hljs-attribute">server_name</span> cloud.example.com;
 
+    <span class="hljs-comment">#ssl证书的位置</span>
+    <span class="hljs-attribute">ssl_certificate</span> /etc/ssl/nginx/cloud.example.com.crt;
+    <span class="hljs-attribute">ssl_certificate_key</span> /etc/ssl/nginx/cloud.example.com.key;
 
+    <span class="hljs-comment"># Add headers to serve security related headers</span>
+    <span class="hljs-comment"># Before enabling Strict-Transport-Security headers please read into this</span>
+    <span class="hljs-comment"># topic first.</span>
 
+    <span class="hljs-comment"># 安装好之后，后台可能会提示相应错误，把这一段的注释去掉就行</span>
+    <span class="hljs-comment"># add_header Strict-Transport-Security "max-age=15768000;</span>
+    <span class="hljs-comment"># includeSubDomains; preload;";</span>
 
+    <span class="hljs-comment">#后面安装好了之后后台可能会提示header的错误，把这一短删除掉即可</span>
+    <span class="hljs-attribute">add_header</span> X-Content-Type-Options nosniff;
+    <span class="hljs-attribute">add_header</span> X-Frame-Options <span class="hljs-string">"SAMEORIGIN"</span>;
+    <span class="hljs-attribute">add_header</span> X-XSS-Protection <span class="hljs-string">"1; mode=block"</span>;
+    <span class="hljs-attribute">add_header</span> X-Robots-Tag <span class="hljs-literal">none</span>;
+    <span class="hljs-attribute">add_header</span> X-Download-Options noopen;
+    <span class="hljs-attribute">add_header</span> X-Permitted-Cross-Domain-Policies <span class="hljs-literal">none</span>;
 
+    <span class="hljs-comment"># Path to the root of your installation</span>
+    <span class="hljs-attribute">root</span> /var/www/owncloud/;
 
+    <span class="hljs-attribute">location</span> = /robots.txt &#123;
+        <span class="hljs-attribute">allow</span> all;
+        <span class="hljs-attribute">log_not_found</span> <span class="hljs-literal">off</span>;
+        <span class="hljs-attribute">access_log</span> <span class="hljs-literal">off</span>;
+    &#125;
 
+    <span class="hljs-comment"># The following 2 rules are only needed for the user_webfinger app.</span>
+    <span class="hljs-comment"># Uncomment it if you're planning to use this app.</span>
+    <span class="hljs-comment">#rewrite ^/.well-known/host-meta /public.php?service=host-meta last;</span>
+    <span class="hljs-comment">#rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json</span>
+    <span class="hljs-comment"># last;</span>
 
+    <span class="hljs-attribute">location</span> = /.well-known/carddav &#123; <span class="hljs-attribute">return</span> <span class="hljs-number">301</span>
+     <span class="hljs-variable">$scheme</span>://<span class="hljs-variable">$host</span>/remote.php/dav; &#125;
+    <span class="hljs-attribute">location</span> = /.well-known/caldav &#123; <span class="hljs-attribute">return</span> <span class="hljs-number">301</span>
+     <span class="hljs-variable">$scheme</span>://<span class="hljs-variable">$host</span>/remote.php/dav; &#125;
 
+    <span class="hljs-attribute">location</span> /.well-known/acme-challenge &#123; &#125;
 
+    <span class="hljs-comment"># set max upload size</span>
+    <span class="hljs-attribute">client_max_body_size</span> <span class="hljs-number">512M</span>;
+    <span class="hljs-attribute">fastcgi_buffers</span> <span class="hljs-number">64</span> <span class="hljs-number">4K</span>;
 
+    <span class="hljs-comment"># Disable gzip to avoid the removal of the ETag header</span>
+    <span class="hljs-attribute">gzip</span> <span class="hljs-literal">off</span>;
 
-  
+    <span class="hljs-comment"># Uncomment if your server is build with the ngx_pagespeed module</span>
+    <span class="hljs-comment"># This module is currently not supported.</span>
+    <span class="hljs-comment">#pagespeed off;</span>
 
+    <span class="hljs-attribute">error_page</span> <span class="hljs-number">403</span> /core/templates/<span class="hljs-number">403</span>.php;
+    <span class="hljs-attribute">error_page</span> <span class="hljs-number">404</span> /core/templates/<span class="hljs-number">404</span>.php;
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
+    <span class="hljs-attribute">location</span> / &#123;
+        <span class="hljs-attribute">rewrite</span><span class="hljs-regexp"> ^</span> /index.php<span class="hljs-variable">$uri</span>;
+    &#125;
 
+    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/</span> &#123;
+        <span class="hljs-attribute">deny</span> all;
+    &#125;
+    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ ^/(?:\.|autotest|occ|issue|indie|db_|console)</span> &#123;
+        <span class="hljs-attribute">deny</span> all;
+    &#125;
 
+    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~
+    ^/(?:index|remote|public|cron|core/ajax/update|status|ocs/v[12]|updater</span>
+    /.+|ocs-provider/.+|core/templates/<span class="hljs-number">40</span>[<span class="hljs-number">34</span>])\.php(?:$|/) &#123;
+        <span class="hljs-attribute">include</span> fastcgi_params;
+        <span class="hljs-attribute">fastcgi_split_path_info</span><span class="hljs-regexp"> ^(.+\.php)(/.+)$</span>;
+        <span class="hljs-attribute">fastcgi_param</span> SCRIPT_FILENAME <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;
+        <span class="hljs-attribute">fastcgi_param</span> PATH_INFO <span class="hljs-variable">$fastcgi_path_info</span>;
+        <span class="hljs-attribute">fastcgi_param</span> HTTPS <span class="hljs-literal">on</span>;
+        <span class="hljs-comment">#Avoid sending the security headers twice</span>
+        <span class="hljs-attribute">fastcgi_param</span> modHeadersAvailable <span class="hljs-literal">true</span>;
+        <span class="hljs-attribute">fastcgi_param</span> front_controller_active <span class="hljs-literal">true</span>;
+        <span class="hljs-attribute">fastcgi_pass</span> php-handler;
+        <span class="hljs-attribute">fastcgi_intercept_errors</span> <span class="hljs-literal">on</span>;
+        <span class="hljs-attribute">fastcgi_request_buffering</span> <span class="hljs-literal">off</span>;
+    &#125;
 
+    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ ^/(?:updater|ocs-provider)(?:$|/)</span> &#123;
+        <span class="hljs-attribute">try_files</span> <span class="hljs-variable">$uri</span>/ =<span class="hljs-number">404</span>;
+        <span class="hljs-attribute">index</span> index.php;
+    &#125;
 
+    <span class="hljs-comment"># Adding the cache control header for js and css files</span>
+    <span class="hljs-comment"># Make sure it is BELOW the PHP block</span>
+    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~* \.(?:css|js)$</span> &#123;
+        <span class="hljs-attribute">try_files</span> <span class="hljs-variable">$uri</span> /index.php<span class="hljs-variable">$uri</span><span class="hljs-variable">$is_args</span><span class="hljs-variable">$args</span>;
+        <span class="hljs-attribute">add_header</span> Cache-Control <span class="hljs-string">"public, max-age=7200"</span>;
+        <span class="hljs-comment"># Add headers to serve security related headers (It is intended to</span>
+        <span class="hljs-comment"># have those duplicated to the ones above)</span>
+        <span class="hljs-comment"># Before enabling Strict-Transport-Security headers please read into</span>
+        <span class="hljs-comment"># this topic first.</span>
+        <span class="hljs-comment"># add_header Strict-Transport-Security "max-age=15768000;</span>
+        <span class="hljs-comment">#  includeSubDomains; preload;";</span>
+        <span class="hljs-attribute">add_header</span> X-Content-Type-Options nosniff;
+        <span class="hljs-attribute">add_header</span> X-Frame-Options <span class="hljs-string">"SAMEORIGIN"</span>;
+        <span class="hljs-attribute">add_header</span> X-XSS-Protection <span class="hljs-string">"1; mode=block"</span>;
+        <span class="hljs-attribute">add_header</span> X-Robots-Tag <span class="hljs-literal">none</span>;
+        <span class="hljs-attribute">add_header</span> X-Download-Options noopen;
+        <span class="hljs-attribute">add_header</span> X-Permitted-Cross-Domain-Policies <span class="hljs-literal">none</span>;
+        <span class="hljs-comment"># Optional: Don't log access to assets</span>
+        <span class="hljs-attribute">access_log</span> <span class="hljs-literal">off</span>;
+    &#125;
 
-
-
-
-
-
-
-
-
-
-
-
-  <meta name="baidu-site-verification" content="xPjWsnjLMC">
-
-
-
-
-
-
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<link rel="stylesheet" href="/assets/main.min.css?v=7.1.0"/">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/touch-icon-apple.png?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/favicon-32x32.png?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/favicon-16x16.png?v=7.1.0">
-
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'WB3PJKK4Q5',
-      apiKey: '0f4e5abf708587974517054f9c1aaf73',
-      indexName: 'Blog',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到和 ${query} 相关的内容, 换个关键词试试","hits_stats":"为您找到 ${hits} 条内容, 耗时: ${time} ms"}
+    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~* \.(?:svg|gif|png|html|ttf|woff|ico|jpg|jpeg)$</span> &#123;
+        <span class="hljs-attribute">try_files</span> <span class="hljs-variable">$uri</span> /index.php<span class="hljs-variable">$uri</span><span class="hljs-variable">$is_args</span><span class="hljs-variable">$args</span>;
+        <span class="hljs-comment"># Optional: Don't log access to other assets</span>
+        <span class="hljs-attribute">access_log</span> <span class="hljs-literal">off</span>;
+    &#125;
+&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li><li><a href="http://jiangxin.info/0828/subscribe-now/">一顿饭钱能买到好多优质包月服务</a></li></ul></div></article><hr><div><div class="post-metas mb-3"><div class="post-meta mr-3"><i class="iconfont icon-category"></i> <a class="hover-with-bg" href="/categories/PHP/">PHP</a></div><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/php/">php</a> <a class="hover-with-bg" href="/tags/lnmp/">lnmp</a> <a class="hover-with-bg" href="/tags/云盘/">云盘</a> <a class="hover-with-bg" href="/tags/owncloud/">owncloud</a> <a class="hover-with-bg" href="/tags/oss/">oss</a></div></div><p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p><div class="post-prevnext row"><div class="post-prev col-6"><a href="/post/13242.html"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">迁移laravel框架项目到虚拟主机</span> <span class="visible-mobile">上一篇</span></a></div><div class="post-next col-6"><a href="/post/31503.html"><span class="hidden-mobile">四川大学评教开源代码</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></div></div></div><div class="comments" id="comments"><div id="gitalk-container"></div><script type="text/javascript">function loadGitalk(){addScript("https://cdn.staticfile.org/gitalk/1.6.2/gitalk.min.js",function(){new Gitalk({clientID:"28db4ab78d0b5277990f",clientSecret:"ec365bd48160f2aa32665986af635199dbda4809",repo:"blogComment",owner:"scuplus",admin:"mohuishou,scuplus",id:"abe2f11339bee105f3f102052ebaa0c7",language:"zh-CN",perPage:15,pagerDirection:"last",createIssueManually:"false",distractionFreeMode:"false"}).render("gitalk-container")})}createObserver(loadGitalk,"gitalk-container")</script></div></div></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div id="tocbot"></div></div></div></div></div></main><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><footer class="mt-5"><div class="text-center py-3"><div><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div></div></footer><script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script><script src="/js/debouncer.js"></script><script src="/js/main.js"></script><script src="/js/lazyload.js"></script><script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script><script src="/js/clipboard-use.js"></script><script src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js"></script><script>$(document).ready(function(){var t=$("#board-ctn").offset().top;tocbot.init({tocSelector:"#tocbot",contentSelector:"article.markdown-body",headingSelector:"h1,h2,h3,h4,h5,h6",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:0,scrollSmooth:!0,headingsOffset:-t}),0<$(".toc-list-item").length&&$("#toc").css("visibility","visible")})</script><script src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js"></script><script>var typed=new Typed("#subtitle",{strings:["  ","使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘&nbsp;"],cursorChar:"_",typeSpeed:70,loop:!1});typed.stop(),$(document).ready(function(){$(".typed-cursor").addClass("h2"),typed.start()})</script><script src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js"></script><script>anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
     }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的 oss 可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑  之前使用的云盘 坚果云个人认为是现在市面上最好的同步盘了，支持增量同步，多平台有 linux 版本，可以使用 webdav。美中不足的免费版每个月限制上传下载流量，收费版不限制流量有空间限制。有段时间突然有大量文件需">
-<meta name="keywords" content="php,lnmp,云盘,owncloud,oss">
-<meta property="og:type" content="article">
-<meta property="og:title" content="使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘">
-<meta property="og:url" content="https://lailin.xyz/post/8013.html">
-<meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的 oss 可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑  之前使用的云盘 坚果云个人认为是现在市面上最好的同步盘了，支持增量同步，多平台有 linux 版本，可以使用 webdav。美中不足的免费版每个月限制上传下载流量，收费版不限制流量有空间限制。有段时间突然有大量文件需">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-19T11:03:16.101Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘">
-<meta name="twitter:description" content="经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的 oss 可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑  之前使用的云盘 坚果云个人认为是现在市面上最好的同步盘了，支持增量同步，多平台有 linux 版本，可以使用 webdav。美中不足的免费版每个月限制上传下载流量，收费版不限制流量有空间限制。有段时间突然有大量文件需">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Mohuishou" type="application/atom+xml">
-
-
-
-  
-  
-  <link rel="canonical" href="https://lailin.xyz/post/8013.html">
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘 | Mohuishou</title>
-  
-
-
-
-
-  <script async src="//www.googletagmanager.com/gtag/js?id=UA-137859264-1"></script>
-  <script>
-    var host = window.location.hostname;
-    if (host !== "localhost" || !true) {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-137859264-1');
-    }
-  </script>
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .motion-element,
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
-
-  .use-motion .logo,
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Mohuishou</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <h1 class="site-subtitle" itemprop="description">A New Life</h1>
-      
-    
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/about/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-            
-
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/8013.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mohuishou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mohuishou">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘
-
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-06-28 00:00:00" itemprop="dateCreated datePublished" datetime="2016-06-28T00:00:00+00:00">2016-06-28</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-04-19 11:03:16" itemprop="dateModified" datetime="2020-04-19T11:03:16+00:00">2020-04-19</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/PHP//index.html" itemprop="url" rel="index"><span itemprop="name">PHP</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <blockquote>
-<p>经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的 oss 可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑</p>
-</blockquote>
-<h3 id="之前使用的云盘"><a href="#之前使用的云盘" class="headerlink" title="之前使用的云盘"></a>之前使用的云盘</h3><ol>
-<li><p>坚果云<br>个人认为是现在市面上最好的同步盘了，支持增量同步，多平台有 linux 版本，可以使用 webdav。美中不足的免费版每个月限制上传下载流量，收费版不限制流量有空间限制。有段时间突然有大量文件需要备份导致流量不足，但是平时又用不了太多，开一个月专业版的空间又不够，用的有点憋屈所以就弃用了。</p>
-</li>
-<li><p>百度云等<br>在使用坚果云之前的主力网盘，同步盘功能竟然要会员才能用，而且同步盘做的很不好用，不过用来做资源分享之类的还不错</p>
-</li>
-</ol>
-<h3 id="为什么使用-oss"><a href="#为什么使用-oss" class="headerlink" title="为什么使用 oss"></a>为什么使用 oss</h3><ol>
-<li><p>数据的稳定性，我比较喜欢折腾所以服务器有时候就会重装这时候对于文件就非常的不好管理和备份，放在 oss 上面能够更好的管理</p>
-</li>
-<li><p>第二个就是便宜，不和其他几家的云服务对比仅仅和阿里云的云盘，就是买服务器的时候的一个选项，便宜很多。40g 的话一年也就差不多 10 多块的样子。而且和 ECS 搭配使用没有流量费用</p>
-</li>
-</ol>
-<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>安装 lnmp 架构</p>
-<blockquote>
-<p>其实 owncloud 官方更加推荐 lamp，但是我个人更喜欢 nginx，要比 Apache 省资源一些，能够用 Apache 的也很不错，可以少踩很多配置的坑，owncloud 的 nginx 官方示例配置很多坑，之后会说到</p>
-</blockquote>
-<h3 id="安装-ossfs"><a href="#安装-ossfs" class="headerlink" title="安装 ossfs"></a>安装 ossfs</h3><blockquote>
-<p>注意：在这之前你需要先开通 oss，最好是和你的 ECS 是一个地区的，当然不是用的 ECS 也可以用，只是速度会慢一些，还有就是下载会使用公网流量，上传没有</p>
-</blockquote>
-<p>1.<a href="https://help.aliyun.com/document_detail/32196.html" target="_blank" rel="noopener">点击打开 ossfs 的下载页面下载对应系统的安装包</a> 2.我已 Ubuntu 为例，安装 ossfs，其他系统看官方的文档就行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install gdebi-core</span><br><span class="line">sudo gdebi your_ossfs_package</span><br></pre></td></tr></table></figure>
-<p>3.将<code>my-bucket</code>这个 bucket 挂载到<code>/data/cloud</code>目录下，AccessKeyId 是<code>faint</code>， AccessKeySecret 是<code>123</code>，oss endpoint 是<code>http://oss-cn-hangzhou.aliyuncs.com</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> my-bucket:faint:123 &gt; /etc/passwd-ossfs</span><br><span class="line">chmod 640 /etc/passwd-ossfs</span><br><span class="line">mkdir /data/cloud</span><br></pre></td></tr></table></figure>
-<p><strong>最后一步很重要，不能直接照官方文档上面的来，不然安装 owncloud 的时候可能会出现没有访问权限的问题</strong></p>
-<ul>
-<li>首先先看一下 nginx 的用户 id，以我的是<code>www</code>为例</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id www</span><br></pre></td></tr></table></figure>
-<p>会返回给你用户的 uid 和 gid 等等,我假设返回的 uid 和 gid 都为 1001</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ossfs my-bucket /data/cloud -ourl=http://oss-cn-hangzhou-internal.aliyuncs.com -ouid=1001 -ogid=1001 -o allow_other -o umask=007</span><br></pre></td></tr></table></figure>
-<p>这里面<code>allow_other</code>是允许其他用户访问，但是默认设置的是 777 权限这样 owncloud 会提示不安全，用<code>umask=007</code>挂载为 770 权限，不知道为啥这里 0 代表 7,7 表示 0</p>
-<blockquote>
-<p>到这里 ossfs 就安装完毕了下面开始安装 owncloud</p>
-</blockquote>
-<h3 id="安装-OWNCLOUD"><a href="#安装-OWNCLOUD" class="headerlink" title="安装 OWNCLOUD"></a>安装 OWNCLOUD</h3><blockquote>
-<p>owncloud 的安装网上已经有很多的教程我就不多说了</p>
-</blockquote>
-<p>先打开<a href="https://owncloud.org/install/#instructions-server" target="_blank" rel="noopener">owncloud 的官网的服务器端的安装地址</a>，我安装的时候最新稳定版是<code>9.0.2</code>建议国内主机用迅雷之类的下载软件先下载下来上传到服务器，直接 wget 比较慢</p>
-<p>1.下载并解压</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget  https://download.owncloud.org/community/owncloud-9.0.2.tar.bz2 //手动上传这一步就不用了</span><br><span class="line">tar xvf owncloud-9.0.2.tar.bz2 //以实际的文件名为准</span><br></pre></td></tr></table></figure>
-<p>2.移动到站点目录,假设站点目录为<code>/data/wwwroot</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv owncloud/ /data/wwwroot/</span><br></pre></td></tr></table></figure>
-<p><strong>3.设置目录权限，这一步很重要</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chown -R www:www /data/wwwroot/owncloud/</span><br><span class="line">chmod 777 /data/wwwroot/owncloud//config/</span><br></pre></td></tr></table></figure>
-<h3 id="设置-nginx-规则（Apache-基本不用改，只需要自己去设置一下-ssl，和常规的设置就行了）"><a href="#设置-nginx-规则（Apache-基本不用改，只需要自己去设置一下-ssl，和常规的设置就行了）" class="headerlink" title="设置 nginx 规则（Apache 基本不用改，只需要自己去设置一下 ssl，和常规的设置就行了）"></a>设置 nginx 规则（Apache 基本不用改，只需要自己去设置一下 ssl，和常规的设置就行了）</h3><p><strong>注意规则设置好之后，安装的时候点高级设置，使用 mysql 或者其他数据库，<code>sqllite</code>的性能不够，然后就是数据文件目录填写之前你 ossfs 的挂载目录，我之前挂载的是<code>/data/cloud</code></strong></p>
-<blockquote>
-<p>后面有 9.x 官方的示例，我这儿提示一下有些坑的地方</p>
-</blockquote>
-<p>1.本身的设置里面没有 log 的设置，不方便 debug，access_log 可以不用，error_log 还是需要加上的 2.里面没有 index 的设置，如果打开首页一片空白，加上 index.php 之后没有问题的话，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">		index index.php #加上这一句</span><br><span class="line">      rewrite ^ /index.php$uri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>3.如果你进入安装页面，按照提示安装好了之后出现说<code>找不到文件目录</code>之类的话，那么很有可能是你没有开启<code>pathinfo</code>，owncloud 需要 pathinfo 的支持(示例的配置里面是有 pathinfo 的设置的)</p>
-<h3 id="NEXT"><a href="#NEXT" class="headerlink" title="NEXT"></a>NEXT</h3><blockquote>
-<p>到这里基本上 owncloud 的安装应该就结束了，使用也没有什么问题，我建议开启 ssl，不知道为什么，我开了 ssl 之后访问的速度提升了好几倍</p>
-</blockquote>
-<p>附送官方插件的地址<a href="https://apps.owncloud.com/" target="_blank" rel="noopener">点我点我</a>,国内主机在线安装插件可能装不上，可以 FQ 之后在这里面下载相应插件包，上传到 apps 目录下即可，下一篇说一下用 owncloud 实现离线下载功能，现在 9.0.2 版本的使用 owncloud 的离线下载插件有问题，但是看了一下这个 bug 很早就有，只是好像一直没有修复。之后我改一下能够用了再写下一篇吧</p>
-<h3 id="9-x-官方示例"><a href="#9-x-官方示例" class="headerlink" title="9.x 官方示例"></a>9.x 官方示例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"> upstream php-handler &#123;</span><br><span class="line">    server 127.0.0.1:9000; #注意一下你自己的php服务设置，这一行可能需要自己调整</span><br><span class="line">    #server unix:/var/run/php5-fpm.sock;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name cloud.example.com;</span><br><span class="line">    # enforce https</span><br><span class="line">    return 301 https://$server_name$request_uri;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl;</span><br><span class="line">    server_name cloud.example.com;</span><br><span class="line"></span><br><span class="line">    #ssl证书的位置</span><br><span class="line">    ssl_certificate /etc/ssl/nginx/cloud.example.com.crt;</span><br><span class="line">    ssl_certificate_key /etc/ssl/nginx/cloud.example.com.key;</span><br><span class="line"></span><br><span class="line">    # Add headers to serve security related headers</span><br><span class="line">    # Before enabling Strict-Transport-Security headers please read into this</span><br><span class="line">    # topic first.</span><br><span class="line"></span><br><span class="line">    # 安装好之后，后台可能会提示相应错误，把这一段的注释去掉就行</span><br><span class="line">    # add_header Strict-Transport-Security &quot;max-age=15768000;</span><br><span class="line">    # includeSubDomains; preload;&quot;;</span><br><span class="line"></span><br><span class="line">    #后面安装好了之后后台可能会提示header的错误，把这一短删除掉即可</span><br><span class="line">    add_header X-Content-Type-Options nosniff;</span><br><span class="line">    add_header X-Frame-Options &quot;SAMEORIGIN&quot;;</span><br><span class="line">    add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line">    add_header X-Robots-Tag none;</span><br><span class="line">    add_header X-Download-Options noopen;</span><br><span class="line">    add_header X-Permitted-Cross-Domain-Policies none;</span><br><span class="line"></span><br><span class="line">    # Path to the root of your installation</span><br><span class="line">    root /var/www/owncloud/;</span><br><span class="line"></span><br><span class="line">    location = /robots.txt &#123;</span><br><span class="line">        allow all;</span><br><span class="line">        log_not_found off;</span><br><span class="line">        access_log off;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # The following 2 rules are only needed for the user_webfinger app.</span><br><span class="line">    # Uncomment it if you&apos;re planning to use this app.</span><br><span class="line">    #rewrite ^/.well-known/host-meta /public.php?service=host-meta last;</span><br><span class="line">    #rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json</span><br><span class="line">    # last;</span><br><span class="line"></span><br><span class="line">    location = /.well-known/carddav &#123; return 301</span><br><span class="line">     $scheme://$host/remote.php/dav; &#125;</span><br><span class="line">    location = /.well-known/caldav &#123; return 301</span><br><span class="line">     $scheme://$host/remote.php/dav; &#125;</span><br><span class="line"></span><br><span class="line">    location /.well-known/acme-challenge &#123; &#125;</span><br><span class="line"></span><br><span class="line">    # set max upload size</span><br><span class="line">    client_max_body_size 512M;</span><br><span class="line">    fastcgi_buffers 64 4K;</span><br><span class="line"></span><br><span class="line">    # Disable gzip to avoid the removal of the ETag header</span><br><span class="line">    gzip off;</span><br><span class="line"></span><br><span class="line">    # Uncomment if your server is build with the ngx_pagespeed module</span><br><span class="line">    # This module is currently not supported.</span><br><span class="line">    #pagespeed off;</span><br><span class="line"></span><br><span class="line">    error_page 403 /core/templates/403.php;</span><br><span class="line">    error_page 404 /core/templates/404.php;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        rewrite ^ /index.php$uri;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line">    location ~ ^/(?:\.|autotest|occ|issue|indie|db_|console) &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~</span><br><span class="line">    ^/(?:index|remote|public|cron|core/ajax/update|status|ocs/v[12]|updater</span><br><span class="line">    /.+|ocs-provider/.+|core/templates/40[34])\.php(?:$|/) &#123;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        fastcgi_split_path_info ^(.+\.php)(/.+)$;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">        fastcgi_param PATH_INFO $fastcgi_path_info;</span><br><span class="line">        fastcgi_param HTTPS on;</span><br><span class="line">        #Avoid sending the security headers twice</span><br><span class="line">        fastcgi_param modHeadersAvailable true;</span><br><span class="line">        fastcgi_param front_controller_active true;</span><br><span class="line">        fastcgi_pass php-handler;</span><br><span class="line">        fastcgi_intercept_errors on;</span><br><span class="line">        fastcgi_request_buffering off;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ ^/(?:updater|ocs-provider)(?:$|/) &#123;</span><br><span class="line">        try_files $uri/ =404;</span><br><span class="line">        index index.php;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    # Adding the cache control header for js and css files</span><br><span class="line">    # Make sure it is BELOW the PHP block</span><br><span class="line">    location ~* \.(?:css|js)$ &#123;</span><br><span class="line">        try_files $uri /index.php$uri$is_args$args;</span><br><span class="line">        add_header Cache-Control &quot;public, max-age=7200&quot;;</span><br><span class="line">        # Add headers to serve security related headers (It is intended to</span><br><span class="line">        # have those duplicated to the ones above)</span><br><span class="line">        # Before enabling Strict-Transport-Security headers please read into</span><br><span class="line">        # this topic first.</span><br><span class="line">        # add_header Strict-Transport-Security &quot;max-age=15768000;</span><br><span class="line">        #  includeSubDomains; preload;&quot;;</span><br><span class="line">        add_header X-Content-Type-Options nosniff;</span><br><span class="line">        add_header X-Frame-Options &quot;SAMEORIGIN&quot;;</span><br><span class="line">        add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line">        add_header X-Robots-Tag none;</span><br><span class="line">        add_header X-Download-Options noopen;</span><br><span class="line">        add_header X-Permitted-Cross-Domain-Policies none;</span><br><span class="line">        # Optional: Don&apos;t log access to assets</span><br><span class="line">        access_log off;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~* \.(?:svg|gif|png|html|ttf|woff|ico|jpg|jpeg)$ &#123;</span><br><span class="line">        try_files $uri /index.php$uri$is_args$args;</span><br><span class="line">        # Optional: Don&apos;t log access to other assets</span><br><span class="line">        access_log off;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div>
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-      <div>
-        
-
-
-
-
-  
-
-
-
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>Mohuishou</li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    
-    <a href="https://lailin.xyz/post/8013.html" title="使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘">https://lailin.xyz/post/8013.html</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/php/index.html" rel="tag"># php</a>
-          
-            <a href="/tags/lnmp/index.html" rel="tag"># lnmp</a>
-          
-            <a href="/tags/云盘/index.html" rel="tag"># 云盘</a>
-          
-            <a href="/tags/owncloud/index.html" rel="tag"># owncloud</a>
-          
-            <a href="/tags/oss/index.html" rel="tag"># oss</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/post/31503.html" rel="next" title="四川大学评教开源代码">
-                <i class="fa fa-chevron-left"></i> 四川大学评教开源代码
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/13242.html" rel="prev" title="迁移laravel框架项目到虚拟主机">
-                迁移laravel框架项目到虚拟主机 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-    <div class="comments" id="gitalk-container">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg" alt="Mohuishou">
-            
-              <p class="site-author-name" itemprop="name">Mohuishou</p>
-              <div class="site-description motion-element" itemprop="description"></div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/index.html">
-                
-                    <span class="site-state-item-count">76</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">7</span>
-                    <span class="site-state-item-name">分类</span>
-                  
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/index.html">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">93</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
-                </span>
-              
-            </div>
-          
-
-          
-             <div class="cc-license motion-element" itemprop="license">
-              
-              
-                
-              
-              
-              
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-             </div>
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                Friend's Blog
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://jingwei.link/" title="https://jingwei.link/" rel="noopener" target="_blank">敬维</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://jiajunhuang.com/" title="https://jiajunhuang.com/" rel="noopener" target="_blank">JiaJun的编程随想</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#之前使用的云盘"><span class="nav-number">1.</span> <span class="nav-text">之前使用的云盘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么使用-oss"><span class="nav-number">2.</span> <span class="nav-text">为什么使用 oss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备工作"><span class="nav-number">3.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-ossfs"><span class="nav-number">4.</span> <span class="nav-text">安装 ossfs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-OWNCLOUD"><span class="nav-number">5.</span> <span class="nav-text">安装 OWNCLOUD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置-nginx-规则（Apache-基本不用改，只需要自己去设置一下-ssl，和常规的设置就行了）"><span class="nav-number">6.</span> <span class="nav-text">设置 nginx 规则（Apache 基本不用改，只需要自己去设置一下 ssl，和常规的设置就行了）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NEXT"><span class="nav-number">7.</span> <span class="nav-text">NEXT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-x-官方示例"><span class="nav-number">8.</span> <span class="nav-text">9.x 官方示例</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number"></span> <span class="nav-text">推荐阅读</span></a></li></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Mohuishou</span>
-
-  
-
-  
-</div>
-
-
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="//cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
-
-  
-  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.min.js"></script>
-
-  
-  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.ui.min.js"></script>
-
-
-  <script type="text/javascript" src="/assets/main.min.js"></script>
-  
-
-
-
-  
-  
-
-
-
-  
-  
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-
-  
-    
-
-  
-
-<script src="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.js"></script>
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.css">
-
-
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
-
-<script>
-  let path = location.pathname
-  if (path.indexOf('html') < 0) path += ".html"
-  
-  var gitalk = new Gitalk({
-    clientID: '28db4ab78d0b5277990f',
-    clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
-    repo: 'blogComment',
-    owner: 'scuplus',
-    admin: ['mohuishou'],
-    id: md5(location.pathname),
-    
-      language: 'zh-CN',
-    
-    distractionFreeMode: 'true'
-  });
-  gitalk.render('gitalk-container');
-</script>
-
-  
-
-
-  
-
-
-
-  
-  
-  
-    
-  
-  <link rel="stylesheet" href="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.css">
-
-  
-  
-    
-  
-  <script src="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.js"></script>
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-</body>
-</html>
+    anchors.add(res.join(", "))</script><script src="/js/local-search.js"></script><script>var path="/local-search.xml",inputArea=document.querySelector("#local-search-input");inputArea.onclick=function(){searchFunc(path,"local-search-input","local-search-result"),this.onclick=null}</script><script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script><link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"><script>$("#post img:not(.no-zoom img, img[no-zoom]), img[zoom]").each(function(){var t=document.createElement("a");$(t).attr("data-fancybox","images"),$(t).attr("href",$(this).attr("src")),$(this).wrap(t)})</script><script defer>!function(e,a,t,n,g,c,o){e.GoogleAnalyticsObject="ga",e.ga=e.ga||function(){(e.ga.q=e.ga.q||[]).push(arguments)},e.ga.l=1*new Date,c=a.createElement(t),o=a.getElementsByTagName(t)[0],c.async=1,c.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(c,o)}(window,document,"script"),ga("create","UA-137859264-1","auto"),ga("send","pageview")</script></body></html>

@@ -1,1228 +1,143 @@
-<!DOCTYPE html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png"><link rel="icon" type="image/png" href="/icons/favicon-32x32.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content><meta name="author" content="Mohuishou"><meta name="keywords" content="Go, Docker, PHP"><title>Go Web 小技巧（三）Gin 参数绑定 - Mohuishou</title><link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css"><link rel="stylesheet" href="/css/main.css"><script src="/js/utils.js"></script></head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/"><i class="iconfont icon-home-fill"></i> 首页</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/categories/"><i class="iconfont icon-category-fill"></i> 分类</a></li><li class="nav-item"><a class="nav-link" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item"><a class="nav-link" href="/links/"><i class="iconfont icon-link-fill"></i> 友链</a></li><li class="nav-item"><a class="nav-link" href="/atom.xml"><i class="iconfont icon-rss"></i> rss</a></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i class="iconfont icon-search"></i>&nbsp;&nbsp;</a></li></ul></div></div></nav><div class="view intro-2" id="background" parallax="true" style="background:url(/img/bg.jpg) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="container text-center white-text fadeInUp"><span class="h2" id="subtitle"></span><div class="mt-3 post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2019-11-06 21:00">2019年11月6日 晚上</time></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 1.5k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 20 分钟</span></div></div></div></div></div></header><main><div class="container-fluid"><div class="row"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-md"><div class="container nopadding-md" id="board-ctn"><div class="py-5" id="board"><div class="post-content mx-auto" id="post"><article class="markdown-body"><h2 id="楔-xie-子"><a href="#楔-xie-子" class="headerlink" title="楔(xiē)子"></a>楔(xiē)子</h2><p>在第一篇文章 <a href="https://lailin.xyz/post/38237.html">简化 Gin 接口代码</a> 当中为大家提供了一种抽象 <code>gin</code> 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。</p><p>在我们写的绝大部分的 API 代码当中，其实都是需要传递参数的，无论是通过 <code>path</code>、<code>query string</code> 还是 <code>body</code>，在 <code>gin</code> 当中，为我们提供了一系列的 <code>binding</code> 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 <code>struct tag</code> 来对参数进行校验，不知道到大家曾今是否和遇到过相同的困惑：</p><ul><li>我创建/更新接口有时候就仅仅只相差一个 id，我是不是可以复用代码？</li><li>是否可以直接用 model 层的 struct 绑定参数？</li></ul><p>接下来本文就从这些问题出发，利用 go 的组合特点，介绍一些参数绑定上的小技巧</p><a id="more"></a><h2 id="参数绑定技巧"><a href="#参数绑定技巧" class="headerlink" title="参数绑定技巧"></a>参数绑定技巧</h2><h3 id="1-复用创建-更新时的参数"><a href="#1-复用创建-更新时的参数" class="headerlink" title="1. 复用创建/更新时的参数"></a>1. 复用创建/更新时的参数</h3><pre><code class="hljs go"><span class="hljs-comment">// UserParams 用户参数</span>
+<span class="hljs-keyword">type</span> UserParams <span class="hljs-keyword">struct</span> &#123;
+	Name     <span class="hljs-keyword">string</span> <span class="hljs-string">`json:"name" binding:"required"`</span>
+	Password <span class="hljs-keyword">string</span> <span class="hljs-string">`json:"password" binding:"required"`</span>
+&#125;
+
+<span class="hljs-comment">// CreateUserParams 创建用户</span>
+<span class="hljs-keyword">type</span> CreateUserParams <span class="hljs-keyword">struct</span> &#123;
+	UserParams
+&#125;
+
+<span class="hljs-comment">// UpdateUserParams 更新用户</span>
+<span class="hljs-keyword">type</span> UpdateUserParams <span class="hljs-keyword">struct</span> &#123;
+	UserParams
+	ID <span class="hljs-keyword">uint</span> <span class="hljs-string">`json:"id" binding:"required"`</span>
+&#125;</code></pre><h3 id="2-用-model-层的-struct-绑定参数"><a href="#2-用-model-层的-struct-绑定参数" class="headerlink" title="2. 用 model 层的 struct 绑定参数"></a>2. 用 model 层的 struct 绑定参数</h3><p>如果我们在参数绑定的时候，向上面那样，每个参数单独创建一个绑定，这样在 Model 层创建数据库记录的时候就需要去手动的转换一道了，如果每个都需要这么写，会感觉很麻烦。</p><p>这是原本的 <code>user</code> 表</p><pre><code class="hljs go"><span class="hljs-comment">// model/model.go</span>
+
+<span class="hljs-comment">// Model default model</span>
+<span class="hljs-keyword">type</span> Model <span class="hljs-keyword">struct</span> &#123;
+	ID        <span class="hljs-keyword">uint</span>       <span class="hljs-string">`json:"id" gorm:"primary_key"`</span>
+	CreatedAt time.Time  <span class="hljs-string">`json:"created_at"`</span>
+	UpdatedAt time.Time  <span class="hljs-string">`json:"updated_at"`</span>
+	DeletedAt *time.Time <span class="hljs-string">`json:"deleted_at" sql:"index"`</span>
+&#125;
+
+<span class="hljs-comment">// model/user.go</span>
+
+<span class="hljs-comment">// User 用户表</span>
+<span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
+    Model
+
+	Name     <span class="hljs-keyword">string</span> <span class="hljs-string">`json:"name"`</span>
+	Password <span class="hljs-keyword">string</span> <span class="hljs-string">`json:"password"`</span>
+&#125;</code></pre><p>这时我们可以稍微改造一下, 利用 <code>binding:&quot;-&quot;</code> 忽略字段的功能，和 <code>struct</code> 组合，将 api 的参数和 model 关联在一起，减少一些结构体转换的代码</p><pre><code class="hljs go"><span class="hljs-comment">// model/model.go</span>
+
+<span class="hljs-comment">// Model default model</span>
+<span class="hljs-keyword">type</span> Model <span class="hljs-keyword">struct</span> &#123;
+    ID        <span class="hljs-keyword">uint</span>       <span class="hljs-string">`json:"id" gorm:"primary_key"`</span>
+	CreatedAt time.Time  <span class="hljs-string">`json:"created_at" binding:"-"`</span>
+	UpdatedAt time.Time  <span class="hljs-string">`json:"updated_at" binding:"-"`</span>
+	DeletedAt *time.Time <span class="hljs-string">`json:"deleted_at" sql:"index" binding:"-"`</span>
+&#125;
+
+<span class="hljs-comment">// model/user.go</span>
+
+<span class="hljs-comment">// User 用户表</span>
+<span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
+    Model
+
+	Name     <span class="hljs-keyword">string</span> <span class="hljs-string">`json:"name" binding:"required"`</span>
+	Password <span class="hljs-keyword">string</span> <span class="hljs-string">`json:"password" binding:"required"`</span>
+&#125;
+
+<span class="hljs-comment">// api/user.go</span>
+<span class="hljs-comment">// UserParams 用户参数</span>
+<span class="hljs-keyword">type</span> UserParams <span class="hljs-keyword">struct</span> &#123;
+    model.User
+&#125;
+
+<span class="hljs-comment">// CreateUserParams 创建用户</span>
+<span class="hljs-keyword">type</span> CreateUserParams <span class="hljs-keyword">struct</span> &#123;
+	UserParams
+    ID    <span class="hljs-keyword">uint</span>    <span class="hljs-string">`json:"id" gorm:"primary_key" binding:"-"`</span>
+&#125;
+
+<span class="hljs-comment">// UpdateUserParams 更新用户</span>
+<span class="hljs-keyword">type</span> UpdateUserParams <span class="hljs-keyword">struct</span> &#123;
+	UserParams
+&#125;</code></pre><h3 id="3-使用-ShouldBind-而不是-Bind"><a href="#3-使用-ShouldBind-而不是-Bind" class="headerlink" title="3. 使用 ShouldBind 而不是 Bind"></a>3. 使用 <code>ShouldBind</code> 而不是 <code>Bind</code></h3><p><code>Bind</code> 方法会自动将 http status 设置为 400, 然后报错，但是我们往往会需要携带更多的信息返回，或者返回不同的 <code>status</code> 这时候往往会出现下面这样的警告，而使用 <code>ShouldBind</code> 可以避免此类问题</p><pre><code class="hljs bash">[WARNING] Headers were already written. Wanted to override status code 400 with 200</code></pre><h3 id="4-多次绑定-request-body-数据"><a href="#4-多次绑定-request-body-数据" class="headerlink" title="4. 多次绑定 request body 数据"></a>4. 多次绑定 request body 数据</h3><p>这是官方文档的一个示例，一般情况第二次读取 request body 的数据就会出现 EOF 的错误，因为 <code>c.Request.Body</code> 不可以重用</p><pre><code class="hljs go"><span class="hljs-keyword">type</span> formA <span class="hljs-keyword">struct</span> &#123;
+  Foo <span class="hljs-keyword">string</span> <span class="hljs-string">`json:"foo" binding:"required"`</span>
+&#125;
+
+<span class="hljs-keyword">type</span> formB <span class="hljs-keyword">struct</span> &#123;
+  Bar <span class="hljs-keyword">string</span> <span class="hljs-string">`json:"bar" binding:"required"`</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SomeHandler</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
+  objA := formA&#123;&#125;
+  objB := formB&#123;&#125;
+  <span class="hljs-comment">// c.ShouldBind 使用了 c.Request.Body，不可重用。</span>
+  <span class="hljs-keyword">if</span> errA := c.ShouldBind(&amp;objA); errA == <span class="hljs-literal">nil</span> &#123;
+    c.String(http.StatusOK, <span class="hljs-string">`the body should be formA`</span>)
+  <span class="hljs-comment">// 因为现在 c.Request.Body 是 EOF，所以这里会报错。</span>
+  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> errB := c.ShouldBind(&amp;objB); errB == <span class="hljs-literal">nil</span> &#123;
+    c.String(http.StatusOK, <span class="hljs-string">`the body should be formB`</span>)
+  &#125; <span class="hljs-keyword">else</span> &#123;
+    ...
+  &#125;
+&#125;</code></pre><p>gin 1.4 之后官方提供了一个 <code>ShouldBindBodyWith</code> 的方法，可以支持重复绑定，原理就是将 body 的数据缓存了下来，但是二次取数据的时候还是得用 <code>ShouldBindBodyWith</code> 才行，直接用 <code>ShouldBind</code> 还是会报错的。</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SomeHandler</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
+  objA := formA&#123;&#125;
+  objB := formB&#123;&#125;
+  <span class="hljs-comment">// 读取 c.Request.Body 并将结果存入上下文。</span>
+  <span class="hljs-keyword">if</span> errA := c.ShouldBindBodyWith(&amp;objA, binding.JSON); errA == <span class="hljs-literal">nil</span> &#123;
+    c.String(http.StatusOK, <span class="hljs-string">`the body should be formA`</span>)
+  <span class="hljs-comment">// 这时, 复用存储在上下文中的 body。</span>
+  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> errB := c.ShouldBindBodyWith(&amp;objB, binding.JSON); errB == <span class="hljs-literal">nil</span> &#123;
+    c.String(http.StatusOK, <span class="hljs-string">`the body should be formB JSON`</span>)
+  <span class="hljs-comment">// 可以接受其他格式</span>
+  &#125; <span class="hljs-keyword">else</span> &#123;
+    ...
+  &#125;
+&#125;</code></pre><p>这种方式其实有个问题，什么情况下我们会去多次读取 <code>body</code> 的数据，其实在中间件中我们是需要用到，有的中间件需要读取参数做一些处理，例如权限中间件需要获取当前资源的 id，判断当前用户是否有权限，如果这个时候直接使用 <code>ShouldBindBodyWith</code> 会导致之后的所有的接口都修改才行，十分的不优雅，下面提供一种不用影响后续使用的方法</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startPage</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
+	<span class="hljs-keyword">var</span> (
+		p1 Person
+		p2 Person
+	)
+	buf := &amp;bytes.Buffer&#123;&#125;
+	tea := io.TeeReader(c.Request.Body, buf)
+	body, err := ioutil.ReadAll(tea)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		log.Panicf(<span class="hljs-string">"read body err: %+v"</span>, err)
+	&#125;
+	c.Request.Body = ioutil.NopCloser(buf)
+	<span class="hljs-comment">// read buf ...</span>
+	<span class="hljs-keyword">if</span> err := binding.JSON.BindBody(body, &amp;p1); err != <span class="hljs-literal">nil</span> &#123;
+		log.Panic(<span class="hljs-string">"p1"</span>, err)
+	&#125;
+	log.Println(<span class="hljs-string">"p1"</span>, p1)
+	<span class="hljs-comment">// use ShouldBind again ..</span>
+	<span class="hljs-keyword">if</span> err := c.ShouldBind(&amp;p2); err != <span class="hljs-literal">nil</span> &#123;
+		log.Panic(<span class="hljs-string">"p2"</span>, err)
+	&#125;
+	log.Println(<span class="hljs-string">"p2"</span>, p2)
+	c.String(<span class="hljs-number">200</span>, <span class="hljs-string">"Success"</span>)
+&#125;
 
 
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <meta name="baidu-site-verification" content="xPjWsnjLMC">
-
-
-
-
-
-
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<link rel="stylesheet" href="/assets/main.min.css?v=7.1.0"/">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/touch-icon-apple.png?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/favicon-32x32.png?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/favicon-16x16.png?v=7.1.0">
-
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'WB3PJKK4Q5',
-      apiKey: '0f4e5abf708587974517054f9c1aaf73',
-      indexName: 'Blog',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到和 ${query} 相关的内容, 换个关键词试试","hits_stats":"为您找到 ${hits} 条内容, 耗时: ${time} ms"}
+<span class="hljs-comment">// output</span>
+<span class="hljs-comment">// 2019/11/06 23:10:04 p1 &#123;hello world&#125;</span>
+<span class="hljs-comment">// 2019/11/06 23:10:04 p2 &#123;hello world&#125;</span>
+<span class="hljs-comment">// [GIN] 2019/11/06 - 23:10:04 | 200 |   27.0400917s |             ::1 | POST     /testing</span></code></pre><p>这三行也适用于其他需要多次读取 <code>io.Reader</code> 的情况</p><pre><code class="hljs go">buf := &amp;bytes.Buffer&#123;&#125;
+tea := io.TeeReader(c.Request.Body, buf)
+body, err := ioutil.ReadAll(tea)</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章从参数绑定的问题出发，为大家介绍了两种组合参数的小技巧，提供了使用参数绑定的时候的一个建议，并且提出了非官方，侵入性小的的多次读取 request body 的方式。</p><p>下一篇文章给大家介绍 gorm 事务的一些小技巧</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol><li><p><a href="https://gin-gonic.com/zh-cn/" target="_blank" rel="noopener">gin 官方文档</a></p></li><li><p><a href="https://stackoverflow.com/questions/39791021/how-to-read-multiple-times-from-same-io-reader" target="_blank" rel="noopener">How to read multiple times from same io.Reader</a></p></li></ol><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/auxvv1.html">Go Web小技巧（四）在单个仓库中支持多个 go mod 模块</a></li><li><a href="https://lailin.xyz/post/17394.html">Go Web 小技巧（二）GORM 使用自定义类型</a></li><li><a href="https://lailin.xyz/post/38237.html">Go Web 小技巧（一）简化Gin接口代码</a></li><li><a href="chunlife.top/2020/02/18/B站源码中的log-agent/">B站源码中的log-agent</a></li></ul></div></article><hr><div><div class="post-metas mb-3"><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/go/">go</a> <a class="hover-with-bg" href="/tags/小技巧/">小技巧</a> <a class="hover-with-bg" href="/tags/api/">api</a> <a class="hover-with-bg" href="/tags/gin/">gin</a></div></div><p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p><div class="post-prevnext row"><div class="post-prev col-6"><a href="/post/auxvv1.html"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Go Web小技巧（四）在单个仓库中支持多个 go mod 模块</span> <span class="visible-mobile">上一篇</span></a></div><div class="post-next col-6"><a href="/post/17394.html"><span class="hidden-mobile">Go Web 小技巧（二）GORM 使用自定义类型</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></div></div></div><div class="comments" id="comments"><div id="gitalk-container"></div><script type="text/javascript">function loadGitalk(){addScript("https://cdn.staticfile.org/gitalk/1.6.2/gitalk.min.js",function(){new Gitalk({clientID:"28db4ab78d0b5277990f",clientSecret:"ec365bd48160f2aa32665986af635199dbda4809",repo:"blogComment",owner:"scuplus",admin:"mohuishou,scuplus",id:"abe2f11339bee105f3f102052ebaa0c7",language:"zh-CN",perPage:15,pagerDirection:"last",createIssueManually:"false",distractionFreeMode:"false"}).render("gitalk-container")})}createObserver(loadGitalk,"gitalk-container")</script></div></div></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div id="tocbot"></div></div></div></div></div></main><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><footer class="mt-5"><div class="text-center py-3"><div><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div></div></footer><script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script><script src="/js/debouncer.js"></script><script src="/js/main.js"></script><script src="/js/lazyload.js"></script><script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script><script src="/js/clipboard-use.js"></script><script src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js"></script><script>$(document).ready(function(){var t=$("#board-ctn").offset().top;tocbot.init({tocSelector:"#tocbot",contentSelector:"article.markdown-body",headingSelector:"h1,h2,h3,h4,h5,h6",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:0,scrollSmooth:!0,headingsOffset:-t}),0<$(".toc-list-item").length&&$("#toc").css("visibility","visible")})</script><script src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js"></script><script>var typed=new Typed("#subtitle",{strings:["  ","Go Web 小技巧（三）Gin 参数绑定&nbsp;"],cursorChar:"_",typeSpeed:70,loop:!1});typed.stop(),$(document).ready(function(){$(".typed-cursor").addClass("h2"),typed.start()})</script><script src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js"></script><script>anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
     }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="楔(xiē)子在第一篇文章 简化 Gin 接口代码 当中为大家提供了一种抽象 gin 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。 在我们写的绝大部分的 API 代码当中，其实都是需要传递参数的，无论是通过 path、query string 还是 body，在 gin 当中，为我们提供了一系列的 binding 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 struct">
-<meta name="keywords" content="go,小技巧,api,gin">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Go Web 小技巧（三）Gin 参数绑定">
-<meta property="og:url" content="https://lailin.xyz/post/11996.html">
-<meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="楔(xiē)子在第一篇文章 简化 Gin 接口代码 当中为大家提供了一种抽象 gin 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。 在我们写的绝大部分的 API 代码当中，其实都是需要传递参数的，无论是通过 path、query string 还是 body，在 gin 当中，为我们提供了一系列的 binding 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 struct">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-19T11:03:16.097Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go Web 小技巧（三）Gin 参数绑定">
-<meta name="twitter:description" content="楔(xiē)子在第一篇文章 简化 Gin 接口代码 当中为大家提供了一种抽象 gin 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。 在我们写的绝大部分的 API 代码当中，其实都是需要传递参数的，无论是通过 path、query string 还是 body，在 gin 当中，为我们提供了一系列的 binding 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 struct">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Mohuishou" type="application/atom+xml">
-
-
-
-  
-  
-  <link rel="canonical" href="https://lailin.xyz/post/11996.html">
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>Go Web 小技巧（三）Gin 参数绑定 | Mohuishou</title>
-  
-
-
-
-
-  <script async src="//www.googletagmanager.com/gtag/js?id=UA-137859264-1"></script>
-  <script>
-    var host = window.location.hostname;
-    if (host !== "localhost" || !true) {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-137859264-1');
-    }
-  </script>
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .motion-element,
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
-
-  .use-motion .logo,
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Mohuishou</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <h1 class="site-subtitle" itemprop="description">A New Life</h1>
-      
-    
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/about/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-            
-
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/11996.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mohuishou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mohuishou">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">Go Web 小技巧（三）Gin 参数绑定
-
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-11-06 21:00:00" itemprop="dateCreated datePublished" datetime="2019-11-06T21:00:00+00:00">2019-11-06</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-04-19 11:03:16" itemprop="dateModified" datetime="2020-04-19T11:03:16+00:00">2020-04-19</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h2 id="楔-xie-子"><a href="#楔-xie-子" class="headerlink" title="楔(xiē)子"></a>楔(xiē)子</h2><p>在第一篇文章 <a href="https://lailin.xyz/post/38237.html">简化 Gin 接口代码</a> 当中为大家提供了一种抽象 <code>gin</code> 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。</p>
-<p>在我们写的绝大部分的 API 代码当中，其实都是需要传递参数的，无论是通过 <code>path</code>、<code>query string</code> 还是 <code>body</code>，在 <code>gin</code> 当中，为我们提供了一系列的 <code>binding</code> 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 <code>struct tag</code> 来对参数进行校验，不知道到大家曾今是否和遇到过相同的困惑：</p>
-<ul>
-<li>我创建/更新接口有时候就仅仅只相差一个 id，我是不是可以复用代码？</li>
-<li>是否可以直接用 model 层的 struct 绑定参数？</li>
-</ul>
-<p>接下来本文就从这些问题出发，利用 go 的组合特点，介绍一些参数绑定上的小技巧</p>
-<a id="more"></a>
-<h2 id="参数绑定技巧"><a href="#参数绑定技巧" class="headerlink" title="参数绑定技巧"></a>参数绑定技巧</h2><h3 id="1-复用创建-更新时的参数"><a href="#1-复用创建-更新时的参数" class="headerlink" title="1. 复用创建/更新时的参数"></a>1. 复用创建/更新时的参数</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UserParams 用户参数</span></span><br><span class="line"><span class="keyword">type</span> UserParams <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name     <span class="keyword">string</span> <span class="string">`json:"name" binding:"required"`</span></span><br><span class="line">	Password <span class="keyword">string</span> <span class="string">`json:"password" binding:"required"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CreateUserParams 创建用户</span></span><br><span class="line"><span class="keyword">type</span> CreateUserParams <span class="keyword">struct</span> &#123;</span><br><span class="line">	UserParams</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// UpdateUserParams 更新用户</span></span><br><span class="line"><span class="keyword">type</span> UpdateUserParams <span class="keyword">struct</span> &#123;</span><br><span class="line">	UserParams</span><br><span class="line">	ID <span class="keyword">uint</span> <span class="string">`json:"id" binding:"required"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-用-model-层的-struct-绑定参数"><a href="#2-用-model-层的-struct-绑定参数" class="headerlink" title="2. 用 model 层的 struct 绑定参数"></a>2. 用 model 层的 struct 绑定参数</h3><p>如果我们在参数绑定的时候，向上面那样，每个参数单独创建一个绑定，这样在 Model 层创建数据库记录的时候就需要去手动的转换一道了，如果每个都需要这么写，会感觉很麻烦。</p>
-<p>这是原本的 <code>user</code> 表</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// model/model.go</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Model default model</span></span><br><span class="line"><span class="keyword">type</span> Model <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID        <span class="keyword">uint</span>       <span class="string">`json:"id" gorm:"primary_key"`</span></span><br><span class="line">	CreatedAt time.Time  <span class="string">`json:"created_at"`</span></span><br><span class="line">	UpdatedAt time.Time  <span class="string">`json:"updated_at"`</span></span><br><span class="line">	DeletedAt *time.Time <span class="string">`json:"deleted_at" sql:"index"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// model/user.go</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// User 用户表</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Model</span><br><span class="line"></span><br><span class="line">	Name     <span class="keyword">string</span> <span class="string">`json:"name"`</span></span><br><span class="line">	Password <span class="keyword">string</span> <span class="string">`json:"password"`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这时我们可以稍微改造一下, 利用 <code>binding:&quot;-&quot;</code> 忽略字段的功能，和 <code>struct</code> 组合，将 api 的参数和 model 关联在一起，减少一些结构体转换的代码</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// model/model.go</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Model default model</span></span><br><span class="line"><span class="keyword">type</span> Model <span class="keyword">struct</span> &#123;</span><br><span class="line">    ID        <span class="keyword">uint</span>       <span class="string">`json:"id" gorm:"primary_key"`</span></span><br><span class="line">	CreatedAt time.Time  <span class="string">`json:"created_at" binding:"-"`</span></span><br><span class="line">	UpdatedAt time.Time  <span class="string">`json:"updated_at" binding:"-"`</span></span><br><span class="line">	DeletedAt *time.Time <span class="string">`json:"deleted_at" sql:"index" binding:"-"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// model/user.go</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// User 用户表</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Model</span><br><span class="line"></span><br><span class="line">	Name     <span class="keyword">string</span> <span class="string">`json:"name" binding:"required"`</span></span><br><span class="line">	Password <span class="keyword">string</span> <span class="string">`json:"password" binding:"required"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// api/user.go</span></span><br><span class="line"><span class="comment">// UserParams 用户参数</span></span><br><span class="line"><span class="keyword">type</span> UserParams <span class="keyword">struct</span> &#123;</span><br><span class="line">    model.User</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CreateUserParams 创建用户</span></span><br><span class="line"><span class="keyword">type</span> CreateUserParams <span class="keyword">struct</span> &#123;</span><br><span class="line">	UserParams</span><br><span class="line">    ID    <span class="keyword">uint</span>    <span class="string">`json:"id" gorm:"primary_key" binding:"-"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// UpdateUserParams 更新用户</span></span><br><span class="line"><span class="keyword">type</span> UpdateUserParams <span class="keyword">struct</span> &#123;</span><br><span class="line">	UserParams</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-使用-ShouldBind-而不是-Bind"><a href="#3-使用-ShouldBind-而不是-Bind" class="headerlink" title="3. 使用 ShouldBind 而不是 Bind"></a>3. 使用 <code>ShouldBind</code> 而不是 <code>Bind</code></h3><p><code>Bind</code> 方法会自动将 http status 设置为 400, 然后报错，但是我们往往会需要携带更多的信息返回，或者返回不同的 <code>status</code> 这时候往往会出现下面这样的警告，而使用 <code>ShouldBind</code> 可以避免此类问题</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[WARNING] Headers were already written. Wanted to override status code 400 with 200</span><br></pre></td></tr></table></figure>
-<h3 id="4-多次绑定-request-body-数据"><a href="#4-多次绑定-request-body-数据" class="headerlink" title="4. 多次绑定 request body 数据"></a>4. 多次绑定 request body 数据</h3><p>这是官方文档的一个示例，一般情况第二次读取 request body 的数据就会出现 EOF 的错误，因为 <code>c.Request.Body</code> 不可以重用</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> formA <span class="keyword">struct</span> &#123;</span><br><span class="line">  Foo <span class="keyword">string</span> <span class="string">`json:"foo" binding:"required"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> formB <span class="keyword">struct</span> &#123;</span><br><span class="line">  Bar <span class="keyword">string</span> <span class="string">`json:"bar" binding:"required"`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SomeHandler</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">  objA := formA&#123;&#125;</span><br><span class="line">  objB := formB&#123;&#125;</span><br><span class="line">  <span class="comment">// c.ShouldBind 使用了 c.Request.Body，不可重用。</span></span><br><span class="line">  <span class="keyword">if</span> errA := c.ShouldBind(&amp;objA); errA == <span class="literal">nil</span> &#123;</span><br><span class="line">    c.String(http.StatusOK, <span class="string">`the body should be formA`</span>)</span><br><span class="line">  <span class="comment">// 因为现在 c.Request.Body 是 EOF，所以这里会报错。</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> errB := c.ShouldBind(&amp;objB); errB == <span class="literal">nil</span> &#123;</span><br><span class="line">    c.String(http.StatusOK, <span class="string">`the body should be formB`</span>)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>gin 1.4 之后官方提供了一个 <code>ShouldBindBodyWith</code> 的方法，可以支持重复绑定，原理就是将 body 的数据缓存了下来，但是二次取数据的时候还是得用 <code>ShouldBindBodyWith</code> 才行，直接用 <code>ShouldBind</code> 还是会报错的。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SomeHandler</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">  objA := formA&#123;&#125;</span><br><span class="line">  objB := formB&#123;&#125;</span><br><span class="line">  <span class="comment">// 读取 c.Request.Body 并将结果存入上下文。</span></span><br><span class="line">  <span class="keyword">if</span> errA := c.ShouldBindBodyWith(&amp;objA, binding.JSON); errA == <span class="literal">nil</span> &#123;</span><br><span class="line">    c.String(http.StatusOK, <span class="string">`the body should be formA`</span>)</span><br><span class="line">  <span class="comment">// 这时, 复用存储在上下文中的 body。</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> errB := c.ShouldBindBodyWith(&amp;objB, binding.JSON); errB == <span class="literal">nil</span> &#123;</span><br><span class="line">    c.String(http.StatusOK, <span class="string">`the body should be formB JSON`</span>)</span><br><span class="line">  <span class="comment">// 可以接受其他格式</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种方式其实有个问题，什么情况下我们会去多次读取 <code>body</code> 的数据，其实在中间件中我们是需要用到，有的中间件需要读取参数做一些处理，例如权限中间件需要获取当前资源的 id，判断当前用户是否有权限，如果这个时候直接使用 <code>ShouldBindBodyWith</code> 会导致之后的所有的接口都修改才行，十分的不优雅，下面提供一种不用影响后续使用的方法</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">startPage</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> (</span><br><span class="line">		p1 Person</span><br><span class="line">		p2 Person</span><br><span class="line">	)</span><br><span class="line">	buf := &amp;bytes.Buffer&#123;&#125;</span><br><span class="line">	tea := io.TeeReader(c.Request.Body, buf)</span><br><span class="line">	body, err := ioutil.ReadAll(tea)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Panicf(<span class="string">"read body err: %+v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	c.Request.Body = ioutil.NopCloser(buf)</span><br><span class="line">	<span class="comment">// read buf ...</span></span><br><span class="line">	<span class="keyword">if</span> err := binding.JSON.BindBody(body, &amp;p1); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Panic(<span class="string">"p1"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	log.Println(<span class="string">"p1"</span>, p1)</span><br><span class="line">	<span class="comment">// use ShouldBind again ..</span></span><br><span class="line">	<span class="keyword">if</span> err := c.ShouldBind(&amp;p2); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Panic(<span class="string">"p2"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	log.Println(<span class="string">"p2"</span>, p2)</span><br><span class="line">	c.String(<span class="number">200</span>, <span class="string">"Success"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// output</span></span><br><span class="line"><span class="comment">// 2019/11/06 23:10:04 p1 &#123;hello world&#125;</span></span><br><span class="line"><span class="comment">// 2019/11/06 23:10:04 p2 &#123;hello world&#125;</span></span><br><span class="line"><span class="comment">// [GIN] 2019/11/06 - 23:10:04 | 200 |   27.0400917s |             ::1 | POST     /testing</span></span><br></pre></td></tr></table></figure>
-<p>这三行也适用于其他需要多次读取 <code>io.Reader</code> 的情况</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">buf := &amp;bytes.Buffer&#123;&#125;</span><br><span class="line">tea := io.TeeReader(c.Request.Body, buf)</span><br><span class="line">body, err := ioutil.ReadAll(tea)</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章从参数绑定的问题出发，为大家介绍了两种组合参数的小技巧，提供了使用参数绑定的时候的一个建议，并且提出了非官方，侵入性小的的多次读取 request body 的方式。</p>
-<p>下一篇文章给大家介绍 gorm 事务的一些小技巧</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
-<li><p><a href="https://gin-gonic.com/zh-cn/" target="_blank" rel="noopener">gin 官方文档</a></p>
-</li>
-<li><p><a href="https://stackoverflow.com/questions/39791021/how-to-read-multiple-times-from-same-io-reader" target="_blank" rel="noopener">How to read multiple times from same io.Reader</a></p>
-</li>
-</ol>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/auxvv1.html">Go Web小技巧（四）在单个仓库中支持多个 go mod 模块</a></li><li><a href="https://lailin.xyz/post/17394.html">Go Web 小技巧（二）GORM 使用自定义类型</a></li><li><a href="https://lailin.xyz/post/38237.html">Go Web 小技巧（一）简化Gin接口代码</a></li></ul></div>
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-      <div>
-        
-
-
-
-
-  
-
-
-
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>mohuishou <1@lailin.xyz></1@lailin.xyz></li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    
-    <a href="https://lailin.xyz/post/11996.html" title="Go Web 小技巧（三）Gin 参数绑定">https://lailin.xyz/post/11996.html</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/go/index.html" rel="tag"># go</a>
-          
-            <a href="/tags/小技巧/index.html" rel="tag"># 小技巧</a>
-          
-            <a href="/tags/api/index.html" rel="tag"># api</a>
-          
-            <a href="/tags/gin/index.html" rel="tag"># gin</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/post/17394.html" rel="next" title="Go Web 小技巧（二）GORM 使用自定义类型">
-                <i class="fa fa-chevron-left"></i> Go Web 小技巧（二）GORM 使用自定义类型
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/auxvv1.html" rel="prev" title="Go Web小技巧（四）在单个仓库中支持多个 go mod 模块">
-                Go Web小技巧（四）在单个仓库中支持多个 go mod 模块 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-    <div class="comments" id="gitalk-container">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg" alt="Mohuishou">
-            
-              <p class="site-author-name" itemprop="name">Mohuishou</p>
-              <div class="site-description motion-element" itemprop="description"></div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/index.html">
-                
-                    <span class="site-state-item-count">76</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">7</span>
-                    <span class="site-state-item-name">分类</span>
-                  
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/index.html">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">93</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
-                </span>
-              
-            </div>
-          
-
-          
-             <div class="cc-license motion-element" itemprop="license">
-              
-              
-                
-              
-              
-              
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-             </div>
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                Friend's Blog
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://jingwei.link/" title="https://jingwei.link/" rel="noopener" target="_blank">敬维</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://jiajunhuang.com/" title="https://jiajunhuang.com/" rel="noopener" target="_blank">JiaJun的编程随想</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#楔-xie-子"><span class="nav-number">1.</span> <span class="nav-text">楔(xiē)子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数绑定技巧"><span class="nav-number">2.</span> <span class="nav-text">参数绑定技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-复用创建-更新时的参数"><span class="nav-number">2.1.</span> <span class="nav-text">1. 复用创建/更新时的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-用-model-层的-struct-绑定参数"><span class="nav-number">2.2.</span> <span class="nav-text">2. 用 model 层的 struct 绑定参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-使用-ShouldBind-而不是-Bind"><span class="nav-number">2.3.</span> <span class="nav-text">3. 使用 ShouldBind 而不是 Bind</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-多次绑定-request-body-数据"><span class="nav-number">2.4.</span> <span class="nav-text">4. 多次绑定 request body 数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">5.</span> <span class="nav-text">推荐阅读</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Mohuishou</span>
-
-  
-
-  
-</div>
-
-
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="//cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
-
-  
-  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.min.js"></script>
-
-  
-  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.ui.min.js"></script>
-
-
-  <script type="text/javascript" src="/assets/main.min.js"></script>
-  
-
-
-
-  
-  
-
-
-
-  
-  
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-
-  
-    
-
-  
-
-<script src="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.js"></script>
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.css">
-
-
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
-
-<script>
-  let path = location.pathname
-  if (path.indexOf('html') < 0) path += ".html"
-  
-  var gitalk = new Gitalk({
-    clientID: '28db4ab78d0b5277990f',
-    clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
-    repo: 'blogComment',
-    owner: 'scuplus',
-    admin: ['mohuishou'],
-    id: md5(location.pathname),
-    
-      language: 'zh-CN',
-    
-    distractionFreeMode: 'true'
-  });
-  gitalk.render('gitalk-container');
-</script>
-
-  
-
-
-  
-
-
-
-  
-  
-  
-    
-  
-  <link rel="stylesheet" href="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.css">
-
-  
-  
-    
-  
-  <script src="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.js"></script>
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-</body>
-</html>
+    anchors.add(res.join(", "))</script><script src="/js/local-search.js"></script><script>var path="/local-search.xml",inputArea=document.querySelector("#local-search-input");inputArea.onclick=function(){searchFunc(path,"local-search-input","local-search-result"),this.onclick=null}</script><script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script><link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"><script>$("#post img:not(.no-zoom img, img[no-zoom]), img[zoom]").each(function(){var t=document.createElement("a");$(t).attr("data-fancybox","images"),$(t).attr("href",$(this).attr("src")),$(this).wrap(t)})</script><script defer>!function(e,a,t,n,g,c,o){e.GoogleAnalyticsObject="ga",e.ga=e.ga||function(){(e.ga.q=e.ga.q||[]).push(arguments)},e.ga.l=1*new Date,c=a.createElement(t),o=a.getElementsByTagName(t)[0],c.async=1,c.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(c,o)}(window,document,"script"),ga("create","UA-137859264-1","auto"),ga("send","pageview")</script></body></html>

@@ -1,1245 +1,186 @@
-<!DOCTYPE html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png"><link rel="icon" type="image/png" href="/icons/favicon-32x32.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content><meta name="author" content="Mohuishou"><meta name="keywords" content="Go, Docker, PHP"><title>Go Web 小技巧（一）简化Gin接口代码 - Mohuishou</title><link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css"><link rel="stylesheet" href="/css/main.css"><script src="/js/utils.js"></script></head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/"><i class="iconfont icon-home-fill"></i> 首页</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/categories/"><i class="iconfont icon-category-fill"></i> 分类</a></li><li class="nav-item"><a class="nav-link" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item"><a class="nav-link" href="/links/"><i class="iconfont icon-link-fill"></i> 友链</a></li><li class="nav-item"><a class="nav-link" href="/atom.xml"><i class="iconfont icon-rss"></i> rss</a></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i class="iconfont icon-search"></i>&nbsp;&nbsp;</a></li></ul></div></div></nav><div class="view intro-2" id="background" parallax="true" style="background:url(/img/bg.jpg) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="container text-center white-text fadeInUp"><span class="h2" id="subtitle"></span><div class="mt-3 post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2019-10-26 10:10">2019年10月26日 上午</time></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 1.4k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 20 分钟</span></div></div></div></div></div></header><main><div class="container-fluid"><div class="row"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-md"><div class="container nopadding-md" id="board-ctn"><div class="py-5" id="board"><div class="post-content mx-auto" id="post"><article class="markdown-body"><p>不知道大家在使用 Gin 构建 API 服务时有没有这样的问题:</p><ol><li>参数绑定的环节可不可以自动处理？</li><li>错误可不可以直接返回，不想写空 <code>return</code>, 漏写就是 <code>bug</code></li></ol><p>本文通过简单地封装，利用 go 的接口特性，提供一个解决上述两个问题的思路</p><a id="more"></a><h2 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h2><h3 id="刚开始时写-API-服务时"><a href="#刚开始时写-API-服务时" class="headerlink" title="刚开始时写 API 服务时"></a>刚开始时写 API 服务时</h3><p>我们刚开始使用 Gin 写 API 服务时，一般会按照官方文档上的 🌰 这么写</p><pre><code class="hljs go"><span class="hljs-comment">// User 用户结构</span>
+<span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
+	UserName <span class="hljs-keyword">string</span>
+&#125;
 
+<span class="hljs-comment">// CreateUser 创建用户</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CreateUser</span><span class="hljs-params">(ctx *gin.Context)</span></span> &#123;
+	<span class="hljs-keyword">var</span> params User
+	<span class="hljs-keyword">if</span> err := ctx.ShouldBind(&amp;params); err != <span class="hljs-literal">nil</span> &#123;
+		ctx.JSON(http.StatusBadRequest, gin.H&#123;
+			<span class="hljs-string">"code"</span>: <span class="hljs-number">400</span>,
+			<span class="hljs-string">"msg"</span>:  <span class="hljs-string">"参数错误"</span>,
+		&#125;)
 
+		logrus.Errorf(<span class="hljs-string">"params err, %v"</span>, params)
+		<span class="hljs-keyword">return</span>
+	&#125;
 
+	<span class="hljs-comment">// 一些其他的业务逻辑 ...</span>
 
+	ctx.JSON(http.StatusOK, gin.H&#123;
+		<span class="hljs-string">"code"</span>: <span class="hljs-number">0</span>,
+		<span class="hljs-string">"msg"</span>:  <span class="hljs-string">"创建成功"</span>,
+	&#125;)
+&#125;
 
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	r := gin.Default()
+	r.POST(<span class="hljs-string">"user"</span>, CreateUser)
+	<span class="hljs-keyword">if</span> err := r.Run(<span class="hljs-string">":8080"</span>); err != <span class="hljs-literal">nil</span> &#123;
+		logrus.Fatalf(<span class="hljs-string">"can not start serve: %v"</span>, err)
+	&#125;
+&#125;</code></pre><h3 id="封装返回值"><a href="#封装返回值" class="headerlink" title="封装返回值"></a>封装返回值</h3><p>我们写了一段时间之后，会发现，我们的返回值的结构是固定的，为什么不抽象一下呢，所以我们创建了一个结构体 <code>Resp</code> ，并且封装了两个方法用于成功和失败这两种状态的返回</p><pre><code class="hljs go"><span class="hljs-comment">// resp.go</span>
 
+<span class="hljs-comment">// Resp 返回</span>
+<span class="hljs-keyword">type</span> Resp <span class="hljs-keyword">struct</span> &#123;
+	Code <span class="hljs-keyword">int</span>
+	Msg  <span class="hljs-keyword">string</span>
+	Data <span class="hljs-keyword">interface</span>&#123;&#125;
+&#125;
 
+<span class="hljs-comment">// ErrorResp 错误返回值</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ErrorResp</span><span class="hljs-params">(ctx *gin.Context, code <span class="hljs-keyword">int</span>, msg <span class="hljs-keyword">string</span>, data ...<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+	resp(ctx, code, msg, data...)
+&#125;
 
+<span class="hljs-comment">// SuccessResp 正确返回值</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SuccessResp</span><span class="hljs-params">(ctx *gin.Context, msg <span class="hljs-keyword">string</span>, data ...<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+	resp(ctx, <span class="hljs-number">0</span>, msg, data...)
+&#125;
 
+<span class="hljs-comment">// resp 返回</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">resp</span><span class="hljs-params">(ctx *gin.Context, code <span class="hljs-keyword">int</span>, msg <span class="hljs-keyword">string</span>, data ...<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+	resp := Resp&#123;
+		Code: code,
+		Msg:  msg,
+		Data: data,
+	&#125;
+	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(data) == <span class="hljs-number">1</span> &#123;
+		resp.Data = data[<span class="hljs-number">0</span>]
+	&#125;
+	ctx.JSON(http.StatusOK, resp)
+&#125;</code></pre><p>添加这个方法之后，我们再看一下 <code>CreateUser</code> 这个方法，成功的从 16 行变到了 12 行</p><pre><code class="hljs go"><span class="hljs-comment">// main.go</span>
+<span class="hljs-comment">// CreateUser 创建用户</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CreateUser</span><span class="hljs-params">(ctx *gin.Context)</span></span> &#123;
+	<span class="hljs-keyword">var</span> params User
+	<span class="hljs-keyword">if</span> err := ctx.ShouldBind(&amp;params); err != <span class="hljs-literal">nil</span> &#123;
+		ErrorResp(ctx, <span class="hljs-number">400</span>, <span class="hljs-string">"参数错误"</span>)
+		logrus.Errorf(<span class="hljs-string">"params err, %v"</span>, params)
+		<span class="hljs-keyword">return</span>
+	&#125;
 
+	<span class="hljs-comment">// 一些其他的业务逻辑 ...</span>
 
+	SuccessResp(ctx, <span class="hljs-string">"创建成功"</span>)
+&#125;</code></pre><h3 id="两个痛点"><a href="#两个痛点" class="headerlink" title="两个痛点"></a>两个痛点</h3><p>上面的方法还不够完整，我们还是有许多重复的逻辑，可以发现我们在写的绝大多数 API 大概都是这样：</p><ol><li>参数绑定 &amp; 校验</li><li>业务逻辑</li><li>返回</li></ol><p>这里面有两个痛点：</p><ol><li>参数绑定的环节可不可以自动处理？</li><li><p>错误可不可以直接返回，不想写空 <code>return</code>, 漏写就是 <code>bug</code></p><pre><code class="hljs go"><span class="hljs-comment">// 不想写大量这种重复的代码</span>
+<span class="hljs-keyword">var</span> params User
+<span class="hljs-keyword">if</span> err := ctx.ShouldBind(&amp;params); err != <span class="hljs-literal">nil</span> &#123;
+	<span class="hljs-comment">// 下面这三行是不是可以合并成一行</span>
+	ErrorResp(ctx, <span class="hljs-number">400</span>, <span class="hljs-string">"参数错误"</span>)
+	logrus.Errorf(<span class="hljs-string">"params err, %v"</span>, params)
+	<span class="hljs-keyword">return</span>
+&#125;</code></pre></li></ol><h3 id="使用接口封装请求"><a href="#使用接口封装请求" class="headerlink" title="使用接口封装请求"></a>使用接口封装请求</h3><p>上面的这两个痛点我们可以通过一个辅助函数解决</p><pre><code class="hljs go"><span class="hljs-comment">// Requester 请求</span>
+<span class="hljs-keyword">type</span> Requester <span class="hljs-keyword">interface</span> &#123;
+	Request(ctx *gin.Context) (*Resp, error)
+&#125;
 
-  
+<span class="hljs-comment">// Handle 请求</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Handle</span><span class="hljs-params">(r Requester)</span> <span class="hljs-title">gin</span>.<span class="hljs-title">HandlerFunc</span></span> &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ctx *gin.Context)</span></span> &#123;
+		resp, err := request(r, ctx)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-keyword">var</span> code *errcode.Error
+			<span class="hljs-keyword">if</span> !errors.As(err, &amp;code) &#123;
+				code = errcode.Unknown.Wrap(err)
+			&#125;
 
+			resp = &amp;Resp&#123;
+				Code: code.Code,
+				Msg:  code.String(),
+			&#125;
+			_ = ctx.Error(err)
+		&#125;
+		ctx.JSON(http.StatusOK, resp)
+	&#125;
+&#125;
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">request</span><span class="hljs-params">(r Requester, ctx *gin.Context)</span> <span class="hljs-params">(*controller.Resp, error)</span></span> &#123;
+	<span class="hljs-comment">// 参数绑定</span>
+	<span class="hljs-keyword">if</span> err := ctx.ShouldBind(r); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errcode.ErrParams.Wrap(err)
+	&#125;
 
+	<span class="hljs-keyword">return</span> r.Request(ctx)
+&#125;</code></pre><p>这样我们只需要实现这个 <code>Requester</code>, 写 API 时只需要关注业务逻辑就可以了</p><pre><code class="hljs go"><span class="hljs-comment">// CreateUser 创建用户</span>
+<span class="hljs-keyword">type</span> CreateUser <span class="hljs-keyword">struct</span> &#123;
+	UserName <span class="hljs-keyword">string</span>
+&#125;
 
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *User)</span> <span class="hljs-title">Request</span><span class="hljs-params">(ctx *gin.Context)</span> <span class="hljs-params">(*Resp, error)</span></span> &#123;
+	<span class="hljs-comment">// 业务逻辑</span>
 
+	<span class="hljs-comment">// 返回成功值</span>
+&#125;
 
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	r := gin.Default()
+	r.POST(<span class="hljs-string">"user"</span>, Handle(&amp;CreateUser))
+	<span class="hljs-keyword">if</span> err := r.Run(<span class="hljs-string">":8080"</span>); err != <span class="hljs-literal">nil</span> &#123;
+		logrus.Fatalf(<span class="hljs-string">"can not start serve: %v"</span>, err)
+	&#125;
+&#125;</code></pre><p>上面的代码有一个 bug 不知道大家发现没有，我们上一次请求的参数会被带到下一次请求当中</p><pre><code class="hljs go"><span class="hljs-comment">// Handle 请求</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Handle</span><span class="hljs-params">(r Requester)</span> <span class="hljs-title">gin</span>.<span class="hljs-title">HandlerFunc</span></span> &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ctx *gin.Context)</span></span> &#123;
+		<span class="hljs-comment">// 创建一个新的 Requester, 避免将上一次的参数带到下一次当中</span>
+		<span class="hljs-keyword">if</span> reflect.TypeOf(r).Kind() != reflect.Ptr &#123;
+			<span class="hljs-built_in">panic</span>(<span class="hljs-string">"must be a pointer"</span>)
+		&#125;
 
+		req := reflect.New(reflect.ValueOf(r).Elem().Type()).Interface().(Requester)
+		resp, err := request(req, ctx)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-keyword">var</span> code *errcode.Error
+			<span class="hljs-keyword">if</span> !errors.As(err, &amp;code) &#123;
+				code = errcode.Unknown.Wrap(err)
+			&#125;
 
+			resp = &amp;Resp&#123;
+				Code: code.Code,
+				Msg:  code.String(),
+			&#125;
+			_ = ctx.Error(err)
+		&#125;
+		ctx.JSON(http.StatusOK, resp)
+	&#125;
+&#125;</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>大概这样差不多就 ok 了，还有很多可以完善的点，这里有一些思路，有的已经做了，有的还在路上</p><ol><li><p>每次注册都写 <code>Handle(&amp;CreateUser)</code> 还是有点麻烦?</p><p>可以封装一下 <code>gin.IRouter</code> 这个接口，这样注册接口就可以和原来一样了</p></li><li><p>参数绑定如果我需要多次绑定怎么办?</p><p>可以添加一个接口，如果实现了这个接口就执行以下，对于有特殊的参数校验之类的也可以采用类似的方式处理</p><pre><code class="hljs go">
+<span class="hljs-keyword">type</span> Binder <span class="hljs-keyword">interface</span> &#123;
+	Bind(ctx *gin.Context) error
+&#125;
 
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">request</span><span class="hljs-params">(r Requester, ctx *gin.Context)</span> <span class="hljs-params">(*controller.Resp, error)</span></span> &#123;
+	<span class="hljs-comment">// 参数绑定</span>
+	<span class="hljs-keyword">if</span> err := ctx.ShouldBind(r); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errcode.ErrParams.Wrap(err)
+	&#125;
 
+	<span class="hljs-comment">// 其余参数绑定</span>
+	<span class="hljs-keyword">if</span> b, ok := r.(Binder); ok &#123;
+		<span class="hljs-keyword">if</span> err := b.Bind(api); err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errcode.ErrParams.Wrap(err)
+		&#125;
+	&#125;
 
-
-
-
-
-
-
-
-  <meta name="baidu-site-verification" content="xPjWsnjLMC">
-
-
-
-
-
-
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<link rel="stylesheet" href="/assets/main.min.css?v=7.1.0"/">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/touch-icon-apple.png?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/favicon-32x32.png?v=7.1.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/favicon-16x16.png?v=7.1.0">
-
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '7.1.0',
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
-    back2top: true,
-    back2top_sidebar: false,
-    fancybox: false,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'WB3PJKK4Q5',
-      apiKey: '0f4e5abf708587974517054f9c1aaf73',
-      indexName: 'Blog',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"没有找到和 ${query} 相关的内容, 换个关键词试试","hits_stats":"为您找到 ${hits} 条内容, 耗时: ${time} ms"}
+	<span class="hljs-keyword">return</span> r.Request(ctx)
+&#125;</code></pre></li><li><p>怎么输出 API 文档？</p><p>可以和 <code>swagger</code> 之类的 API 文档结合, 利用 <code>go generate</code> 自动生成，顺便可以连接口注册都不用了，添加一行注释，自动注册接口，并且输出接口文档</p><pre><code class="hljs go"><span class="hljs-comment">// @Router put /api/v1/user</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(u *User)</span> <span class="hljs-title">Request</span><span class="hljs-params">(ctx *gin.Context)</span> <span class="hljs-params">(*Resp, error)</span></span></code></pre></li><li><p>能不能减少 CURD 代码?</p><p>可以实现，只需要采用约定的项目接口，可以 利用 <code>go generate</code> 直接自动生成简单的 CURD 代码</p></li></ol><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/auxvv1.html">Go Web小技巧（四）在单个仓库中支持多个 go mod 模块</a></li><li><a href="https://lailin.xyz/post/11996.html">Go Web 小技巧（三）Gin 参数绑定</a></li><li><a href="https://lailin.xyz/post/17394.html">Go Web 小技巧（二）GORM 使用自定义类型</a></li><li><a href="chunlife.top/2020/02/18/B站源码中的log-agent/">B站源码中的log-agent</a></li></ul></div></article><hr><div><div class="post-metas mb-3"><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/go/">go</a> <a class="hover-with-bg" href="/tags/小技巧/">小技巧</a> <a class="hover-with-bg" href="/tags/api/">api</a> <a class="hover-with-bg" href="/tags/gin/">gin</a></div></div><p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p><div class="post-prevnext row"><div class="post-prev col-6"><a href="/post/17394.html"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Go Web 小技巧（二）GORM 使用自定义类型</span> <span class="visible-mobile">上一篇</span></a></div><div class="post-next col-6"><a href="/post/45050.html"><span class="hidden-mobile">善用工具之postman高级用法概述</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></div></div></div><div class="comments" id="comments"><div id="gitalk-container"></div><script type="text/javascript">function loadGitalk(){addScript("https://cdn.staticfile.org/gitalk/1.6.2/gitalk.min.js",function(){new Gitalk({clientID:"28db4ab78d0b5277990f",clientSecret:"ec365bd48160f2aa32665986af635199dbda4809",repo:"blogComment",owner:"scuplus",admin:"mohuishou,scuplus",id:"abe2f11339bee105f3f102052ebaa0c7",language:"zh-CN",perPage:15,pagerDirection:"last",createIssueManually:"false",distractionFreeMode:"false"}).render("gitalk-container")})}createObserver(loadGitalk,"gitalk-container")</script></div></div></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div id="tocbot"></div></div></div></div></div></main><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><footer class="mt-5"><div class="text-center py-3"><div><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div></div></footer><script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script><script src="/js/debouncer.js"></script><script src="/js/main.js"></script><script src="/js/lazyload.js"></script><script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script><script src="/js/clipboard-use.js"></script><script src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js"></script><script>$(document).ready(function(){var t=$("#board-ctn").offset().top;tocbot.init({tocSelector:"#tocbot",contentSelector:"article.markdown-body",headingSelector:"h1,h2,h3,h4,h5,h6",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:0,scrollSmooth:!0,headingsOffset:-t}),0<$(".toc-list-item").length&&$("#toc").css("visibility","visible")})</script><script src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js"></script><script>var typed=new Typed("#subtitle",{strings:["  ","Go Web 小技巧（一）简化Gin接口代码&nbsp;"],cursorChar:"_",typeSpeed:70,loop:!1});typed.stop(),$(document).ready(function(){$(".typed-cursor").addClass("h2"),typed.start()})</script><script src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js"></script><script>anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
     }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="不知道大家在使用 Gin 构建 API 服务时有没有这样的问题:  参数绑定的环节可不可以自动处理？ 错误可不可以直接返回，不想写空 return, 漏写就是 bug  本文通过简单地封装，利用 go 的接口特性，提供一个解决上述两个问题的思路">
-<meta name="keywords" content="go,小技巧,api,gin">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Go Web 小技巧（一）简化Gin接口代码">
-<meta property="og:url" content="https://lailin.xyz/post/38237.html">
-<meta property="og:site_name" content="Mohuishou">
-<meta property="og:description" content="不知道大家在使用 Gin 构建 API 服务时有没有这样的问题:  参数绑定的环节可不可以自动处理？ 错误可不可以直接返回，不想写空 return, 漏写就是 bug  本文通过简单地封装，利用 go 的接口特性，提供一个解决上述两个问题的思路">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-19T11:03:16.097Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Go Web 小技巧（一）简化Gin接口代码">
-<meta name="twitter:description" content="不知道大家在使用 Gin 构建 API 服务时有没有这样的问题:  参数绑定的环节可不可以自动处理？ 错误可不可以直接返回，不想写空 return, 漏写就是 bug  本文通过简单地封装，利用 go 的接口特性，提供一个解决上述两个问题的思路">
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Mohuishou" type="application/atom+xml">
-
-
-
-  
-  
-  <link rel="canonical" href="https://lailin.xyz/post/38237.html">
-
-
-
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
-
-  <title>Go Web 小技巧（一）简化Gin接口代码 | Mohuishou</title>
-  
-
-
-
-
-  <script async src="//www.googletagmanager.com/gtag/js?id=UA-137859264-1"></script>
-  <script>
-    var host = window.location.hostname;
-    if (host !== "localhost" || !true) {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-137859264-1');
-    }
-  </script>
-
-
-
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .motion-element,
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
-
-  .use-motion .logo,
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Mohuishou</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-      
-        <h1 class="site-subtitle" itemprop="description">A New Life</h1>
-      
-    
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/about/index.html" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-            
-
-          
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lailin.xyz/post/38237.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mohuishou">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mohuishou">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">Go Web 小技巧（一）简化Gin接口代码
-
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-10-26 10:10:10" itemprop="dateCreated datePublished" datetime="2019-10-26T10:10:10+00:00">2019-10-26</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-04-19 11:03:16" itemprop="dateModified" datetime="2020-04-19T11:03:16+00:00">2020-04-19</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>不知道大家在使用 Gin 构建 API 服务时有没有这样的问题:</p>
-<ol>
-<li>参数绑定的环节可不可以自动处理？</li>
-<li>错误可不可以直接返回，不想写空 <code>return</code>, 漏写就是 <code>bug</code></li>
-</ol>
-<p>本文通过简单地封装，利用 go 的接口特性，提供一个解决上述两个问题的思路</p>
-<a id="more"></a>
-<h2 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h2><h3 id="刚开始时写-API-服务时"><a href="#刚开始时写-API-服务时" class="headerlink" title="刚开始时写 API 服务时"></a>刚开始时写 API 服务时</h3><p>我们刚开始使用 Gin 写 API 服务时，一般会按照官方文档上的 🌰 这么写</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// User 用户结构</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	UserName <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CreateUser 创建用户</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreateUser</span><span class="params">(ctx *gin.Context)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> params User</span><br><span class="line">	<span class="keyword">if</span> err := ctx.ShouldBind(&amp;params); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		ctx.JSON(http.StatusBadRequest, gin.H&#123;</span><br><span class="line">			<span class="string">"code"</span>: <span class="number">400</span>,</span><br><span class="line">			<span class="string">"msg"</span>:  <span class="string">"参数错误"</span>,</span><br><span class="line">		&#125;)</span><br><span class="line"></span><br><span class="line">		logrus.Errorf(<span class="string">"params err, %v"</span>, params)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 一些其他的业务逻辑 ...</span></span><br><span class="line"></span><br><span class="line">	ctx.JSON(http.StatusOK, gin.H&#123;</span><br><span class="line">		<span class="string">"code"</span>: <span class="number">0</span>,</span><br><span class="line">		<span class="string">"msg"</span>:  <span class="string">"创建成功"</span>,</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.POST(<span class="string">"user"</span>, CreateUser)</span><br><span class="line">	<span class="keyword">if</span> err := r.Run(<span class="string">":8080"</span>); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		logrus.Fatalf(<span class="string">"can not start serve: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="封装返回值"><a href="#封装返回值" class="headerlink" title="封装返回值"></a>封装返回值</h3><p>我们写了一段时间之后，会发现，我们的返回值的结构是固定的，为什么不抽象一下呢，所以我们创建了一个结构体 <code>Resp</code> ，并且封装了两个方法用于成功和失败这两种状态的返回</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// resp.go</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Resp 返回</span></span><br><span class="line"><span class="keyword">type</span> Resp <span class="keyword">struct</span> &#123;</span><br><span class="line">	Code <span class="keyword">int</span></span><br><span class="line">	Msg  <span class="keyword">string</span></span><br><span class="line">	Data <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ErrorResp 错误返回值</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ErrorResp</span><span class="params">(ctx *gin.Context, code <span class="keyword">int</span>, msg <span class="keyword">string</span>, data ...<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	resp(ctx, code, msg, data...)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SuccessResp 正确返回值</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SuccessResp</span><span class="params">(ctx *gin.Context, msg <span class="keyword">string</span>, data ...<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	resp(ctx, <span class="number">0</span>, msg, data...)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// resp 返回</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">resp</span><span class="params">(ctx *gin.Context, code <span class="keyword">int</span>, msg <span class="keyword">string</span>, data ...<span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	resp := Resp&#123;</span><br><span class="line">		Code: code,</span><br><span class="line">		Msg:  msg,</span><br><span class="line">		Data: data,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(data) == <span class="number">1</span> &#123;</span><br><span class="line">		resp.Data = data[<span class="number">0</span>]</span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusOK, resp)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>添加这个方法之后，我们再看一下 <code>CreateUser</code> 这个方法，成功的从 16 行变到了 12 行</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.go</span></span><br><span class="line"><span class="comment">// CreateUser 创建用户</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CreateUser</span><span class="params">(ctx *gin.Context)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> params User</span><br><span class="line">	<span class="keyword">if</span> err := ctx.ShouldBind(&amp;params); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		ErrorResp(ctx, <span class="number">400</span>, <span class="string">"参数错误"</span>)</span><br><span class="line">		logrus.Errorf(<span class="string">"params err, %v"</span>, params)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 一些其他的业务逻辑 ...</span></span><br><span class="line"></span><br><span class="line">	SuccessResp(ctx, <span class="string">"创建成功"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="两个痛点"><a href="#两个痛点" class="headerlink" title="两个痛点"></a>两个痛点</h3><p>上面的方法还不够完整，我们还是有许多重复的逻辑，可以发现我们在写的绝大多数 API 大概都是这样：</p>
-<ol>
-<li>参数绑定 &amp; 校验</li>
-<li>业务逻辑</li>
-<li>返回</li>
-</ol>
-<p>这里面有两个痛点：</p>
-<ol>
-<li>参数绑定的环节可不可以自动处理？</li>
-<li><p>错误可不可以直接返回，不想写空 <code>return</code>, 漏写就是 <code>bug</code></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不想写大量这种重复的代码</span></span><br><span class="line"><span class="keyword">var</span> params User</span><br><span class="line"><span class="keyword">if</span> err := ctx.ShouldBind(&amp;params); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="comment">// 下面这三行是不是可以合并成一行</span></span><br><span class="line">	ErrorResp(ctx, <span class="number">400</span>, <span class="string">"参数错误"</span>)</span><br><span class="line">	logrus.Errorf(<span class="string">"params err, %v"</span>, params)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="使用接口封装请求"><a href="#使用接口封装请求" class="headerlink" title="使用接口封装请求"></a>使用接口封装请求</h3><p>上面的这两个痛点我们可以通过一个辅助函数解决</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Requester 请求</span></span><br><span class="line"><span class="keyword">type</span> Requester <span class="keyword">interface</span> &#123;</span><br><span class="line">	Request(ctx *gin.Context) (*Resp, error)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Handle 请求</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Handle</span><span class="params">(r Requester)</span> <span class="title">gin</span>.<span class="title">HandlerFunc</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(ctx *gin.Context)</span></span> &#123;</span><br><span class="line">		resp, err := request(r, ctx)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">var</span> code *errcode.Error</span><br><span class="line">			<span class="keyword">if</span> !errors.As(err, &amp;code) &#123;</span><br><span class="line">				code = errcode.Unknown.Wrap(err)</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			resp = &amp;Resp&#123;</span><br><span class="line">				Code: code.Code,</span><br><span class="line">				Msg:  code.String(),</span><br><span class="line">			&#125;</span><br><span class="line">			_ = ctx.Error(err)</span><br><span class="line">		&#125;</span><br><span class="line">		ctx.JSON(http.StatusOK, resp)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">request</span><span class="params">(r Requester, ctx *gin.Context)</span> <span class="params">(*controller.Resp, error)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 参数绑定</span></span><br><span class="line">	<span class="keyword">if</span> err := ctx.ShouldBind(r); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, errcode.ErrParams.Wrap(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> r.Request(ctx)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样我们只需要实现这个 <code>Requester</code>, 写 API 时只需要关注业务逻辑就可以了</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CreateUser 创建用户</span></span><br><span class="line"><span class="keyword">type</span> CreateUser <span class="keyword">struct</span> &#123;</span><br><span class="line">	UserName <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span> <span class="title">Request</span><span class="params">(ctx *gin.Context)</span> <span class="params">(*Resp, error)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 业务逻辑</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 返回成功值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	r.POST(<span class="string">"user"</span>, Handle(&amp;CreateUser))</span><br><span class="line">	<span class="keyword">if</span> err := r.Run(<span class="string">":8080"</span>); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		logrus.Fatalf(<span class="string">"can not start serve: %v"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的代码有一个 bug 不知道大家发现没有，我们上一次请求的参数会被带到下一次请求当中</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Handle 请求</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Handle</span><span class="params">(r Requester)</span> <span class="title">gin</span>.<span class="title">HandlerFunc</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(ctx *gin.Context)</span></span> &#123;</span><br><span class="line">		<span class="comment">// 创建一个新的 Requester, 避免将上一次的参数带到下一次当中</span></span><br><span class="line">		<span class="keyword">if</span> reflect.TypeOf(r).Kind() != reflect.Ptr &#123;</span><br><span class="line">			<span class="built_in">panic</span>(<span class="string">"must be a pointer"</span>)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		req := reflect.New(reflect.ValueOf(r).Elem().Type()).Interface().(Requester)</span><br><span class="line">		resp, err := request(req, ctx)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">var</span> code *errcode.Error</span><br><span class="line">			<span class="keyword">if</span> !errors.As(err, &amp;code) &#123;</span><br><span class="line">				code = errcode.Unknown.Wrap(err)</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			resp = &amp;Resp&#123;</span><br><span class="line">				Code: code.Code,</span><br><span class="line">				Msg:  code.String(),</span><br><span class="line">			&#125;</span><br><span class="line">			_ = ctx.Error(err)</span><br><span class="line">		&#125;</span><br><span class="line">		ctx.JSON(http.StatusOK, resp)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>大概这样差不多就 ok 了，还有很多可以完善的点，这里有一些思路，有的已经做了，有的还在路上</p>
-<ol>
-<li><p>每次注册都写 <code>Handle(&amp;CreateUser)</code> 还是有点麻烦?</p>
-<p>可以封装一下 <code>gin.IRouter</code> 这个接口，这样注册接口就可以和原来一样了</p>
-</li>
-<li><p>参数绑定如果我需要多次绑定怎么办?</p>
-<p>可以添加一个接口，如果实现了这个接口就执行以下，对于有特殊的参数校验之类的也可以采用类似的方式处理</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">type</span> Binder <span class="keyword">interface</span> &#123;</span><br><span class="line">	Bind(ctx *gin.Context) error</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">request</span><span class="params">(r Requester, ctx *gin.Context)</span> <span class="params">(*controller.Resp, error)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 参数绑定</span></span><br><span class="line">	<span class="keyword">if</span> err := ctx.ShouldBind(r); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, errcode.ErrParams.Wrap(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 其余参数绑定</span></span><br><span class="line">	<span class="keyword">if</span> b, ok := r.(Binder); ok &#123;</span><br><span class="line">		<span class="keyword">if</span> err := b.Bind(api); err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nil</span>, errcode.ErrParams.Wrap(err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> r.Request(ctx)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>怎么输出 API 文档？</p>
-<p>可以和 <code>swagger</code> 之类的 API 文档结合, 利用 <code>go generate</code> 自动生成，顺便可以连接口注册都不用了，添加一行注释，自动注册接口，并且输出接口文档</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @Router put /api/v1/user</span></span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(u *User)</span> <span class="title">Request</span><span class="params">(ctx *gin.Context)</span> <span class="params">(*Resp, error)</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>能不能减少 CURD 代码?</p>
-<p>可以实现，只需要采用约定的项目接口，可以 利用 <code>go generate</code> 直接自动生成简单的 CURD 代码</p>
-</li>
-</ol>
-<div><h2 id="推荐阅读">推荐阅读</h2><ul><li><a href="https://lailin.xyz/post/auxvv1.html">Go Web小技巧（四）在单个仓库中支持多个 go mod 模块</a></li><li><a href="https://lailin.xyz/post/11996.html">Go Web 小技巧（三）Gin 参数绑定</a></li><li><a href="https://lailin.xyz/post/17394.html">Go Web 小技巧（二）GORM 使用自定义类型</a></li></ul></div>
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-      <div>
-        
-
-
-
-
-  
-
-
-
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>mohuishou <1@lailin.xyz></1@lailin.xyz></li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    
-    <a href="https://lailin.xyz/post/38237.html" title="Go Web 小技巧（一）简化Gin接口代码">https://lailin.xyz/post/38237.html</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/go/index.html" rel="tag"># go</a>
-          
-            <a href="/tags/小技巧/index.html" rel="tag"># 小技巧</a>
-          
-            <a href="/tags/api/index.html" rel="tag"># api</a>
-          
-            <a href="/tags/gin/index.html" rel="tag"># gin</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/post/45050.html" rel="next" title="善用工具之postman高级用法概述">
-                <i class="fa fa-chevron-left"></i> 善用工具之postman高级用法概述
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/17394.html" rel="prev" title="Go Web 小技巧（二）GORM 使用自定义类型">
-                Go Web 小技巧（二）GORM 使用自定义类型 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-    <div class="comments" id="gitalk-container">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/icons/avatar.jpg" alt="Mohuishou">
-            
-              <p class="site-author-name" itemprop="name">Mohuishou</p>
-              <div class="site-description motion-element" itemprop="description"></div>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/index.html">
-                
-                    <span class="site-state-item-count">76</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">7</span>
-                    <span class="site-state-item-name">分类</span>
-                  
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  
-                    
-                      <a href="/tags/index.html">
-                    
-                  
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">93</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/mohuishou" title="GitHub &rarr; https://github.com/mohuishou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                  
-                    
-                  
-                  <a href="mailto:1@lailin.xyz" title="E-Mail &rarr; mailto:1@lailin.xyz"><i class="fa fa-fw fa-envelope"></i></a>
-                </span>
-              
-            </div>
-          
-
-          
-             <div class="cc-license motion-element" itemprop="license">
-              
-              
-                
-              
-              
-              
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-             </div>
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                Friend's Blog
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://jingwei.link/" title="https://jingwei.link/" rel="noopener" target="_blank">敬维</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://jiajunhuang.com/" title="https://jiajunhuang.com/" rel="noopener" target="_blank">JiaJun的编程随想</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决过程"><span class="nav-number">1.</span> <span class="nav-text">解决过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#刚开始时写-API-服务时"><span class="nav-number">1.1.</span> <span class="nav-text">刚开始时写 API 服务时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封装返回值"><span class="nav-number">1.2.</span> <span class="nav-text">封装返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两个痛点"><span class="nav-number">1.3.</span> <span class="nav-text">两个痛点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用接口封装请求"><span class="nav-number">1.4.</span> <span class="nav-text">使用接口封装请求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">3.</span> <span class="nav-text">推荐阅读</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2014 – <span itemprop="copyrightYear">2020</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Mohuishou</span>
-
-  
-
-  
-</div>
-
-
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a></div>
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
-<script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script src="//cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
-
-  
-  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.min.js"></script>
-
-  
-  <script src="//cdn.staticfile.org/velocity/1.5.2/velocity.ui.min.js"></script>
-
-
-  <script type="text/javascript" src="/assets/main.min.js"></script>
-  
-
-
-
-  
-  
-
-
-
-  
-  
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-
-  
-    
-
-  
-
-<script src="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.js"></script>
-
-
-
-  
-
-<link rel="stylesheet" href="//cdn.staticfile.org/gitalk/1.5.0/gitalk.min.css">
-
-
-
-  
-
-<script src="//cdn.jsdelivr.net/npm/js-md5@0/src/md5.min.js"></script>
-
-<script>
-  let path = location.pathname
-  if (path.indexOf('html') < 0) path += ".html"
-  
-  var gitalk = new Gitalk({
-    clientID: '28db4ab78d0b5277990f',
-    clientSecret: 'ec365bd48160f2aa32665986af635199dbda4809',
-    repo: 'blogComment',
-    owner: 'scuplus',
-    admin: ['mohuishou'],
-    id: md5(location.pathname),
-    
-      language: 'zh-CN',
-    
-    distractionFreeMode: 'true'
-  });
-  gitalk.render('gitalk-container');
-</script>
-
-  
-
-
-  
-
-
-
-  
-  
-  
-    
-  
-  <link rel="stylesheet" href="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.css">
-
-  
-  
-    
-  
-  <script src="//cdn.staticfile.org/instantsearch.js/2.10.4/instantsearch.min.js"></script>
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-</body>
-</html>
+    anchors.add(res.join(", "))</script><script src="/js/local-search.js"></script><script>var path="/local-search.xml",inputArea=document.querySelector("#local-search-input");inputArea.onclick=function(){searchFunc(path,"local-search-input","local-search-result"),this.onclick=null}</script><script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script><link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"><script>$("#post img:not(.no-zoom img, img[no-zoom]), img[zoom]").each(function(){var t=document.createElement("a");$(t).attr("data-fancybox","images"),$(t).attr("href",$(this).attr("src")),$(this).wrap(t)})</script><script defer>!function(e,a,t,n,g,c,o){e.GoogleAnalyticsObject="ga",e.ga=e.ga||function(){(e.ga.q=e.ga.q||[]).push(arguments)},e.ga.l=1*new Date,c=a.createElement(t),o=a.getElementsByTagName(t)[0],c.async=1,c.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(c,o)}(window,document,"script"),ga("create","UA-137859264-1","auto"),ga("send","pageview")</script></body></html>
