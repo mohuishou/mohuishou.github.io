@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>笔记-让你最快速地改善代码质量的20条编程规范</title>
+    <link href="/post/fe1ma9.html"/>
+    <url>/post/fe1ma9.html</url>
+    
+    <content type="html"><![CDATA[<p>tags: [学习笔记, 设计模式]<br>index_img: <a href="https://lailin.xyz/images/1597945043254-2099de6f-09a0-4f72-b4bd-3c9954d833f4.png">https://lailin.xyz/images/1597945043254-2099de6f-09a0-4f72-b4bd-3c9954d833f4.png</a><br>banner_img: <a href="https://lailin.xyz/images/1597945043254-2099de6f-09a0-4f72-b4bd-3c9954d833f4.png">https://lailin.xyz/images/1597945043254-2099de6f-09a0-4f72-b4bd-3c9954d833f4.png</a></p><hr><h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><ul><li>Go 设计模式实现，包含 23 种常见的设计模式实现，同时这也是 <a href="https://time.geekbang.org/column/intro/250" target="_blank" rel="noopener">极客时间-设计模式之美</a> 的笔记，源课程采用 Java 实现，本系列会采用 Go 实现</li><li><strong>课程:</strong> <a href="https://time.geekbang.org/column/article/188622" target="_blank" rel="noopener">31 | 理论五：让你最快速地改善代码质量的 20 条编程规范（上）</a></li><li><strong>本文代码仓库: <a href="https://github.com/mohuishou/go-design-pattern" target="_blank" rel="noopener">https://github.com/mohuishou/go-design-pattern</a> </strong>🌟🌟🌟🌟🌟</li><li><strong>RoadMap: </strong>持续更新中，预计一周更新 2 ~ 3 种设计模式，预计到 202010 月底前更新完成</li></ul><h3 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h3><ul><li>命名的关键是能<strong>准确达意</strong>。对于不同作用域的命名，我们可以适当地选择不同的长度。</li><li>我们<strong>可以借助类的信息来简化属性、函数的命名，利用函数的信息来简化函数参数的命名</strong>。</li><li><strong>命名要可读、可搜索</strong>。不要使用生僻的、不好读的英文单词来命名。命名要符合项目的统一规范，也不要用些反直觉的命名。</li><li><strong>接口有两种命名方式：一种是在接口中带前缀“I”；另一种是在接口的实现类中带后缀“Impl”</strong>。对于抽象类的命名，也有两种方式，一种是带上前缀“Abstract”，一种是不带前缀。这两种命名方式都可以，关键是要在项目中统一。</li></ul><h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><ul><li><strong>注释的内容主要包含这样三个方面：做什么、为什么、怎么做</strong>。对于一些复杂的类和接口，我们可能还需要写明“如何用”。</li><li><strong>类和函数一定要写注释，而且要写得尽可能全面详细</strong>。<strong>函数内部的注释要相对少一些</strong>，一般都是靠好的命名、提炼函数、解释性变量、总结性注释来提高代码可读性。</li></ul><h3 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h3><ul><li>函数、类多大才合适？<strong>函数的代码行数不要超过一屏幕的大小，比如 50 行</strong>。类的大小限制比较难确定。</li><li><strong>一行代码多长最合适？最好不要超过 IDE 的显示宽度</strong>。当然，也不能太小，否则会导致很多稍微长点的语句被折成两行，也会影响到代码的整洁，不利于阅读。</li><li><strong>善用空行分割单元块</strong>。对于比较长的函数，为了让逻辑更加清晰，可以使用空行来分割各个代码块。</li><li>四格缩进还是两格缩进？我个人比较推荐使用两格缩进，这样可以节省空间，尤其是在代码嵌套层次比较深的情况下。不管是用两格缩进还是四格缩进，一定不要用 tab 键缩进。</li><li>大括号是否要另起一行？将大括号放到跟上一条语句同一行，可以节省代码行数。但是将大括号另起新的一行的方式，左右括号可以垂直对齐，哪些代码属于哪一个代码块，更加一目了然。</li><li>类中成员怎么排列？在 Google Java 编程规范中，<strong>依赖类按照字母序从小到大排列。类中先写成员变量后写函数。成员变量之间或函数之间，先写静态成员变量或函数，后写普通变量或函数，并且按照作用域大小依次排列</strong>。</li></ul><h3 id="编码技巧"><a href="#编码技巧" class="headerlink" title="编码技巧"></a>编码技巧</h3><ul><li><strong>将复杂的逻辑提炼拆分成函数和类。</strong></li><li><strong>通过拆分成多个函数或将参数封装为对象的方式，来处理参数过多的情况</strong>。</li><li><strong>函数中不要使用参数来做代码执行逻辑的控制</strong>。</li><li><strong>函数设计要职责单一</strong>。</li><li><strong>移除过深的嵌套层次，方法包括：去掉多余的 if 或 else 语句，使用 continue、break、return 关键字提前退出嵌套，调整执行顺序来减少嵌套，将部分嵌套逻辑抽象成函数</strong>。</li><li>用字面常量取代魔法数。</li><li>用解释性变量来解释复杂表达式，以此提高代码可读性。</li></ul><h3 id="统一编码规范"><a href="#统一编码规范" class="headerlink" title="统一编码规范"></a>统一编码规范</h3><ul><li>除了这三节讲到的比较细节的知识点之外，最后，<strong>还有一条非常重要的，那就是，项目、团队，甚至公司，一定要制定统一的编码规范</strong>，并且通过 Code Review 督促执行，这对提高代码质量有立竿见影的效果。</li></ul>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Go设计模式-单例模式</title>
     <link href="/post/singleton.html"/>
     <url>/post/singleton.html</url>
@@ -647,6 +660,27 @@
   
   
   <entry>
+    <title>堆排序</title>
+    <link href="/post/46698.html"/>
+    <url>/post/46698.html</url>
+    
+    <content type="html"><![CDATA[<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ul><li>建堆，建堆是不断调整堆的过程，从 len/2 处开始调整，一直到第一个节点，此处 len 是堆中元素的个数。建堆的过程是线性的过程，从 len/2 到 0 处一直调用调整堆的过程，相当于 o(h1)+o(h2)…+o(hlen/2) 其中 h 表示节点的深度，len/2 表示节点的个数，这是一个求和的过程，结果是线性的 O(n)。</li><li>调整堆：调整堆在构建堆的过程中会用到，而且在堆排序过程中也会用到。利用的思想是比较节点 i 和它的孩子节点 left(i),right(i)，选出三者最大(或者最小)者，如果最大（小）值不是节点 i 而是它的一个孩子节点，那边交互节点 i 和该节点，然后再调用调整堆过程，这是一个递归的过程。调整堆的过程时间复杂度与堆的深度有关系，是 lgn 的操作，因为是沿着深度方向进行调整的。</li><li>堆排序：堆排序是利用上面的两个过程来进行的。首先是根据元素构建堆。然后将堆的根节点取出(一般是与最后一个节点进行交换)，将前面 len-1 个节点继续进行堆调整的过程，然后再将根节点取出，这样一直到所有节点都取出。堆排序过程的时间复杂度是 O(nlgn)。因为建堆的时间复杂度是 O(n)（调用一次）；调整堆的时间复杂度是 lgn，调用了 n-1 次，所以堆排序的时间复杂度是 O(nlgn)[2]</li></ul><p><em>注意: 根节点在数组当中存放的位置是 0，所以第 i 个节点的左孩子是 2i+1,右孩子是 2i+2</em></p><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141622.gif" srcset="/img/loading.gif" alt="示例图片"></p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><pre><code class="hljs go"><span class="hljs-keyword">package</span> HeapSort<span class="hljs-keyword">import</span> (<span class="hljs-string">"fmt"</span>)<span class="hljs-comment">//HeapSort 堆排序</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">HeapSort</span><span class="hljs-params">(arr []<span class="hljs-keyword">int</span>)</span></span> &#123;LEN := <span class="hljs-built_in">len</span>(arr)<span class="hljs-keyword">for</span> i := LEN/<span class="hljs-number">2</span> - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i-- &#123;HeapAjust(arr, i, LEN)&#125;<span class="hljs-keyword">for</span> i := LEN - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i-- &#123;arr[i], arr[<span class="hljs-number">0</span>] = arr[<span class="hljs-number">0</span>], arr[i]HeapAjust(arr, <span class="hljs-number">0</span>, i)&#125;&#125;<span class="hljs-comment">//HeapAjust 堆调整</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">HeapAjust</span><span class="hljs-params">(arr []<span class="hljs-keyword">int</span>, start <span class="hljs-keyword">int</span>, length <span class="hljs-keyword">int</span>)</span></span> &#123;tmp := arr[start]<span class="hljs-keyword">for</span> i := <span class="hljs-number">2</span>*start + <span class="hljs-number">1</span>; i &lt; length; i = i * <span class="hljs-number">2</span> &#123;<span class="hljs-keyword">if</span> i+<span class="hljs-number">1</span> &lt; length &amp;&amp; arr[i] &lt; arr[i+<span class="hljs-number">1</span>] &#123;i++&#125;<span class="hljs-keyword">if</span> tmp &gt; arr[i] &#123;<span class="hljs-keyword">break</span>&#125;arr[start] = arr[i]start = i&#125;arr[start] = tmp&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li><li><a href="https://lailin.xyz/post/50190.html">插入排序</a></li><li><a href="chunlife.top/2020/04/09/服务器文件分片合并下载/">服务器文件分片合并下载</a></li></ul></div>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>排序</tag>
+      
+      <tag>Go</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>百度面试总结</title>
     <link href="/post/56757.html"/>
     <url>/post/56757.html</url>
@@ -670,11 +704,32 @@
   
   
   <entry>
-    <title>堆排序</title>
-    <link href="/post/46698.html"/>
-    <url>/post/46698.html</url>
+    <title>选择排序</title>
+    <link href="/post/51203.html"/>
+    <url>/post/51203.html</url>
     
-    <content type="html"><![CDATA[<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>堆积排序： 是指利用堆这种数据结构所设计的一种排序算法。堆是一个近似完全二叉树的结构，并同时满足堆性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ul><li>建堆，建堆是不断调整堆的过程，从 len/2 处开始调整，一直到第一个节点，此处 len 是堆中元素的个数。建堆的过程是线性的过程，从 len/2 到 0 处一直调用调整堆的过程，相当于 o(h1)+o(h2)…+o(hlen/2) 其中 h 表示节点的深度，len/2 表示节点的个数，这是一个求和的过程，结果是线性的 O(n)。</li><li>调整堆：调整堆在构建堆的过程中会用到，而且在堆排序过程中也会用到。利用的思想是比较节点 i 和它的孩子节点 left(i),right(i)，选出三者最大(或者最小)者，如果最大（小）值不是节点 i 而是它的一个孩子节点，那边交互节点 i 和该节点，然后再调用调整堆过程，这是一个递归的过程。调整堆的过程时间复杂度与堆的深度有关系，是 lgn 的操作，因为是沿着深度方向进行调整的。</li><li>堆排序：堆排序是利用上面的两个过程来进行的。首先是根据元素构建堆。然后将堆的根节点取出(一般是与最后一个节点进行交换)，将前面 len-1 个节点继续进行堆调整的过程，然后再将根节点取出，这样一直到所有节点都取出。堆排序过程的时间复杂度是 O(nlgn)。因为建堆的时间复杂度是 O(n)（调用一次）；调整堆的时间复杂度是 lgn，调用了 n-1 次，所以堆排序的时间复杂度是 O(nlgn)[2]</li></ul><p><em>注意: 根节点在数组当中存放的位置是 0，所以第 i 个节点的左孩子是 2i+1,右孩子是 2i+2</em></p><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141622.gif" srcset="/img/loading.gif" alt="示例图片"></p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><pre><code class="hljs go"><span class="hljs-keyword">package</span> HeapSort<span class="hljs-keyword">import</span> (<span class="hljs-string">"fmt"</span>)<span class="hljs-comment">//HeapSort 堆排序</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">HeapSort</span><span class="hljs-params">(arr []<span class="hljs-keyword">int</span>)</span></span> &#123;LEN := <span class="hljs-built_in">len</span>(arr)<span class="hljs-keyword">for</span> i := LEN/<span class="hljs-number">2</span> - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i-- &#123;HeapAjust(arr, i, LEN)&#125;<span class="hljs-keyword">for</span> i := LEN - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i-- &#123;arr[i], arr[<span class="hljs-number">0</span>] = arr[<span class="hljs-number">0</span>], arr[i]HeapAjust(arr, <span class="hljs-number">0</span>, i)&#125;&#125;<span class="hljs-comment">//HeapAjust 堆调整</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">HeapAjust</span><span class="hljs-params">(arr []<span class="hljs-keyword">int</span>, start <span class="hljs-keyword">int</span>, length <span class="hljs-keyword">int</span>)</span></span> &#123;tmp := arr[start]<span class="hljs-keyword">for</span> i := <span class="hljs-number">2</span>*start + <span class="hljs-number">1</span>; i &lt; length; i = i * <span class="hljs-number">2</span> &#123;<span class="hljs-keyword">if</span> i+<span class="hljs-number">1</span> &lt; length &amp;&amp; arr[i] &lt; arr[i+<span class="hljs-number">1</span>] &#123;i++&#125;<span class="hljs-keyword">if</span> tmp &gt; arr[i] &#123;<span class="hljs-keyword">break</span>&#125;arr[start] = arr[i]start = i&#125;arr[start] = tmp&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li><li><a href="https://lailin.xyz/post/50190.html">插入排序</a></li><li><a href="chunlife.top/2020/04/09/服务器文件分片合并下载/">服务器文件分片合并下载</a></li></ul></div>]]></content>
+    <content type="html"><![CDATA[<blockquote><p><a href="https://github.com/mohuishou/go-sort" target="_blank" rel="noopener">https://github.com/mohuishou/go-sort</a></p></blockquote><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>选择排序(Selection sort)是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小元素，然后放到排序序列末尾。以此类推，直到所有元素均排序完毕。</p><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141643.gif" srcset="/img/loading.gif" alt="示例图片"></p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><pre><code class="hljs go"><span class="hljs-keyword">package</span> selection<span class="hljs-comment">//Sort 选择排序</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Sort</span><span class="hljs-params">(arr []<span class="hljs-keyword">int</span>)</span></span> &#123;<span class="hljs-keyword">var</span> LEN = <span class="hljs-built_in">len</span>(arr)minIndex := <span class="hljs-number">0</span><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; LEN; i++ &#123;minIndex = i<span class="hljs-keyword">for</span> j := i; j &lt; LEN; j++ &#123;<span class="hljs-keyword">if</span> arr[minIndex] &gt; arr[j] &#123;minIndex = j&#125;&#125;<span class="hljs-keyword">if</span> minIndex != i &#123;arr[minIndex], arr[i] = arr[i], arr[minIndex]&#125;&#125;&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li><li><a href="chunlife.top/2020/04/09/服务器文件分片合并下载/">服务器文件分片合并下载</a></li></ul></div>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>排序</tag>
+      
+      <tag>Go</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>冒泡排序</title>
+    <link href="/post/21238.html"/>
+    <url>/post/21238.html</url>
+    
+    <content type="html"><![CDATA[<h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>冒泡排序（Bubble Sort）是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果他们的顺序错误就把他们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。</p><h2 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h2><ol><li>比较相邻的元素（从后往前）。如果第一个比第二个大，就交换他们两个。</li><li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。<br>(<strong>如果这一步没有出现任何一次交换，那么说明所有的元素已经有序，不需要再进行下面的步骤了</strong>)</li><li>针对所有的元素重复以上的步骤，除了最后一个。</li><li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li></ol><h2 id="图片示例"><a href="#图片示例" class="headerlink" title="图片示例"></a>图片示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-142754.gif" srcset="/img/loading.gif" alt></p><h2 id="程序示例（go）"><a href="#程序示例（go）" class="headerlink" title="程序示例（go）"></a>程序示例（go）</h2><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SortInt</span><span class="hljs-params">(a []<span class="hljs-keyword">int</span>)</span> <span class="hljs-params">([]<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>)</span></span> &#123;<span class="hljs-comment">//交换次数，计数</span>n := <span class="hljs-number">0</span>aLen := <span class="hljs-built_in">len</span>(a)<span class="hljs-keyword">for</span> i := aLen - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i-- &#123;<span class="hljs-comment">//标记，如果flag一次冒泡之后没有改变，那么证明排序已完成，不需要再次排序，直接退出</span>flag := <span class="hljs-number">0</span><span class="hljs-comment">//一次冒泡</span><span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; i; j++ &#123;<span class="hljs-keyword">if</span> a[j] &gt; a[j+<span class="hljs-number">1</span>] &#123;<span class="hljs-comment">//交换两个变量的值，无需引入临时变量</span>a[j], a[j+<span class="hljs-number">1</span>] = a[j+<span class="hljs-number">1</span>], a[j]n++<span class="hljs-comment">//有交换，flag=1</span>flag = <span class="hljs-number">1</span>&#125;&#125;<span class="hljs-comment">//判断一次冒泡，是否存在交换</span><span class="hljs-keyword">if</span> flag == <span class="hljs-number">0</span> &#123;<span class="hljs-keyword">break</span>&#125;&#125;<span class="hljs-keyword">return</span> a, n&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li><li><a href="chunlife.top/2020/04/09/服务器文件分片合并下载/">服务器文件分片合并下载</a></li></ul></div>]]></content>
     
     
     
@@ -759,48 +814,6 @@
     <url>/post/63711.html</url>
     
     <content type="html"><![CDATA[<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>归并排序:是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用</p><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ul><li>申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列</li><li>设定两个指针，最初位置分别为两个已经排序序列的起始位置</li><li>比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置</li><li>重复步骤 3 直到某一指针达到序列尾</li><li>将另一序列剩下的所有元素直接复制到合并序列尾</li></ul><h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141633.gif" srcset="/img/loading.gif" alt="示例图片"></p><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><pre><code class="hljs go"><span class="hljs-keyword">package</span> merge<span class="hljs-comment">//INFINITY 一个比较大的值用作哨兵</span><span class="hljs-keyword">const</span> INFINITY = <span class="hljs-number">0xffff</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">merge</span><span class="hljs-params">(arr []<span class="hljs-keyword">int</span>, start, end <span class="hljs-keyword">int</span>)</span></span> &#123;<span class="hljs-keyword">if</span> start &lt; end &#123;<span class="hljs-comment">//从中间划分，分别左右两边排序</span>mid := (end + start) / <span class="hljs-number">2</span>merge(arr, start, mid)merge(arr, mid+<span class="hljs-number">1</span>, end)<span class="hljs-comment">//下面进行归并操作，将两个长度较小但是已经排序完成的数组合并成一个较长长度的排序数组</span><span class="hljs-comment">//新建一个数组用于存放左边的值</span>arr1 := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">int</span>, mid-start+<span class="hljs-number">2</span>)<span class="hljs-built_in">copy</span>(arr1, arr[start:mid+<span class="hljs-number">1</span>])arr1[mid-start+<span class="hljs-number">1</span>] = INFINITY<span class="hljs-comment">//新建一个数组用于存放右边的值</span>arr2 := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">int</span>, end-mid+<span class="hljs-number">1</span>)<span class="hljs-built_in">copy</span>(arr2, arr[mid+<span class="hljs-number">1</span>:end+<span class="hljs-number">1</span>])arr2[end-mid] = INFINITY<span class="hljs-comment">//比较大小</span>j, k := <span class="hljs-number">0</span>, <span class="hljs-number">0</span><span class="hljs-keyword">for</span> i := start; i &lt;= end; i++ &#123;<span class="hljs-keyword">if</span> arr1[j] &lt;= arr2[k] &#123;arr[i] = arr1[j]j++&#125; <span class="hljs-keyword">else</span> &#123;arr[i] = arr2[k]k++&#125;&#125;&#125;&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/50190.html">插入排序</a></li><li><a href="chunlife.top/2020/04/09/服务器文件分片合并下载/">服务器文件分片合并下载</a></li></ul></div>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>排序</tag>
-      
-      <tag>Go</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>选择排序</title>
-    <link href="/post/51203.html"/>
-    <url>/post/51203.html</url>
-    
-    <content type="html"><![CDATA[<blockquote><p><a href="https://github.com/mohuishou/go-sort" target="_blank" rel="noopener">https://github.com/mohuishou/go-sort</a></p></blockquote><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>选择排序(Selection sort)是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小元素，然后放到排序序列末尾。以此类推，直到所有元素均排序完毕。</p><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141643.gif" srcset="/img/loading.gif" alt="示例图片"></p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><pre><code class="hljs go"><span class="hljs-keyword">package</span> selection<span class="hljs-comment">//Sort 选择排序</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Sort</span><span class="hljs-params">(arr []<span class="hljs-keyword">int</span>)</span></span> &#123;<span class="hljs-keyword">var</span> LEN = <span class="hljs-built_in">len</span>(arr)minIndex := <span class="hljs-number">0</span><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; LEN; i++ &#123;minIndex = i<span class="hljs-keyword">for</span> j := i; j &lt; LEN; j++ &#123;<span class="hljs-keyword">if</span> arr[minIndex] &gt; arr[j] &#123;minIndex = j&#125;&#125;<span class="hljs-keyword">if</span> minIndex != i &#123;arr[minIndex], arr[i] = arr[i], arr[minIndex]&#125;&#125;&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li><li><a href="chunlife.top/2020/04/09/服务器文件分片合并下载/">服务器文件分片合并下载</a></li></ul></div>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>排序</tag>
-      
-      <tag>Go</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>冒泡排序</title>
-    <link href="/post/21238.html"/>
-    <url>/post/21238.html</url>
-    
-    <content type="html"><![CDATA[<h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>冒泡排序（Bubble Sort）是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果他们的顺序错误就把他们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。</p><h2 id="步骤："><a href="#步骤：" class="headerlink" title="步骤："></a>步骤：</h2><ol><li>比较相邻的元素（从后往前）。如果第一个比第二个大，就交换他们两个。</li><li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。<br>(<strong>如果这一步没有出现任何一次交换，那么说明所有的元素已经有序，不需要再进行下面的步骤了</strong>)</li><li>针对所有的元素重复以上的步骤，除了最后一个。</li><li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li></ol><h2 id="图片示例"><a href="#图片示例" class="headerlink" title="图片示例"></a>图片示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-142754.gif" srcset="/img/loading.gif" alt></p><h2 id="程序示例（go）"><a href="#程序示例（go）" class="headerlink" title="程序示例（go）"></a>程序示例（go）</h2><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SortInt</span><span class="hljs-params">(a []<span class="hljs-keyword">int</span>)</span> <span class="hljs-params">([]<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>)</span></span> &#123;<span class="hljs-comment">//交换次数，计数</span>n := <span class="hljs-number">0</span>aLen := <span class="hljs-built_in">len</span>(a)<span class="hljs-keyword">for</span> i := aLen - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i-- &#123;<span class="hljs-comment">//标记，如果flag一次冒泡之后没有改变，那么证明排序已完成，不需要再次排序，直接退出</span>flag := <span class="hljs-number">0</span><span class="hljs-comment">//一次冒泡</span><span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt; i; j++ &#123;<span class="hljs-keyword">if</span> a[j] &gt; a[j+<span class="hljs-number">1</span>] &#123;<span class="hljs-comment">//交换两个变量的值，无需引入临时变量</span>a[j], a[j+<span class="hljs-number">1</span>] = a[j+<span class="hljs-number">1</span>], a[j]n++<span class="hljs-comment">//有交换，flag=1</span>flag = <span class="hljs-number">1</span>&#125;&#125;<span class="hljs-comment">//判断一次冒泡，是否存在交换</span><span class="hljs-keyword">if</span> flag == <span class="hljs-number">0</span> &#123;<span class="hljs-keyword">break</span>&#125;&#125;<span class="hljs-keyword">return</span> a, n&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li><li><a href="chunlife.top/2020/04/09/服务器文件分片合并下载/">服务器文件分片合并下载</a></li></ul></div>]]></content>
     
     
     
@@ -1599,33 +1612,6 @@
   
   
   <entry>
-    <title>phpstrom10激活方法（JetBrains系列软件激活）</title>
-    <link href="/post/28397.html"/>
-    <url>/post/28397.html</url>
-    
-    <content type="html"><![CDATA[<blockquote><p>找到一个 JetBrains 系列软件的注册服务器</p></blockquote><p><strong>注册时选择“License server”输入“<a href="http://idea.lanyus.com/”点击“OK”快速激活JetBrains系列产品" target="_blank" rel="noopener">http://idea.lanyus.com/”点击“OK”快速激活JetBrains系列产品</a></strong></p><p>也可以<br><a href="http://idea.lanyus.com/" target="_blank" rel="noopener">点击进入计算注册码</a></p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/18280.html">四川大学锐捷windows解除多网卡限制</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="http://ssrshare.github.io/2019/12/12/ios-pojie/">iOS逆向-《弓箭英雄》辅助开发</a></li></ul></div>]]></content>
-    
-    
-    <categories>
-      
-      <category>程序</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>破解</tag>
-      
-      <tag>php</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</title>
     <link href="/post/64902.html"/>
     <url>/post/64902.html</url>
@@ -1645,6 +1631,33 @@
       <tag>app</tag>
       
       <tag>ndk</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>phpstrom10激活方法（JetBrains系列软件激活）</title>
+    <link href="/post/28397.html"/>
+    <url>/post/28397.html</url>
+    
+    <content type="html"><![CDATA[<blockquote><p>找到一个 JetBrains 系列软件的注册服务器</p></blockquote><p><strong>注册时选择“License server”输入“<a href="http://idea.lanyus.com/”点击“OK”快速激活JetBrains系列产品" target="_blank" rel="noopener">http://idea.lanyus.com/”点击“OK”快速激活JetBrains系列产品</a></strong></p><p>也可以<br><a href="http://idea.lanyus.com/" target="_blank" rel="noopener">点击进入计算注册码</a></p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/18280.html">四川大学锐捷windows解除多网卡限制</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="http://ssrshare.github.io/2019/12/12/ios-pojie/">iOS逆向-《弓箭英雄》辅助开发</a></li></ul></div>]]></content>
+    
+    
+    <categories>
+      
+      <category>程序</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>破解</tag>
+      
+      <tag>php</tag>
       
     </tags>
     
@@ -1786,33 +1799,6 @@
   
   
   <entry>
-    <title>php如何实现整除</title>
-    <link href="/post/28942.html"/>
-    <url>/post/28942.html</url>
-    
-    <content type="html"><![CDATA[<h3 id="php-如何实现整除"><a href="#php-如何实现整除" class="headerlink" title="php 如何实现整除"></a>php 如何实现整除</h3><blockquote><p>以前在用 C/C++的时候，整除就是’/‘，还要特别注意这个问题，今天用到 php 调试的时候出错了，最后发现：在 php 中’/‘除法是默认带有小数部分的，php 自带有几个函数可以对小数进行处理</p></blockquote><h4 id="1-round-函数，四舍五入"><a href="#1-round-函数，四舍五入" class="headerlink" title="1. round()函数，四舍五入"></a>1. round()函数，四舍五入</h4><pre><code>&lt;?php echo round(7/3); //2 ?&gt;</code></pre><h4 id="2-ceil-函数，进一法"><a href="#2-ceil-函数，进一法" class="headerlink" title="2. ceil()函数，进一法"></a>2. ceil()函数，进一法</h4><p><em>也就是取比该数大的最小整数</em></p><pre><code>&lt;?php echo ceil(7/3); //3 ?&gt;</code></pre><h4 id="3-floor-函数，舍一法"><a href="#3-floor-函数，舍一法" class="headerlink" title="3. floor()函数，舍一法"></a>3. floor()函数，舍一法</h4><p><em>也就是取比该数小的最大整数</em></p><p>&lt;?php echo floor(7/3); //2?&gt;</p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/singleton.html">Go设计模式-单例模式</a></li><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="http://hexo.yuanjh.cn/hexo/d75a576f/">note23_个人vnpy主要改动[博]</a></li></ul></div>]]></content>
-    
-    
-    <categories>
-      
-      <category>PHP</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>php</tag>
-      
-      <tag>学习笔记</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>phpstrom9可用注册码一枚</title>
     <link href="/post/19314.html"/>
     <url>/post/19314.html</url>
@@ -1834,6 +1820,33 @@
       <tag>php</tag>
       
       <tag>注册码</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>php如何实现整除</title>
+    <link href="/post/28942.html"/>
+    <url>/post/28942.html</url>
+    
+    <content type="html"><![CDATA[<h3 id="php-如何实现整除"><a href="#php-如何实现整除" class="headerlink" title="php 如何实现整除"></a>php 如何实现整除</h3><blockquote><p>以前在用 C/C++的时候，整除就是’/‘，还要特别注意这个问题，今天用到 php 调试的时候出错了，最后发现：在 php 中’/‘除法是默认带有小数部分的，php 自带有几个函数可以对小数进行处理</p></blockquote><h4 id="1-round-函数，四舍五入"><a href="#1-round-函数，四舍五入" class="headerlink" title="1. round()函数，四舍五入"></a>1. round()函数，四舍五入</h4><pre><code>&lt;?php echo round(7/3); //2 ?&gt;</code></pre><h4 id="2-ceil-函数，进一法"><a href="#2-ceil-函数，进一法" class="headerlink" title="2. ceil()函数，进一法"></a>2. ceil()函数，进一法</h4><p><em>也就是取比该数大的最小整数</em></p><pre><code>&lt;?php echo ceil(7/3); //3 ?&gt;</code></pre><h4 id="3-floor-函数，舍一法"><a href="#3-floor-函数，舍一法" class="headerlink" title="3. floor()函数，舍一法"></a>3. floor()函数，舍一法</h4><p><em>也就是取比该数小的最大整数</em></p><p>&lt;?php echo floor(7/3); //2?&gt;</p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/singleton.html">Go设计模式-单例模式</a></li><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="http://hexo.yuanjh.cn/hexo/d75a576f/">note23_个人vnpy主要改动[博]</a></li></ul></div>]]></content>
+    
+    
+    <categories>
+      
+      <category>PHP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>php</tag>
+      
+      <tag>学习笔记</tag>
       
     </tags>
     
@@ -1869,11 +1882,11 @@
   
   
   <entry>
-    <title>CoreThink图片轮播插件【ImageSlider】</title>
-    <link href="/post/15278.html"/>
-    <url>/post/15278.html</url>
+    <title>如何使用MITAPPInventor2快速创建一个蓝牙串口app</title>
+    <link href="/post/23045.html"/>
+    <url>/post/23045.html</url>
     
-    <content type="html"><![CDATA[<p>移植于 OT 插件，原文地址<a href="http://www.topthink.com/topic/6244.html" target="_blank" rel="noopener">http://www.topthink.com/topic/6244.html</a></p><p>1、支持 unslider\flexslider 切换选择</p><p>2、支持推荐位选择</p><p>3、支持多图</p><p>4、切换时间&amp;方向选择</p><p>5、自定义容器宽度&amp;高度</p><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141646.png" srcset="/img/loading.gif" alt></p><p><strong><em>**</em></strong>*<strong><em>**</em></strong>使用说明<strong><em>**</em></strong>***<strong><em>**</em></strong><br>1、请先将下面这段代码复制到 Application\common\controller\addon.class.php</p><pre><code>/* 获取件所需的钩子是否存在，没有则新增   * @param string $str  钩子名称   * @param string $addons  插件名称   * @param string $addons  件简介   */ public function existHook($str, $addons, $msg=&apos;&apos;){       $hook_mod = M(&apos;addon_hook&apos;); $where[&apos;name&apos;] = $str;       $gethook = $hook_mod-&gt;where($where)-&gt;find();       if(!$gethook || empty($gethook) || !is_array($gethook)){           $data[&apos;name&apos;] = $str; $data[&apos;description&apos;] = $msg; $data[&apos;type&apos;] = 1;           $data[&apos;update_time&apos;] = NOW_TIME; $data[&apos;addons&apos;] = $addons;           if( false !== $hook_mod-&gt;create($data) ){               $hook_mod-&gt;add();           }       }   }   /**    * delete钩子    * @param string $hook  钩子名称    */   public function deleteHook($hook){       $model = M(&apos;addon_hook&apos;);       $condition = array( &apos;name&apos; =&gt; $hook, );       $model-&gt;where($condition)-&gt;delete();   }</code></pre><p>2、调用方法</p><pre><code class="hljs undefined">&#123;<span class="hljs-symbol">:hook</span>(<span class="hljs-name">'ImageSlider'</span>)&#125;</code></pre><p>3、如果出现显示不出图片，路径错误的情况</p><p>请改一下那个 unslider\flexslider.html 的图片路径，因为安装的路径不同可能出现意外</p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li><li><a href="https://www.lengyuewusheng.com/mediawiki%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.html">MediaWiki配置文件</a></li></ul></div>]]></content>
+    <content type="html"><![CDATA[<h3 id="如何使用-MIT-APP-Inventor2-快速创建一个蓝牙串口-app"><a href="#如何使用-MIT-APP-Inventor2-快速创建一个蓝牙串口-app" class="headerlink" title="如何使用 MIT APP Inventor2 快速创建一个蓝牙串口 app"></a>如何使用 MIT APP Inventor2 快速创建一个蓝牙串口 app</h3><hr><blockquote><p>最近做学校的一个比赛，我是平时是学习做 web 后端的，有时候捎带一些前端的东西，但是最近这个比赛需要做一个 app，问题来了，没有学过 Java 没有学过 OC 所以 ios 和安卓都是无从下手，然后最后找了很多混合开发的工具，比如说 APPCAN，apicloud，hbuilder，wex5 等等，最后不是没有蓝牙串口的插件，就是没有办法使用.最终在一次搜索中无意的发现了这个 AI2.</p></blockquote><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><hr><p><strong>1. 使用 AI2 的前提条件：</strong></p><ul><li>不要求界面的美观性，需要实用性</li><li>不会原生代码的编程</li></ul><p><strong>2. 使用 AI2 好处：</strong></p><ul><li>不要求你会写代码，图形化编程，简单易用</li><li>提供了很多模块一般做一个常用的 app 完全没有问题</li><li>有中文版，所以说语言障碍也不存在了</li></ul><p><strong>3. 使用 AI2 的几种方式：</strong></p><ul><li>离线安装，离线调试</li><li>在线使用，AI 伴侣调试（模拟器调试）<br><em>个人推荐第二种，在线使用，AI 伴侣调试</em></li></ul><p><strong>4. AI2 的中文网址：</strong></p><ul><li>最新的中文服务器：<a href="http://app.gzjkw.net/" target="_blank" rel="noopener">http://app.gzjkw.net/</a></li><li>中文教程网站：<a href="http://www.17coding.net/" target="_blank" rel="noopener">http://www.17coding.net/</a></li></ul><h4 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h4><blockquote><p>PS:仅仅是自己的一些经验观点，有什么错误大家交流啊</p></blockquote><hr><h5 id="1-点击进入-http-app-gzjkw-net-，-注册帐号之后，进入以下页面"><a href="#1-点击进入-http-app-gzjkw-net-，-注册帐号之后，进入以下页面" class="headerlink" title="1. 点击进入 http://app.gzjkw.net/， 注册帐号之后，进入以下页面"></a>1. 点击进入 <a href="http://app.gzjkw.net/" target="_blank" rel="noopener">http://app.gzjkw.net/</a>， 注册帐号之后，进入以下页面</h5><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/blogQQ图片20151015130813.png" srcset="/img/loading.gif" alt="点击查看大图"></p><h5 id="2-选择上面的帮助下载AI-伴侣apk，之后用于在线调试"><a href="#2-选择上面的帮助下载AI-伴侣apk，之后用于在线调试" class="headerlink" title="2. 选择上面的帮助下载AI 伴侣apk，之后用于在线调试"></a>2. 选择上面的帮助下载<strong>AI 伴侣</strong>apk，之后用于在线调试</h5><ul><li>或者直接点击 <a href="http://app.gzjkw.net/companions/MITAI2Companion.apk" title="AI伴侣" target="_blank" rel="noopener">AI 伴侣</a> 下载</li></ul><h5 id="3-简单的功能介绍"><a href="#3-简单的功能介绍" class="headerlink" title="3. 简单的功能介绍"></a>3. 简单的功能介绍</h5><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/blogQQ图片20151015131926.png" srcset="/img/loading.gif" alt="点击查看大图"></p><ul><li><strong>其中我们需要用到的几个组件：</strong></li></ul><table><thead><tr><th>名称</th><th style="text-align:center">作用</th></tr></thead><tbody><tr><td>蓝牙客户端 1</td><td style="text-align:center">用于接收蓝牙串口设备的消息</td></tr><tr><td>按钮</td><td style="text-align:center">一般的 button</td></tr><tr><td>水平布局</td><td style="text-align:center">用于布局整个界面</td></tr><tr><td>对话框</td><td style="text-align:center">用于发出提示消息</td></tr><tr><td>activity 控制器</td><td style="text-align:center">用于打开蓝牙</td></tr><tr><td>web 客户端</td><td style="text-align:center">用于链接网络相关的东西（这个下一次用到）</td></tr><tr><td>计时器</td><td style="text-align:center">用于定时接收蓝牙串口发送出来的消息</td></tr></tbody></table><ul><li><strong>具体的常用组件的介绍，请大家点击网站查看<a href="http://www.17coding.net/" target="_blank" rel="noopener">http://www.17coding.net/</a></strong></li></ul><h5 id="4-逻辑设置"><a href="#4-逻辑设置" class="headerlink" title="4. 逻辑设置"></a>4. 逻辑设置</h5><ul><li>首先完成界面的一个界面的布局工作<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/blogQQ图片20151015170129.png" srcset="/img/loading.gif" alt="点击查看大图"></li><li><p>组件的逻辑设置【点击右上角的逻辑设计即可】<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/blogQQ图片20151015170447.png" srcset="/img/loading.gif" alt="点击查看大图"></p></li><li><p>其中将 activity 启动器 1 的 action 值设置为<strong>android.bluetooth.adapter.action.REQUEST_ENABLE</strong> ，这样可以达到开启蓝牙的效果</p></li></ul><h3 id="下一篇讲如何将数据保存到服务器（不使用自带的网络数据库的情况下）"><a href="#下一篇讲如何将数据保存到服务器（不使用自带的网络数据库的情况下）" class="headerlink" title="下一篇讲如何将数据保存到服务器（不使用自带的网络数据库的情况下）"></a><em>下一篇讲如何将数据保存到服务器（不使用自带的网络数据库的情况下）</em></h3><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/64902.html">NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</a></li><li><a href="https://lailin.xyz/post/34934.html">appcan利用天翼rtc实现视频通话功能</a></li><li><a href="https://lailin.xyz/post/35791.html">使用MITAPPInventor2web客户端组件保存数据至云端</a></li><li><a href="https://blogs.kainy.cn/2010/09/介绍国外几个不错的Twitter_APP/">介绍国外几个不错的Twitter APP</a></li></ul></div>]]></content>
     
     
     <categories>
@@ -1885,11 +1898,7 @@
     
     <tags>
       
-      <tag>php</tag>
-      
-      <tag>corethink</tag>
-      
-      <tag>插件</tag>
+      <tag>app</tag>
       
     </tags>
     
@@ -1927,11 +1936,11 @@
   
   
   <entry>
-    <title>如何使用MITAPPInventor2快速创建一个蓝牙串口app</title>
-    <link href="/post/23045.html"/>
-    <url>/post/23045.html</url>
+    <title>CoreThink图片轮播插件【ImageSlider】</title>
+    <link href="/post/15278.html"/>
+    <url>/post/15278.html</url>
     
-    <content type="html"><![CDATA[<h3 id="如何使用-MIT-APP-Inventor2-快速创建一个蓝牙串口-app"><a href="#如何使用-MIT-APP-Inventor2-快速创建一个蓝牙串口-app" class="headerlink" title="如何使用 MIT APP Inventor2 快速创建一个蓝牙串口 app"></a>如何使用 MIT APP Inventor2 快速创建一个蓝牙串口 app</h3><hr><blockquote><p>最近做学校的一个比赛，我是平时是学习做 web 后端的，有时候捎带一些前端的东西，但是最近这个比赛需要做一个 app，问题来了，没有学过 Java 没有学过 OC 所以 ios 和安卓都是无从下手，然后最后找了很多混合开发的工具，比如说 APPCAN，apicloud，hbuilder，wex5 等等，最后不是没有蓝牙串口的插件，就是没有办法使用.最终在一次搜索中无意的发现了这个 AI2.</p></blockquote><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><hr><p><strong>1. 使用 AI2 的前提条件：</strong></p><ul><li>不要求界面的美观性，需要实用性</li><li>不会原生代码的编程</li></ul><p><strong>2. 使用 AI2 好处：</strong></p><ul><li>不要求你会写代码，图形化编程，简单易用</li><li>提供了很多模块一般做一个常用的 app 完全没有问题</li><li>有中文版，所以说语言障碍也不存在了</li></ul><p><strong>3. 使用 AI2 的几种方式：</strong></p><ul><li>离线安装，离线调试</li><li>在线使用，AI 伴侣调试（模拟器调试）<br><em>个人推荐第二种，在线使用，AI 伴侣调试</em></li></ul><p><strong>4. AI2 的中文网址：</strong></p><ul><li>最新的中文服务器：<a href="http://app.gzjkw.net/" target="_blank" rel="noopener">http://app.gzjkw.net/</a></li><li>中文教程网站：<a href="http://www.17coding.net/" target="_blank" rel="noopener">http://www.17coding.net/</a></li></ul><h4 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h4><blockquote><p>PS:仅仅是自己的一些经验观点，有什么错误大家交流啊</p></blockquote><hr><h5 id="1-点击进入-http-app-gzjkw-net-，-注册帐号之后，进入以下页面"><a href="#1-点击进入-http-app-gzjkw-net-，-注册帐号之后，进入以下页面" class="headerlink" title="1. 点击进入 http://app.gzjkw.net/， 注册帐号之后，进入以下页面"></a>1. 点击进入 <a href="http://app.gzjkw.net/" target="_blank" rel="noopener">http://app.gzjkw.net/</a>， 注册帐号之后，进入以下页面</h5><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/blogQQ图片20151015130813.png" srcset="/img/loading.gif" alt="点击查看大图"></p><h5 id="2-选择上面的帮助下载AI-伴侣apk，之后用于在线调试"><a href="#2-选择上面的帮助下载AI-伴侣apk，之后用于在线调试" class="headerlink" title="2. 选择上面的帮助下载AI 伴侣apk，之后用于在线调试"></a>2. 选择上面的帮助下载<strong>AI 伴侣</strong>apk，之后用于在线调试</h5><ul><li>或者直接点击 <a href="http://app.gzjkw.net/companions/MITAI2Companion.apk" title="AI伴侣" target="_blank" rel="noopener">AI 伴侣</a> 下载</li></ul><h5 id="3-简单的功能介绍"><a href="#3-简单的功能介绍" class="headerlink" title="3. 简单的功能介绍"></a>3. 简单的功能介绍</h5><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/blogQQ图片20151015131926.png" srcset="/img/loading.gif" alt="点击查看大图"></p><ul><li><strong>其中我们需要用到的几个组件：</strong></li></ul><table><thead><tr><th>名称</th><th style="text-align:center">作用</th></tr></thead><tbody><tr><td>蓝牙客户端 1</td><td style="text-align:center">用于接收蓝牙串口设备的消息</td></tr><tr><td>按钮</td><td style="text-align:center">一般的 button</td></tr><tr><td>水平布局</td><td style="text-align:center">用于布局整个界面</td></tr><tr><td>对话框</td><td style="text-align:center">用于发出提示消息</td></tr><tr><td>activity 控制器</td><td style="text-align:center">用于打开蓝牙</td></tr><tr><td>web 客户端</td><td style="text-align:center">用于链接网络相关的东西（这个下一次用到）</td></tr><tr><td>计时器</td><td style="text-align:center">用于定时接收蓝牙串口发送出来的消息</td></tr></tbody></table><ul><li><strong>具体的常用组件的介绍，请大家点击网站查看<a href="http://www.17coding.net/" target="_blank" rel="noopener">http://www.17coding.net/</a></strong></li></ul><h5 id="4-逻辑设置"><a href="#4-逻辑设置" class="headerlink" title="4. 逻辑设置"></a>4. 逻辑设置</h5><ul><li>首先完成界面的一个界面的布局工作<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/blogQQ图片20151015170129.png" srcset="/img/loading.gif" alt="点击查看大图"></li><li><p>组件的逻辑设置【点击右上角的逻辑设计即可】<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/blogQQ图片20151015170447.png" srcset="/img/loading.gif" alt="点击查看大图"></p></li><li><p>其中将 activity 启动器 1 的 action 值设置为<strong>android.bluetooth.adapter.action.REQUEST_ENABLE</strong> ，这样可以达到开启蓝牙的效果</p></li></ul><h3 id="下一篇讲如何将数据保存到服务器（不使用自带的网络数据库的情况下）"><a href="#下一篇讲如何将数据保存到服务器（不使用自带的网络数据库的情况下）" class="headerlink" title="下一篇讲如何将数据保存到服务器（不使用自带的网络数据库的情况下）"></a><em>下一篇讲如何将数据保存到服务器（不使用自带的网络数据库的情况下）</em></h3><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/64902.html">NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</a></li><li><a href="https://lailin.xyz/post/34934.html">appcan利用天翼rtc实现视频通话功能</a></li><li><a href="https://lailin.xyz/post/35791.html">使用MITAPPInventor2web客户端组件保存数据至云端</a></li><li><a href="https://blogs.kainy.cn/2010/09/介绍国外几个不错的Twitter_APP/">介绍国外几个不错的Twitter APP</a></li></ul></div>]]></content>
+    <content type="html"><![CDATA[<p>移植于 OT 插件，原文地址<a href="http://www.topthink.com/topic/6244.html" target="_blank" rel="noopener">http://www.topthink.com/topic/6244.html</a></p><p>1、支持 unslider\flexslider 切换选择</p><p>2、支持推荐位选择</p><p>3、支持多图</p><p>4、切换时间&amp;方向选择</p><p>5、自定义容器宽度&amp;高度</p><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141646.png" srcset="/img/loading.gif" alt></p><p><strong><em>**</em></strong>*<strong><em>**</em></strong>使用说明<strong><em>**</em></strong>***<strong><em>**</em></strong><br>1、请先将下面这段代码复制到 Application\common\controller\addon.class.php</p><pre><code>/* 获取件所需的钩子是否存在，没有则新增   * @param string $str  钩子名称   * @param string $addons  插件名称   * @param string $addons  件简介   */ public function existHook($str, $addons, $msg=&apos;&apos;){       $hook_mod = M(&apos;addon_hook&apos;); $where[&apos;name&apos;] = $str;       $gethook = $hook_mod-&gt;where($where)-&gt;find();       if(!$gethook || empty($gethook) || !is_array($gethook)){           $data[&apos;name&apos;] = $str; $data[&apos;description&apos;] = $msg; $data[&apos;type&apos;] = 1;           $data[&apos;update_time&apos;] = NOW_TIME; $data[&apos;addons&apos;] = $addons;           if( false !== $hook_mod-&gt;create($data) ){               $hook_mod-&gt;add();           }       }   }   /**    * delete钩子    * @param string $hook  钩子名称    */   public function deleteHook($hook){       $model = M(&apos;addon_hook&apos;);       $condition = array( &apos;name&apos; =&gt; $hook, );       $model-&gt;where($condition)-&gt;delete();   }</code></pre><p>2、调用方法</p><pre><code class="hljs undefined">&#123;<span class="hljs-symbol">:hook</span>(<span class="hljs-name">'ImageSlider'</span>)&#125;</code></pre><p>3、如果出现显示不出图片，路径错误的情况</p><p>请改一下那个 unslider\flexslider.html 的图片路径，因为安装的路径不同可能出现意外</p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li><li><a href="https://www.lengyuewusheng.com/mediawiki%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.html">MediaWiki配置文件</a></li></ul></div>]]></content>
     
     
     <categories>
@@ -1943,7 +1952,11 @@
     
     <tags>
       
-      <tag>app</tag>
+      <tag>php</tag>
+      
+      <tag>corethink</tag>
+      
+      <tag>插件</tag>
       
     </tags>
     
