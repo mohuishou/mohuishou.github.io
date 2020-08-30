@@ -1438,6 +1438,35 @@
   
   
   <entry>
+    <title>php利用curl保存图片</title>
+    <link href="/post/58471.html"/>
+    <url>/post/58471.html</url>
+    
+    <content type="html"><![CDATA[<blockquote><p>做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数</p></blockquote><pre><code class="hljs php"><span class="hljs-comment">/*** <span class="hljs-doctag">@author</span> mohuishou&lt;1<span class="hljs-doctag">@lailin</span>.xyz&gt;* <span class="hljs-doctag">@param</span> string $url 获取图片的网址* <span class="hljs-doctag">@param</span> string $fileName 保存的地址以及文件名*/</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getImg</span><span class="hljs-params">($url, $fileName)</span>    </span>&#123;        $ch = curl_init();        $fp = fopen($fileName, <span class="hljs-string">'w+'</span>);        curl_setopt($ch, CURLOPT_URL, $url);        curl_setopt($ch, CURLOPT_HEADER, <span class="hljs-number">0</span>);        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, <span class="hljs-number">0</span>);        curl_setopt($ch, CURLOPT_TIMEOUT, <span class="hljs-number">60</span>);        curl_setopt($ch, CURLOPT_FILE,$fp);        curl_exec($ch);        curl_close($ch);        fclose($fp);    &#125;</code></pre><blockquote><p>使用的时候发现，需要保存验证码的 cookies，留作验证，必要的时候还需要加上 header</p></blockquote><pre><code class="hljs php"><span class="hljs-comment">/*** <span class="hljs-doctag">@author</span> mohuishou&lt;1<span class="hljs-doctag">@lailin</span>.xyz&gt;* <span class="hljs-doctag">@param</span> string $url* <span class="hljs-doctag">@param</span> string $fileName*/</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCode</span><span class="hljs-params">($url = <span class="hljs-string">'http://www.169ol.com/Mall/Code/getCode'</span>, $fileName = <span class="hljs-string">'./img/code.png'</span>)</span>    </span>&#123;        <span class="hljs-keyword">$this</span>-&gt;_code_cookie = dirname(<span class="hljs-keyword">__FILE__</span>).<span class="hljs-string">"/pic.cookie"</span>;        $ch = curl_init();        $fp = fopen($fileName, <span class="hljs-string">'w+'</span>);        curl_setopt($ch, CURLOPT_URL, $url);        curl_setopt($ch, CURLOPT_HEADER, <span class="hljs-number">0</span>);        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, <span class="hljs-number">0</span>);        curl_setopt($ch, CURLOPT_TIMEOUT, <span class="hljs-number">60</span>);        curl_setopt($ch, CURLOPT_FILE,$fp);        curl_setopt($ch, CURLOPT_COOKIEJAR, <span class="hljs-keyword">$this</span>-&gt;_code_cookie);        curl_exec($ch);        curl_close($ch);        fclose($fp);    &#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div>]]></content>
+    
+    
+    <categories>
+      
+      <category>PHP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>php</tag>
+      
+      <tag>图片</tag>
+      
+      <tag>curl</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>php识别验证码（一）</title>
     <link href="/post/47583.html"/>
     <url>/post/47583.html</url>
@@ -1461,35 +1490,6 @@
       <tag>识别</tag>
       
       <tag>验证码识别</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>php利用curl保存图片</title>
-    <link href="/post/58471.html"/>
-    <url>/post/58471.html</url>
-    
-    <content type="html"><![CDATA[<blockquote><p>做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数</p></blockquote><pre><code class="hljs php"><span class="hljs-comment">/*** <span class="hljs-doctag">@author</span> mohuishou&lt;1<span class="hljs-doctag">@lailin</span>.xyz&gt;* <span class="hljs-doctag">@param</span> string $url 获取图片的网址* <span class="hljs-doctag">@param</span> string $fileName 保存的地址以及文件名*/</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getImg</span><span class="hljs-params">($url, $fileName)</span>    </span>&#123;        $ch = curl_init();        $fp = fopen($fileName, <span class="hljs-string">'w+'</span>);        curl_setopt($ch, CURLOPT_URL, $url);        curl_setopt($ch, CURLOPT_HEADER, <span class="hljs-number">0</span>);        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, <span class="hljs-number">0</span>);        curl_setopt($ch, CURLOPT_TIMEOUT, <span class="hljs-number">60</span>);        curl_setopt($ch, CURLOPT_FILE,$fp);        curl_exec($ch);        curl_close($ch);        fclose($fp);    &#125;</code></pre><blockquote><p>使用的时候发现，需要保存验证码的 cookies，留作验证，必要的时候还需要加上 header</p></blockquote><pre><code class="hljs php"><span class="hljs-comment">/*** <span class="hljs-doctag">@author</span> mohuishou&lt;1<span class="hljs-doctag">@lailin</span>.xyz&gt;* <span class="hljs-doctag">@param</span> string $url* <span class="hljs-doctag">@param</span> string $fileName*/</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCode</span><span class="hljs-params">($url = <span class="hljs-string">'http://www.169ol.com/Mall/Code/getCode'</span>, $fileName = <span class="hljs-string">'./img/code.png'</span>)</span>    </span>&#123;        <span class="hljs-keyword">$this</span>-&gt;_code_cookie = dirname(<span class="hljs-keyword">__FILE__</span>).<span class="hljs-string">"/pic.cookie"</span>;        $ch = curl_init();        $fp = fopen($fileName, <span class="hljs-string">'w+'</span>);        curl_setopt($ch, CURLOPT_URL, $url);        curl_setopt($ch, CURLOPT_HEADER, <span class="hljs-number">0</span>);        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, <span class="hljs-number">0</span>);        curl_setopt($ch, CURLOPT_TIMEOUT, <span class="hljs-number">60</span>);        curl_setopt($ch, CURLOPT_FILE,$fp);        curl_setopt($ch, CURLOPT_COOKIEJAR, <span class="hljs-keyword">$this</span>-&gt;_code_cookie);        curl_exec($ch);        curl_close($ch);        fclose($fp);    &#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div>]]></content>
-    
-    
-    <categories>
-      
-      <category>PHP</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>php</tag>
-      
-      <tag>图片</tag>
-      
-      <tag>curl</tag>
       
     </tags>
     
@@ -1683,33 +1683,6 @@
   
   
   <entry>
-    <title>NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</title>
-    <link href="/post/64902.html"/>
-    <url>/post/64902.html</url>
-    
-    <content type="html"><![CDATA[<blockquote><p>错误详情：<br>错误: 无法访问 android.support.v7.app.AppCompatActivity<br>找不到 android.support.v7.app.AppCompatActivity 的类文件</p></blockquote><p>为了这个问题纠结 2 天了，在网上找了很多的解决办法都不行，几乎所有的办法都试过了</p><p>无意中查看 sdk Manager 的时候发现我的<strong>“android support library”</strong>没有安装，然后当即安装上去</p><p>随后执行：</p><pre><code class="hljs undefined">javah -d jni -classpath   F:<span class="hljs-symbol">\S</span>oftInstall<span class="hljs-symbol">\A</span>ndroid<span class="hljs-symbol">\s</span>dk<span class="hljs-symbol">\p</span>latforms<span class="hljs-symbol">\a</span>ndroid-23<span class="hljs-symbol">\a</span>ndroid.jar;F:<span class="hljs-symbol">\S</span>oftInstall<span class="hljs-symbol">\a</span>ndroid<span class="hljs-symbol">\s</span>dk<span class="hljs-symbol">\e</span>xtras<span class="hljs-symbol">\a</span>ndroid<span class="hljs-symbol">\s</span>upport<span class="hljs-symbol">\v</span>4<span class="hljs-symbol">\a</span>ndroid-support-v4.jar;F:<span class="hljs-symbol">\S</span>oftInstall<span class="hljs-symbol">\a</span>ndroid<span class="hljs-symbol">\s</span>dk<span class="hljs-symbol">\e</span>xtras<span class="hljs-symbol">\a</span>ndroid<span class="hljs-symbol">\s</span>upport<span class="hljs-symbol">\v</span>7<span class="hljs-symbol">\a</span>ppcompat<span class="hljs-symbol">\l</span>ibs<span class="hljs-symbol">\a</span>ndroid-support-v7-appcompat.jar;..<span class="hljs-symbol">\.</span>.<span class="hljs-symbol">\b</span>uild<span class="hljs-symbol">\i</span>ntermediates<span class="hljs-symbol">\c</span>lasses<span class="hljs-symbol">\d</span>ebug com.lxl520.demo3.MainActivity</code></pre><p>即可</p><p><strong>注意：</strong><br>如果发现你的 sdk 文件夹下面没有<strong>sdk\extras\android\support**<br>这个文件夹的时候一定要检查一下你的</strong>“android support library”**是否安装，<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141647.png" srcset="/img/loading.gif" alt></p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/34934.html">appcan利用天翼rtc实现视频通话功能</a></li><li><a href="https://lailin.xyz/post/35791.html">使用MITAPPInventor2web客户端组件保存数据至云端</a></li><li><a href="https://lailin.xyz/post/23045.html">如何使用MITAPPInventor2快速创建一个蓝牙串口app</a></li></ul></div>]]></content>
-    
-    
-    <categories>
-      
-      <category>程序</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>app</tag>
-      
-      <tag>ndk</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>phpstrom10激活方法（JetBrains系列软件激活）</title>
     <link href="/post/28397.html"/>
     <url>/post/28397.html</url>
@@ -1729,6 +1702,33 @@
       <tag>破解</tag>
       
       <tag>php</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>NDK开发中无法访问android.support.v7.app.AppCompatActivity解决办法</title>
+    <link href="/post/64902.html"/>
+    <url>/post/64902.html</url>
+    
+    <content type="html"><![CDATA[<blockquote><p>错误详情：<br>错误: 无法访问 android.support.v7.app.AppCompatActivity<br>找不到 android.support.v7.app.AppCompatActivity 的类文件</p></blockquote><p>为了这个问题纠结 2 天了，在网上找了很多的解决办法都不行，几乎所有的办法都试过了</p><p>无意中查看 sdk Manager 的时候发现我的<strong>“android support library”</strong>没有安装，然后当即安装上去</p><p>随后执行：</p><pre><code class="hljs undefined">javah -d jni -classpath   F:<span class="hljs-symbol">\S</span>oftInstall<span class="hljs-symbol">\A</span>ndroid<span class="hljs-symbol">\s</span>dk<span class="hljs-symbol">\p</span>latforms<span class="hljs-symbol">\a</span>ndroid-23<span class="hljs-symbol">\a</span>ndroid.jar;F:<span class="hljs-symbol">\S</span>oftInstall<span class="hljs-symbol">\a</span>ndroid<span class="hljs-symbol">\s</span>dk<span class="hljs-symbol">\e</span>xtras<span class="hljs-symbol">\a</span>ndroid<span class="hljs-symbol">\s</span>upport<span class="hljs-symbol">\v</span>4<span class="hljs-symbol">\a</span>ndroid-support-v4.jar;F:<span class="hljs-symbol">\S</span>oftInstall<span class="hljs-symbol">\a</span>ndroid<span class="hljs-symbol">\s</span>dk<span class="hljs-symbol">\e</span>xtras<span class="hljs-symbol">\a</span>ndroid<span class="hljs-symbol">\s</span>upport<span class="hljs-symbol">\v</span>7<span class="hljs-symbol">\a</span>ppcompat<span class="hljs-symbol">\l</span>ibs<span class="hljs-symbol">\a</span>ndroid-support-v7-appcompat.jar;..<span class="hljs-symbol">\.</span>.<span class="hljs-symbol">\b</span>uild<span class="hljs-symbol">\i</span>ntermediates<span class="hljs-symbol">\c</span>lasses<span class="hljs-symbol">\d</span>ebug com.lxl520.demo3.MainActivity</code></pre><p>即可</p><p><strong>注意：</strong><br>如果发现你的 sdk 文件夹下面没有<strong>sdk\extras\android\support**<br>这个文件夹的时候一定要检查一下你的</strong>“android support library”**是否安装，<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141647.png" srcset="/img/loading.gif" alt></p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/34934.html">appcan利用天翼rtc实现视频通话功能</a></li><li><a href="https://lailin.xyz/post/35791.html">使用MITAPPInventor2web客户端组件保存数据至云端</a></li><li><a href="https://lailin.xyz/post/23045.html">如何使用MITAPPInventor2快速创建一个蓝牙串口app</a></li></ul></div>]]></content>
+    
+    
+    <categories>
+      
+      <category>程序</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>app</tag>
+      
+      <tag>ndk</tag>
       
     </tags>
     
