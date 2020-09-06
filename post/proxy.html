@@ -190,12 +190,12 @@ type &#123;&#123; .ProxyStructName &#125;&#125;Proxy struct &#123;
 	child *&#123;&#123; .ProxyStructName &#125;&#125;
 &#125;
 
-func New&#123;&#123; .ProxyStructName &#125;&#125;Proxy(child *&#123;&#123; .ProxyStructName &#125;&#125;) &#123;&#123; .ProxyStructName &#125;&#125;Proxy &#123;
+func New&#123;&#123; .ProxyStructName &#125;&#125;Proxy(child *&#123;&#123; .ProxyStructName &#125;&#125;) *&#123;&#123; .ProxyStructName &#125;&#125;Proxy &#123;
 	return &amp;&#123;&#123; .ProxyStructName &#125;&#125;Proxy&#123;child: child&#125;
 &#125;
 
 &#123;&#123; range .Methods &#125;&#125;
-func (p *&#123;&#123;$.ProxyStructName&#125;&#125;) &#123;&#123; .Name &#125;&#125; (&#123;&#123; .Params &#125;&#125;) (&#123;&#123; .Results &#125;&#125;) &#123;
+func (p *&#123;&#123;$.ProxyStructName&#125;&#125;Proxy) &#123;&#123; .Name &#125;&#125; (&#123;&#123; .Params &#125;&#125;) (&#123;&#123; .Results &#125;&#125;) &#123;
 	// before 这里可能会有一些统计的逻辑
 	start := time.Now()
 
@@ -242,11 +242,11 @@ type UserProxy struct &#123;
 	child *User
 &#125;
 
-func NewUserProxy(child *User) UserProxy &#123;
+func NewUserProxy(child *User) *UserProxy &#123;
 	return &amp;UserProxy&#123;child: child&#125;
 &#125;
 
-func (p *User) Login(username, password string) error &#123;
+func (p *UserProxy) Login(username, password string) error &#123;
 	// before 这里可能会有一些统计的逻辑
 	start := time.Now()
 
