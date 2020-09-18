@@ -962,27 +962,6 @@
   
   
   <entry>
-    <title>选择排序</title>
-    <link href="/post/51203.html"/>
-    <url>/post/51203.html</url>
-    
-    <content type="html"><![CDATA[<blockquote><p><a href="https://github.com/mohuishou/go-sort" target="_blank" rel="noopener">https://github.com/mohuishou/go-sort</a></p></blockquote><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>选择排序(Selection sort)是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小元素，然后放到排序序列末尾。以此类推，直到所有元素均排序完毕。</p><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141643.gif" srcset="/img/loading.gif" alt="示例图片"></p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><pre><code class="hljs go"><span class="hljs-keyword">package</span> selection<span class="hljs-comment">//Sort 选择排序</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Sort</span><span class="hljs-params">(arr []<span class="hljs-keyword">int</span>)</span></span> &#123;<span class="hljs-keyword">var</span> LEN = <span class="hljs-built_in">len</span>(arr)minIndex := <span class="hljs-number">0</span><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; LEN; i++ &#123;minIndex = i<span class="hljs-keyword">for</span> j := i; j &lt; LEN; j++ &#123;<span class="hljs-keyword">if</span> arr[minIndex] &gt; arr[j] &#123;minIndex = j&#125;&#125;<span class="hljs-keyword">if</span> minIndex != i &#123;arr[minIndex], arr[i] = arr[i], arr[minIndex]&#125;&#125;&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li></ul></div>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>排序</tag>
-      
-      <tag>Go</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>百度面试总结</title>
     <link href="/post/56757.html"/>
     <url>/post/56757.html</url>
@@ -998,6 +977,27 @@
       <tag>秋招</tag>
       
       <tag>百度</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>选择排序</title>
+    <link href="/post/51203.html"/>
+    <url>/post/51203.html</url>
+    
+    <content type="html"><![CDATA[<blockquote><p><a href="https://github.com/mohuishou/go-sort" target="_blank" rel="noopener">https://github.com/mohuishou/go-sort</a></p></blockquote><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>选择排序(Selection sort)是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小元素，然后放到排序序列末尾。以此类推，直到所有元素均排序完毕。</p><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141643.gif" srcset="/img/loading.gif" alt="示例图片"></p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><pre><code class="hljs go"><span class="hljs-keyword">package</span> selection<span class="hljs-comment">//Sort 选择排序</span><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Sort</span><span class="hljs-params">(arr []<span class="hljs-keyword">int</span>)</span></span> &#123;<span class="hljs-keyword">var</span> LEN = <span class="hljs-built_in">len</span>(arr)minIndex := <span class="hljs-number">0</span><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; LEN; i++ &#123;minIndex = i<span class="hljs-keyword">for</span> j := i; j &lt; LEN; j++ &#123;<span class="hljs-keyword">if</span> arr[minIndex] &gt; arr[j] &#123;minIndex = j&#125;&#125;<span class="hljs-keyword">if</span> minIndex != i &#123;arr[minIndex], arr[i] = arr[i], arr[minIndex]&#125;&#125;&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/46698.html">堆排序</a></li><li><a href="https://lailin.xyz/post/11306.html">快速排序</a></li><li><a href="https://lailin.xyz/post/63711.html">归并排序</a></li></ul></div>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>排序</tag>
+      
+      <tag>Go</tag>
       
     </tags>
     
