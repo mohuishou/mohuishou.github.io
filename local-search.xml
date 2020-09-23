@@ -2080,6 +2080,33 @@
   
   
   <entry>
+    <title>php如何实现整除</title>
+    <link href="/post/28942.html"/>
+    <url>/post/28942.html</url>
+    
+    <content type="html"><![CDATA[<h3 id="php-如何实现整除"><a href="#php-如何实现整除" class="headerlink" title="php 如何实现整除"></a>php 如何实现整除</h3><blockquote><p>以前在用 C/C++的时候，整除就是’/‘，还要特别注意这个问题，今天用到 php 调试的时候出错了，最后发现：在 php 中’/‘除法是默认带有小数部分的，php 自带有几个函数可以对小数进行处理</p></blockquote><h4 id="1-round-函数，四舍五入"><a href="#1-round-函数，四舍五入" class="headerlink" title="1. round()函数，四舍五入"></a>1. round()函数，四舍五入</h4><pre><code>&lt;?php echo round(7/3); //2 ?&gt;</code></pre><h4 id="2-ceil-函数，进一法"><a href="#2-ceil-函数，进一法" class="headerlink" title="2. ceil()函数，进一法"></a>2. ceil()函数，进一法</h4><p><em>也就是取比该数大的最小整数</em></p><pre><code>&lt;?php echo ceil(7/3); //3 ?&gt;</code></pre><h4 id="3-floor-函数，舍一法"><a href="#3-floor-函数，舍一法" class="headerlink" title="3. floor()函数，舍一法"></a>3. floor()函数，舍一法</h4><p><em>也就是取比该数小的最大整数</em></p><p>&lt;?php echo floor(7/3); //2?&gt;</p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/template.html">Go模板模式14-模板模式</a></li><li><a href="https://lailin.xyz/post/observer.html">Go设计模式13-观察者模式(实现简单的EventBus)</a></li><li><a href="https://lailin.xyz/post/flyweight.html">Go设计模式12-享元模式</a></li></ul></div>]]></content>
+    
+    
+    <categories>
+      
+      <category>PHP</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>php</tag>
+      
+      <tag>学习笔记</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>phpstrom9可用注册码一枚</title>
     <link href="/post/19314.html"/>
     <url>/post/19314.html</url>
@@ -2109,33 +2136,6 @@
   
   
   <entry>
-    <title>php如何实现整除</title>
-    <link href="/post/28942.html"/>
-    <url>/post/28942.html</url>
-    
-    <content type="html"><![CDATA[<h3 id="php-如何实现整除"><a href="#php-如何实现整除" class="headerlink" title="php 如何实现整除"></a>php 如何实现整除</h3><blockquote><p>以前在用 C/C++的时候，整除就是’/‘，还要特别注意这个问题，今天用到 php 调试的时候出错了，最后发现：在 php 中’/‘除法是默认带有小数部分的，php 自带有几个函数可以对小数进行处理</p></blockquote><h4 id="1-round-函数，四舍五入"><a href="#1-round-函数，四舍五入" class="headerlink" title="1. round()函数，四舍五入"></a>1. round()函数，四舍五入</h4><pre><code>&lt;?php echo round(7/3); //2 ?&gt;</code></pre><h4 id="2-ceil-函数，进一法"><a href="#2-ceil-函数，进一法" class="headerlink" title="2. ceil()函数，进一法"></a>2. ceil()函数，进一法</h4><p><em>也就是取比该数大的最小整数</em></p><pre><code>&lt;?php echo ceil(7/3); //3 ?&gt;</code></pre><h4 id="3-floor-函数，舍一法"><a href="#3-floor-函数，舍一法" class="headerlink" title="3. floor()函数，舍一法"></a>3. floor()函数，舍一法</h4><p><em>也就是取比该数小的最大整数</em></p><p>&lt;?php echo floor(7/3); //2?&gt;</p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/template.html">Go模板模式14-模板模式</a></li><li><a href="https://lailin.xyz/post/observer.html">Go设计模式13-观察者模式(实现简单的EventBus)</a></li><li><a href="https://lailin.xyz/post/flyweight.html">Go设计模式12-享元模式</a></li></ul></div>]]></content>
-    
-    
-    <categories>
-      
-      <category>PHP</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>php</tag>
-      
-      <tag>学习笔记</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>【福利】至善网媒体素材一键评价</title>
     <link href="/post/59875.html"/>
     <url>/post/59875.html</url>
@@ -2155,35 +2155,6 @@
       <tag>js</tag>
       
       <tag>工具</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Corethink瀑布流插件</title>
-    <link href="/post/54589.html"/>
-    <url>/post/54589.html</url>
-    
-    <content type="html"><![CDATA[<h2 id="【原创插件】瀑布流"><a href="#【原创插件】瀑布流" class="headerlink" title="【原创插件】瀑布流"></a>【原创插件】瀑布流</h2><h3 id="1、前台界面"><a href="#1、前台界面" class="headerlink" title="1、前台界面"></a>1、前台界面</h3><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141648.png" srcset="/img/loading.gif" alt></p><h3 id="2、前台大图预览"><a href="#2、前台大图预览" class="headerlink" title="2、前台大图预览"></a>2、前台大图预览</h3><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141649.png" srcset="/img/loading.gif" alt></p><h3 id="3、后台设置"><a href="#3、后台设置" class="headerlink" title="3、后台设置"></a>3、后台设置</h3><p>支持容器宽度自定义，高度随宽度按比例改变</p><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141650.png" srcset="/img/loading.gif" alt></p><h3 id="4、后台管理界面"><a href="#4、后台管理界面" class="headerlink" title="4、后台管理界面"></a>4、后台管理界面</h3><p>作者，内容为选填项，其余为必填项<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141651.png" srcset="/img/loading.gif" alt></p><h3 id="5、新增界面"><a href="#5、新增界面" class="headerlink" title="5、新增界面"></a>5、新增界面</h3><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141653.png" srcset="/img/loading.gif" alt></p><p><strong>**</strong>***<strong>**</strong>使用说明<strong><strong><em>**</em></strong></strong>****<strong><strong><em>**</em></strong></strong><br>1、前台调用</p><pre><code>钩子{:hook(&apos;WaterFall&apos;)}</code></pre><p>2、安装说明</p><p>如果默认表前缀不是 ct<em>，请在插件目录下 WaterFallAddon.class.php 中的 ct</em>改为你的表前缀</p><pre><code>-&gt;where(&apos;ct_addon_waterfall.status=1&apos;)</code></pre><p>3、安装说明 2<br>如果不能安装是不存在钩子原因，解决办法请看我上一个 OT 移植插件 ImageSlider 中的使用方法</p><p><a href="http://lxl520.com/me/blog/index.php/archives/6/" target="_blank" rel="noopener">ImageSlider</a></p><p>ps：</p><p><a href="http://www.cnblogs.com/sanshi/p/3237429.html" target="_blank" rel="noopener">感谢三生石上的前端瀑布流教程</a></p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div>]]></content>
-    
-    
-    <categories>
-      
-      <category>程序</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>php</tag>
-      
-      <tag>corethink</tag>
-      
-      <tag>插件</tag>
       
     </tags>
     
@@ -2238,6 +2209,35 @@
     <tags>
       
       <tag>app</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Corethink瀑布流插件</title>
+    <link href="/post/54589.html"/>
+    <url>/post/54589.html</url>
+    
+    <content type="html"><![CDATA[<h2 id="【原创插件】瀑布流"><a href="#【原创插件】瀑布流" class="headerlink" title="【原创插件】瀑布流"></a>【原创插件】瀑布流</h2><h3 id="1、前台界面"><a href="#1、前台界面" class="headerlink" title="1、前台界面"></a>1、前台界面</h3><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141648.png" srcset="/img/loading.gif" alt></p><h3 id="2、前台大图预览"><a href="#2、前台大图预览" class="headerlink" title="2、前台大图预览"></a>2、前台大图预览</h3><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141649.png" srcset="/img/loading.gif" alt></p><h3 id="3、后台设置"><a href="#3、后台设置" class="headerlink" title="3、后台设置"></a>3、后台设置</h3><p>支持容器宽度自定义，高度随宽度按比例改变</p><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141650.png" srcset="/img/loading.gif" alt></p><h3 id="4、后台管理界面"><a href="#4、后台管理界面" class="headerlink" title="4、后台管理界面"></a>4、后台管理界面</h3><p>作者，内容为选填项，其余为必填项<br><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141651.png" srcset="/img/loading.gif" alt></p><h3 id="5、新增界面"><a href="#5、新增界面" class="headerlink" title="5、新增界面"></a>5、新增界面</h3><p><img src="https://me-blog.oss-cn-shenzhen.aliyuncs.com/img/2018-12-03-141653.png" srcset="/img/loading.gif" alt></p><p><strong>**</strong>***<strong>**</strong>使用说明<strong><strong><em>**</em></strong></strong>****<strong><strong><em>**</em></strong></strong><br>1、前台调用</p><pre><code>钩子{:hook(&apos;WaterFall&apos;)}</code></pre><p>2、安装说明</p><p>如果默认表前缀不是 ct<em>，请在插件目录下 WaterFallAddon.class.php 中的 ct</em>改为你的表前缀</p><pre><code>-&gt;where(&apos;ct_addon_waterfall.status=1&apos;)</code></pre><p>3、安装说明 2<br>如果不能安装是不存在钩子原因，解决办法请看我上一个 OT 移植插件 ImageSlider 中的使用方法</p><p><a href="http://lxl520.com/me/blog/index.php/archives/6/" target="_blank" rel="noopener">ImageSlider</a></p><p>ps：</p><p><a href="http://www.cnblogs.com/sanshi/p/3237429.html" target="_blank" rel="noopener">感谢三生石上的前端瀑布流教程</a></p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div>]]></content>
+    
+    
+    <categories>
+      
+      <category>程序</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>php</tag>
+      
+      <tag>corethink</tag>
+      
+      <tag>插件</tag>
       
     </tags>
     
