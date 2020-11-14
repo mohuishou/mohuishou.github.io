@@ -71,13 +71,13 @@ PushFrontList(other *List) <span class="hljs-comment">// 将链表 other 连接�
 	e.next.prev = e
 
 	<span class="hljs-keyword">return</span> e
-&#125;</code></pre><h3 id="两个问题"><a href="#两个问题" class="headerlink" title="两个问题"></a>两个问题</h3><p>我们在看一下最开始的两个问题<br><strong>1. 为什么在 <code>Element</code> 当中会持有一个 <code>List</code> 结构？</strong></p><ul><li>查看上方的 move 方法我们就可以知道，list 提供了讲节点移动到某个节点之后的方法，通过 e.List 进行对比我们就可以知道需要移动的节点是不是属于当前这个链表了，这也是 <code>MoveToFront</code> 等方法的实现方式</li></ul><p><strong>2. 为什么需要一个单独的 <code>List</code> 结构体，直接要一个 <code>Root</code> 节点不就完事了么？</strong></p><ul><li>看之前的 <code>List</code> 的结构我们可以发现，在结构体中包含了一个 <code>len</code> ，这样可以避免需要取长度的时候每次都需要从头到尾 遍历一遍</li></ul><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *List)</span> <span class="hljs-title">MoveToFront</span><span class="hljs-params">(e *Element)</span></span> &#123;
+&#125;</code></pre><h3 id="两个问题"><a href="#两个问题" class="headerlink" title="两个问题"></a>两个问题</h3><p>我们在看一下最开始的两个问题<br><strong>1. 为什么在 <code>Element</code> 当中会持有一个 <code>List</code> 结构？</strong></p><ul><li>查看上方的 move 方法我们就可以知道，list 提供了讲节点移动到某个节点之后的方法，通过 e.List 进行对比我们就可以知道需要移动的节点是不是属于当前这个链表了，这也是 <code>MoveToFront</code> 等方法的实现方式</li></ul><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *List)</span> <span class="hljs-title">MoveToFront</span><span class="hljs-params">(e *Element)</span></span> &#123;
 	<span class="hljs-keyword">if</span> e.list != l || l.root.next == e &#123;
 		<span class="hljs-keyword">return</span>
 	&#125;
 	<span class="hljs-comment">// see comment in List.Remove about initialization of l</span>
 	l.move(e, &amp;l.root)
-&#125;</code></pre><h2 id="如何实现一个并发安全的-Container-list？"><a href="#如何实现一个并发安全的-Container-list？" class="headerlink" title="如何实现一个并发安全的 Container/list？"></a>如何实现一个并发安全的 Container/list？</h2><p>接下来，我们使用 <code>go test -race .</code> 测试是否存在并发安全的问题</p><h3 id="标准库包"><a href="#标准库包" class="headerlink" title="标准库包"></a>标准库包</h3><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestList</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+&#125;</code></pre><p><strong>2. 为什么需要一个单独的 <code>List</code> 结构体，直接要一个 <code>Root</code> 节点不就完事了么？</strong></p><ul><li>看之前的 <code>List</code> 的结构我们可以发现，在结构体中包含了一个 <code>len</code> ，这样可以避免需要取长度的时候每次都需要从头到尾 遍历一遍</li></ul><h2 id="如何实现一个并发安全的-Container-list？"><a href="#如何实现一个并发安全的-Container-list？" class="headerlink" title="如何实现一个并发安全的 Container/list？"></a>如何实现一个并发安全的 Container/list？</h2><p>接下来，我们使用 <code>go test -race .</code> 测试是否存在并发安全的问题</p><h3 id="标准库包"><a href="#标准库包" class="headerlink" title="标准库包"></a>标准库包</h3><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestList</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
 	l := list.New()
 	wg := sync.WaitGroup&#123;&#125;
 	wg.Add(<span class="hljs-number">1</span>)
