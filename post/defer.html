@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="zh-CN" data-default-color-scheme="&#34;auto&#34;"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png"><link rel="icon" type="image/png" href="/icons/favicon-32x32.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content><meta name="author" content="Mohuishou"><meta name="keywords" content="Go, Docker, PHP"><title>Go数据结构与算法05-栈下: 深入理解 defer - Mohuishou</title><link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/assets/css/custom.css"><script src="/js/utils.js"></script><script src="/js/color-schema.js"></script></head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/"><i class="iconfont icon-home-fill"></i> 首页</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/categories/"><i class="iconfont icon-category-fill"></i> 分类</a></li><li class="nav-item"><a class="nav-link" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item"><a class="nav-link" href="/links/"><i class="iconfont icon-link-fill"></i> 友链</a></li><li class="nav-item"><a class="nav-link" href="/atom.xml"><i class="iconfont icon-rss"></i> rss</a></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i class="iconfont icon-search"></i>&nbsp;</a></li><li class="nav-item" id="color-toggle-btn"><a class="nav-link" href="javascript:">&nbsp;<i class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a></li></ul></div></div></nav><div class="banner intro-2" id="background" parallax="true" style="background:url(/img/bg.jpg) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="container page-header text-center fade-in-up"><span class="h2" id="subtitle"></span><div class="mt-3"><span class="post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2020-11-24 14:45" pubdate>2020年11月24日 下午</time></span></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 2k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 31 分钟</span></div></div></div></div></div></header><main><div class="container-fluid"><div class="row"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-md"><div class="container nopadding-md" id="board-ctn"><div class="py-5" id="board"><article class="post-content mx-auto" id="post"><h1 style="display:none">Go数据结构与算法05-栈下: 深入理解 defer</h1><div class="markdown-body" id="post-body"><h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><ul><li>Go 数据结构与算法系列文章，本系列文章主要会包括常见的数据结构与算法实现，同时会包括 Go 标准库代码的分析理解，讲到对应章节的时候优先学习分析 Go 的源码实现，例如 slice、list、sort 等，然后可能会有一些常见的案例实现，同时这也是 <a href="https://time.geekbang.org/column/intro/126" target="_blank" rel="noopener">极客时间-数据结构与算法之美</a> 的课程笔记</li><li><strong>本文代码仓库:</strong> <a href="https://github.com/mohuishou/go-algorithm" target="_blank" rel="noopener">https://github.com/mohuishou/go-algorithm</a> 🌟🌟🌟🌟🌟</li><li><strong>RoadMap: </strong>持续更新中，预计一周更新 1 ~ 2 篇文章，预计到 202101 月底前更新完成</li><li><strong>获取更新:</strong> <a href="https://github.com/mohuishou" target="_blank" rel="noopener">Github</a>、<a href="https://zhuanlan.zhihu.com/mohuishou" target="_blank" rel="noopener">知乎</a>、<a href="https://lailin.xyz/atom.xml">RSS</a>、<a href="https://toutiao.io/subjects/387401?f=new" target="_blank" rel="noopener">开发者头条</a></li><li>上一个系列刚刚完成了 <a href="https://lailin.xyz/post/go-design-pattern.html">Go 设计模式</a>，如果感兴趣也可以进行查看</li></ul><h2 id="深入理解-go-defer"><a href="#深入理解-go-defer" class="headerlink" title="深入理解 go defer"></a>深入理解 go defer</h2><p>上篇文章中我们讲到栈的时候说到先入后出这种特性，在 Go 中第一时间想到的就是 <code>defer</code> 接下来我们就深入理解一下 defer</p><h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>下面先回顾一下基本的用法以及较为常见的坑，文末会给出输出结果，可以先想想会输出什么</p><h4 id="基本用法-1-延迟处理，资源清理"><a href="#基本用法-1-延迟处理，资源清理" class="headerlink" title="基本用法 1: 延迟处理，资源清理"></a>基本用法 1: 延迟处理，资源清理</h4><pre><code class="hljs go"><span class="hljs-comment">// 基本用法：延迟调用，清理资源</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">f0</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">defer</span> fmt.Println(<span class="hljs-string">"clean"</span>)
+	fmt.Println(<span class="hljs-string">"hello"</span>)
+&#125;</code></pre><h4 id="基本用法-2-后进先出"><a href="#基本用法-2-后进先出" class="headerlink" title="基本用法 2: 后进先出"></a>基本用法 2: 后进先出</h4><pre><code class="hljs go"><span class="hljs-comment">// 基本用法1: 后进先出</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">f1</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">defer</span> fmt.Println(<span class="hljs-string">"1"</span>)
+	<span class="hljs-keyword">defer</span> fmt.Println(<span class="hljs-string">"2"</span>)
+
+	fmt.Println(<span class="hljs-string">"3"</span>)
+&#125;</code></pre><h4 id="基本用法-3-异常恢复"><a href="#基本用法-3-异常恢复" class="headerlink" title="基本用法 3: 异常恢复"></a>基本用法 3: 异常恢复</h4><pre><code class="hljs go"><span class="hljs-comment">// 基本用法2：异常恢复</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">f2</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		<span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> &#123;
+			fmt.Printf(<span class="hljs-string">"paniced: %+v \n"</span>, err)
+		&#125;
+	&#125;()
+	<span class="hljs-built_in">panic</span>(<span class="hljs-string">"test"</span>)
+&#125;</code></pre><h4 id="容易掉坑-1-闭包变量"><a href="#容易掉坑-1-闭包变量" class="headerlink" title="容易掉坑 1: 闭包变量"></a>容易掉坑 1: 闭包变量</h4><pre><code class="hljs go"><span class="hljs-comment">// 容易掉坑之，函数变量修改</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">f3</span><span class="hljs-params">()</span> <span class="hljs-params">(res <span class="hljs-keyword">int</span>)</span></span> &#123;
+	<span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		res++
+	&#125;()
+	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+&#125;</code></pre><h4 id="容易掉坑-2-参数传递"><a href="#容易掉坑-2-参数传递" class="headerlink" title="容易掉坑 2: 参数传递"></a>容易掉坑 2: 参数传递</h4><pre><code class="hljs go"><span class="hljs-comment">// 容易掉坑之，参数复制</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">f4</span><span class="hljs-params">()</span> <span class="hljs-params">(res <span class="hljs-keyword">int</span>)</span></span> &#123;
+	<span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(res <span class="hljs-keyword">int</span>)</span></span> &#123;
+		res++
+	&#125;(res)
+	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+&#125;</code></pre><h3 id="源码剖析"><a href="#源码剖析" class="headerlink" title="源码剖析"></a>源码剖析</h3><p>想要看源码，我们需要先找到源码的位置，我们可以直接执行 <code>go tool compile -N -l -S main.go</code> 获取汇编代码</p><pre><code class="hljs bash">// ....
+ 0x00d8 00216 (main_2.go:6)	PCDATA	<span class="hljs-variable">$1</span>, <span class="hljs-variable">$0</span>
+0x00d8 00216 (main_2.go:6)	CALL	runtime.deferprocStack(SB)
+0x00dd 00221 (main_2.go:6)	NOP
+0x00e0 00224 (main_2.go:6)	TESTL	AX, AX
+0x00e2 00226 (main_2.go:6)	JNE	252
+0x00e4 00228 (main_2.go:6)	JMP	230
+0x00e6 00230 (main_2.go:7)	XCHGL	AX, AX
+0x00e7 00231 (main_2.go:7)	CALL	runtime.deferreturn(SB)
+0x00ec 00236 (main_2.go:7)	MOVQ	216(SP), BP
+0x00f4 00244 (main_2.go:7)	ADDQ	<span class="hljs-variable">$224</span>, SP
+0x00fb 00251 (main_2.go:7)	RET
+0x00fc 00252 (main_2.go:6)	XCHGL	AX, AX
+0x00fd 00253 (main_2.go:6)	NOP
+0x0100 00256 (main_2.go:6)	CALL	runtime.deferreturn(SB)</code></pre><p>我们可以看到主要是调用了 <code>runtime.deferprocStack</code> ， <code>runtime.deferreturn</code> 这两个运行时的方法</p><h4 id="defer-定义"><a href="#defer-定义" class="headerlink" title="defer 定义"></a>defer 定义</h4><pre><code class="hljs go"><span class="hljs-keyword">type</span> _defer <span class="hljs-keyword">struct</span> &#123;
+	siz     <span class="hljs-keyword">int32</span> <span class="hljs-comment">// 所有传入参数和返回值的总大小</span>
+	started <span class="hljs-keyword">bool</span>  <span class="hljs-comment">// defer 是否执行了</span>
+	heap    <span class="hljs-keyword">bool</span>  <span class="hljs-comment">// 是否在堆上，这是 go1.13 新加的，划重点</span>
+	sp        <span class="hljs-keyword">uintptr</span>  <span class="hljs-comment">// 函数栈指针寄存器，一般指向当前函数栈的栈顶</span>
+	pc        <span class="hljs-keyword">uintptr</span>  <span class="hljs-comment">// 程序计数器，指向下一条需要执行的指令</span>
+	fn        *funcval <span class="hljs-comment">// 指向传入的函数地址和参数</span>
+	_panic    *_panic  <span class="hljs-comment">// 指向 panic 链表</span>
+	link      *_defer  <span class="hljs-comment">// 指向 defer 链表</span>
+
+    <span class="hljs-comment">//...</span>
+&#125;</code></pre><h4 id="deferprocStack"><a href="#deferprocStack" class="headerlink" title="deferprocStack"></a>deferprocStack</h4><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">deferprocStack</span><span class="hljs-params">(d *_defer)</span></span> &#123;
+	gp := getg() <span class="hljs-comment">// 获取 g，判断是否在用户栈上</span>
+	<span class="hljs-keyword">if</span> gp.m.curg != gp &#123;
+		<span class="hljs-comment">// go code on the system stack can't defer</span>
+		throw(<span class="hljs-string">"defer on system stack"</span>)
+	&#125;
+	<span class="hljs-comment">// siz and fn are already set.</span>
+	<span class="hljs-comment">// The other fields are junk on entry to deferprocStack and</span>
+	<span class="hljs-comment">// are initialized here.</span>
+	d.started = <span class="hljs-literal">false</span>
+	d.heap = <span class="hljs-literal">false</span>
+	d.openDefer = <span class="hljs-literal">false</span>
+	d.sp = getcallersp()
+	d.pc = getcallerpc()
+	d.framepc = <span class="hljs-number">0</span>
+	d.varp = <span class="hljs-number">0</span>
+	<span class="hljs-comment">// The lines below implement:</span>
+	<span class="hljs-comment">//   d.panic = nil</span>
+	<span class="hljs-comment">//   d.fd = nil</span>
+	<span class="hljs-comment">//   d.link = gp._defer // 这两个是将当前 defer 插入到链表头部，也就是defer为什么时候先入后出的原因</span>
+	<span class="hljs-comment">//   gp._defer = d</span>
+	<span class="hljs-comment">// But without write barriers. The first three are writes to</span>
+	<span class="hljs-comment">// the stack so they don't need a write barrier, and furthermore</span>
+	<span class="hljs-comment">// are to uninitialized memory, so they must not use a write barrier.</span>
+	<span class="hljs-comment">// The fourth write does not require a write barrier because we</span>
+	<span class="hljs-comment">// explicitly mark all the defer structures, so we don't need to</span>
+	<span class="hljs-comment">// keep track of pointers to them with a write barrier.</span>
+	*(*<span class="hljs-keyword">uintptr</span>)(unsafe.Pointer(&amp;d._panic)) = <span class="hljs-number">0</span>
+	*(*<span class="hljs-keyword">uintptr</span>)(unsafe.Pointer(&amp;d.fd)) = <span class="hljs-number">0</span>
+	*(*<span class="hljs-keyword">uintptr</span>)(unsafe.Pointer(&amp;d.link)) = <span class="hljs-keyword">uintptr</span>(unsafe.Pointer(gp._defer))
+	*(*<span class="hljs-keyword">uintptr</span>)(unsafe.Pointer(&amp;gp._defer)) = <span class="hljs-keyword">uintptr</span>(unsafe.Pointer(d))
+
+	return0()
+	<span class="hljs-comment">// No code can go here - the C return register has</span>
+	<span class="hljs-comment">// been set and must not be clobbered.</span>
+&#125;</code></pre><p><strong>注意这几行</strong><br>说明这个 defer 不在堆上</p><pre><code class="hljs go">d.heap = <span class="hljs-literal">false</span></code></pre><p>这两个是将当前 defer 插入到链表头部，也就是 defer 为什么时候先入后出的原因</p><pre><code class="hljs go"><span class="hljs-comment">//   d.link = gp._defer</span>
+<span class="hljs-comment">//   gp._defer = d</span></code></pre><h4 id="deferreturn"><a href="#deferreturn" class="headerlink" title="deferreturn"></a>deferreturn</h4><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">deferreturn</span><span class="hljs-params">(arg0 <span class="hljs-keyword">uintptr</span>)</span></span> &#123;
+	gp := getg()
+	d := gp._defer
+	<span class="hljs-keyword">if</span> d == <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span>
+	&#125;
+	sp := getcallersp()
+	<span class="hljs-keyword">if</span> d.sp != sp &#123;
+		<span class="hljs-keyword">return</span>
+	&#125;
+	<span class="hljs-keyword">if</span> d.openDefer &#123;
+		done := runOpenDeferFrame(gp, d)
+		<span class="hljs-keyword">if</span> !done &#123;
+			throw(<span class="hljs-string">"unfinished open-coded defers in deferreturn"</span>)
+		&#125;
+		gp._defer = d.link
+		freedefer(d)
+		<span class="hljs-keyword">return</span>
+	&#125;
+
+	<span class="hljs-keyword">switch</span> d.siz &#123;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+		<span class="hljs-comment">// Do nothing.</span>
+	<span class="hljs-keyword">case</span> sys.PtrSize:
+		*(*<span class="hljs-keyword">uintptr</span>)(unsafe.Pointer(&amp;arg0)) = *(*<span class="hljs-keyword">uintptr</span>)(deferArgs(d))
+	<span class="hljs-keyword">default</span>:
+		memmove(unsafe.Pointer(&amp;arg0), deferArgs(d), <span class="hljs-keyword">uintptr</span>(d.siz))
+	&#125;
+	fn := d.fn
+	d.fn = <span class="hljs-literal">nil</span>
+	gp._defer = d.link
+	freedefer(d)
+	<span class="hljs-comment">// If the defer function pointer is nil, force the seg fault to happen</span>
+	<span class="hljs-comment">// here rather than in jmpdefer. gentraceback() throws an error if it is</span>
+	<span class="hljs-comment">// called with a callback on an LR architecture and jmpdefer is on the</span>
+	<span class="hljs-comment">// stack, because the stack trace can be incorrect in that case - see</span>
+	<span class="hljs-comment">// issue #8153).</span>
+	_ = fn.fn
+	jmpdefer(fn, <span class="hljs-keyword">uintptr</span>(unsafe.Pointer(&amp;arg0)))
+&#125;</code></pre><p>如果函数中存在 defer 编译器就会自动在函数的最后插入一个 deferreturn</p><ul><li>清空 defer 的调用信息</li><li>freedefer 将 defer 对象放入到 defer 池中，后面可以复用</li><li>如果存在延迟函数就会调用 runtime·jmpdefer 方法跳转到对应的方法上去</li><li>runtime·jmpdefer 方法会递归调用 deferreturn 一直执行到结束为止</li></ul><h4 id="deferproc"><a href="#deferproc" class="headerlink" title="deferproc"></a>deferproc</h4><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">deferproc</span><span class="hljs-params">(siz <span class="hljs-keyword">int32</span>, fn *funcval)</span></span> &#123; <span class="hljs-comment">// arguments of fn follow fn</span>
+	gp := getg()
+	<span class="hljs-keyword">if</span> gp.m.curg != gp &#123;
+		<span class="hljs-comment">// go code on the system stack can't defer</span>
+		throw(<span class="hljs-string">"defer on system stack"</span>)
+	&#125;
+
+	<span class="hljs-comment">// the arguments of fn are in a perilous state. The stack map</span>
+	<span class="hljs-comment">// for deferproc does not describe them. So we can't let garbage</span>
+	<span class="hljs-comment">// collection or stack copying trigger until we've copied them out</span>
+	<span class="hljs-comment">// to somewhere safe. The memmove below does that.</span>
+	<span class="hljs-comment">// Until the copy completes, we can only call nosplit routines.</span>
+	sp := getcallersp()
+	argp := <span class="hljs-keyword">uintptr</span>(unsafe.Pointer(&amp;fn)) + unsafe.Sizeof(fn)
+	callerpc := getcallerpc()
+
+	d := newdefer(siz)
+	<span class="hljs-keyword">if</span> d._panic != <span class="hljs-literal">nil</span> &#123;
+		throw(<span class="hljs-string">"deferproc: d.panic != nil after newdefer"</span>)
+	&#125;
+	d.link = gp._defer
+	gp._defer = d
+	d.fn = fn
+	d.pc = callerpc
+	d.sp = sp
+	<span class="hljs-keyword">switch</span> siz &#123;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+		<span class="hljs-comment">// Do nothing.</span>
+	<span class="hljs-keyword">case</span> sys.PtrSize:
+		*(*<span class="hljs-keyword">uintptr</span>)(deferArgs(d)) = *(*<span class="hljs-keyword">uintptr</span>)(unsafe.Pointer(argp))
+	<span class="hljs-keyword">default</span>:
+		memmove(deferArgs(d), unsafe.Pointer(argp), <span class="hljs-keyword">uintptr</span>(siz))
+	&#125;
+
+	<span class="hljs-comment">// deferproc returns 0 normally.</span>
+	<span class="hljs-comment">// a deferred func that stops a panic</span>
+	<span class="hljs-comment">// makes the deferproc return 1.</span>
+	<span class="hljs-comment">// the code the compiler generates always</span>
+	<span class="hljs-comment">// checks the return value and jumps to the</span>
+	<span class="hljs-comment">// end of the function if deferproc returns != 0.</span>
+	return0()
+	<span class="hljs-comment">// No code can go here - the C return register has</span>
+	<span class="hljs-comment">// been set and must not be clobbered.</span>
+&#125;</code></pre><p>除了 deferprocStack 还有 deferproc 这个方法，那这个方法和之前的方法有什么区别呢？<br>主要的区别就是这个方法将 defer 分配在了堆上，看下方的 <code>newdefer</code></p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">newdefer</span><span class="hljs-params">(siz <span class="hljs-keyword">int32</span>)</span> *_<span class="hljs-title">defer</span></span> &#123;
+    <span class="hljs-comment">// ...</span>
+    d.heap = <span class="hljs-literal">true</span>
+	<span class="hljs-keyword">return</span> d
+&#125;</code></pre><p>其他和 deferprocStack 类似这里就不赘述了</p><h4 id="什么时候-defer-会在堆上什么时候会在栈上？"><a href="#什么时候-defer-会在堆上什么时候会在栈上？" class="headerlink" title="什么时候 defer 会在堆上什么时候会在栈上？"></a>什么时候 defer 会在堆上什么时候会在栈上？</h4><p>那问题来了如何判断 defer 在堆上还是在栈上呢？<br><a href="https://github.com/golang/go/blob/master/src/cmd/compile/internal/gc/escape.go#L743" target="_blank" rel="noopener">https://github.com/golang/go/blob/master/src/cmd/compile/internal/gc/escape.go#L743</a></p><pre><code class="hljs go">topLevelDefer := where != <span class="hljs-literal">nil</span> &amp;&amp; where.Op == ODEFER &amp;&amp; e.loopDepth == <span class="hljs-number">1</span>
+<span class="hljs-keyword">if</span> topLevelDefer &#123;
+    <span class="hljs-comment">// force stack allocation of defer record, unless</span>
+    <span class="hljs-comment">// open-coded defers are used (see ssa.go)</span>
+    where.Esc = EscNever
+&#125;</code></pre><p><a href="https://github.com/golang/go/blob/6965b01ea248cabb70c3749fd218b36089a21efb/src/cmd/compile/internal/gc/ssa.go#L1116" target="_blank" rel="noopener">https://github.com/golang/go/blob/6965b01ea248cabb70c3749fd218b36089a21efb/src/cmd/compile/internal/gc/ssa.go#L1116</a></p><pre><code class="hljs go">d := callDefer
+<span class="hljs-keyword">if</span> n.Esc == EscNever &#123;
+    d = callDeferStack
+&#125;
+s.call(n.Left, d)</code></pre><p>可以看到主要是在逃逸分析的时候，发现 <code>e.loopDepth == 1</code> 并且不是 open-coded defer 就会分配到栈上。<br>这也是为什么 go 1.13 之后 defer 性能提升的原因，所以<strong>切记不要在循环中使用 defer 不然优化也享受不到</strong><br>我们来验证一下</p><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">f6</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;
+		<span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+			fmt.Printf(<span class="hljs-string">"f6: %d\n"</span>, i)
+		&#125;()
+	&#125;
+&#125;</code></pre><p>看一下汇编结果</p><pre><code class="hljs go"><span class="hljs-number">0x0073</span> <span class="hljs-number">00115</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">67</span>)	CALL	runtime.deferproc(SB)
+<span class="hljs-number">0x0078</span> <span class="hljs-number">00120</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">67</span>)	TESTL	AX, AX
+<span class="hljs-number">0x007a</span> <span class="hljs-number">00122</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">67</span>)	JNE	<span class="hljs-number">151</span>
+<span class="hljs-number">0x007c</span> <span class="hljs-number">00124</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">67</span>)	JMP	<span class="hljs-number">126</span>
+<span class="hljs-number">0x007e</span> <span class="hljs-number">00126</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">66</span>)	PCDATA	$<span class="hljs-number">1</span>, $<span class="hljs-number">-1</span>
+<span class="hljs-number">0x007e</span> <span class="hljs-number">00126</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">66</span>)	NOP
+<span class="hljs-number">0x0080</span> <span class="hljs-number">00128</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">66</span>)	JMP	<span class="hljs-number">130</span>
+<span class="hljs-number">0x0082</span> <span class="hljs-number">00130</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">66</span>)	MOVQ	<span class="hljs-string">""</span>.&amp;i+<span class="hljs-number">32</span>(SP), AX
+<span class="hljs-number">0x0087</span> <span class="hljs-number">00135</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">66</span>)	MOVQ	(AX), AX
+<span class="hljs-number">0x008a</span> <span class="hljs-number">00138</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">66</span>)	MOVQ	<span class="hljs-string">""</span>.&amp;i+<span class="hljs-number">32</span>(SP), CX
+<span class="hljs-number">0x008f</span> <span class="hljs-number">00143</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">66</span>)	INCQ	AX
+<span class="hljs-number">0x0092</span> <span class="hljs-number">00146</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">66</span>)	MOVQ	AX, (CX)
+<span class="hljs-number">0x0095</span> <span class="hljs-number">00149</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">66</span>)	JMP	<span class="hljs-number">68</span>
+<span class="hljs-number">0x0097</span> <span class="hljs-number">00151</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">67</span>)	PCDATA	$<span class="hljs-number">1</span>, $<span class="hljs-number">0</span>
+<span class="hljs-number">0x0097</span> <span class="hljs-number">00151</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">67</span>)	XCHGL	AX, AX
+<span class="hljs-number">0x0098</span> <span class="hljs-number">00152</span> (main.<span class="hljs-keyword">go</span>:<span class="hljs-number">67</span>)	CALL	runtime.deferreturn(SB)</code></pre><p>可以发现在循环嵌套的场景下，的确调用的是 <code>runtime.deferproc</code> 方法，被分配到栈上了</p><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/stack.html">Go数据结构与算法04-栈上: 如何实现一个计算器</a></li><li><a href="https://lailin.xyz/post/go-new-struct-style-select.html">Go Struct 初始化风格的抉择</a></li><li><a href="https://lailin.xyz/post/array_2.html">Go数据结构与算法03-数组下: 使用 GDB 调试 Golang 代码</a></li></ul></div></div><hr><div><div class="post-metas mb-3"><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/算法/">算法</a> <a class="hover-with-bg" href="/tags/学习笔记/">学习笔记</a> <a class="hover-with-bg" href="/tags/Go/">Go</a> <a class="hover-with-bg" href="/tags/数据结构/">数据结构</a></div></div><p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p><div class="post-prevnext row"><article class="post-prev col-6"></article><article class="post-next col-6"><a href="/post/stack.html"><span class="hidden-mobile">Go数据结构与算法04-栈上: 如何实现一个计算器</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></article></div></div><article class="comments" id="comments"><script type="text/javascript">function loadUtterances(){var t="github-light",e="github-dark",s=document.documentElement.getAttribute("data-user-color-scheme");s="dark"===s?e:t,window.UtterancesThemeLight=t,window.UtterancesThemeDark=e;var n=document.createElement("script");n.setAttribute("src","https://utteranc.es/client.js"),n.setAttribute("repo","scuplus/blogComment"),n.setAttribute("issue-term","pathname"),n.setAttribute("label","utterances"),n.setAttribute("theme",s),n.setAttribute("crossorigin","anonymous"),document.getElementById("comments").appendChild(n)}waitElementVisible("comments",loadUtterances)</script></article></article></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div id="tocbot"></div></div></div></div></div></main><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><footer class="text-center mt-5 py-3"><div class="footer-content"><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div></footer><script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script><script src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script><script src="/js/debouncer.js"></script><script src="/js/main.js"></script><script src="/js/lazyload.js"></script><script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script><script src="/js/clipboard-use.js"></script><script src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js"></script><script>$(document).ready(function(){var t=$("#board-ctn").offset().top;tocbot.init({tocSelector:"#tocbot",contentSelector:"#post-body",headingSelector:"h1,h2,h3,h4,h5,h6",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:0,scrollSmooth:!0,headingsOffset:-t}),0<$(".toc-list-item").length&&$("#toc").css("visibility","visible")})</script><script src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js"></script><script>var typed=new Typed("#subtitle",{strings:["  ","Go数据结构与算法05-栈下: 深入理解 defer&nbsp;"],cursorChar:"_",typeSpeed:70,loop:!1});typed.stop(),$(document).ready(function(){$(".typed-cursor").addClass("h2"),typed.start()})</script><script src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js"></script><script>anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))</script><script src="/js/local-search.js"></script><script>var path="/local-search.xml",inputArea=document.querySelector("#local-search-input");inputArea.onclick=function(){searchFunc(path,"local-search-input","local-search-result"),this.onclick=null}</script><script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script><link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css"><script>$("#post img:not(.no-zoom img, img[no-zoom]), img[zoom]").each(function(){var t=document.createElement("a");$(t).attr("data-fancybox","images"),$(t).attr("href",$(this).attr("src")),$(this).wrap(t)})</script><script defer>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-137859264-1","auto"),ga("send","pageview")</script><script async src="https://www.google-analytics.com/analytics.js"></script></body></html>
