@@ -8,6 +8,14 @@
     </url>
 
     <url>
+        <loc>https://lailin.xyz/post/go-training-03.html</loc>
+        <lastmod>2020-12-30T06:39:12.424Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://lailin.xyz/post/go-training-week3-once.html</loc>
         <lastmod>2020-12-30T05:02:46.748Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -66,14 +74,6 @@
     <url>
         <loc>https://lailin.xyz/post/go-training-week3-atomic.html</loc>
         <lastmod>2020-12-30T05:02:46.745Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://lailin.xyz/post/go-training-03.html</loc>
-        <lastmod>2020-12-20T07:03:21.206Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
