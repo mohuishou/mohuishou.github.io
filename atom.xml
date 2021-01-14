@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-01-08T09:16:46.085Z</updated>
+  <updated>2021-01-14T15:48:28.532Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-context.html"/>
     <id>https://lailin.xyz/post/go-training-week3-context.html</id>
     <published>2021-01-04T14:23:18.000Z</published>
-    <updated>2021-01-08T09:16:46.085Z</updated>
+    <updated>2021-01-14T15:48:28.532Z</updated>
     
     <summary type="html">
     
@@ -51,6 +51,8 @@
     
       <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
     
+      <category term="context" scheme="https://lailin.xyz/tags/context/"/>
+    
   </entry>
   
   <entry>
@@ -58,7 +60,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-once.html"/>
     <id>https://lailin.xyz/post/go-training-week3-once.html</id>
     <published>2020-12-28T14:29:54.000Z</published>
-    <updated>2020-12-30T05:02:46.748Z</updated>
+    <updated>2021-01-14T15:48:28.532Z</updated>
     
     <summary type="html">
     
@@ -88,6 +90,10 @@
     
       <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
     
+      <category term="sync" scheme="https://lailin.xyz/tags/sync/"/>
+    
+      <category term="once" scheme="https://lailin.xyz/tags/once/"/>
+    
   </entry>
   
   <entry>
@@ -95,7 +101,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-errgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-errgroup.html</id>
     <published>2020-12-28T13:36:51.000Z</published>
-    <updated>2020-12-30T05:02:46.746Z</updated>
+    <updated>2021-01-14T15:48:28.532Z</updated>
     
     <summary type="html">
     
@@ -125,6 +131,12 @@
     
       <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
     
+      <category term="sync" scheme="https://lailin.xyz/tags/sync/"/>
+    
+      <category term="errgroup" scheme="https://lailin.xyz/tags/errgroup/"/>
+    
+      <category term="waitgroup" scheme="https://lailin.xyz/tags/waitgroup/"/>
+    
   </entry>
   
   <entry>
@@ -132,7 +144,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-waitgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-waitgroup.html</id>
     <published>2020-12-27T22:08:51.000Z</published>
-    <updated>2020-12-30T05:02:46.748Z</updated>
+    <updated>2021-01-14T15:48:50.464Z</updated>
     
     <summary type="html">
     
@@ -162,6 +174,10 @@
     
       <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
     
+      <category term="sync" scheme="https://lailin.xyz/tags/sync/"/>
+    
+      <category term="waitgroup" scheme="https://lailin.xyz/tags/waitgroup/"/>
+    
   </entry>
   
   <entry>
@@ -169,7 +185,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-atomic.html"/>
     <id>https://lailin.xyz/post/go-training-week3-atomic.html</id>
     <published>2020-12-27T14:08:51.000Z</published>
-    <updated>2020-12-30T05:02:46.745Z</updated>
+    <updated>2021-01-14T15:48:21.912Z</updated>
     
     <summary type="html">
     
@@ -199,6 +215,8 @@
     
       <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
     
+      <category term="atomic" scheme="https://lailin.xyz/tags/atomic/"/>
+    
   </entry>
   
   <entry>
@@ -206,7 +224,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sync.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sync.html</id>
     <published>2020-12-26T13:08:51.000Z</published>
-    <updated>2020-12-30T05:02:46.748Z</updated>
+    <updated>2021-01-14T15:48:48.204Z</updated>
     
     <summary type="html">
     
@@ -235,6 +253,10 @@
       <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
     
       <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="mutex" scheme="https://lailin.xyz/tags/mutex/"/>
+    
+      <category term="互斥锁" scheme="https://lailin.xyz/tags/%E4%BA%92%E6%96%A5%E9%94%81/"/>
     
   </entry>
   
@@ -354,7 +376,7 @@
     <link href="https://lailin.xyz/post/go-training-03.html"/>
     <id>https://lailin.xyz/post/go-training-03.html</id>
     <published>2020-12-01T12:44:27.000Z</published>
-    <updated>2021-01-08T09:16:46.085Z</updated>
+    <updated>2021-01-14T15:46:55.924Z</updated>
     
     <summary type="html">
     
@@ -1358,6 +1380,45 @@
   </entry>
   
   <entry>
+    <title>Week03: Go并发编程(十) 深入理解 Channel</title>
+    <link href="https://lailin.xyz/post/go-training-week3-channel.html"/>
+    <id>https://lailin.xyz/post/go-training-week3-channel.html</id>
+    <published>2020-01-14T23:08:51.000Z</published>
+    <updated>2021-01-14T15:49:05.704Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;楔子&quot;&gt;&lt;a href=&quot;#楔子&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Go并发编程" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="channel" scheme="https://lailin.xyz/tags/channel/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go Web 小技巧（三）Gin 参数绑定</title>
     <link href="https://lailin.xyz/post/11996.html"/>
     <id>https://lailin.xyz/post/11996.html</id>
@@ -1989,6 +2050,87 @@
   </entry>
   
   <entry>
+    <title>快速排序</title>
+    <link href="https://lailin.xyz/post/11306.html"/>
+    <id>https://lailin.xyz/post/11306.html</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2020-04-18T13:39:10.543Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/mohuishou/go-sort&quot;&gt;https://github.com/mohuishou/go-sort&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;说明&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>归并排序</title>
+    <link href="https://lailin.xyz/post/63711.html"/>
+    <id>https://lailin.xyz/post/63711.html</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2020-04-18T13:39:10.543Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h2&gt;&lt;p&gt;归并排序:是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>冒泡排序</title>
+    <link href="https://lailin.xyz/post/21238.html"/>
+    <id>https://lailin.xyz/post/21238.html</id>
+    <published>2017-09-17T16:00:00.000Z</published>
+    <updated>2020-04-18T13:39:10.542Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;冒泡排序&quot;&gt;&lt;a href=&quot;#冒泡排序&quot; class=&quot;headerlink&quot; title=&quot;冒泡排序&quot;&gt;&lt;/a&gt;冒泡排序&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>shell排序</title>
     <link href="https://lailin.xyz/post/27243.html"/>
     <id>https://lailin.xyz/post/27243.html</id>
@@ -2070,61 +2212,6 @@
   </entry>
   
   <entry>
-    <title>堆排序</title>
-    <link href="https://lailin.xyz/post/46698.html"/>
-    <id>https://lailin.xyz/post/46698.html</id>
-    <published>2017-09-17T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.542Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h2&gt;&lt;p&gt;堆积排序：
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>快速排序</title>
-    <link href="https://lailin.xyz/post/11306.html"/>
-    <id>https://lailin.xyz/post/11306.html</id>
-    <published>2017-09-17T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.543Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/mohuishou/go-sort&quot;&gt;https://github.com/mohuishou/go-sort&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;说明&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-  </entry>
-  
-  <entry>
     <title>百度面试总结</title>
     <link href="https://lailin.xyz/post/56757.html"/>
     <id>https://lailin.xyz/post/56757.html</id>
@@ -2153,35 +2240,9 @@
   </entry>
   
   <entry>
-    <title>归并排序</title>
-    <link href="https://lailin.xyz/post/63711.html"/>
-    <id>https://lailin.xyz/post/63711.html</id>
-    <published>2017-09-17T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.543Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h2&gt;&lt;p&gt;归并排序:是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-      <category term="排序" scheme="https://lailin.xyz/tags/%E6%8E%92%E5%BA%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>冒泡排序</title>
-    <link href="https://lailin.xyz/post/21238.html"/>
-    <id>https://lailin.xyz/post/21238.html</id>
+    <title>堆排序</title>
+    <link href="https://lailin.xyz/post/46698.html"/>
+    <id>https://lailin.xyz/post/46698.html</id>
     <published>2017-09-17T16:00:00.000Z</published>
     <updated>2020-04-18T13:39:10.542Z</updated>
     
@@ -2191,7 +2252,7 @@
       
         
         
-          &lt;h1 id=&quot;冒泡排序&quot;&gt;&lt;a href=&quot;#冒泡排序&quot; class=&quot;headerlink&quot; title=&quot;冒泡排序&quot;&gt;&lt;/a&gt;冒泡排序&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot;
+          &lt;h2 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h2&gt;&lt;p&gt;堆积排序：
         
       
     
@@ -2837,40 +2898,6 @@
       <category term="图片" scheme="https://lailin.xyz/tags/%E5%9B%BE%E7%89%87/"/>
     
       <category term="验证码识别" scheme="https://lailin.xyz/tags/%E9%AA%8C%E8%AF%81%E7%A0%81%E8%AF%86%E5%88%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>php利用curl保存图片</title>
-    <link href="https://lailin.xyz/post/58471.html"/>
-    <id>https://lailin.xyz/post/58471.html</id>
-    <published>2016-05-02T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.532Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;做验证码识别的时候需要先把图片保存起来，写了一个保存图片的函数&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;pre&gt;&lt;code class=&quot;hljs php&quot;&gt;&lt;span class=&quot;hljs-comment&quot;&gt;/**&lt;/span&gt;
-&lt;span
-        
-      
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="图片" scheme="https://lailin.xyz/tags/%E5%9B%BE%E7%89%87/"/>
-    
-      <category term="curl" scheme="https://lailin.xyz/tags/curl/"/>
     
   </entry>
   
