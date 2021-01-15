@@ -8,8 +8,8 @@
     </url>
 
     <url>
-        <loc>https://lailin.xyz/post/go-training-week3-sum.html</loc>
-        <lastmod>2021-01-15T05:59:18.726Z</lastmod>
+        <loc>https://lailin.xyz/post/go-training-week3-context.html</loc>
+        <lastmod>2021-01-15T06:01:04.484Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -17,7 +17,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week3-atomic.html</loc>
-        <lastmod>2021-01-15T05:57:36.689Z</lastmod>
+        <lastmod>2021-01-15T06:00:00.371Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -25,7 +25,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week3-errgroup.html</loc>
-        <lastmod>2021-01-15T05:57:36.689Z</lastmod>
+        <lastmod>2021-01-15T06:00:00.371Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -33,7 +33,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week3-once.html</loc>
-        <lastmod>2021-01-15T05:57:36.689Z</lastmod>
+        <lastmod>2021-01-15T06:00:00.371Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -41,7 +41,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week3-waitgroup.html</loc>
-        <lastmod>2021-01-15T05:57:36.689Z</lastmod>
+        <lastmod>2021-01-15T06:00:00.371Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -49,7 +49,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-03.html</loc>
-        <lastmod>2021-01-15T05:57:36.689Z</lastmod>
+        <lastmod>2021-01-15T06:00:00.371Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -57,7 +57,15 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week3-sync.html</loc>
-        <lastmod>2021-01-15T05:57:36.689Z</lastmod>
+        <lastmod>2021-01-15T06:00:00.371Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/post/go-training-week3-sum.html</loc>
+        <lastmod>2021-01-15T06:00:00.371Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -65,15 +73,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week3-channel.html</loc>
-        <lastmod>2021-01-15T05:57:36.689Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://lailin.xyz/post/go-training-week3-context.html</loc>
-        <lastmod>2021-01-15T05:57:36.689Z</lastmod>
+        <lastmod>2021-01-15T06:00:00.371Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
