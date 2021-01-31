@@ -1,425 +1,479 @@
-<!DOCTYPE html><html lang="zh-CN" data-default-color-scheme="&#34;auto&#34;"><head><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png"><link rel="icon" type="image/png" href="/icons/favicon-32x32.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content=""><meta name="author" content="Mohuishou"><meta name="keywords" content="Go, Docker, PHP"><title>Go设计模式02-工厂模式&amp;DI容器 - Mohuishou</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/assets/css/custom.css"><script id="fluid-configs">var Fluid=window.Fluid||{},CONFIG={hostname:"lailin.xyz",root:"/",version:"1.8.7",typing:{enable:!0,typeSpeed:70,cursorChar:"_",loop:!1},anchorjs:{enable:!0,element:"h1,h2,h3,h4,h5,h6",placement:"right",visible:"hover",icon:""},progressbar:{enable:!0,height_px:3,color:"#29d",options:{showSpinner:!1,trickleSpeed:100}},copy_btn:!0,image_zoom:{enable:!0},toc:{enable:!0,headingSelector:"h1,h2,h3,h4,h5,h6",collapseDepth:1},lazyload:{enable:!0,onlypost:!1},web_analytics:{enable:!0,baidu:null,google:"UA-137859264-1",gtag:null,tencent:{sid:null,cid:null},woyaola:null,cnzz:null,leancloud:{app_id:null,app_key:null,server_url:null}}}</script><script src="/js/utils.js"></script><script src="/js/color-schema.js"></script><meta name="generator" content="Hexo 5.3.0"></head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/"><i class="iconfont icon-home-fill"></i> 首页</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/categories/"><i class="iconfont icon-category-fill"></i> 分类</a></li><li class="nav-item"><a class="nav-link" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item"><a class="nav-link" href="/links/"><i class="iconfont icon-link-fill"></i> 友链</a></li><li class="nav-item"><a class="nav-link" href="/atom.xml"><i class="iconfont icon-rss"></i> rss</a></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i class="iconfont icon-search"></i>&nbsp;</a></li><li class="nav-item" id="color-toggle-btn"><a class="nav-link" href="javascript:">&nbsp;<i class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a></li></ul></div></div></nav><div class="banner" id="banner" parallax="true" style="background:url(https://lailin.xyz/images/1598458929635-349ab814-e9e4-4ace-9964-be30060d61bb.png) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="page-header text-center fade-in-up"><span class="h2" id="subtitle" title="Go设计模式02-工厂模式&DI容器"></span><div class="mt-3"><span class="post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2020-08-24 10:34" pubdate>2020年8月24日 上午</time></span></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 2.1k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 33 分钟</span></div></div></div></div></div></header><main><div class="container-fluid nopadding-x"><div class="row nomargin-x"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-x-md"><div class="container nopadding-x-md" id="board-ctn"><div class="py-5" id="board"><article class="post-content mx-auto"><h1 style="display:none">Go设计模式02-工厂模式&amp;DI容器</h1><div class="markdown-body"><h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><ul><li>注意：这篇文章代码比较多，包含了 简单工厂、工厂方法、抽象工厂、DI 容器的实现，由于内容具有关联性就不进行拆分了</li><li>Go 设计模式实现，包含 23 种常见的设计模式实现，同时这也是 <a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/250">极客时间-设计模式之美</a> 的笔记，源课程采用 Java 实现，本系列会采用 Go 实现</li><li><strong>课程:</strong> <a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/197254">44 | 工厂模式（上）：我为什么说没事不要随便用工厂模式创建对象？</a></li><li><strong>本文代码仓库: <a target="_blank" rel="noopener" href="https://github.com/mohuishou/go-design-pattern">https://github.com/mohuishou/go-design-pattern</a> </strong>🌟🌟🌟🌟🌟</li><li><strong>RoadMap: 02/22 </strong>持续更新中，预计一周更新 2 ~ 3 种设计模式，预计到 202010 月底前更新完成</li><li><strong>获取更新: </strong><a target="_blank" rel="noopener" href="https://github.com/mohuishou/go-design-pattern"><strong>Github</strong></a><strong>、</strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/mohuishou"><strong>知乎</strong></a><strong>、</strong><a href="https://lailin.xyz/atom.xml"><strong>RSS</strong></a><strong>、</strong><a target="_blank" rel="noopener" href="https://toutiao.io/subjects/387401?f=new"><strong>开发者头条</strong></a><br><img src="https://lailin.xyz/images/1599020982679-472ce6a9-cc75-4fd1-b92e-bf643f4b2784.png" srcset="/img/loading.gif" alt=""></li></ul><h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h3><p>由于 Go 本身是没有构造函数的，一般而言我们采用 <code>NewName</code> 的方式创建对象/接口，当它返回的是接口的时候，其实就是简单工厂模式</p><pre><code class="hljs go"><span class="hljs-keyword">package</span> factory
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Go设计模式02-工厂模式&amp;DI容器 | Go 设计模式</title>
+    <meta name="generator" content="VuePress 1.8.0">
+    
+    <meta name="description" content="Go 设计模式">
+    <meta property="article:published_time" content="2020-08-24T10:34:08.000Z">
+    <meta property="og:site_name" content="Go 设计模式">
+    <meta property="og:title" content="Go设计模式02-工厂模式&DI容器">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/post/factory.html">
+    <meta name="twitter:title" content="Go设计模式02-工厂模式&DI容器">
+    <meta name="twitter:url" content="/post/factory.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="学习笔记, 设计模式">
+    <meta property="article:tag" content="学习笔记">
+    
+    <link rel="preload" href="/assets/css/0.styles.1c81ceb0.css" as="style"><link rel="preload" href="/assets/js/app.4b51615f.js" as="script"><link rel="preload" href="/assets/js/2.9dd548d2.js" as="script"><link rel="preload" href="/assets/js/15.bfadf955.js" as="script"><link rel="prefetch" href="/assets/js/10.e7a14518.js"><link rel="prefetch" href="/assets/js/11.14fdeb30.js"><link rel="prefetch" href="/assets/js/12.77e912df.js"><link rel="prefetch" href="/assets/js/13.9ba2dd93.js"><link rel="prefetch" href="/assets/js/14.bc0dd5af.js"><link rel="prefetch" href="/assets/js/16.1c429a7c.js"><link rel="prefetch" href="/assets/js/17.15c5183d.js"><link rel="prefetch" href="/assets/js/18.23c4b7a6.js"><link rel="prefetch" href="/assets/js/19.091dd7cc.js"><link rel="prefetch" href="/assets/js/20.fbeeaa29.js"><link rel="prefetch" href="/assets/js/21.ad4de7b9.js"><link rel="prefetch" href="/assets/js/22.fc98e4fe.js"><link rel="prefetch" href="/assets/js/23.059c04b4.js"><link rel="prefetch" href="/assets/js/24.50d1f201.js"><link rel="prefetch" href="/assets/js/25.23fdfb93.js"><link rel="prefetch" href="/assets/js/26.e340417b.js"><link rel="prefetch" href="/assets/js/27.325079f9.js"><link rel="prefetch" href="/assets/js/28.b388d0cf.js"><link rel="prefetch" href="/assets/js/29.47dc4247.js"><link rel="prefetch" href="/assets/js/3.c5d1159e.js"><link rel="prefetch" href="/assets/js/30.afbc18af.js"><link rel="prefetch" href="/assets/js/4.3f90dd56.js"><link rel="prefetch" href="/assets/js/5.04d9480d.js"><link rel="prefetch" href="/assets/js/6.579b26d2.js"><link rel="prefetch" href="/assets/js/7.922ffd40.js"><link rel="prefetch" href="/assets/js/8.34e9f0f2.js"><link rel="prefetch" href="/assets/js/9.9eabdc68.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.1c81ceb0.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">Go 设计模式</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  博客首页
+</a></div> <a href="https://github.com/mohuishou/go-design-pattern" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  博客首页
+</a></div> <a href="https://github.com/mohuishou/go-design-pattern" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/post/go-design-pattern.html" class="sidebar-link">总结</a></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>创建型</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/post/singleton.html" class="sidebar-link">Go设计模式01-单例模式</a></li><li><a href="/post/factory.html" aria-current="page" class="active sidebar-link">Go设计模式02-工厂模式&amp;DI容器</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/post/factory.html#序" class="sidebar-link">序</a></li><li class="sidebar-sub-header"><a href="/post/factory.html#代码实现" class="sidebar-link">代码实现</a></li></ul></li><li><a href="/post/builder.html" class="sidebar-link">Go设计模式03-建造者模式</a></li><li><a href="/post/prototype.html" class="sidebar-link">Go设计模式04-原型模式</a></li><li><a href="/post/go-design-pattern-create.html" class="sidebar-link">Go设计模式05-创建型模式总结</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>结构型</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/post/proxy.html" class="sidebar-link">Go设计模式06-代理模式(generate实现类似动态代理)</a></li><li><a href="/post/bridge.html" class="sidebar-link">Go设计模式07-桥接模式</a></li><li><a href="/post/decorator.html" class="sidebar-link">Go设计模式08-装饰器模式</a></li><li><a href="/post/adapter.html" class="sidebar-link">Go设计模式09-适配器模式</a></li><li><a href="/post/facade.html" class="sidebar-link">Go设计模式10-门面模式</a></li><li><a href="/post/composite.html" class="sidebar-link">Go设计模式11-组合模式</a></li><li><a href="/post/flyweight.html" class="sidebar-link">Go设计模式12-享元模式</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>行为性</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/post/observer.html" class="sidebar-link">Go设计模式13-观察者模式(实现简单的EventBus)</a></li><li><a href="/post/template.html" class="sidebar-link">Go模板模式14-模板模式</a></li><li><a href="/post/strategy.html" class="sidebar-link">Go设计模式15-策略模式</a></li><li><a href="/post/chain.html" class="sidebar-link">Go设计模式16-职责链模式(Gin的中间件实现)</a></li><li><a href="/post/state.html" class="sidebar-link">Go设计模式17-状态模式</a></li><li><a href="/post/iterator.html" class="sidebar-link">Go设计模式18-迭代器模式</a></li><li><a href="/post/visitor.html" class="sidebar-link">Go设计模式19-访问者模式</a></li><li><a href="/post/memento.html" class="sidebar-link">Go设计模式20-备忘录模式</a></li><li><a href="/post/command.html" class="sidebar-link">Go设计模式21-命令模式</a></li><li><a href="/post/interpreter.html" class="sidebar-link">Go设计模式22-解释器模式</a></li><li><a href="/post/mediator.html" class="sidebar-link">Go设计模式23-中介模式</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="序"><a href="#序" class="header-anchor">#</a> 序</h2> <ul><li>注意：这篇文章代码比较多，包含了 简单工厂、工厂方法、抽象工厂、DI 容器的实现，由于内容具有关联性就不进行拆分了</li> <li>Go 设计模式实现，包含 23 种常见的设计模式实现，同时这也是 <a href="https://time.geekbang.org/column/intro/250" target="_blank" rel="noopener noreferrer">极客时间-设计模式之美<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> 的笔记，源课程采用 Java 实现，本系列会采用 Go 实现</li> <li><strong>课程:</strong> <a href="https://time.geekbang.org/column/article/197254" target="_blank" rel="noopener noreferrer">44 | 工厂模式（上）：我为什么说没事不要随便用工厂模式创建对象？<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li>**本文代码仓库: <a href="https://github.com/mohuishou/go-design-pattern" target="_blank" rel="noopener noreferrer">https://github.com/mohuishou/go-design-pattern<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> **🌟🌟🌟🌟🌟</li> <li>**RoadMap: 02/22 **持续更新中，预计一周更新 2 ~ 3 种设计模式，预计到 202010 月底前更新完成</li> <li><strong>获取更新: <strong><a href="https://github.com/mohuishou/go-design-pattern" target="_blank" rel="noopener noreferrer"><strong>Github</strong><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></strong>、</strong><a href="https://zhuanlan.zhihu.com/mohuishou" target="_blank" rel="noopener noreferrer"><strong>知乎</strong><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a><strong>、</strong><a href="https://lailin.xyz/atom.xml" target="_blank" rel="noopener noreferrer"><strong>RSS</strong><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a><strong>、</strong><a href="https://toutiao.io/subjects/387401?f=new" target="_blank" rel="noopener noreferrer"><strong>开发者头条</strong><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> <img src="https://lailin.xyz/images/1599020982679-472ce6a9-cc75-4fd1-b92e-bf643f4b2784.png" alt=""></li></ul> <h2 id="代码实现"><a href="#代码实现" class="header-anchor">#</a> 代码实现</h2> <h3 id="简单工厂"><a href="#简单工厂" class="header-anchor">#</a> 简单工厂</h3> <p>由于 Go 本身是没有构造函数的，一般而言我们采用 <code>NewName</code>  的方式创建对象/接口，当它返回的是接口的时候，其实就是简单工厂模式</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> factory
 
-<span class="hljs-comment">// IRuleConfigParser IRuleConfigParser</span>
-<span class="hljs-keyword">type</span> IRuleConfigParser <span class="hljs-keyword">interface</span> &#123;
-	Parse(data []<span class="hljs-keyword">byte</span>)
-&#125;
+<span class="token comment">// IRuleConfigParser IRuleConfigParser</span>
+<span class="token keyword">type</span> IRuleConfigParser <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+	<span class="token function">Parse</span><span class="token punctuation">(</span>data <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// jsonRuleConfigParser jsonRuleConfigParser</span>
-<span class="hljs-keyword">type</span> jsonRuleConfigParser <span class="hljs-keyword">struct</span> &#123;
-&#125;
+<span class="token comment">// jsonRuleConfigParser jsonRuleConfigParser</span>
+<span class="token keyword">type</span> jsonRuleConfigParser <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Parse Parse</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(J jsonRuleConfigParser)</span> <span class="hljs-title">Parse</span><span class="hljs-params">(data []<span class="hljs-keyword">byte</span>)</span></span> &#123;
-	<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;implement me&quot;</span>)
-&#125;
+<span class="token comment">// Parse Parse</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>J jsonRuleConfigParser<span class="token punctuation">)</span> <span class="token function">Parse</span><span class="token punctuation">(</span>data <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">&quot;implement me&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// yamlRuleConfigParser yamlRuleConfigParser</span>
-<span class="hljs-keyword">type</span> yamlRuleConfigParser <span class="hljs-keyword">struct</span> &#123;
-&#125;
+<span class="token comment">// yamlRuleConfigParser yamlRuleConfigParser</span>
+<span class="token keyword">type</span> yamlRuleConfigParser <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Parse Parse</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(Y yamlRuleConfigParser)</span> <span class="hljs-title">Parse</span><span class="hljs-params">(data []<span class="hljs-keyword">byte</span>)</span></span> &#123;
-	<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;implement me&quot;</span>)
-&#125;
+<span class="token comment">// Parse Parse</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>Y yamlRuleConfigParser<span class="token punctuation">)</span> <span class="token function">Parse</span><span class="token punctuation">(</span>data <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">&quot;implement me&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// NewIRuleConfigParser NewIRuleConfigParser</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewIRuleConfigParser</span><span class="hljs-params">(t <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">IRuleConfigParser</span></span> &#123;
-	<span class="hljs-keyword">switch</span> t &#123;
-	<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;json&quot;</span>:
-		<span class="hljs-keyword">return</span> jsonRuleConfigParser&#123;&#125;
-	<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;yaml&quot;</span>:
-		<span class="hljs-keyword">return</span> yamlRuleConfigParser&#123;&#125;
-	&#125;
-	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
-&#125;
-</code></pre><h4 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h4><pre><code class="hljs go"><span class="hljs-keyword">package</span> factory
+<span class="token comment">// NewIRuleConfigParser NewIRuleConfigParser</span>
+<span class="token keyword">func</span> <span class="token function">NewIRuleConfigParser</span><span class="token punctuation">(</span>t <span class="token builtin">string</span><span class="token punctuation">)</span> IRuleConfigParser <span class="token punctuation">{</span>
+	<span class="token keyword">switch</span> t <span class="token punctuation">{</span>
+	<span class="token keyword">case</span> <span class="token string">&quot;json&quot;</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> jsonRuleConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span>
+	<span class="token keyword">case</span> <span class="token string">&quot;yaml&quot;</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> yamlRuleConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;reflect&quot;</span>
-	<span class="hljs-string">&quot;testing&quot;</span>
-)
+</code></pre></div><h4 id="单元测试"><a href="#单元测试" class="header-anchor">#</a> 单元测试</h4> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> factory
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestNewIRuleConfigParser</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
-	<span class="hljs-keyword">type</span> args <span class="hljs-keyword">struct</span> &#123;
-		t <span class="hljs-keyword">string</span>
-	&#125;
-	tests := []<span class="hljs-keyword">struct</span> &#123;
-		name <span class="hljs-keyword">string</span>
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;reflect&quot;</span>
+	<span class="token string">&quot;testing&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">TestNewIRuleConfigParser</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">type</span> args <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+		t <span class="token builtin">string</span>
+	<span class="token punctuation">}</span>
+	tests <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">struct</span> <span class="token punctuation">{</span>
+		name <span class="token builtin">string</span>
 		args args
 		want IRuleConfigParser
-	&#125;&#123;
-		&#123;
-			name: <span class="hljs-string">&quot;json&quot;</span>,
-			args: args&#123;t: <span class="hljs-string">&quot;json&quot;</span>&#125;,
-			want: jsonRuleConfigParser&#123;&#125;,
-		&#125;,
-		&#123;
-			name: <span class="hljs-string">&quot;yaml&quot;</span>,
-			args: args&#123;t: <span class="hljs-string">&quot;yaml&quot;</span>&#125;,
-			want: yamlRuleConfigParser&#123;&#125;,
-		&#125;,
-	&#125;
-	<span class="hljs-keyword">for</span> _, tt := <span class="hljs-keyword">range</span> tests &#123;
-		t.Run(tt.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
-			<span class="hljs-keyword">if</span> got := NewIRuleConfigParser(tt.args.t); !reflect.DeepEqual(got, tt.want) &#123;
-				t.Errorf(<span class="hljs-string">&quot;NewIRuleConfigParser() = %v, want %v&quot;</span>, got, tt.want)
-			&#125;
-		&#125;)
-	&#125;
-&#125;</code></pre><h3 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h3><p>当对象的创建逻辑比较复杂，不只是简单的 new 一下就可以，而是要组合其他类对象，做各种初始化操作的时候，推荐使用工厂方法模式，将复杂的创建逻辑拆分到多个工厂类中，让每个工厂类都不至于过于复杂</p><pre><code class="hljs go"><span class="hljs-comment">// IRuleConfigParserFactory 工厂方法接口</span>
-<span class="hljs-keyword">type</span> IRuleConfigParserFactory <span class="hljs-keyword">interface</span> &#123;
-	CreateParser() IRuleConfigParser
-&#125;
+	<span class="token punctuation">}</span><span class="token punctuation">{</span>
+		<span class="token punctuation">{</span>
+			name<span class="token punctuation">:</span> <span class="token string">&quot;json&quot;</span><span class="token punctuation">,</span>
+			args<span class="token punctuation">:</span> args<span class="token punctuation">{</span>t<span class="token punctuation">:</span> <span class="token string">&quot;json&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+			want<span class="token punctuation">:</span> jsonRuleConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">{</span>
+			name<span class="token punctuation">:</span> <span class="token string">&quot;yaml&quot;</span><span class="token punctuation">,</span>
+			args<span class="token punctuation">:</span> args<span class="token punctuation">{</span>t<span class="token punctuation">:</span> <span class="token string">&quot;yaml&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+			want<span class="token punctuation">:</span> yamlRuleConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> tt <span class="token operator">:=</span> <span class="token keyword">range</span> tests <span class="token punctuation">{</span>
+		t<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span>tt<span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">if</span> got <span class="token operator">:=</span> <span class="token function">NewIRuleConfigParser</span><span class="token punctuation">(</span>tt<span class="token punctuation">.</span>args<span class="token punctuation">.</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">!</span>reflect<span class="token punctuation">.</span><span class="token function">DeepEqual</span><span class="token punctuation">(</span>got<span class="token punctuation">,</span> tt<span class="token punctuation">.</span>want<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				t<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;NewIRuleConfigParser() = %v, want %v&quot;</span><span class="token punctuation">,</span> got<span class="token punctuation">,</span> tt<span class="token punctuation">.</span>want<span class="token punctuation">)</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="工厂方法"><a href="#工厂方法" class="header-anchor">#</a> 工厂方法</h3> <p>当对象的创建逻辑比较复杂，不只是简单的 new 一下就可以，而是要组合其他类对象，做各种初始化操作的时候，推荐使用工厂方法模式，将复杂的创建逻辑拆分到多个工厂类中，让每个工厂类都不至于过于复杂</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// IRuleConfigParserFactory 工厂方法接口</span>
+<span class="token keyword">type</span> IRuleConfigParserFactory <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+	<span class="token function">CreateParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span> IRuleConfigParser
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// yamlRuleConfigParserFactory yamlRuleConfigParser 的工厂类</span>
-<span class="hljs-keyword">type</span> yamlRuleConfigParserFactory <span class="hljs-keyword">struct</span> &#123;
-&#125;
+<span class="token comment">// yamlRuleConfigParserFactory yamlRuleConfigParser 的工厂类</span>
+<span class="token keyword">type</span> yamlRuleConfigParserFactory <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// CreateParser CreateParser</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(y yamlRuleConfigParserFactory)</span> <span class="hljs-title">CreateParser</span><span class="hljs-params">()</span> <span class="hljs-title">IRuleConfigParser</span></span> &#123;
-	<span class="hljs-keyword">return</span> yamlRuleConfigParser&#123;&#125;
-&#125;
+<span class="token comment">// CreateParser CreateParser</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>y yamlRuleConfigParserFactory<span class="token punctuation">)</span> <span class="token function">CreateParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span> IRuleConfigParser <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> yamlRuleConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// jsonRuleConfigParserFactory jsonRuleConfigParser 的工厂类</span>
-<span class="hljs-keyword">type</span> jsonRuleConfigParserFactory <span class="hljs-keyword">struct</span> &#123;
-&#125;
+<span class="token comment">// jsonRuleConfigParserFactory jsonRuleConfigParser 的工厂类</span>
+<span class="token keyword">type</span> jsonRuleConfigParserFactory <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// CreateParser CreateParser</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(j jsonRuleConfigParserFactory)</span> <span class="hljs-title">CreateParser</span><span class="hljs-params">()</span> <span class="hljs-title">IRuleConfigParser</span></span> &#123;
-	<span class="hljs-keyword">return</span> jsonRuleConfigParser&#123;&#125;
-&#125;
+<span class="token comment">// CreateParser CreateParser</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>j jsonRuleConfigParserFactory<span class="token punctuation">)</span> <span class="token function">CreateParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span> IRuleConfigParser <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> jsonRuleConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// NewIRuleConfigParserFactory 用一个简单工厂封装工厂方法</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewIRuleConfigParserFactory</span><span class="hljs-params">(t <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">IRuleConfigParserFactory</span></span> &#123;
-	<span class="hljs-keyword">switch</span> t &#123;
-	<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;json&quot;</span>:
-		<span class="hljs-keyword">return</span> jsonRuleConfigParserFactory&#123;&#125;
-	<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;yaml&quot;</span>:
-		<span class="hljs-keyword">return</span> yamlRuleConfigParserFactory&#123;&#125;
-	&#125;
-	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
-&#125;</code></pre><h4 id="单元测试-1"><a href="#单元测试-1" class="headerlink" title="单元测试"></a>单元测试</h4><pre><code class="hljs go"><span class="hljs-keyword">package</span> factory
+<span class="token comment">// NewIRuleConfigParserFactory 用一个简单工厂封装工厂方法</span>
+<span class="token keyword">func</span> <span class="token function">NewIRuleConfigParserFactory</span><span class="token punctuation">(</span>t <span class="token builtin">string</span><span class="token punctuation">)</span> IRuleConfigParserFactory <span class="token punctuation">{</span>
+	<span class="token keyword">switch</span> t <span class="token punctuation">{</span>
+	<span class="token keyword">case</span> <span class="token string">&quot;json&quot;</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> jsonRuleConfigParserFactory<span class="token punctuation">{</span><span class="token punctuation">}</span>
+	<span class="token keyword">case</span> <span class="token string">&quot;yaml&quot;</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> yamlRuleConfigParserFactory<span class="token punctuation">{</span><span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="单元测试-2"><a href="#单元测试-2" class="header-anchor">#</a> 单元测试</h4> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> factory
 
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;reflect&quot;</span>
-	<span class="hljs-string">&quot;testing&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;reflect&quot;</span>
+	<span class="token string">&quot;testing&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestNewIRuleConfigParserFactory</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
-	<span class="hljs-keyword">type</span> args <span class="hljs-keyword">struct</span> &#123;
-		t <span class="hljs-keyword">string</span>
-	&#125;
-	tests := []<span class="hljs-keyword">struct</span> &#123;
-		name <span class="hljs-keyword">string</span>
+<span class="token keyword">func</span> <span class="token function">TestNewIRuleConfigParserFactory</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">type</span> args <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+		t <span class="token builtin">string</span>
+	<span class="token punctuation">}</span>
+	tests <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">struct</span> <span class="token punctuation">{</span>
+		name <span class="token builtin">string</span>
 		args args
 		want IRuleConfigParserFactory
-	&#125;&#123;
-		&#123;
-			name: <span class="hljs-string">&quot;json&quot;</span>,
-			args: args&#123;t: <span class="hljs-string">&quot;json&quot;</span>&#125;,
-			want: jsonRuleConfigParserFactory&#123;&#125;,
-		&#125;,
-		&#123;
-			name: <span class="hljs-string">&quot;yaml&quot;</span>,
-			args: args&#123;t: <span class="hljs-string">&quot;yaml&quot;</span>&#125;,
-			want: yamlRuleConfigParserFactory&#123;&#125;,
-		&#125;,
-	&#125;
-	<span class="hljs-keyword">for</span> _, tt := <span class="hljs-keyword">range</span> tests &#123;
-		t.Run(tt.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
-			<span class="hljs-keyword">if</span> got := NewIRuleConfigParserFactory(tt.args.t); !reflect.DeepEqual(got, tt.want) &#123;
-				t.Errorf(<span class="hljs-string">&quot;NewIRuleConfigParserFactory() = %v, want %v&quot;</span>, got, tt.want)
-			&#125;
-		&#125;)
-	&#125;
-&#125;</code></pre><h3 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a>抽象工厂</h3><pre><code class="hljs go"><span class="hljs-keyword">package</span> factory
+	<span class="token punctuation">}</span><span class="token punctuation">{</span>
+		<span class="token punctuation">{</span>
+			name<span class="token punctuation">:</span> <span class="token string">&quot;json&quot;</span><span class="token punctuation">,</span>
+			args<span class="token punctuation">:</span> args<span class="token punctuation">{</span>t<span class="token punctuation">:</span> <span class="token string">&quot;json&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+			want<span class="token punctuation">:</span> jsonRuleConfigParserFactory<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">{</span>
+			name<span class="token punctuation">:</span> <span class="token string">&quot;yaml&quot;</span><span class="token punctuation">,</span>
+			args<span class="token punctuation">:</span> args<span class="token punctuation">{</span>t<span class="token punctuation">:</span> <span class="token string">&quot;yaml&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+			want<span class="token punctuation">:</span> yamlRuleConfigParserFactory<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> tt <span class="token operator">:=</span> <span class="token keyword">range</span> tests <span class="token punctuation">{</span>
+		t<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span>tt<span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">if</span> got <span class="token operator">:=</span> <span class="token function">NewIRuleConfigParserFactory</span><span class="token punctuation">(</span>tt<span class="token punctuation">.</span>args<span class="token punctuation">.</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">!</span>reflect<span class="token punctuation">.</span><span class="token function">DeepEqual</span><span class="token punctuation">(</span>got<span class="token punctuation">,</span> tt<span class="token punctuation">.</span>want<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				t<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;NewIRuleConfigParserFactory() = %v, want %v&quot;</span><span class="token punctuation">,</span> got<span class="token punctuation">,</span> tt<span class="token punctuation">.</span>want<span class="token punctuation">)</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="抽象工厂"><a href="#抽象工厂" class="header-anchor">#</a> 抽象工厂</h3> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> factory
 
-<span class="hljs-comment">// IRuleConfigParser IRuleConfigParser</span>
-<span class="hljs-keyword">type</span> IRuleConfigParser <span class="hljs-keyword">interface</span> &#123;
-	Parse(data []<span class="hljs-keyword">byte</span>)
-&#125;
+<span class="token comment">// IRuleConfigParser IRuleConfigParser</span>
+<span class="token keyword">type</span> IRuleConfigParser <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+	<span class="token function">Parse</span><span class="token punctuation">(</span>data <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// jsonRuleConfigParser jsonRuleConfigParser</span>
-<span class="hljs-keyword">type</span> jsonRuleConfigParser <span class="hljs-keyword">struct</span>&#123;&#125;
+<span class="token comment">// jsonRuleConfigParser jsonRuleConfigParser</span>
+<span class="token keyword">type</span> jsonRuleConfigParser <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Parse Parse</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(j jsonRuleConfigParser)</span> <span class="hljs-title">Parse</span><span class="hljs-params">(data []<span class="hljs-keyword">byte</span>)</span></span> &#123;
-	<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;implement me&quot;</span>)
-&#125;
+<span class="token comment">// Parse Parse</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>j jsonRuleConfigParser<span class="token punctuation">)</span> <span class="token function">Parse</span><span class="token punctuation">(</span>data <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">&quot;implement me&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// ISystemConfigParser ISystemConfigParser</span>
-<span class="hljs-keyword">type</span> ISystemConfigParser <span class="hljs-keyword">interface</span> &#123;
-	ParseSystem(data []<span class="hljs-keyword">byte</span>)
-&#125;
+<span class="token comment">// ISystemConfigParser ISystemConfigParser</span>
+<span class="token keyword">type</span> ISystemConfigParser <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+	<span class="token function">ParseSystem</span><span class="token punctuation">(</span>data <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// jsonSystemConfigParser jsonSystemConfigParser</span>
-<span class="hljs-keyword">type</span> jsonSystemConfigParser <span class="hljs-keyword">struct</span>&#123;&#125;
+<span class="token comment">// jsonSystemConfigParser jsonSystemConfigParser</span>
+<span class="token keyword">type</span> jsonSystemConfigParser <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Parse Parse</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(j jsonSystemConfigParser)</span> <span class="hljs-title">ParseSystem</span><span class="hljs-params">(data []<span class="hljs-keyword">byte</span>)</span></span> &#123;
-	<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;implement me&quot;</span>)
-&#125;
+<span class="token comment">// Parse Parse</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>j jsonSystemConfigParser<span class="token punctuation">)</span> <span class="token function">ParseSystem</span><span class="token punctuation">(</span>data <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">&quot;implement me&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// IConfigParserFactory 工厂方法接口</span>
-<span class="hljs-keyword">type</span> IConfigParserFactory <span class="hljs-keyword">interface</span> &#123;
-	CreateRuleParser() IRuleConfigParser
-	CreateSystemParser() ISystemConfigParser
-&#125;
+<span class="token comment">// IConfigParserFactory 工厂方法接口</span>
+<span class="token keyword">type</span> IConfigParserFactory <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+	<span class="token function">CreateRuleParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span> IRuleConfigParser
+	<span class="token function">CreateSystemParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span> ISystemConfigParser
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">type</span> jsonConfigParserFactory <span class="hljs-keyword">struct</span>&#123;&#125;
+<span class="token keyword">type</span> jsonConfigParserFactory <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(j jsonConfigParserFactory)</span> <span class="hljs-title">CreateRuleParser</span><span class="hljs-params">()</span> <span class="hljs-title">IRuleConfigParser</span></span> &#123;
-	<span class="hljs-keyword">return</span> jsonRuleConfigParser&#123;&#125;
-&#125;
+<span class="token keyword">func</span> <span class="token punctuation">(</span>j jsonConfigParserFactory<span class="token punctuation">)</span> <span class="token function">CreateRuleParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span> IRuleConfigParser <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> jsonRuleConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(j jsonConfigParserFactory)</span> <span class="hljs-title">CreateSystemParser</span><span class="hljs-params">()</span> <span class="hljs-title">ISystemConfigParser</span></span> &#123;
-	<span class="hljs-keyword">return</span> jsonSystemConfigParser&#123;&#125;
-&#125;</code></pre><h4 id="单元测试-2"><a href="#单元测试-2" class="headerlink" title="单元测试"></a>单元测试</h4><pre><code class="hljs go"><span class="hljs-keyword">package</span> factory
+<span class="token keyword">func</span> <span class="token punctuation">(</span>j jsonConfigParserFactory<span class="token punctuation">)</span> <span class="token function">CreateSystemParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span> ISystemConfigParser <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> jsonSystemConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="单元测试-3"><a href="#单元测试-3" class="header-anchor">#</a> 单元测试</h4> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> factory
 
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;reflect&quot;</span>
-	<span class="hljs-string">&quot;testing&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;reflect&quot;</span>
+	<span class="token string">&quot;testing&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Test_jsonConfigParserFactory_CreateRuleParser</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
-	tests := []<span class="hljs-keyword">struct</span> &#123;
-		name <span class="hljs-keyword">string</span>
+<span class="token keyword">func</span> <span class="token function">Test_jsonConfigParserFactory_CreateRuleParser</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	tests <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">struct</span> <span class="token punctuation">{</span>
+		name <span class="token builtin">string</span>
 		want IRuleConfigParser
-	&#125;&#123;
-		&#123;
-			name: <span class="hljs-string">&quot;json&quot;</span>,
-			want: jsonRuleConfigParser&#123;&#125;,
-		&#125;,
-	&#125;
-	<span class="hljs-keyword">for</span> _, tt := <span class="hljs-keyword">range</span> tests &#123;
-		t.Run(tt.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
-			j := jsonConfigParserFactory&#123;&#125;
-			<span class="hljs-keyword">if</span> got := j.CreateRuleParser(); !reflect.DeepEqual(got, tt.want) &#123;
-				t.Errorf(<span class="hljs-string">&quot;CreateRuleParser() = %v, want %v&quot;</span>, got, tt.want)
-			&#125;
-		&#125;)
-	&#125;
-&#125;
+	<span class="token punctuation">}</span><span class="token punctuation">{</span>
+		<span class="token punctuation">{</span>
+			name<span class="token punctuation">:</span> <span class="token string">&quot;json&quot;</span><span class="token punctuation">,</span>
+			want<span class="token punctuation">:</span> jsonRuleConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> tt <span class="token operator">:=</span> <span class="token keyword">range</span> tests <span class="token punctuation">{</span>
+		t<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span>tt<span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			j <span class="token operator">:=</span> jsonConfigParserFactory<span class="token punctuation">{</span><span class="token punctuation">}</span>
+			<span class="token keyword">if</span> got <span class="token operator">:=</span> j<span class="token punctuation">.</span><span class="token function">CreateRuleParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">!</span>reflect<span class="token punctuation">.</span><span class="token function">DeepEqual</span><span class="token punctuation">(</span>got<span class="token punctuation">,</span> tt<span class="token punctuation">.</span>want<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				t<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;CreateRuleParser() = %v, want %v&quot;</span><span class="token punctuation">,</span> got<span class="token punctuation">,</span> tt<span class="token punctuation">.</span>want<span class="token punctuation">)</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Test_jsonConfigParserFactory_CreateSystemParser</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
-	tests := []<span class="hljs-keyword">struct</span> &#123;
-		name <span class="hljs-keyword">string</span>
+<span class="token keyword">func</span> <span class="token function">Test_jsonConfigParserFactory_CreateSystemParser</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	tests <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">struct</span> <span class="token punctuation">{</span>
+		name <span class="token builtin">string</span>
 		want ISystemConfigParser
-	&#125;&#123;
-		&#123;
-			name: <span class="hljs-string">&quot;json&quot;</span>,
-			want: jsonSystemConfigParser&#123;&#125;,
-		&#125;,
-	&#125;
-	<span class="hljs-keyword">for</span> _, tt := <span class="hljs-keyword">range</span> tests &#123;
-		t.Run(tt.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
-			j := jsonConfigParserFactory&#123;&#125;
-			<span class="hljs-keyword">if</span> got := j.CreateSystemParser(); !reflect.DeepEqual(got, tt.want) &#123;
-				t.Errorf(<span class="hljs-string">&quot;CreateSystemParser() = %v, want %v&quot;</span>, got, tt.want)
-			&#125;
-		&#125;)
-	&#125;
-&#125;</code></pre><h3 id="DI-容器"><a href="#DI-容器" class="headerlink" title="DI 容器"></a>DI 容器</h3><p>golang 现有的依赖注入框架:</p><ul><li>使用反射实现的: <a target="_blank" rel="noopener" href="https://github.com/uber-go/dig">https://github.com/uber-go/dig</a></li><li>使用 generate 实现的: <a target="_blank" rel="noopener" href="https://github.com/google/wire">https://github.com/google/wire</a></li></ul><p>下文将通过反射实现一个类似 dig 简单的 demo，在课程里面的例子是读取配置文件，然后进行生成，下面提供是通过 provider 进行构建依赖关系。</p><h4 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h4><pre><code class="hljs go"><span class="hljs-keyword">package</span> di
+	<span class="token punctuation">}</span><span class="token punctuation">{</span>
+		<span class="token punctuation">{</span>
+			name<span class="token punctuation">:</span> <span class="token string">&quot;json&quot;</span><span class="token punctuation">,</span>
+			want<span class="token punctuation">:</span> jsonSystemConfigParser<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> tt <span class="token operator">:=</span> <span class="token keyword">range</span> tests <span class="token punctuation">{</span>
+		t<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span>tt<span class="token punctuation">.</span>name<span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			j <span class="token operator">:=</span> jsonConfigParserFactory<span class="token punctuation">{</span><span class="token punctuation">}</span>
+			<span class="token keyword">if</span> got <span class="token operator">:=</span> j<span class="token punctuation">.</span><span class="token function">CreateSystemParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">!</span>reflect<span class="token punctuation">.</span><span class="token function">DeepEqual</span><span class="token punctuation">(</span>got<span class="token punctuation">,</span> tt<span class="token punctuation">.</span>want<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				t<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;CreateSystemParser() = %v, want %v&quot;</span><span class="token punctuation">,</span> got<span class="token punctuation">,</span> tt<span class="token punctuation">.</span>want<span class="token punctuation">)</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="di-容器"><a href="#di-容器" class="header-anchor">#</a> DI 容器</h3> <p>golang 现有的依赖注入框架:</p> <ul><li>使用反射实现的: <a href="https://github.com/uber-go/dig" target="_blank" rel="noopener noreferrer">https://github.com/uber-go/dig<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li>使用 generate 实现的: <a href="https://github.com/google/wire" target="_blank" rel="noopener noreferrer">https://github.com/google/wire<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul> <p>下文将通过反射实现一个类似 dig 简单的 demo，在课程里面的例子是读取配置文件，然后进行生成，下面提供是通过 provider 进行构建依赖关系。</p> <h4 id="代码实现-2"><a href="#代码实现-2" class="header-anchor">#</a> 代码实现</h4> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> di
 
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;fmt&quot;</span>
-	<span class="hljs-string">&quot;reflect&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;fmt&quot;</span>
+	<span class="token string">&quot;reflect&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-comment">// Container DI 容器</span>
-<span class="hljs-keyword">type</span> Container <span class="hljs-keyword">struct</span> &#123;
-	<span class="hljs-comment">// 假设一种类型只能有一个 provider 提供</span>
-	providers <span class="hljs-keyword">map</span>[reflect.Type]provider
+<span class="token comment">// Container DI 容器</span>
+<span class="token keyword">type</span> Container <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	<span class="token comment">// 假设一种类型只能有一个 provider 提供</span>
+	providers <span class="token keyword">map</span><span class="token punctuation">[</span>reflect<span class="token punctuation">.</span>Type<span class="token punctuation">]</span>provider
 
-	<span class="hljs-comment">// 缓存以生成的对象</span>
-	results <span class="hljs-keyword">map</span>[reflect.Type]reflect.Value
-&#125;
+	<span class="token comment">// 缓存以生成的对象</span>
+	results <span class="token keyword">map</span><span class="token punctuation">[</span>reflect<span class="token punctuation">.</span>Type<span class="token punctuation">]</span>reflect<span class="token punctuation">.</span>Value
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">type</span> provider <span class="hljs-keyword">struct</span> &#123;
-	value reflect.Value
+<span class="token keyword">type</span> provider <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	value reflect<span class="token punctuation">.</span>Value
 
-	params []reflect.Type
-&#125;
+	params <span class="token punctuation">[</span><span class="token punctuation">]</span>reflect<span class="token punctuation">.</span>Type
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// New 创建一个容器</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">New</span><span class="hljs-params">()</span> *<span class="hljs-title">Container</span></span> &#123;
-	<span class="hljs-keyword">return</span> &amp;Container&#123;
-		providers: <span class="hljs-keyword">map</span>[reflect.Type]provider&#123;&#125;,
-		results:   <span class="hljs-keyword">map</span>[reflect.Type]reflect.Value&#123;&#125;,
-	&#125;
-&#125;
+<span class="token comment">// New 创建一个容器</span>
+<span class="token keyword">func</span> <span class="token function">New</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>Container <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> <span class="token operator">&amp;</span>Container<span class="token punctuation">{</span>
+		providers<span class="token punctuation">:</span> <span class="token keyword">map</span><span class="token punctuation">[</span>reflect<span class="token punctuation">.</span>Type<span class="token punctuation">]</span>provider<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+		results<span class="token punctuation">:</span>   <span class="token keyword">map</span><span class="token punctuation">[</span>reflect<span class="token punctuation">.</span>Type<span class="token punctuation">]</span>reflect<span class="token punctuation">.</span>Value<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// isError 判断是否是 error 类型</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">isError</span><span class="hljs-params">(t reflect.Type)</span> <span class="hljs-title">bool</span></span> &#123;
-	<span class="hljs-keyword">if</span> t.Kind() != reflect.Interface &#123;
-		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
-	&#125;
-	<span class="hljs-keyword">return</span> t.Implements(reflect.TypeOf(reflect.TypeOf((*error)(<span class="hljs-literal">nil</span>)).Elem()))
-&#125;
+<span class="token comment">// isError 判断是否是 error 类型</span>
+<span class="token keyword">func</span> <span class="token function">isError</span><span class="token punctuation">(</span>t reflect<span class="token punctuation">.</span>Type<span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> t<span class="token punctuation">.</span><span class="token function">Kind</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> reflect<span class="token punctuation">.</span>Interface <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token boolean">false</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> t<span class="token punctuation">.</span><span class="token function">Implements</span><span class="token punctuation">(</span>reflect<span class="token punctuation">.</span><span class="token function">TypeOf</span><span class="token punctuation">(</span>reflect<span class="token punctuation">.</span><span class="token function">TypeOf</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token builtin">error</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Elem</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Provide 对象提供者，需要传入一个对象的工厂方法，后续会用于对象的创建</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Container)</span> <span class="hljs-title">Provide</span><span class="hljs-params">(constructor <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">error</span></span> &#123;
-	v := reflect.ValueOf(constructor)
+<span class="token comment">// Provide 对象提供者，需要传入一个对象的工厂方法，后续会用于对象的创建</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Container<span class="token punctuation">)</span> <span class="token function">Provide</span><span class="token punctuation">(</span>constructor <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+	v <span class="token operator">:=</span> reflect<span class="token punctuation">.</span><span class="token function">ValueOf</span><span class="token punctuation">(</span>constructor<span class="token punctuation">)</span>
 
-	<span class="hljs-comment">// 仅支持函数 provider</span>
-	<span class="hljs-keyword">if</span> v.Kind() != reflect.Func &#123;
-		<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">&quot;constructor must be a func&quot;</span>)
-	&#125;
+	<span class="token comment">// 仅支持函数 provider</span>
+	<span class="token keyword">if</span> v<span class="token punctuation">.</span><span class="token function">Kind</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> reflect<span class="token punctuation">.</span>Func <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;constructor must be a func&quot;</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
 
-	vt := v.Type()
+	vt <span class="token operator">:=</span> v<span class="token punctuation">.</span><span class="token function">Type</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-	<span class="hljs-comment">// 获取参数</span>
-	params := <span class="hljs-built_in">make</span>([]reflect.Type, vt.NumIn())
-	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; vt.NumIn(); i++ &#123;
-		params[i] = vt.In(i)
-	&#125;
+	<span class="token comment">// 获取参数</span>
+	params <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span>reflect<span class="token punctuation">.</span>Type<span class="token punctuation">,</span> vt<span class="token punctuation">.</span><span class="token function">NumIn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> vt<span class="token punctuation">.</span><span class="token function">NumIn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		params<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> vt<span class="token punctuation">.</span><span class="token function">In</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
 
-	<span class="hljs-comment">// 获取返回值</span>
-	results := <span class="hljs-built_in">make</span>([]reflect.Type, vt.NumOut())
-	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; vt.NumOut(); i++ &#123;
-		results[i] = vt.Out(i)
-	&#125;
+	<span class="token comment">// 获取返回值</span>
+	results <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span>reflect<span class="token punctuation">.</span>Type<span class="token punctuation">,</span> vt<span class="token punctuation">.</span><span class="token function">NumOut</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> vt<span class="token punctuation">.</span><span class="token function">NumOut</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		results<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> vt<span class="token punctuation">.</span><span class="token function">Out</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
 
-	provider := provider&#123;
-		value:  v,
-		params: params,
-	&#125;
+	provider <span class="token operator">:=</span> provider<span class="token punctuation">{</span>
+		value<span class="token punctuation">:</span>  v<span class="token punctuation">,</span>
+		params<span class="token punctuation">:</span> params<span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
 
-	<span class="hljs-comment">// 保存不同类型的 provider</span>
-	<span class="hljs-keyword">for</span> _, result := <span class="hljs-keyword">range</span> results &#123;
-		<span class="hljs-comment">// 判断返回值是不是 error</span>
-		<span class="hljs-keyword">if</span> isError(result) &#123;
-			<span class="hljs-keyword">continue</span>
-		&#125;
+	<span class="token comment">// 保存不同类型的 provider</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> result <span class="token operator">:=</span> <span class="token keyword">range</span> results <span class="token punctuation">{</span>
+		<span class="token comment">// 判断返回值是不是 error</span>
+		<span class="token keyword">if</span> <span class="token function">isError</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">continue</span>
+		<span class="token punctuation">}</span>
 
-		<span class="hljs-keyword">if</span> _, ok := c.providers[result]; ok &#123;
-			<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">&quot;%s had a provider&quot;</span>, result)
-		&#125;
+		<span class="token keyword">if</span> <span class="token boolean">_</span><span class="token punctuation">,</span> ok <span class="token operator">:=</span> c<span class="token punctuation">.</span>providers<span class="token punctuation">[</span>result<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;%s had a provider&quot;</span><span class="token punctuation">,</span> result<span class="token punctuation">)</span>
+		<span class="token punctuation">}</span>
 
-		c.providers[result] = provider
-	&#125;
+		c<span class="token punctuation">.</span>providers<span class="token punctuation">[</span>result<span class="token punctuation">]</span> <span class="token operator">=</span> provider
+	<span class="token punctuation">}</span>
 
-	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
-&#125;
+	<span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Invoke 函数执行入口</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Container)</span> <span class="hljs-title">Invoke</span><span class="hljs-params">(function <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">error</span></span> &#123;
-	v := reflect.ValueOf(function)
+<span class="token comment">// Invoke 函数执行入口</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Container<span class="token punctuation">)</span> <span class="token function">Invoke</span><span class="token punctuation">(</span>function <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+	v <span class="token operator">:=</span> reflect<span class="token punctuation">.</span><span class="token function">ValueOf</span><span class="token punctuation">(</span>function<span class="token punctuation">)</span>
 
-	<span class="hljs-comment">// 仅支持函数 provider</span>
-	<span class="hljs-keyword">if</span> v.Kind() != reflect.Func &#123;
-		<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">&quot;constructor must be a func&quot;</span>)
-	&#125;
+	<span class="token comment">// 仅支持函数 provider</span>
+	<span class="token keyword">if</span> v<span class="token punctuation">.</span><span class="token function">Kind</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> reflect<span class="token punctuation">.</span>Func <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;constructor must be a func&quot;</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
 
-	vt := v.Type()
+	vt <span class="token operator">:=</span> v<span class="token punctuation">.</span><span class="token function">Type</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-	<span class="hljs-comment">// 获取参数</span>
-	<span class="hljs-keyword">var</span> err error
-	params := <span class="hljs-built_in">make</span>([]reflect.Value, vt.NumIn())
-	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; vt.NumIn(); i++ &#123;
-		params[i], err = c.buildParam(vt.In(i))
-		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-			<span class="hljs-keyword">return</span> err
-		&#125;
-	&#125;
+	<span class="token comment">// 获取参数</span>
+	<span class="token keyword">var</span> err <span class="token builtin">error</span>
+	params <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span>reflect<span class="token punctuation">.</span>Value<span class="token punctuation">,</span> vt<span class="token punctuation">.</span><span class="token function">NumIn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> vt<span class="token punctuation">.</span><span class="token function">NumIn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+		params<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> err <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">buildParam</span><span class="token punctuation">(</span>vt<span class="token punctuation">.</span><span class="token function">In</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> err
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
 
-	v.Call(params)
+	v<span class="token punctuation">.</span><span class="token function">Call</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span>
 
-	<span class="hljs-comment">// 获取 providers</span>
-	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
-&#125;
+	<span class="token comment">// 获取 providers</span>
+	<span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// buildParam 构建参数</span>
-<span class="hljs-comment">// 1. 从容器中获取 provider</span>
-<span class="hljs-comment">// 2. 递归获取 provider 的参数值</span>
-<span class="hljs-comment">// 3. 获取到参数之后执行函数</span>
-<span class="hljs-comment">// 4. 将结果缓存并且返回结果</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Container)</span> <span class="hljs-title">buildParam</span><span class="hljs-params">(param reflect.Type)</span> <span class="hljs-params">(val reflect.Value, err error)</span></span> &#123;
-	<span class="hljs-keyword">if</span> result, ok := c.results[param]; ok &#123;
-		<span class="hljs-keyword">return</span> result, <span class="hljs-literal">nil</span>
-	&#125;
+<span class="token comment">// buildParam 构建参数</span>
+<span class="token comment">// 1. 从容器中获取 provider</span>
+<span class="token comment">// 2. 递归获取 provider 的参数值</span>
+<span class="token comment">// 3. 获取到参数之后执行函数</span>
+<span class="token comment">// 4. 将结果缓存并且返回结果</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Container<span class="token punctuation">)</span> <span class="token function">buildParam</span><span class="token punctuation">(</span>param reflect<span class="token punctuation">.</span>Type<span class="token punctuation">)</span> <span class="token punctuation">(</span>val reflect<span class="token punctuation">.</span>Value<span class="token punctuation">,</span> err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> result<span class="token punctuation">,</span> ok <span class="token operator">:=</span> c<span class="token punctuation">.</span>results<span class="token punctuation">[</span>param<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> result<span class="token punctuation">,</span> <span class="token boolean">nil</span>
+	<span class="token punctuation">}</span>
 
-	provider, ok := c.providers[param]
-	<span class="hljs-keyword">if</span> !ok &#123;
-		<span class="hljs-keyword">return</span> reflect.Value&#123;&#125;, fmt.Errorf(<span class="hljs-string">&quot;can not found provider: %s&quot;</span>, param)
-	&#125;
+	provider<span class="token punctuation">,</span> ok <span class="token operator">:=</span> c<span class="token punctuation">.</span>providers<span class="token punctuation">[</span>param<span class="token punctuation">]</span>
+	<span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> reflect<span class="token punctuation">.</span>Value<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;can not found provider: %s&quot;</span><span class="token punctuation">,</span> param<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
 
-	params := <span class="hljs-built_in">make</span>([]reflect.Value, <span class="hljs-built_in">len</span>(provider.params))
-	<span class="hljs-keyword">for</span> i, p := <span class="hljs-keyword">range</span> provider.params &#123;
-		params[i], err = c.buildParam(p)
-	&#125;
+	params <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span>reflect<span class="token punctuation">.</span>Value<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>provider<span class="token punctuation">.</span>params<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> i<span class="token punctuation">,</span> p <span class="token operator">:=</span> <span class="token keyword">range</span> provider<span class="token punctuation">.</span>params <span class="token punctuation">{</span>
+		params<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> err <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">buildParam</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
 
-	results := provider.value.Call(params)
-	<span class="hljs-keyword">for</span> _, result := <span class="hljs-keyword">range</span> results &#123;
-		<span class="hljs-comment">// 判断是否报错</span>
-		<span class="hljs-keyword">if</span> isError(result.Type()) &amp;&amp; !result.IsNil() &#123;
-			<span class="hljs-keyword">return</span> reflect.Value&#123;&#125;, fmt.Errorf(<span class="hljs-string">&quot;%s call err: %+v&quot;</span>, provider, result)
-		&#125;
+	results <span class="token operator">:=</span> provider<span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">Call</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> result <span class="token operator">:=</span> <span class="token keyword">range</span> results <span class="token punctuation">{</span>
+		<span class="token comment">// 判断是否报错</span>
+		<span class="token keyword">if</span> <span class="token function">isError</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">Type</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>result<span class="token punctuation">.</span><span class="token function">IsNil</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> reflect<span class="token punctuation">.</span>Value<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;%s call err: %+v&quot;</span><span class="token punctuation">,</span> provider<span class="token punctuation">,</span> result<span class="token punctuation">)</span>
+		<span class="token punctuation">}</span>
 
-		<span class="hljs-keyword">if</span> !isError(result.Type()) &amp;&amp; !result.IsNil() &#123;
-			c.results[result.Type()] = result
-		&#125;
-	&#125;
-	<span class="hljs-keyword">return</span> c.results[param], <span class="hljs-literal">nil</span>
-&#125;</code></pre><p>我们这里的实现比较粗糙，但是作为一个 demo 理解 di 容器也足够了，和 dig 相比还缺少很多东西，并且有许多的问题，例如 依赖关系，一种类型如果有多个 provider 如何处理等等等等。<br>可以看到我们总共就三个函数</p><ul><li>Provide: 获取对象工厂，并且使用一个 map 将对象工厂保存</li><li>Invoke: 执行入口</li><li>buildParam: 核心逻辑，构建参数<ul><li>从容器中获取 provider</li><li>递归获取 provider 的参数值</li><li>获取到参数之后执行函数</li><li>将结果缓存并且返回结果</li></ul></li></ul><h4 id="example"><a href="#example" class="headerlink" title="example"></a>example</h4><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+		<span class="token keyword">if</span> <span class="token operator">!</span><span class="token function">isError</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">Type</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>result<span class="token punctuation">.</span><span class="token function">IsNil</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			c<span class="token punctuation">.</span>results<span class="token punctuation">[</span>result<span class="token punctuation">.</span><span class="token function">Type</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> result
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> c<span class="token punctuation">.</span>results<span class="token punctuation">[</span>param<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>我们这里的实现比较粗糙，但是作为一个 demo 理解 di 容器也足够了，和 dig 相比还缺少很多东西，并且有许多的问题，例如 依赖关系，一种类型如果有多个 provider 如何处理等等等等。
+可以看到我们总共就三个函数</p> <ul><li>Provide: 获取对象工厂，并且使用一个 map 将对象工厂保存</li> <li>Invoke: 执行入口</li> <li>buildParam: 核心逻辑，构建参数
+<ul><li>从容器中获取 provider</li> <li>递归获取 provider 的参数值</li> <li>获取到参数之后执行函数</li> <li>将结果缓存并且返回结果</li></ul></li></ul> <h4 id="example"><a href="#example" class="header-anchor">#</a> example</h4> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;fmt&quot;</span>
 
-	di <span class="hljs-string">&quot;github.com/mohuishou/go-design-pattern/02_factory/024_di&quot;</span>
-)
+	di <span class="token string">&quot;github.com/mohuishou/go-design-pattern/02_factory/024_di&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-comment">// A 依赖关系 A -&gt; B -&gt; C</span>
-<span class="hljs-keyword">type</span> A <span class="hljs-keyword">struct</span> &#123;
-	B *B
-&#125;
+<span class="token comment">// A 依赖关系 A -&gt; B -&gt; C</span>
+<span class="token keyword">type</span> A <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	B <span class="token operator">*</span>B
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// NewA NewA</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewA</span><span class="hljs-params">(b *B)</span> *<span class="hljs-title">A</span></span> &#123;
-	<span class="hljs-keyword">return</span> &amp;A&#123;
-		B: b,
-	&#125;
-&#125;
+<span class="token comment">// NewA NewA</span>
+<span class="token keyword">func</span> <span class="token function">NewA</span><span class="token punctuation">(</span>b <span class="token operator">*</span>B<span class="token punctuation">)</span> <span class="token operator">*</span>A <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> <span class="token operator">&amp;</span>A<span class="token punctuation">{</span>
+		B<span class="token punctuation">:</span> b<span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// B B</span>
-<span class="hljs-keyword">type</span> B <span class="hljs-keyword">struct</span> &#123;
-	C *C
-&#125;
+<span class="token comment">// B B</span>
+<span class="token keyword">type</span> B <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	C <span class="token operator">*</span>C
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// NewB NewB</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewB</span><span class="hljs-params">(c *C)</span> *<span class="hljs-title">B</span></span> &#123;
-	<span class="hljs-keyword">return</span> &amp;B&#123;C: c&#125;
-&#125;
+<span class="token comment">// NewB NewB</span>
+<span class="token keyword">func</span> <span class="token function">NewB</span><span class="token punctuation">(</span>c <span class="token operator">*</span>C<span class="token punctuation">)</span> <span class="token operator">*</span>B <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> <span class="token operator">&amp;</span>B<span class="token punctuation">{</span>C<span class="token punctuation">:</span> c<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// C C</span>
-<span class="hljs-keyword">type</span> C <span class="hljs-keyword">struct</span> &#123;
-	Num <span class="hljs-keyword">int</span>
-&#125;
+<span class="token comment">// C C</span>
+<span class="token keyword">type</span> C <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	Num <span class="token builtin">int</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// NewC NewC</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewC</span><span class="hljs-params">()</span> *<span class="hljs-title">C</span></span> &#123;
-	<span class="hljs-keyword">return</span> &amp;C&#123;
-		Num: <span class="hljs-number">1</span>,
-	&#125;
-&#125;
+<span class="token comment">// NewC NewC</span>
+<span class="token keyword">func</span> <span class="token function">NewC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>C <span class="token punctuation">{</span>
+	<span class="token keyword">return</span> <span class="token operator">&amp;</span>C<span class="token punctuation">{</span>
+		Num<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-	container := di.New()
-	<span class="hljs-keyword">if</span> err := container.Provide(NewA); err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-built_in">panic</span>(err)
-	&#125;
-	<span class="hljs-keyword">if</span> err := container.Provide(NewB); err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-built_in">panic</span>(err)
-	&#125;
-	<span class="hljs-keyword">if</span> err := container.Provide(NewC); err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-built_in">panic</span>(err)
-	&#125;
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	container <span class="token operator">:=</span> di<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> err <span class="token operator">:=</span> container<span class="token punctuation">.</span><span class="token function">Provide</span><span class="token punctuation">(</span>NewA<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">if</span> err <span class="token operator">:=</span> container<span class="token punctuation">.</span><span class="token function">Provide</span><span class="token punctuation">(</span>NewB<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">if</span> err <span class="token operator">:=</span> container<span class="token punctuation">.</span><span class="token function">Provide</span><span class="token punctuation">(</span>NewC<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
 
-	err := container.Invoke(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(a *A)</span></span> &#123;
-		fmt.Printf(<span class="hljs-string">&quot;%+v: %d&quot;</span>, a, a.B.C.Num)
-	&#125;)
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-built_in">panic</span>(err)
-	&#125;
-&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week3-once.html">Week03: Go并发编程(八) 深入理解 sync.Once</a></li><li><a href="https://lailin.xyz/post/go-training-week3-errgroup.html">Week03: Go并发编程(七) 深入理解 errgroup</a></li><li><a href="https://lailin.xyz/post/go-training-week3-waitgroup.html">Week03: Go并发编程(六) 深入理解 WaitGroup</a></li></ul></div></div><hr><div><div class="post-metas mb-3"><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a> <a class="hover-with-bg" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></div></div><p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p><div class="post-prevnext"><article class="post-prev col-6"><a href="/post/builder.html"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Go设计模式03-建造者模式</span> <span class="visible-mobile">上一篇</span></a></article><article class="post-next col-6"><a href="/post/fe1ma9.html"><span class="hidden-mobile">笔记-让你最快速地改善代码质量的20条编程规范</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></article></div></div><article class="comments" id="comments"><script type="text/javascript">Fluid.utils.waitElementVisible("comments",(function(){var t=document.documentElement.getAttribute("data-user-color-scheme");t="dark"===t?"github-dark":"github-light",window.UtterancesThemeLight="github-light",window.UtterancesThemeDark="github-dark";var e=document.createElement("script");e.setAttribute("src","https://utteranc.es/client.js"),e.setAttribute("repo","scuplus/blogComment"),e.setAttribute("issue-term","pathname"),e.setAttribute("label","utterances"),e.setAttribute("theme",t),e.setAttribute("crossorigin","anonymous"),document.getElementById("comments").appendChild(e)}))</script><noscript>Please enable JavaScript to view the comments</noscript></article></article></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div class="toc-body" id="toc-body"></div></div></div></div></div><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><div class="col-lg-7 mx-auto nopadding-x-md"><div class="container custom mx-auto"><script>!function(e,s,p,r){if(void 0===e.webpushr){e.webpushr=e.webpushr||function(){(e.webpushr.q=e.webpushr.q||[]).push(arguments)};var n,u=s.getElementsByTagName(p)[0];(n=s.createElement(p)).id="webpushr-jssdk",n.async=1,n.src="https://cdn.webpushr.com/app.min.js",u.parentNode.appendChild(n)}}(window,document,"script"),webpushr("setup",{key:"BBkZb7rpvsVqVNkORXD9T9T93MJodtpNJD5c1f2HE_XsED3r94An3CKObdyTJ6ub3ARm9LIdeDCVzKLBsK760NM"})</script></div></div></main><footer class="text-center mt-5 py-3"><div class="footer-content"><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div></footer><script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css"><script>NProgress.configure({showSpinner:!1,trickleSpeed:100}),NProgress.start(),window.addEventListener("load",(function(){NProgress.done()}))</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script><script src="/js/debouncer.js"></script><script src="/js/events.js"></script><script src="/js/plugins.js"></script><script src="/js/lazyload.js"></script><script src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script><script>!function(t,i){(0,Fluid.plugins.typing)(i.getElementById("subtitle").title)}(window,document)</script><script src="/js/local-search.js"></script><script>document.querySelector("#local-search-input").onclick=function(){searchFunc("/local-search.xml","local-search-input","local-search-result"),this.onclick=null}</script><script defer>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-137859264-1","auto"),ga("send","pageview")</script><script async src="https://www.google-analytics.com/analytics.js"></script><script src="/js/boot.js"></script></body></html>
+	err <span class="token operator">:=</span> container<span class="token punctuation">.</span><span class="token function">Invoke</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>a <span class="token operator">*</span>A<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%+v: %d&quot;</span><span class="token punctuation">,</span> a<span class="token punctuation">,</span> a<span class="token punctuation">.</span>B<span class="token punctuation">.</span>C<span class="token punctuation">.</span>Num<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/post/singleton.html" class="prev">
+        Go设计模式01-单例模式
+      </a></span> <span class="next"><a href="/post/builder.html">
+        Go设计模式03-建造者模式
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><div class="page"><div id="v-utterances-comment" class="theme-default-content"></div></div></div></div>
+    <script src="/assets/js/app.4b51615f.js" defer></script><script src="/assets/js/2.9dd548d2.js" defer></script><script src="/assets/js/15.bfadf955.js" defer></script>
+  </body>
+</html>
