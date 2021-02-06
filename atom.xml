@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-02-01T05:18:17.996Z</updated>
+  <updated>2021-02-06T13:41:16.220Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -15,6 +15,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go工程化(二) 项目目录结构</title>
+    <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
+    <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
+    <published>2021-02-06T05:08:51.000Z</published>
+    <updated>2021-02-06T13:41:16.220Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;本系列为 &lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Week04: Go 工程化" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week04-Go-%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="工程化" scheme="https://lailin.xyz/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+  </entry>
   
   <entry>
     <title>Go工程化(一) 架构整洁之道阅读笔记</title>
@@ -779,8 +813,8 @@
     <title>Go设计模式24-总结(更新完毕)</title>
     <link href="https://lailin.xyz/post/go-design-pattern.html"/>
     <id>https://lailin.xyz/post/go-design-pattern.html</id>
-    <published>2020-11-05T01:35:39.000Z</published>
-    <updated>2021-02-01T05:13:15.997Z</updated>
+    <published>2020-11-04T17:35:39.000Z</published>
+    <updated>2021-02-06T13:41:16.220Z</updated>
     
     <summary type="html">
     
@@ -3011,37 +3045,6 @@
       <category term="php" scheme="https://lailin.xyz/tags/php/"/>
     
       <category term="四川大学" scheme="https://lailin.xyz/tags/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Composer上线前的优化</title>
-    <link href="https://lailin.xyz/post/36128.html"/>
-    <id>https://lailin.xyz/post/36128.html</id>
-    <published>2016-05-09T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.528Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;更新之后或者上线前别忘了执行下面的命令&lt;br&gt;否则少则损失 20%-50%的性能，多则程序直接报错&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;hljs bash&quot;&gt;composer dump-autoload
-        
-      
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="composer" scheme="https://lailin.xyz/tags/composer/"/>
-    
-      <category term="优化" scheme="https://lailin.xyz/tags/%E4%BC%98%E5%8C%96/"/>
     
   </entry>
   
