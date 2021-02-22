@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-02-20T07:59:01.713Z</updated>
+  <updated>2021-02-22T05:32:18.510Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -17,11 +17,45 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Go工程化(三) 依赖注入框架 wire</title>
+    <link href="https://lailin.xyz/post/go-training-week4-wire.html"/>
+    <id>https://lailin.xyz/post/go-training-week4-wire.html</id>
+    <published>2021-02-22T05:08:51.000Z</published>
+    <updated>2021-02-22T05:32:18.510Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;本系列为 &lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Week04: Go 工程化" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week04-Go-%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="工程化" scheme="https://lailin.xyz/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go工程化(二) 项目目录结构</title>
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
     <published>2021-02-06T05:08:51.000Z</published>
-    <updated>2021-02-20T07:59:01.713Z</updated>
+    <updated>2021-02-22T05:32:18.510Z</updated>
     
     <summary type="html">
     
@@ -814,7 +848,7 @@
     <link href="https://lailin.xyz/post/go-design-pattern.html"/>
     <id>https://lailin.xyz/post/go-design-pattern.html</id>
     <published>2020-11-04T17:35:39.000Z</published>
-    <updated>2021-02-20T07:59:01.709Z</updated>
+    <updated>2021-02-22T05:32:18.506Z</updated>
     
     <summary type="html">
     
@@ -3016,35 +3050,6 @@
       <category term="owncloud" scheme="https://lailin.xyz/tags/owncloud/"/>
     
       <category term="oss" scheme="https://lailin.xyz/tags/oss/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>四川大学评教开源代码</title>
-    <link href="https://lailin.xyz/post/31503.html"/>
-    <id>https://lailin.xyz/post/31503.html</id>
-    <published>2016-06-02T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.525Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;pre&gt;&lt;code class=&quot;hljs php&quot;&gt;&lt;span class=&quot;hljs-meta&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;require&lt;/span&gt; &lt;span
-        
-      
-    
-    </summary>
-    
-      <category term="大学" scheme="https://lailin.xyz/categories/%E5%A4%A7%E5%AD%A6/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="四川大学" scheme="https://lailin.xyz/tags/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6/"/>
     
   </entry>
   
