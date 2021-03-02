@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-03-01T04:06:10.467Z</updated>
+  <updated>2021-03-02T16:48:27.874Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -17,11 +17,45 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</title>
+    <link href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html"/>
+    <id>https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html</id>
+    <published>2021-03-02T16:08:51.000Z</published>
+    <updated>2021-03-02T16:48:27.874Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;本系列为 &lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Week04: Go 工程化" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week04-Go-%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="工程化" scheme="https://lailin.xyz/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go工程化(四) API 设计上: 项目结构 &amp; 设计</title>
     <link href="https://lailin.xyz/post/go-training-week4-api-design.html"/>
     <id>https://lailin.xyz/post/go-training-week4-api-design.html</id>
     <published>2021-03-01T01:08:51.000Z</published>
-    <updated>2021-03-01T04:06:10.467Z</updated>
+    <updated>2021-03-02T16:48:27.874Z</updated>
     
     <summary type="html">
     
@@ -55,7 +89,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-wire.html"/>
     <id>https://lailin.xyz/post/go-training-week4-wire.html</id>
     <published>2021-02-22T05:08:51.000Z</published>
-    <updated>2021-03-01T04:06:10.467Z</updated>
+    <updated>2021-03-02T16:48:27.874Z</updated>
     
     <summary type="html">
     
@@ -89,7 +123,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
     <published>2021-02-06T05:08:51.000Z</published>
-    <updated>2021-03-01T04:06:10.467Z</updated>
+    <updated>2021-03-02T16:48:27.874Z</updated>
     
     <summary type="html">
     
@@ -882,7 +916,7 @@
     <link href="https://lailin.xyz/post/go-design-pattern.html"/>
     <id>https://lailin.xyz/post/go-design-pattern.html</id>
     <published>2020-11-04T17:35:39.000Z</published>
-    <updated>2021-03-01T04:06:10.463Z</updated>
+    <updated>2021-03-02T16:48:27.874Z</updated>
     
     <summary type="html">
     
@@ -3016,37 +3050,6 @@
       <category term="linux" scheme="https://lailin.xyz/tags/linux/"/>
     
       <category term="网络" scheme="https://lailin.xyz/tags/%E7%BD%91%E7%BB%9C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>迁移laravel框架项目到虚拟主机</title>
-    <link href="https://lailin.xyz/post/13242.html"/>
-    <id>https://lailin.xyz/post/13242.html</id>
-    <published>2016-07-14T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.535Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h3&gt;&lt;p&gt;laravel 版本：&lt;code&gt;5.2&lt;/code&gt;&lt;br&gt;虚拟主机：万网&lt;/p&gt;
-&lt;h3 id=&quot;迁移&quot;&gt;&lt;a href=&quot;#迁移&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="laravel" scheme="https://lailin.xyz/tags/laravel/"/>
-    
-      <category term="虚拟主机" scheme="https://lailin.xyz/tags/%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/"/>
     
   </entry>
   
