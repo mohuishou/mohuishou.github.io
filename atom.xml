@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-03-04T15:56:14.903Z</updated>
+  <updated>2021-03-06T14:39:42.988Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -17,11 +17,45 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Go工程化(七) Go Module</title>
+    <link href="https://lailin.xyz/post/go-training-week4-go-module.html"/>
+    <id>https://lailin.xyz/post/go-training-week4-go-module.html</id>
+    <published>2021-03-06T16:08:51.000Z</published>
+    <updated>2021-03-06T14:39:42.988Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;本系列为 &lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Week04: Go 工程化" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week04-Go-%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="工程化" scheme="https://lailin.xyz/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go工程化(六) 配置管理</title>
     <link href="https://lailin.xyz/post/go-training-week4-config.html"/>
     <id>https://lailin.xyz/post/go-training-week4-config.html</id>
     <published>2021-03-04T16:08:51.000Z</published>
-    <updated>2021-03-04T15:56:14.903Z</updated>
+    <updated>2021-03-06T14:39:42.988Z</updated>
     
     <summary type="html">
     
@@ -55,7 +89,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html"/>
     <id>https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html</id>
     <published>2021-03-02T16:08:51.000Z</published>
-    <updated>2021-03-04T15:56:14.903Z</updated>
+    <updated>2021-03-06T14:39:42.988Z</updated>
     
     <summary type="html">
     
@@ -89,7 +123,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-api-design.html"/>
     <id>https://lailin.xyz/post/go-training-week4-api-design.html</id>
     <published>2021-03-01T01:08:51.000Z</published>
-    <updated>2021-03-04T15:56:14.903Z</updated>
+    <updated>2021-03-06T14:39:42.988Z</updated>
     
     <summary type="html">
     
@@ -123,7 +157,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-wire.html"/>
     <id>https://lailin.xyz/post/go-training-week4-wire.html</id>
     <published>2021-02-22T05:08:51.000Z</published>
-    <updated>2021-03-04T15:56:14.903Z</updated>
+    <updated>2021-03-06T14:39:42.988Z</updated>
     
     <summary type="html">
     
@@ -157,7 +191,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
     <published>2021-02-06T05:08:51.000Z</published>
-    <updated>2021-03-04T15:56:14.903Z</updated>
+    <updated>2021-03-06T14:39:42.988Z</updated>
     
     <summary type="html">
     
@@ -950,7 +984,7 @@
     <link href="https://lailin.xyz/post/go-design-pattern.html"/>
     <id>https://lailin.xyz/post/go-design-pattern.html</id>
     <published>2020-11-04T17:35:39.000Z</published>
-    <updated>2021-03-04T15:56:14.899Z</updated>
+    <updated>2021-03-06T14:39:42.984Z</updated>
     
     <summary type="html">
     
@@ -3024,35 +3058,6 @@
       <category term="php" scheme="https://lailin.xyz/tags/php/"/>
     
       <category term="设计模式" scheme="https://lailin.xyz/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>四川大学望江校区使用mentohust认证上网</title>
-    <link href="https://lailin.xyz/post/51466.html"/>
-    <id>https://lailin.xyz/post/51466.html</id>
-    <published>2016-07-18T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.524Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;刚刚解决完天翼飞扬的上网问题，结果就搬校区了，按照上一篇文章的方法在这边也是可以用的，但是校园网使用的锐捷认证已经提供了
-        
-      
-    
-    </summary>
-    
-      <category term="大学" scheme="https://lailin.xyz/categories/%E5%A4%A7%E5%AD%A6/"/>
-    
-    
-      <category term="四川大学" scheme="https://lailin.xyz/tags/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6/"/>
-    
-      <category term="mentohust" scheme="https://lailin.xyz/tags/mentohust/"/>
     
   </entry>
   

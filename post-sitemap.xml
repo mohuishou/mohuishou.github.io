@@ -9,7 +9,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week4-api-design.html</loc>
-        <lastmod>2021-03-04T15:56:14.903Z</lastmod>
+        <lastmod>2021-03-06T14:39:42.988Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -17,7 +17,15 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week4-config.html</loc>
-        <lastmod>2021-03-04T15:56:14.903Z</lastmod>
+        <lastmod>2021-03-06T14:39:42.988Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://lailin.xyz/post/go-training-week4-go-module.html</loc>
+        <lastmod>2021-03-06T14:39:42.988Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -25,7 +33,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week4-project-layout.html</loc>
-        <lastmod>2021-03-04T15:56:14.903Z</lastmod>
+        <lastmod>2021-03-06T14:39:42.988Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -33,7 +41,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html</loc>
-        <lastmod>2021-03-04T15:56:14.903Z</lastmod>
+        <lastmod>2021-03-06T14:39:42.988Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -41,7 +49,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-training-week4-wire.html</loc>
-        <lastmod>2021-03-04T15:56:14.903Z</lastmod>
+        <lastmod>2021-03-06T14:39:42.988Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -49,7 +57,7 @@
 
     <url>
         <loc>https://lailin.xyz/post/go-design-pattern.html</loc>
-        <lastmod>2021-03-04T15:56:14.899Z</lastmod>
+        <lastmod>2021-03-06T14:39:42.984Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
