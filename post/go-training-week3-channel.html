@@ -203,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-01-15 07:08" pubdate>
-        2021年1月15日 早上
+      <time datetime="2021-01-14 23:08" pubdate>
+        2021年1月14日 晚上
       </time>
     </span>
   
@@ -337,14 +337,14 @@
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
-              Go并发编程(五) 深入理解 sync/atomic
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
             </a>
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
-              Go并发编程(六) 深入理解 WaitGroup
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
             </a>
           </li>
           
@@ -454,7 +454,7 @@
 <p>本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成</p>
 </blockquote>
 <h2 id="楔子"><a href="#楔子" class="headerlink" title="楔子"></a>楔子</h2><h3 id="使用通信共享内存"><a href="#使用通信共享内存" class="headerlink" title="使用通信共享内存"></a>使用通信共享内存</h3><p><strong>“不要通过共享内存来通信，我们应该使用通信来共享内存”</strong> 这句话想必大家已经非常熟悉了，在官方的博客，初学时的教程，甚至是在 Go 的源码中都能看到，我们之前讲 sync 包的时候也有提到过。</p>
-<p>无论是通过共享内存来通信还是通过通信来共享内存，最终我们应用程序都是读取的内存当中的数据，只是前者是直接读取内存的数据，而后者是通过发送消息的方式来进行同步。而通过发送消息来同步的这种方式常见的就是 Go 采用的 CSP(Communication Sequential Process) 模型以及 Erlang 采用的 Actor 模型，这两种方式都是通过通信来共享内存。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1610460699237-f6400aaa-34d5-4c8d-b323-27683704abd2.png#align=left&amp;display=inline&amp;height=753&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_channel.png&amp;originHeight=753&amp;originWidth=4443&amp;size=152032&amp;status=done&amp;style=none&amp;width=4443" srcset="/img/loading.gif" alt="02_Go进阶03_blog_channel.png"><br>大部分的语言采用的都是第一种方式直接去操作内存，然后通过互斥锁，CAS 等操作来保证并发安全。Go 引入了 Channel 和 Goroutine 实现 CSP 模型来解耦这个操作，这样做的好处是在 Goroutine 当中我们就不用手动去做资源的锁定与释放，同时将生产者和消费者进行了解耦，Channel 其实和消息队列很相似。而 Actor 模型和 CSP 模型都是通过发送消息来共享内存，但是它们之间最大的区别就是 Actor 模型当中并没有一个独立的 Channel 组件，而是 Actor 与 Actor 之间直接进行消息的发送与接收，每个 Actor 都有一个本地的“信箱”消息都会先发送到这个“信箱当中”。</p>
+<p>无论是通过共享内存来通信还是通过通信来共享内存，最终我们应用程序都是读取的内存当中的数据，只是前者是直接读取内存的数据，而后者是通过发送消息的方式来进行同步。而通过发送消息来同步的这种方式常见的就是 Go 采用的 CSP(Communication Sequential Process) 模型以及 Erlang 采用的 Actor 模型，这两种方式都是通过通信来共享内存。<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1610460699237-f6400aaa-34d5-4c8d-b323-27683704abd2.png" srcset="/img/loading.gif" alt="02_Go进阶03_blog_channel.png"><br>大部分的语言采用的都是第一种方式直接去操作内存，然后通过互斥锁，CAS 等操作来保证并发安全。Go 引入了 Channel 和 Goroutine 实现 CSP 模型来解耦这个操作，这样做的好处是在 Goroutine 当中我们就不用手动去做资源的锁定与释放，同时将生产者和消费者进行了解耦，Channel 其实和消息队列很相似。而 Actor 模型和 CSP 模型都是通过发送消息来共享内存，但是它们之间最大的区别就是 Actor 模型当中并没有一个独立的 Channel 组件，而是 Actor 与 Actor 之间直接进行消息的发送与接收，每个 Actor 都有一个本地的“信箱”消息都会先发送到这个“信箱当中”。</p>
 <p><strong>小结</strong></p>
 <ul>
 <li>相对于互斥锁，原子操作而言 channel 是一个更高层级的抽象，使用 channel 会更加方便，心智成本也更低，同时也更不容易出错（channel 保证了并发安全），后面就会讲到，由于 Channel 底层也是通过这些低级的同步原语实现的，所以性能上会差一些，如果有极高的性能要求时也可以用 sync 包中提供的低级同步原语</li>
@@ -478,11 +478,11 @@
 <li><strong>从无缓冲的 channel 中进行的接收，要发生在对该 channel 进行的发送完成前，</strong>如果是无缓冲的 channel， write 还没写入结束，read 就已经开始接收了，所以可以保证 read 执行，但是反过来如果有缓冲，那么 read 可能还没开始 write 就结束了，所以就有可能什么都不输出就结束了</li>
 </ol>
 <p>关于有无缓冲的 channel 有两张图非常经典，基本上看完就明白了，建议阅读一下原文，在参考文献 [14] 中</p>
-<h4 id="无缓冲-channel"><a href="#无缓冲-channel" class="headerlink" title="无缓冲 channel"></a>无缓冲 channel</h4><p>如下图所示，无缓冲的 channel 会阻塞直到数据接收完成，常用于两个 goroutine 互相等待同步<br><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1610518966242-7cf0d17a-8c64-4eb0-9459-615d10bdf56d.png#align=left&amp;display=inline&amp;height=425&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=850&amp;originWidth=1112&amp;size=331631&amp;status=done&amp;style=none&amp;width=556" srcset="/img/loading.gif" alt="image.png"></p>
-<h4 id="有缓冲-channel"><a href="#有缓冲-channel" class="headerlink" title="有缓冲 channel"></a>有缓冲 channel</h4><p>有缓冲的 channel 如果在缓冲区未满的情况下发送是不阻塞的，在缓冲区不为空时，接收是不阻塞的<br><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1610518977443-794150b4-3b89-4279-b18c-50ae8e334945.png#align=left&amp;display=inline&amp;height=142&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=283&amp;originWidth=556&amp;size=65114&amp;status=done&amp;style=none&amp;width=278" srcset="/img/loading.gif" alt="image.png"></p>
+<h4 id="无缓冲-channel"><a href="#无缓冲-channel" class="headerlink" title="无缓冲 channel"></a>无缓冲 channel</h4><p>如下图所示，无缓冲的 channel 会阻塞直到数据接收完成，常用于两个 goroutine 互相等待同步<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1610518966242-7cf0d17a-8c64-4eb0-9459-615d10bdf56d.png" srcset="/img/loading.gif" alt="image.png"></p>
+<h4 id="有缓冲-channel"><a href="#有缓冲-channel" class="headerlink" title="有缓冲 channel"></a>有缓冲 channel</h4><p>有缓冲的 channel 如果在缓冲区未满的情况下发送是不阻塞的，在缓冲区不为空时，接收是不阻塞的<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1610518977443-794150b4-3b89-4279-b18c-50ae8e334945.png" srcset="/img/loading.gif" alt="image.png"></p>
 <h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p>大概了解了 channel 的使用方法和原理之后我们接下来就进入稍微硬核一些的源码模式</p>
 <h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> hchan <span class="hljs-keyword">struct</span> &#123;<br>	qcount   <span class="hljs-keyword">uint</span>           <span class="hljs-comment">// 队列中元素总数量</span><br>	dataqsiz <span class="hljs-keyword">uint</span>           <span class="hljs-comment">// 循环队列的长度</span><br>	buf      unsafe.Pointer <span class="hljs-comment">// 指向长度为 dataqsiz 的底层数组，只有在有缓冲时这个才有意义</span><br>	elemsize <span class="hljs-keyword">uint16</span>         <span class="hljs-comment">// 能够发送和接受的元素大小</span><br>	closed   <span class="hljs-keyword">uint32</span>         <span class="hljs-comment">// 是否关闭</span><br>	elemtype *_type <span class="hljs-comment">// 元素的类型</span><br>	sendx    <span class="hljs-keyword">uint</span>   <span class="hljs-comment">// 当前已发送的元素在队列当中的索引位置</span><br>	recvx    <span class="hljs-keyword">uint</span>   <span class="hljs-comment">// 当前已接收的元素在队列当中的索引位置</span><br>	recvq    waitq  <span class="hljs-comment">// 接收 Goroutine 链表</span><br>	sendq    waitq  <span class="hljs-comment">// 发送 Goroutine 链表</span><br><br>	lock mutex <span class="hljs-comment">// 互斥锁</span><br>&#125;<br><br><span class="hljs-comment">// waitq 是一个双向链表，里面保存了 goroutine</span><br><span class="hljs-keyword">type</span> waitq <span class="hljs-keyword">struct</span> &#123;<br>	first *sudog<br>	last  *sudog<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>如下图所示，channel 底层其实是一个循环队列<br><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1610547861474-f3573434-0261-4255-91dd-6e6a4a532030.png#align=left&amp;display=inline&amp;height=351&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=701&amp;originWidth=668&amp;size=76111&amp;status=done&amp;style=none&amp;width=334" srcset="/img/loading.gif" alt="image.png"></p>
+<p>如下图所示，channel 底层其实是一个循环队列<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1610547861474-f3573434-0261-4255-91dd-6e6a4a532030.png" srcset="/img/loading.gif" alt="image.png"></p>
 <h4 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h4><p>在 Go 中我们使用 <code>make(chan T, cap)</code>  来创建 channel，make 语法会在编译时，转换为 <code>makechan64</code>  和 <code>makechan</code></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">makechan64</span><span class="hljs-params">(t *chantype, size <span class="hljs-keyword">int64</span>)</span> *<span class="hljs-title">hchan</span></span> &#123;<br>	<span class="hljs-keyword">if</span> <span class="hljs-keyword">int64</span>(<span class="hljs-keyword">int</span>(size)) != size &#123;<br>		<span class="hljs-built_in">panic</span>(plainError(<span class="hljs-string">&quot;makechan: size out of range&quot;</span>))<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> makechan(t, <span class="hljs-keyword">int</span>(size))<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><code>makechan64</code>  主要是做了一下检查，最终还是会调用 <code>makechan</code> ，在看 <code>makechan</code>  源码之前，我们先来看两个全局常量，接下来会用到</p>
@@ -581,7 +581,7 @@
 <li><a target="_blank" rel="noopener" href="https://www.ardanlabs.com/blog/2017/10/the-behavior-of-channels.html">The Behavior Of Channels</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.ardanlabs.com/blog/2014/02/the-nature-of-channels-in-go.html">The Nature Of Channels In Go</a></li>
 </ol>
-<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-clean-arch.html">Week04: Go工程化(一) 架构整洁之道阅读笔记</a></li><li><a href="https://lailin.xyz/post/go-training-week3-sum.html">Week03: Go并发编程(十一) 总结</a></li><li><a href="https://lailin.xyz/post/go-training-week3-context.html">Week03: Go并发编程(九) 深入理解 Context</a></li></ul></div>
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li></ul></div>
             </div>
             <!-- Custom -->            
             

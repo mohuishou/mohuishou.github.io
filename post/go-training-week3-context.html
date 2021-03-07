@@ -203,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-01-09 07:08" pubdate>
-        2021年1月9日 早上
+      <time datetime="2021-01-08 23:08" pubdate>
+        2021年1月8日 晚上
       </time>
     </span>
   
@@ -337,14 +337,14 @@
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
-              Go并发编程(五) 深入理解 sync/atomic
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
             </a>
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
-              Go并发编程(六) 深入理解 WaitGroup
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
             </a>
           </li>
           
@@ -454,8 +454,8 @@
 <p>本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成</p>
 </blockquote>
 <h2 id="楔子"><a href="#楔子" class="headerlink" title="楔子"></a>楔子</h2><p>在 <a href="https://lailin.xyz/post/go-training-week3-waitgroup.html">Week03: Go 并发编程(六) 深入理解 WaitGroup</a> 、 <a href="https://lailin.xyz/post/go-training-week3-errgroup.html">Week03: Go 并发编程(七) 深入理解 errgroup</a> 中我们提到了等待多个 goroutine 协作的方式，但是我们现在想一下这么一个常见的场景。现在有一个 Server 服务在执行，当请求来的时候我们启动一个 goroutine 去处理，然后在这个 goroutine 当中有对下游服务的 rpc 调用，也会去请求数据库获取一些数据，这时候如果下游依赖的服务比较慢，但是又没挂，只是很慢，可能一次调用要 1min 才能返回结果，这个时候我们该如何处理？</p>
-<p>如下图所示，首先假设我们使用 WaitGroup 进行控制，等待所有的 goroutine 处理完成之后返回，可以看到我们实际的耗时远远大于了用户可以容忍的时间。<br><img src="https://cdn.nlark.com/yuque/0/2021/svg/292493/1610027116078-2e1368bf-015e-4459-8517-73dc858ed083.svg#align=left&amp;display=inline&amp;height=243&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_context.drawio.svg&amp;originHeight=243&amp;originWidth=342&amp;size=11723&amp;status=done&amp;style=none&amp;width=342" srcset="/img/loading.gif" alt="02_Go进阶03_blog_context.drawio.svg"><br>如下图所示，再考虑一个常见的场景，万一上面的 rpc goroutine 很早就报错了，但是 下面的 db goroutine 又执行了很久，我们最后要返回错误信息，很明显后面 db goroutine 执行的这段时间都是在白白的浪费用户的时间。<br><img src="https://cdn.nlark.com/yuque/0/2021/svg/292493/1610027303842-4272e9a1-af9c-4804-a779-f72c1f82a1a0.svg#align=left&amp;display=inline&amp;height=243&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_context.drawio.svg&amp;originHeight=243&amp;originWidth=322&amp;size=13500&amp;status=done&amp;style=none&amp;width=322" srcset="/img/loading.gif" alt="02_Go进阶03_blog_context.drawio.svg"></p>
-<p>这时候就应该请出 context 包了，<strong>context 主要就是用来在多个 goroutine 中设置截止日期、同步信号，传递请求相关值。</strong><br><strong>每一次 context 都会从顶层一层一层的传递到下面一层的 goroutine 当上面的 context 取消的时候，下面所有的 context 也会随之取消。</strong><br>**<br>上面的例子当中，如果引入 context 后就会是这样，如下图所示，context 会类似一个树状结构一样依附在每个 goroutine 上，当上层的 req goroutine 的 context 超时之后就会将取消信号同步到下面的所有 goroutine 上一起返回，从而达到超时控制的作用<br><img src="https://cdn.nlark.com/yuque/0/2021/svg/292493/1610027726018-4ff7389e-ec4a-4107-99ac-493f587f2a88.svg#align=left&amp;display=inline&amp;height=243&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_context.drawio.svg&amp;originHeight=243&amp;originWidth=348&amp;size=17197&amp;status=done&amp;style=none&amp;width=348" srcset="/img/loading.gif" alt="02_Go进阶03_blog_context.drawio.svg"><br>如下图所示，当 rpc 调用失败之后，会出发 context 取消，然后这个取消信号就会同步到其他的 goroutine 当中<br><img src="https://cdn.nlark.com/yuque/0/2021/svg/292493/1610027762059-43c810a8-619e-4f8d-ad74-7a2767635aa0.svg#align=left&amp;display=inline&amp;height=249&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_context.drawio.svg&amp;originHeight=249&amp;originWidth=383&amp;size=18307&amp;status=done&amp;style=none&amp;width=383" srcset="/img/loading.gif" alt="02_Go进阶03_blog_context.drawio.svg"></p>
+<p>如下图所示，首先假设我们使用 WaitGroup 进行控制，等待所有的 goroutine 处理完成之后返回，可以看到我们实际的耗时远远大于了用户可以容忍的时间。<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1610027116078-2e1368bf-015e-4459-8517-73dc858ed083.svg" srcset="/img/loading.gif" alt="02_Go进阶03_blog_context.drawio.svg"><br>如下图所示，再考虑一个常见的场景，万一上面的 rpc goroutine 很早就报错了，但是 下面的 db goroutine 又执行了很久，我们最后要返回错误信息，很明显后面 db goroutine 执行的这段时间都是在白白的浪费用户的时间。<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1610027303842-4272e9a1-af9c-4804-a779-f72c1f82a1a0.svg" srcset="/img/loading.gif" alt="02_Go进阶03_blog_context.drawio.svg"></p>
+<p>这时候就应该请出 context 包了，<strong>context 主要就是用来在多个 goroutine 中设置截止日期、同步信号，传递请求相关值。</strong><br><strong>每一次 context 都会从顶层一层一层的传递到下面一层的 goroutine 当上面的 context 取消的时候，下面所有的 context 也会随之取消。</strong><br>**<br>上面的例子当中，如果引入 context 后就会是这样，如下图所示，context 会类似一个树状结构一样依附在每个 goroutine 上，当上层的 req goroutine 的 context 超时之后就会将取消信号同步到下面的所有 goroutine 上一起返回，从而达到超时控制的作用<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1610027726018-4ff7389e-ec4a-4107-99ac-493f587f2a88.svg" srcset="/img/loading.gif" alt="02_Go进阶03_blog_context.drawio.svg"><br>如下图所示，当 rpc 调用失败之后，会出发 context 取消，然后这个取消信号就会同步到其他的 goroutine 当中<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1610027762059-43c810a8-619e-4f8d-ad74-7a2767635aa0.svg" srcset="/img/loading.gif" alt="02_Go进阶03_blog_context.drawio.svg"></p>
 <h2 id="package-context"><a href="#package-context" class="headerlink" title="package context"></a>package context</h2><h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><p>在使用一个新的库的时候，我们一般需要先看它的官方说明，得益于 godoc 的约束，所以标准库和第三方库的文档都可以通过 <a target="_blank" rel="noopener" href="https://pkg.go.dev">pkg.go.dev</a> 进行搜索查询</p>
 <h4 id="使用准则"><a href="#使用准则" class="headerlink" title="使用准则"></a>使用准则</h4><p>context 包一开始就告诉了我们应该怎么用，不应该怎么用，这是应该被共同遵守的约定。</p>
 <ul>
@@ -555,7 +555,7 @@
 <li><a target="_blank" rel="noopener" href="https://blog.golang.org/context">Go Concurrency Patterns: Context - The Go Blog</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.golang.org/pipelines">Go Concurrency Patterns: Pipelines and cancellation - The Go Blog</a></li>
 </ol>
-<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-clean-arch.html">Week04: Go工程化(一) 架构整洁之道阅读笔记</a></li><li><a href="https://lailin.xyz/post/go-training-week3-sum.html">Week03: Go并发编程(十一) 总结</a></li><li><a href="https://lailin.xyz/post/go-training-week3-channel.html">Week03: Go并发编程(十) 深入理解 Channel</a></li></ul></div>
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li></ul></div>
             </div>
             <!-- Custom -->            
             

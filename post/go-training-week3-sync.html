@@ -203,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-26 21:08" pubdate>
-        2020年12月26日 晚上
+      <time datetime="2020-12-26 13:08" pubdate>
+        2020年12月26日 下午
       </time>
     </span>
   
@@ -225,7 +225,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      56
+      55
        分钟
     </span>
   
@@ -337,14 +337,14 @@
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
-              Go并发编程(五) 深入理解 sync/atomic
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
             </a>
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
-              Go并发编程(六) 深入理解 WaitGroup
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
             </a>
           </li>
           
@@ -473,15 +473,15 @@
 <h3 id="锁的实现模式-5"><a href="#锁的实现模式-5" class="headerlink" title="锁的实现模式[5]"></a>锁的实现模式[5]</h3><ul>
 <li><strong>Barging</strong>: 这种模式是为了提高吞吐量，当锁被释放时，它会唤醒第一个等待者，然后把锁给第一个等待者或者给第一个请求锁的人</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/292493/1608967840701-d8c54ee4-964b-49d0-8fab-6f98dd777fd2.png#align=left&amp;display=inline&amp;height=117&amp;margin=%5Bobject%20Object%5D&amp;name=1_B1atM-b6GPDS0_Q_TPEUBw.png&amp;originHeight=117&amp;originWidth=579&amp;size=12180&amp;status=done&amp;style=none&amp;width=579" srcset="/img/loading.gif" alt="1_B1atM-b6GPDS0_Q_TPEUBw.png"></p>
+<p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608967840701-d8c54ee4-964b-49d0-8fab-6f98dd777fd2.png" srcset="/img/loading.gif" alt="1_B1atM-b6GPDS0_Q_TPEUBw.png"></p>
 <ul>
 <li><strong>Handoff: </strong>当锁释放时候，锁会一直持有直到第一个等待者准备好获取锁。它降低了吞吐量，因为锁被持有，即使另一个 goroutine 准备获取它。<strong><em>这种模式可以解决公平性的问题，因为在 Barging 模式下可能会存在被唤醒的 goroutine 永远也获取不到锁的情况，毕竟一直在 cpu 上跑着的 goroutine 没有上下文切换会更快一些。缺点就是性能会相对差一些</em></strong></li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/292493/1608967902210-d4c2937f-56fd-49e8-a5a3-903bec31e6fc.png#align=left&amp;display=inline&amp;height=243&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=485&amp;originWidth=1152&amp;size=109267&amp;status=done&amp;style=none&amp;width=576" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608967902210-d4c2937f-56fd-49e8-a5a3-903bec31e6fc.png" srcset="/img/loading.gif" alt="image.png"></p>
 <ul>
 <li><strong>Spining：</strong>自旋在等待队列为空或者应用程序重度使用锁时效果不错。Parking 和 Unparking goroutines 有不低的性能成本开销，相比自旋来说要慢得多。<em><strong>但是自旋是有成本的，所以在 go 的实现中进入自旋的条件十分的苛刻。</strong></em></li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/292493/1608967913891-eb4cf780-6ffd-4a2d-a3d5-8e05d7e3fce3.png#align=left&amp;display=inline&amp;height=221&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=441&amp;originWidth=1063&amp;size=76168&amp;status=done&amp;style=none&amp;width=531.5" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608967913891-eb4cf780-6ffd-4a2d-a3d5-8e05d7e3fce3.png" srcset="/img/loading.gif" alt="image.png"></p>
 <h3 id="Go-Mutex-实现原理"><a href="#Go-Mutex-实现原理" class="headerlink" title="Go Mutex 实现原理"></a>Go Mutex 实现原理</h3><p>我们先来看一下在 Go 中具体是怎么实现的，我们先讲原理再看源码，避免看的云里雾里的。**</p>
 <h4 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h4><p>如下图所示，Go 在 1.15 的版本中锁的实现结合上面提到的三种模式，调用 Lock 方法的时候。</p>
 <ol>
@@ -491,14 +491,14 @@
 <li>自旋完成之后，就会去计算当前的锁的状态</li>
 <li>然后尝试通过 CAS 获取锁</li>
 <li>如果没有获取到就调用 <code>runtime_SemacquireMutex</code> 方法休眠当前 goroutine 并且尝试获取信号量</li>
-<li>goroutine 被唤醒之后会先判断当前是否处在饥饿状态，（如果当前 goroutine 超过 1ms 都没有获取到锁就会进饥饿模式） 1. 如果处在饥饿状态就会获得互斥锁，如果等待队列中只存在当前 Goroutine，互斥锁还会从饥饿模式中退出 1. 如果不在，就会设置唤醒和饥饿标记、重置迭代次数并重新执行获取锁的循环<br><div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">CAS 方法在这里指的是 <code>atomic.CompareAndSwapInt32(addr, old, new) bool</code> 方法，这个方法会先比较传入的地址的值是否是 old，如果是的话就尝试赋新值，如果不是的话就直接返回 false，返回 true 时表示赋值成功<br>饥饿模式是 Go 1.9 版本之后引入的优化，用于解决公平性的问题[10]</div><br><img src="https://cdn.nlark.com/yuque/0/2020/svg/292493/1608970759375-09d8cda7-77ac-48d3-b2f3-b8890e927bd4.svg#align=left&amp;display=inline&amp;height=1222&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_sync.drawio.svg&amp;originHeight=1641&amp;originWidth=838&amp;size=44761&amp;status=done&amp;style=none&amp;width=624" srcset="/img/loading.gif" alt="02_Go进阶03_blog_sync.drawio.svg"></li>
+<li>goroutine 被唤醒之后会先判断当前是否处在饥饿状态，（如果当前 goroutine 超过 1ms 都没有获取到锁就会进饥饿模式） 1. 如果处在饥饿状态就会获得互斥锁，如果等待队列中只存在当前 Goroutine，互斥锁还会从饥饿模式中退出 1. 如果不在，就会设置唤醒和饥饿标记、重置迭代次数并重新执行获取锁的循环<br><div style="background: #FFFBE6;padding:10px;border: 1px solid #C3C3C3;border-radius:5px;margin-bottom:5px;">CAS 方法在这里指的是 <code>atomic.CompareAndSwapInt32(addr, old, new) bool</code> 方法，这个方法会先比较传入的地址的值是否是 old，如果是的话就尝试赋新值，如果不是的话就直接返回 false，返回 true 时表示赋值成功<br>饥饿模式是 Go 1.9 版本之后引入的优化，用于解决公平性的问题[10]</div><br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608970759375-09d8cda7-77ac-48d3-b2f3-b8890e927bd4.svg" srcset="/img/loading.gif" alt="02_Go进阶03_blog_sync.drawio.svg"></li>
 </ol>
 </li>
 </ol>
-<h4 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h4><p>解锁的流程相对于加锁简单许多<br><img src="https://cdn.nlark.com/yuque/0/2020/svg/292493/1608978117259-455cf28e-aa1e-46cf-8fd6-6040ed6c0a7a.svg#align=left&amp;display=inline&amp;height=508&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_sync.drawio.svg&amp;originHeight=651&amp;originWidth=731&amp;size=25330&amp;status=done&amp;style=none&amp;width=570" srcset="/img/loading.gif" alt="02_Go进阶03_blog_sync.drawio.svg"></p>
+<h4 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h4><p>解锁的流程相对于加锁简单许多<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608978117259-455cf28e-aa1e-46cf-8fd6-6040ed6c0a7a.svg" srcset="/img/loading.gif" alt="02_Go进阶03_blog_sync.drawio.svg"></p>
 <h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="Mutex-基本结构"><a href="#Mutex-基本结构" class="headerlink" title="Mutex 基本结构"></a>Mutex 基本结构</h3><p>知道其中的原理之后，我们再来看看源码分析</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Mutex <span class="hljs-keyword">struct</span> &#123;<br>	state <span class="hljs-keyword">int32</span><br>	sema  <span class="hljs-keyword">uint32</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<p><code>Mutex</code>  结构体由 <code>state</code>  <code>sema</code>  两个 4 字节成员组成，其中 <code>state</code>  表示了当前锁的状态， <code>sema</code>  是用于控制锁的信号量<br><img src="https://cdn.nlark.com/yuque/0/2020/svg/292493/1608972241012-8c0fe8e2-b1c8-4696-a9c4-454e11753e0f.svg#align=left&amp;display=inline&amp;height=111&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_sync.drawio.svg&amp;originHeight=111&amp;originWidth=571&amp;size=9769&amp;status=done&amp;style=none&amp;width=571" srcset="/img/loading.gif" alt="02_Go进阶03_blog_sync.drawio.svg"><br><code>state</code>  字段的最低三位表示三种状态，分别是 <code>mutexLocked</code>  <code>mutexWoken</code> <code>mutexStarving</code> ，剩下的用于统计当前在等待锁的 goroutine 数量</p>
+<p><code>Mutex</code>  结构体由 <code>state</code>  <code>sema</code>  两个 4 字节成员组成，其中 <code>state</code>  表示了当前锁的状态， <code>sema</code>  是用于控制锁的信号量<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608972241012-8c0fe8e2-b1c8-4696-a9c4-454e11753e0f.svg" srcset="/img/loading.gif" alt="02_Go进阶03_blog_sync.drawio.svg"><br><code>state</code>  字段的最低三位表示三种状态，分别是 <code>mutexLocked</code>  <code>mutexWoken</code> <code>mutexStarving</code> ，剩下的用于统计当前在等待锁的 goroutine 数量</p>
 <ul>
 <li><code>mutexLocked</code>  表示是否处于锁定状态</li>
 <li><code>mutexWoken</code> 表示是否处于唤醒状态</li>
@@ -593,7 +593,7 @@
 <li><a target="_blank" rel="noopener" href="https://github.com/freelancer-leon/notes/blob/master/kernel/lock/Lock-2-Linux_x86_Spin_Lock.md#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%98%AF-pause-%E6%8C%87%E4%BB%A4">Linux x86 自旋锁的实现</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/golang/go/commit/0556e26273f704db73df9e7c4c3d2e8434dec7be">https://github.com/golang/go/commit/0556e26273f704db73df9e7c4c3d2e8434dec7be</a></li>
 </ol>
-<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-clean-arch.html">Week04: Go工程化(一) 架构整洁之道阅读笔记</a></li><li><a href="https://lailin.xyz/post/go-training-week3-sum.html">Week03: Go并发编程(十一) 总结</a></li><li><a href="https://lailin.xyz/post/go-training-week3-channel.html">Week03: Go并发编程(十) 深入理解 Channel</a></li></ul></div>
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li></ul></div>
             </div>
             <!-- Custom -->            
             
@@ -640,9 +640,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/post/go-training-week3-atomic.html">
+                      <a href="/post/go-training-week3-waitgroup.html">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Go并发编程(五) 深入理解 sync/atomic</span>
+                        <span class="hidden-mobile">Go并发编程(六) 深入理解 WaitGroup</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

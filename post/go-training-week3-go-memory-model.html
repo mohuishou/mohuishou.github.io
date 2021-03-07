@@ -203,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-19 21:08" pubdate>
-        2020年12月19日 晚上
+      <time datetime="2020-12-19 13:08" pubdate>
+        2020年12月19日 下午
       </time>
     </span>
   
@@ -337,14 +337,14 @@
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
-              Go并发编程(五) 深入理解 sync/atomic
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
             </a>
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
-              Go并发编程(六) 深入理解 WaitGroup
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
             </a>
           </li>
           
@@ -467,7 +467,7 @@
 <p>那我们为什么要这么使用 goroutine 呢？今天我们从原理层面来了解一下 goroutine 的注意事项，本文以 Go 官方博客当中的 <a target="_blank" rel="noopener" href="https://golang.org/ref/mem">https://golang.org/ref/mem</a> 为主干穿插讲解，建议阅读本文前先自行看完一遍原文，会有更多的收获</p>
 <h2 id="Go-内存模型"><a href="#Go-内存模型" class="headerlink" title="Go 内存模型"></a>Go 内存模型</h2><p>同样我们先来看一段代码，请问下面的代码可能会输出什么？</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">var</span> a, b <span class="hljs-keyword">int</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">f</span><span class="hljs-params">()</span></span> &#123;<br>	a = <span class="hljs-number">1</span><br>	b = <span class="hljs-number">2</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">g</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-built_in">print</span>(b)<br>	<span class="hljs-built_in">print</span>(a)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">go</span> f()<br>	g()<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>ok，请带着你的答案或者是困惑我们往下走<br><img src="https://cdn.nlark.com/yuque/0/2020/svg/292493/1608363233129-3653a44c-74a9-46dc-94b0-c6151da0c07c.svg#align=left&amp;display=inline&amp;height=111&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_img.drawio.svg&amp;originHeight=111&amp;originWidth=351&amp;size=10847&amp;status=done&amp;style=none&amp;width=351" srcset="/img/loading.gif" alt="02_Go进阶03_blog_img.drawio.svg"><br>比较容易想到的结果是:</p>
+<p>ok，请带着你的答案或者是困惑我们往下走<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608363233129-3653a44c-74a9-46dc-94b0-c6151da0c07c.svg" srcset="/img/loading.gif" alt="02_Go进阶03_blog_img.drawio.svg"><br>比较容易想到的结果是:</p>
 <ul>
 <li>执行顺序: 1 - 2 - 3 - 4, f 先执行, g 后执行, 输出 <code>2 1</code></li>
 <li>执行顺序: 3 - 4 - 1 - 2, g 先执行，f 后执行，输出 <code>0 0</code></li>
@@ -537,7 +537,7 @@
 <li><code>w</code> 发生在 <code>r</code> 之前。</li>
 <li>对共享变量 <code>v</code> 的其它任何写入操作都只能发生在 <code>w</code> 之前或 <code>r</code> 之后。</li>
 </ol>
-<p>这对条件的要求比第一个条件更强，它需要确保没有其它写入操作与 <code>w</code> 或 <code>r</code> 并发。<br>在单个 goroutine 当中这两个条件是等价的，因为单个 goroutine 中不存在并发，在多个 goroutine 中就必须使用同步语义来确保顺序，这样才能到保证能够监测到预期的写入<br><strong>单个 goroutine 的情况</strong>：<br>我们可以发现在单个 goroutine 当中，读取操作 r 总是可以读取到上一次 w 写入的值的<br><img src="https://cdn.nlark.com/yuque/0/2020/png/292493/1608372439492-359ad5bf-1b06-4f4f-ae77-84e96d9f6a7f.png#align=left&amp;display=inline&amp;height=90&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=180&amp;originWidth=842&amp;size=10472&amp;status=done&amp;style=none&amp;width=421" srcset="/img/loading.gif" alt="image.png"><br><strong>多个 goroutine 的情况</strong>:<br>但是存在多个 goroutine 的时候这个就不一定了，r0 读到的是 哪一次写入的值呢？如果看图的话像是 w4 的，但其实不一定，因为图中的两个 goroutine 所表达的时间维度可能是不一致的，所以 r0 可能读到的是 w0 w3 w4 甚至是 w5 的结果，当然按照我们前面说的理论，读到的不可能是 w1 的结果的<br><img src="https://cdn.nlark.com/yuque/0/2020/png/292493/1608372753766-f3b66fe5-ac34-4f5e-a1b2-c74e7d3dfbc9.png#align=left&amp;display=inline&amp;height=188&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=376&amp;originWidth=1130&amp;size=27407&amp;status=done&amp;style=none&amp;width=565" srcset="/img/loading.gif" alt="image.png"><br><strong>添加一些同步点</strong><br>如下图所示我们通过 sync 包中的一些同步语义或者是 channel 为多个 goroutine 加入了 同步点，那么这个时候对于 r1 而言，他就是晚于 w4 并且早于 w1 和 w5 执行的，所以它读取到的是写入操作是可以确定的，是 w4<br><img src="https://cdn.nlark.com/yuque/0/2020/png/292493/1608373281116-271c756e-386e-490b-aa7b-0fb2b741ed40.png#align=left&amp;display=inline&amp;height=298&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=596&amp;originWidth=1090&amp;size=79816&amp;status=done&amp;style=none&amp;width=545" srcset="/img/loading.gif" alt="image.png"></p>
+<p>这对条件的要求比第一个条件更强，它需要确保没有其它写入操作与 <code>w</code> 或 <code>r</code> 并发。<br>在单个 goroutine 当中这两个条件是等价的，因为单个 goroutine 中不存在并发，在多个 goroutine 中就必须使用同步语义来确保顺序，这样才能到保证能够监测到预期的写入<br><strong>单个 goroutine 的情况</strong>：<br>我们可以发现在单个 goroutine 当中，读取操作 r 总是可以读取到上一次 w 写入的值的<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608372439492-359ad5bf-1b06-4f4f-ae77-84e96d9f6a7f.png" srcset="/img/loading.gif" alt="image.png"><br><strong>多个 goroutine 的情况</strong>:<br>但是存在多个 goroutine 的时候这个就不一定了，r0 读到的是 哪一次写入的值呢？如果看图的话像是 w4 的，但其实不一定，因为图中的两个 goroutine 所表达的时间维度可能是不一致的，所以 r0 可能读到的是 w0 w3 w4 甚至是 w5 的结果，当然按照我们前面说的理论，读到的不可能是 w1 的结果的<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608372753766-f3b66fe5-ac34-4f5e-a1b2-c74e7d3dfbc9.png" srcset="/img/loading.gif" alt="image.png"><br><strong>添加一些同步点</strong><br>如下图所示我们通过 sync 包中的一些同步语义或者是 channel 为多个 goroutine 加入了 同步点，那么这个时候对于 r1 而言，他就是晚于 w4 并且早于 w1 和 w5 执行的，所以它读取到的是写入操作是可以确定的，是 w4<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608373281116-271c756e-386e-490b-aa7b-0fb2b741ed40.png" srcset="/img/loading.gif" alt="image.png"></p>
 <blockquote>
 <p>The initialization of variable <code>v</code> with the zero value for <code>v</code>‘s type behaves as a write in the memory model.</p>
 </blockquote>
@@ -565,7 +565,7 @@
 </blockquote>
 <p>goroutine 无法确保在程序中的任何事件发生之前退出</p>
 <p>注意 <a target="_blank" rel="noopener" href="https://golang.org/ref/mem">《The Go Memory Model》</a>原文中还有关于 channel， 锁相关的阐述，因为篇幅原因在本文中就不多讲了，后面我们还有单独的文章详细讲 channel 和 锁 相关的使用，在强调一遍，原文一定要多看几遍</p>
-<h2 id="内存重排"><a href="#内存重排" class="headerlink" title="内存重排"></a>内存重排</h2><p>在上面我们讲到了编译器重排，以及在最开始的例子中我们提到了可能会存在 <code>2 0</code>  这个答案，接下来我们就来看看为什么。如果大家购买电脑的时候有去对比 cpu 的话应该可以看到，每个 cpu 都会写一下一级缓存，二级缓存，三级缓存的大小，这个缓存就是这里的一个关键点，一般而言，越往下缓存的大小越大速度越慢，这是 cpu 为了提高执行速度做的缓存体系，就像我们平时在应用当中引入 redis 作为缓存类似，都是为了加速。同时这就会带来一些数据不一致的问题。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/292493/1608385154319-591875fe-fc6f-457f-8fd0-966b8e603310.png#align=left&amp;display=inline&amp;height=556&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_img.drawio-%E7%AC%AC%204%20%E9%A1%B5.png&amp;originHeight=1989&amp;originWidth=2913&amp;size=220988&amp;status=done&amp;style=none&amp;width=814" srcset="/img/loading.gif" alt="02_Go进阶03_blog_img.drawio-第 4 页.png"><br><strong>如上图所示：</strong></p>
+<h2 id="内存重排"><a href="#内存重排" class="headerlink" title="内存重排"></a>内存重排</h2><p>在上面我们讲到了编译器重排，以及在最开始的例子中我们提到了可能会存在 <code>2 0</code>  这个答案，接下来我们就来看看为什么。如果大家购买电脑的时候有去对比 cpu 的话应该可以看到，每个 cpu 都会写一下一级缓存，二级缓存，三级缓存的大小，这个缓存就是这里的一个关键点，一般而言，越往下缓存的大小越大速度越慢，这是 cpu 为了提高执行速度做的缓存体系，就像我们平时在应用当中引入 redis 作为缓存类似，都是为了加速。同时这就会带来一些数据不一致的问题。<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1608385154319-591875fe-fc6f-457f-8fd0-966b8e603310.png" srcset="/img/loading.gif" alt="02_Go进阶03_blog_img.drawio-第 4 页.png"><br><strong>如上图所示：</strong></p>
 <ol>
 <li>C1 执行 a = 1 将 store buffer 中 a 的值写为 1</li>
 <li>C1 执行 b = 2 将 store buffer 中 b 的值写为 2, 然后由于某种原因将 b 的值写入到了内存中</li>
@@ -588,7 +588,7 @@
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/65245043">https://zhuanlan.zhihu.com/p/65245043</a></li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/94811032">https://zhuanlan.zhihu.com/p/94811032</a></li>
 </ul>
-<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-clean-arch.html">Week04: Go工程化(一) 架构整洁之道阅读笔记</a></li><li><a href="https://lailin.xyz/post/go-training-week3-sum.html">Week03: Go并发编程(十一) 总结</a></li><li><a href="https://lailin.xyz/post/go-training-week3-channel.html">Week03: Go并发编程(十) 深入理解 Channel</a></li></ul></div>
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li></ul></div>
             </div>
             <!-- Custom -->            
             

@@ -203,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-03-01 17:08" pubdate>
-        2021年3月1日 下午
+      <time datetime="2021-03-01 09:08" pubdate>
+        2021年3月1日 上午
       </time>
     </span>
   
@@ -225,7 +225,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      32
+      33
        分钟
     </span>
   
@@ -337,14 +337,14 @@
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
-              Go并发编程(五) 深入理解 sync/atomic
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
             </a>
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
-              Go并发编程(六) 深入理解 WaitGroup
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
             </a>
           </li>
           
@@ -474,9 +474,9 @@
 <li>有的压根没有接口文档，对接的同学也没有时间写，然后让你直接看代码</li>
 <li>有的对接同学扔给你一个接口文档，然后试了半天发现，有问题，沟通排查之后发现文档很久没有更新了 o(╥﹏╥)o</li>
 </ol>
-<p>所以课程上毛老师提到的利用 protobuf 来定义接口的方式非常令人心动，因为 protobuf 当中包含了接口的函数签名，入参和返回值同时还支持注释，就是一份天然的文档，同时也不用担心出现代码更新了但是文档没有更新的情况，因为它既是文档也是代码，服务端也需要使用，所以代码更新之后文档也一定会更新。自然而然的就少了很多沟通的成本。<br><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/292493/1614415342256-f3677521-4990-4a9b-9136-ea2b1f4b75d8.jpeg#align=left&amp;display=inline&amp;height=564&amp;margin=%5Bobject%20Object%5D&amp;name=api%20%E5%AE%9A%E4%B9%89%E6%96%B9%E5%BC%8F%20%281%29.jpg&amp;originHeight=564&amp;originWidth=1476&amp;size=194802&amp;status=done&amp;style=none&amp;width=1476" srcset="/img/loading.gif" alt="api 定义方式 (1).jpg"><br>如上图所示于此同时我们还可以利用 protobuf 文件生成对应语言的客户端代码，就不用每个项目都去维护一套 sdk 了，同时我们使用接口生成代码，在 go 当中可以使用 gomock 非常方便的对代码进行 mock。</p>
+<p>所以课程上毛老师提到的利用 protobuf 来定义接口的方式非常令人心动，因为 protobuf 当中包含了接口的函数签名，入参和返回值同时还支持注释，就是一份天然的文档，同时也不用担心出现代码更新了但是文档没有更新的情况，因为它既是文档也是代码，服务端也需要使用，所以代码更新之后文档也一定会更新。自然而然的就少了很多沟通的成本。<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1614415342256-f3677521-4990-4a9b-9136-ea2b1f4b75d8.jpeg" srcset="/img/loading.gif" alt="api 定义方式 (1).jpg"><br>如上图所示于此同时我们还可以利用 protobuf 文件生成对应语言的客户端代码，就不用每个项目都去维护一套 sdk 了，同时我们使用接口生成代码，在 go 当中可以使用 gomock 非常方便的对代码进行 mock。</p>
 <h3 id="API-Project"><a href="#API-Project" class="headerlink" title="API Project"></a>API Project</h3><p>使用 protobuf 定义接口可以解决我们找到 api 文档之后，文档不准确，缺失的问题，但是我们应该如何找到我们的 api 呢？我们生成出的 api 文件调用方应该如何引用呢？难道我们给每个调用方都去开一个项目的权限么？那明显是不太行的，接下来我们就看看我们 api 该如何管理和组织。</p>
-<p>毛老师他们仿照 <a target="_blank" rel="noopener" href="https://github.com/googleapis/googleapis">googleapis/googleapis</a>，<a target="_blank" rel="noopener" href="https://github.com/istio/api">istio/api</a> 等知名项目在 b 站内部搞了一个 bapis 的仓库用于同一存放 api 定义文档，然后通过 ci/cd 生成对应的客户端代码放到各个语言的子仓库当中<br><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/292493/1614414445467-d7fb88d2-732d-4ef7-8535-cc645a5b9184.jpeg#align=left&amp;display=inline&amp;height=684&amp;margin=%5Bobject%20Object%5D&amp;name=Frame%201%20%281%29.jpg&amp;originHeight=684&amp;originWidth=2204&amp;size=159981&amp;status=done&amp;style=none&amp;width=2204" srcset="/img/loading.gif" alt="Frame 1 (1).jpg"><br>工作流程如上图所示</p>
+<p>毛老师他们仿照 <a target="_blank" rel="noopener" href="https://github.com/googleapis/googleapis">googleapis/googleapis</a>，<a target="_blank" rel="noopener" href="https://github.com/istio/api">istio/api</a> 等知名项目在 b 站内部搞了一个 bapis 的仓库用于同一存放 api 定义文档，然后通过 ci/cd 生成对应的客户端代码放到各个语言的子仓库当中<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1614414445467-d7fb88d2-732d-4ef7-8535-cc645a5b9184.jpeg" srcset="/img/loading.gif" alt="Frame 1 (1).jpg"><br>工作流程如上图所示</p>
 <ul>
 <li>开发同学修改了 proto 文件定义之后 push 到对应的业务应用仓库当中</li>
 <li>然后触发 cicd 流程将 proto 文件复制到 api project 当中<ul>
@@ -488,7 +488,7 @@
 <li>然后我们对应负责的同学收到 code review 的通知之后进行 code review，没有问题就会合并到 api project 的主分支当中了</li>
 <li>然后就会触发 cicd 生成对应语言的客户端代码，push 到对应的各个子仓库当中了</li>
 </ul>
-<h3 id="API-Project-Layout"><a href="#API-Project-Layout" class="headerlink" title="API Project Layout"></a>API Project Layout</h3><p>我们的 api 项目是如何定义的呢？看下图<br><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/292493/1614417503897-60326cce-3788-4727-a182-659252fdd231.jpeg#align=left&amp;display=inline&amp;height=668&amp;margin=%5Bobject%20Object%5D&amp;name=Frame%201%20%282%29.jpg&amp;originHeight=668&amp;originWidth=2204&amp;size=247362&amp;status=done&amp;style=none&amp;width=2204" srcset="/img/loading.gif" alt="Frame 1 (2).jpg"></p>
+<h3 id="API-Project-Layout"><a href="#API-Project-Layout" class="headerlink" title="API Project Layout"></a>API Project Layout</h3><p>我们的 api 项目是如何定义的呢？看下图<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1614417503897-60326cce-3788-4727-a182-659252fdd231.jpeg" srcset="/img/loading.gif" alt="Frame 1 (2).jpg"></p>
 <ul>
 <li>首先是在业务项目当中，我们顶层会有一个 api 目录<ul>
 <li>在 api 目录当中我们会按照 product name/app name/版本号/app.proto 的方式进行组织</li>
@@ -590,7 +590,7 @@
 <p>注意，一般而言我们应该为每个接口都创建一个自定义的 message，为了后面扩展，如果我们用 Empty 的话后续就没有办法新增字段了</p>
 <h3 id="API-Error"><a href="#API-Error" class="headerlink" title="API Error"></a>API Error</h3><h3 id="错误定义"><a href="#错误定义" class="headerlink" title="错误定义"></a>错误定义</h3><p>先说我们当前的问题，我们一直用的 http 然后我们返回是使用的下面这种格式，然后 http code 统一返回 200</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;code&quot;</span>: <span class="hljs-number">1</span>,<br>  <span class="hljs-attr">&quot;msg&quot;</span>: <span class="hljs-string">&quot;xxx&quot;</span>,<br>  <span class="hljs-attr">&quot;data&quot;</span>: &#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>这种做法就存在一个比较大的问题，做监控的时候不太好做，很多现成的东西没有办法直接使用，因为我们都返回的成功。<br>参照 google 的错误定义，将 http code 和 grpc 错误码进行映射，返回对应的错误信息<br><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1614421247833-c0467849-823e-4a22-b53f-95b2705f8c39.png#align=left&amp;display=inline&amp;height=625&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1250&amp;originWidth=1718&amp;size=211446&amp;status=done&amp;style=none&amp;width=859" srcset="/img/loading.gif" alt="image.png"><br>但是这样还是不行，因为这样很多业务错误信息无法区分，毛老师他们的 kratos v2 的做法是做了两层，使用下面的方式进行定义</p>
+<p>这种做法就存在一个比较大的问题，做监控的时候不太好做，很多现成的东西没有办法直接使用，因为我们都返回的成功。<br>参照 google 的错误定义，将 http code 和 grpc 错误码进行映射，返回对应的错误信息<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1614421247833-c0467849-823e-4a22-b53f-95b2705f8c39.png" srcset="/img/loading.gif" alt="image.png"><br>但是这样还是不行，因为这样很多业务错误信息无法区分，毛老师他们的 kratos v2 的做法是做了两层，使用下面的方式进行定义</p>
 <figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Status</span> </span>&#123;<br>  <span class="hljs-comment">// 错误码，跟 grpc-status 一致，并且在HTTP中可映射成 http-status</span><br>  <span class="hljs-built_in">int32</span> code = <span class="hljs-number">1</span>;<br>  <span class="hljs-comment">// 错误原因，定义为业务判定错误码</span><br>  <span class="hljs-built_in">string</span> reason = <span class="hljs-number">2</span>;<br>  <span class="hljs-comment">// 错误信息，为用户可读的信息，可作为用户提示内容</span><br>  <span class="hljs-built_in">string</span> <span class="hljs-class"><span class="hljs-keyword">message</span> = 3;</span><br><span class="hljs-class">  // 错误详细信息，可以附加自定义的信息列表</span><br><span class="hljs-class">  <span class="hljs-title">repeated</span> google.protobuf.Any details = 4;</span><br><span class="hljs-class">&#125;</span><br></code></pre></td></tr></table></figure>
 <p>和我们当前的方式差不太多，但是我们是在原来的基础上返回了 http code，剩下的字段还是和原来保持一致</p>
 <h3 id="错误传播"><a href="#错误传播" class="headerlink" title="错误传播"></a>错误传播</h3><p>这一点我们之前做的还行，错误传播这一部分很容易出的问题就是，当前服务直接把上游服务的错误给返回了，这样会导致一些问题：</p>
@@ -607,7 +607,7 @@
 <li><a target="_blank" rel="noopener" href="https://github.com/googleapis/googleapis">GitHub - googleapis/googleapis: Public interface definitions of Google APIs.</a></li>
 <li><a target="_blank" rel="noopener" href="https://cloud.google.com/apis/design?hl=zh-cn">API 设计指南  |  Google Cloud</a></li>
 </ol>
-
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li></ul></div>
             </div>
             <!-- Custom -->            
             

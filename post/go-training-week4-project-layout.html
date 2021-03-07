@@ -203,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-02-06 21:08" pubdate>
-        2021年2月6日 晚上
+      <time datetime="2021-02-06 13:08" pubdate>
+        2021年2月6日 下午
       </time>
     </span>
   
@@ -337,14 +337,14 @@
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
-              Go并发编程(五) 深入理解 sync/atomic
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
             </a>
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
-              Go并发编程(六) 深入理解 WaitGroup
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
             </a>
           </li>
           
@@ -511,7 +511,7 @@
 <li>job: 流式任务处理的服务，上游一般依赖 message broker。</li>
 <li>task: 定时任务，类似 cronjob，部署到 task 托管平台中。</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1612614638378-d00b94ac-f743-414e-bca2-b9d941da7902.png#align=left&amp;display=inline&amp;height=280&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=559&amp;originWidth=1047&amp;size=600220&amp;status=done&amp;style=none&amp;width=523.5" srcset="/img/loading.gif" alt="image.png"><br>这上面是毛老师课上讲解的类型，和我们常用的做法类似，但是有点区别，同样假设我们有一个应用叫 <code>myapp</code></p>
+<p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1612614638378-d00b94ac-f743-414e-bca2-b9d941da7902.png" srcset="/img/loading.gif" alt="image.png"><br>这上面是毛老师课上讲解的类型，和我们常用的做法类似，但是有点区别，同样假设我们有一个应用叫 <code>myapp</code></p>
 <ul>
 <li>myapp-api: 这个是对外暴露的 api 的服务，可以是 http, 也可以是 grpc</li>
 <li>myapp-cron: 这个是定时任务</li>
@@ -520,7 +520,7 @@
 <li>scripts/xxx: 一次性执行的脚本，有时候会有一些脚本任务</li>
 </ul>
 <p>大多大同小异，主要是 BFF 层我们一般是一个独立的应用，不会放在同一个仓库里面，</p>
-<h3 id="项目布局-v1"><a href="#项目布局-v1" class="headerlink" title="项目布局 v1"></a>项目布局 v1</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1612615089844-dfc6a101-710e-42e4-983f-ea340676b5f4.png#align=left&amp;display=inline&amp;height=387&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=774&amp;originWidth=947&amp;size=148890&amp;status=done&amp;style=none&amp;width=473.5" srcset="/img/loading.gif" alt="image.png"><br>项目的依赖路径为: model -&gt; dao -&gt; service -&gt; api，model struct 串联各个层，直到 api 需要做 DTO 对象转换。</p>
+<h3 id="项目布局-v1"><a href="#项目布局-v1" class="headerlink" title="项目布局 v1"></a>项目布局 v1</h3><p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1612615089844-dfc6a101-710e-42e4-983f-ea340676b5f4.png" srcset="/img/loading.gif" alt="image.png"><br>项目的依赖路径为: model -&gt; dao -&gt; service -&gt; api，model struct 串联各个层，直到 api 需要做 DTO 对象转换。</p>
 <ul>
 <li>model: 放对应“存储层”的结构体，是对存储的一一隐射。</li>
 <li>dao: 数据读写层，数据库和缓存全部在这层统一处理，包括 cache miss 处理。</li>
@@ -538,7 +538,7 @@
 </li>
 <li>server 层的代码可以通过基础库干掉，提供统一服务暴露方式</li>
 </ul>
-<h3 id="项目布局-v2"><a href="#项目布局-v2" class="headerlink" title="项目布局 v2"></a>项目布局 v2</h3><p><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1612615164024-9156a848-53f7-4324-963a-e7e4ae110424.png#align=left&amp;display=inline&amp;height=564&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1127&amp;originWidth=699&amp;size=789317&amp;status=done&amp;style=none&amp;width=349.5" srcset="/img/loading.gif" alt="image.png"></p>
+<h3 id="项目布局-v2"><a href="#项目布局-v2" class="headerlink" title="项目布局 v2"></a>项目布局 v2</h3><p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1612615164024-9156a848-53f7-4324-963a-e7e4ae110424.png" srcset="/img/loading.gif" alt="image.png"></p>
 <ul>
 <li>app 目录下有 api、cmd、configs、internal 目录，目录里一般还会放置 README、CHANGELOG、OWNERS。</li>
 <li><strong>internal:</strong> 是为了避免有同业务下有人跨目录引用了内部的 biz、data、service 等内部 struct。<ul>
@@ -572,7 +572,7 @@
 <li><a target="_blank" rel="noopener" href="https://travisjeffery.com/b/2019/11/i-ll-take-pkg-over-internal/">I’ll take pkg over internal</a></li>
 <li><a target="_blank" rel="noopener" href="https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1">https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1</a></li>
 </ol>
-
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li></ul></div>
             </div>
             <!-- Custom -->            
             

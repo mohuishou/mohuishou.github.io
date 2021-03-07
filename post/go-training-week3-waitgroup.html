@@ -203,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-28 06:08" pubdate>
-        2020年12月28日 早上
+      <time datetime="2020-12-27 22:08" pubdate>
+        2020年12月27日 晚上
       </time>
     </span>
   
@@ -336,15 +336,15 @@
             </a>
           </li>
           
-          <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
-              Go并发编程(五) 深入理解 sync/atomic
-            </a>
-          </li>
-          
           <li class="sidebar-list-item is-active-li" > 
             <a class="sidebar-link sidebar-active-link" href="/post/go-training-week3-waitgroup.html">
               Go并发编程(六) 深入理解 WaitGroup
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
             </a>
           </li>
           
@@ -468,7 +468,7 @@
 <blockquote>
 <p><em>// 64-bit value: high 32 bits are counter, low 32 bits are waiter count.</em> &gt; <em>// 64-bit atomic operations require 64-bit alignment, but 32-bit</em> &gt; <em>// compilers do not ensure it. So we allocate 12 bytes and then use</em> &gt; <em>// the aligned 8 bytes in them as state, and the other 4 as storage</em> &gt; <em>// for the sema.</em></p>
 </blockquote>
-<p>这段话的关键点在于，在做 64 位的原子操作的时候必须要保证 64 位（8 字节）对齐，如果没有对齐的就会有问题，但是 32 位的编译器并不能保证 64 位对齐所以这里用一个 12 字节的 state1 字段来存储这两个状态，然后根据是否 8 字节对齐选择不同的保存方式。<br><img src="https://cdn.nlark.com/yuque/0/2020/svg/292493/1609085423413-88a8f508-0269-4cf9-9474-9f78b78a53ea.svg#align=left&amp;display=inline&amp;height=221&amp;margin=%5Bobject%20Object%5D&amp;name=02_Go%E8%BF%9B%E9%98%B603_blog_waitgroup.drawio.svg&amp;originHeight=221&amp;originWidth=515&amp;size=10433&amp;status=done&amp;style=none&amp;width=515" srcset="/img/loading.gif" alt="02_Go进阶03_blog_waitgroup.drawio.svg"><br>这个操作巧妙在哪里呢？</p>
+<p>这段话的关键点在于，在做 64 位的原子操作的时候必须要保证 64 位（8 字节）对齐，如果没有对齐的就会有问题，但是 32 位的编译器并不能保证 64 位对齐所以这里用一个 12 字节的 state1 字段来存储这两个状态，然后根据是否 8 字节对齐选择不同的保存方式。<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1609085423413-88a8f508-0269-4cf9-9474-9f78b78a53ea.svg" srcset="/img/loading.gif" alt="02_Go进阶03_blog_waitgroup.drawio.svg"><br>这个操作巧妙在哪里呢？</p>
 <ul>
 <li>如果是 64 位的机器那肯定是 8 字节对齐了的，所以是上面第一种方式</li>
 <li>如果在 32 位的机器上<ul>
@@ -501,7 +501,7 @@
 <li><a target="_blank" rel="noopener" href="https://golang.org/issues/8005#issuecomment-190753527">https://golang.org/issues/8005#issuecomment-190753527</a></li>
 <li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6893019249263001613">Golang 源码系列 sync.waitgroup 源码剖析</a></li>
 </ol>
-<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-clean-arch.html">Week04: Go工程化(一) 架构整洁之道阅读笔记</a></li><li><a href="https://lailin.xyz/post/go-training-week3-sum.html">Week03: Go并发编程(十一) 总结</a></li><li><a href="https://lailin.xyz/post/go-training-week3-channel.html">Week03: Go并发编程(十) 深入理解 Channel</a></li></ul></div>
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li></ul></div>
             </div>
             <!-- Custom -->            
             
@@ -548,9 +548,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/post/go-training-week3-errgroup.html">
+                      <a href="/post/go-training-week3-atomic.html">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Go并发编程(七) 深入理解 errgroup</span>
+                        <span class="hidden-mobile">Go并发编程(五) 深入理解 sync/atomic</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -558,8 +558,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/post/go-training-week3-atomic.html">
-                        <span class="hidden-mobile">Go并发编程(五) 深入理解 sync/atomic</span>
+                      <a href="/post/go-training-week3-sync.html">
+                        <span class="hidden-mobile">Go并发编程(四) 深入理解 Mutex</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

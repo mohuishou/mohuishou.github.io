@@ -203,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-01-16 07:08" pubdate>
-        2021年1月16日 早上
+      <time datetime="2021-01-15 23:08" pubdate>
+        2021年1月15日 晚上
       </time>
     </span>
   
@@ -337,14 +337,14 @@
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
-              Go并发编程(五) 深入理解 sync/atomic
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
             </a>
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
-              Go并发编程(六) 深入理解 WaitGroup
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
             </a>
           </li>
           
@@ -450,7 +450,7 @@
             <h1 style="display: none">Go并发编程(十一) 总结</h1>
             
             <div class="markdown-body">
-              <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最开始打算一周更新 1 - 2 篇学习笔记，这样既可以跟上课程的进度又能输出一些文章，分享一点知识，但是在写到 week03 Go 并发编程这个系列的时候发现，掉进坑里面了，毛老师虽然只讲了两节课，大概 7 小时左右，但是实际上每一个点如果要深入理解学习透还是要花费大量时间的。这也就导致了这一周的课程加上本文一共输出了十一篇文章，超过了 4W 字，但是这还没结束，还有几个常用的数据数据结构没有讲到，例如 <code>sync.Map</code>  <code>sync.Pool</code>  等，这些会再接下来不定期的去更新。<br><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1610684635316-6d61e196-4450-40f7-99d1-0a3b5317b1bb.png#align=left&amp;display=inline&amp;height=565&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1130&amp;originWidth=1834&amp;size=167473&amp;status=done&amp;style=none&amp;width=917" srcset="/img/loading.gif" alt="image.png"><br>写完这一篇文章之后能够发现之前写的代码很多不太合理的地方，看了一圈源码之后现在也可以说在 Go 并发编程上面算是入门了。接下来我们就一起回顾一下我们之前所讲的内容。我把文章目录放在了最后，可分别点击查看。</p>
+              <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最开始打算一周更新 1 - 2 篇学习笔记，这样既可以跟上课程的进度又能输出一些文章，分享一点知识，但是在写到 week03 Go 并发编程这个系列的时候发现，掉进坑里面了，毛老师虽然只讲了两节课，大概 7 小时左右，但是实际上每一个点如果要深入理解学习透还是要花费大量时间的。这也就导致了这一周的课程加上本文一共输出了十一篇文章，超过了 4W 字，但是这还没结束，还有几个常用的数据数据结构没有讲到，例如 <code>sync.Map</code>  <code>sync.Pool</code>  等，这些会再接下来不定期的去更新。<br><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1610684635316-6d61e196-4450-40f7-99d1-0a3b5317b1bb.png" srcset="/img/loading.gif" alt="image.png"><br>写完这一篇文章之后能够发现之前写的代码很多不太合理的地方，看了一圈源码之后现在也可以说在 Go 并发编程上面算是入门了。接下来我们就一起回顾一下我们之前所讲的内容。我把文章目录放在了最后，可分别点击查看。</p>
 <h3 id="Goroutine"><a href="#Goroutine" class="headerlink" title="Goroutine"></a>Goroutine</h3><blockquote>
 <p>第一篇文章主要讲解了 Goroutine 使用的相关注意事项，或者也可以说是最佳实践</p>
 </blockquote>
@@ -615,7 +615,7 @@
 <li><a href="https://lailin.xyz/post/go-training-week3-go-memory-model.html">Week03: Go 并发编程(二) Go 内存模型 - Mohuishou</a></li>
 <li><a href="https://lailin.xyz/post/go-training-week3-goroutine.html">Week03: Go 并发编程(一) goroutine - Mohuishou</a></li>
 </ol>
-<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-clean-arch.html">Week04: Go工程化(一) 架构整洁之道阅读笔记</a></li><li><a href="https://lailin.xyz/post/go-training-week3-channel.html">Week03: Go并发编程(十) 深入理解 Channel</a></li><li><a href="https://lailin.xyz/post/go-training-week3-context.html">Week03: Go并发编程(九) 深入理解 Context</a></li></ul></div>
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li></ul></div>
             </div>
             <!-- Custom -->            
             

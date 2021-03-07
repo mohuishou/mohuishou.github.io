@@ -203,8 +203,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-01-26 22:12" pubdate>
-        2021年1月26日 晚上
+      <time datetime="2021-01-26 14:12" pubdate>
+        2021年1月26日 下午
       </time>
     </span>
   
@@ -337,14 +337,14 @@
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
-              Go并发编程(五) 深入理解 sync/atomic
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
             </a>
           </li>
           
           <li class="sidebar-list-item " > 
-            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
-              Go并发编程(六) 深入理解 WaitGroup
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
             </a>
           </li>
           
@@ -688,7 +688,7 @@
 </li>
 <li>组件张力图</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1611759265457-d9a543c3-8c0c-45e2-9f4f-071352f100a1.png#align=left&amp;display=inline&amp;height=202&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=404&amp;originWidth=536&amp;size=146966&amp;status=done&amp;style=none&amp;width=268" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1611759265457-d9a543c3-8c0c-45e2-9f4f-071352f100a1.png" srcset="/img/loading.gif" alt="image.png"></p>
 <div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">看到这三个原则会感到有点熟悉，像共同闭包原则就和 SOLID 中的单一职责原则类似，共同复用原则和接口隔离原则看上去也有那么几分相似，这些知识从不同的角度看待总结问题的不同术语。<br>最后这个组件张力图很有意思，这说明我们在进行架构设计的时候是不可能做到每一项都很完美的，这当中会有一个取舍的过程，书中讲到，一般而言会项目初期会从三角右侧开始，进行一段时间后会滑动到左边，是因为在初期为了效率我们可以牺牲一定的复用性，但是随着依赖关系越来越复杂，那么我们就要考虑复用和扩展了。</div>
 
 <h4 id="第-14-章-组件耦合"><a href="#第-14-章-组件耦合" class="headerlink" title="第 14 章 组件耦合"></a>第 14 章 组件耦合</h4><ul>
@@ -735,7 +735,7 @@
 <li>A 指标的取值范围是从 0 到 1，值为 0 代表组件中没有任何抽象类，值为 1 就意味着组件中只有抽象类。</li>
 </ul>
 </li>
-<li><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1611759933727-6f8124f5-4d50-4c18-8b73-4d79c88e6f1b.png#align=left&amp;display=inline&amp;height=211&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=422&amp;originWidth=551&amp;size=161825&amp;status=done&amp;style=none&amp;width=275.5" srcset="/img/loading.gif" alt="image.png"><ul>
+<li><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1611759933727-6f8124f5-4d50-4c18-8b73-4d79c88e6f1b.png" srcset="/img/loading.gif" alt="image.png"><ul>
 <li>只有多变的软件组件落在痛苦区中才会造成麻烦</li>
 <li>现在我们来看看靠近（1,1）这一位置点的组件。该位置上的组件不会是我们想要的，因为这些组件通常是无限抽象的，但是没有被其他组件依赖，这样的组件往往无法使用。</li>
 <li>追求让这些组件位于主序列线上，或者贴近这条线即可。</li>
@@ -817,7 +817,7 @@
 <li>I/O 是无关紧要的</li>
 <li>GUI 和 BusinessRules 这两个组件之间也应该有一条边界线</li>
 <li>插件式架构的好处<ul>
-<li><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1611763160147-6a16b0e6-d3de-43d2-8bf3-b1bf597dd0ed.png#align=left&amp;display=inline&amp;height=273&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=546&amp;originWidth=700&amp;size=183762&amp;status=done&amp;style=none&amp;width=350" srcset="/img/loading.gif" alt="image.png"></li>
+<li><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1611763160147-6a16b0e6-d3de-43d2-8bf3-b1bf597dd0ed.png" srcset="/img/loading.gif" alt="image.png"></li>
 <li>将系统设计为插件式架构，就等于构建起了一面变更无法逾越的防火墙。换句话说，只要 GUI 是以插件形式插入系统的业务逻辑中的，那么 GUI 这边所发生的变更就不会影响系统的业务逻辑。</li>
 <li>边界线也应该沿着系统的变更轴来画。也就是说，位于边界线两侧的组件应该以不同原因、不同速率变化着。<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">真正核心的是我们业务逻辑，而输入输出是细节</div>
 
@@ -906,7 +906,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1611803924995-df9764d2-32c6-407b-b1e3-224c0feef3b1.png#align=left&amp;display=inline&amp;height=449&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=898&amp;originWidth=1078&amp;size=1058000&amp;status=done&amp;style=none&amp;width=539" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1611803924995-df9764d2-32c6-407b-b1e3-224c0feef3b1.png" srcset="/img/loading.gif" alt="image.png"></p>
 <ul>
 <li>依赖关系规则<ul>
 <li>外层圆代表的是机制，内层圆代表的是策略。</li>
@@ -1050,14 +1050,14 @@
 <li>如果不考虑具体实现细节，再好的设计也无法长久。必须要将设计映射到对应的代码结构上，考虑如何组织代码树，以及在编译期和运行期采用哪种解耦合的模式。</li>
 <li>最好能利用编译器来维护所选的系统架构设计风格，小心防范来自其他地方的耦合模式，例如数据结构</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/292493/1611842328934-ca4190d2-94c9-415a-befe-bcaebcd1aa4f.png#align=left&amp;display=inline&amp;height=359&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=718&amp;originWidth=982&amp;size=288048&amp;status=done&amp;style=none&amp;width=491" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/1611842328934-ca4190d2-94c9-415a-befe-bcaebcd1aa4f.png" srcset="/img/loading.gif" alt="image.png"></p>
 <div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">这一章对比了四种架构风格，同时提出了，架构设计是需要考虑实现细节的，设计需要映射到代码结构和代码树上，这个其实和最开始的“软件架构师自身需要是程序员，并且必须一直坚持做一线程序员”交相呼应。<br>如果可以在编译时解决的问题，就不要放到运行时，编译的问题往往要比运行时的问题好解决，这也是为什么 Go 的依赖注入框架我更加推荐 wire 的原因，同理作者提出了 如果要防止直接中 web控制器调用数据层，那么我们就不应该将数据层（repo）暴露出来，只需要暴露 usecase 就好了。</div>
 
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>之前其实也大概了解过整洁架构，从最开始觉得它又臭又长，到现在工作两三年后觉得“不听老人言，吃亏在眼前”，当我们在对一个架构或者是事务进行批判的时候一定要了解它面对的场景以及它的理念，这是最重要的。当然软件领域是没有银弹的，我们需要做的是吸收每一种思想，在不同的场景下做不同的取舍，接下来会有几篇文章结合毛老师课上讲的 Go 工程化相关的内容，以及我在工作当中进行的一些总结最后提出一种当下我觉得的 Go 项目的组织方式，这种方式不是最好的，但是我觉得是现阶段最适合的。<br>推荐大家在仔细的阅读一下本书，期望你能有更多的收获。</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://weread.qq.com/web/reader/480322f072021a3248038c8kc81322c012c81e728d9d180">架构整洁之道-罗伯特·C·马丁-微信读书</a></li>
 </ol>
-<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week3-sum.html">Week03: Go并发编程(十一) 总结</a></li><li><a href="https://lailin.xyz/post/go-training-week3-channel.html">Week03: Go并发编程(十) 深入理解 Channel</a></li><li><a href="https://lailin.xyz/post/go-training-week3-context.html">Week03: Go并发编程(九) 深入理解 Context</a></li></ul></div>
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li></ul></div>
             </div>
             <!-- Custom -->            
             

@@ -122,8 +122,8 @@
     <title>Go工程化(四) API 设计上: 项目结构 &amp; 设计</title>
     <link href="https://lailin.xyz/post/go-training-week4-api-design.html"/>
     <id>https://lailin.xyz/post/go-training-week4-api-design.html</id>
-    <published>2021-03-01T09:08:51.000Z</published>
-    <updated>2021-03-07T14:09:57.771Z</updated>
+    <published>2021-03-01T01:08:51.000Z</published>
+    <updated>2021-03-07T15:03:35.886Z</updated>
     
     <summary type="html">
     
@@ -190,8 +190,8 @@
     <title>Go工程化(二) 项目目录结构</title>
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
-    <published>2021-02-06T13:08:51.000Z</published>
-    <updated>2021-03-07T14:09:57.391Z</updated>
+    <published>2021-02-06T05:08:51.000Z</published>
+    <updated>2021-03-07T15:03:35.886Z</updated>
     
     <summary type="html">
     
@@ -224,8 +224,8 @@
     <title>Go工程化(一) 架构整洁之道阅读笔记</title>
     <link href="https://lailin.xyz/post/go-training-week4-clean-arch.html"/>
     <id>https://lailin.xyz/post/go-training-week4-clean-arch.html</id>
-    <published>2021-01-26T14:12:03.000Z</published>
-    <updated>2021-03-07T14:09:57.191Z</updated>
+    <published>2021-01-26T06:12:03.000Z</published>
+    <updated>2021-03-07T15:03:35.886Z</updated>
     
     <summary type="html">
     
@@ -265,8 +265,8 @@
     <title>Go并发编程(十一) 总结</title>
     <link href="https://lailin.xyz/post/go-training-week3-sum.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sum.html</id>
-    <published>2021-01-15T23:08:51.000Z</published>
-    <updated>2021-03-07T14:09:56.201Z</updated>
+    <published>2021-01-15T15:08:51.000Z</published>
+    <updated>2021-03-07T15:03:35.886Z</updated>
     
     <summary type="html">
     
@@ -299,8 +299,8 @@
     <title>Go并发编程(十) 深入理解 Channel</title>
     <link href="https://lailin.xyz/post/go-training-week3-channel.html"/>
     <id>https://lailin.xyz/post/go-training-week3-channel.html</id>
-    <published>2021-01-14T23:08:51.000Z</published>
-    <updated>2021-03-07T14:09:55.921Z</updated>
+    <published>2021-01-14T15:08:51.000Z</published>
+    <updated>2021-03-07T15:03:35.882Z</updated>
     
     <summary type="html">
     
@@ -338,8 +338,8 @@
     <title>Go并发编程(九) 深入理解 Context</title>
     <link href="https://lailin.xyz/post/go-training-week3-context.html"/>
     <id>https://lailin.xyz/post/go-training-week3-context.html</id>
-    <published>2021-01-08T23:08:51.000Z</published>
-    <updated>2021-03-07T14:09:55.731Z</updated>
+    <published>2021-01-08T15:08:51.000Z</published>
+    <updated>2021-03-07T15:03:35.882Z</updated>
     
     <summary type="html">
     
@@ -458,47 +458,6 @@
   </entry>
   
   <entry>
-    <title>Go并发编程(六) 深入理解 WaitGroup</title>
-    <link href="https://lailin.xyz/post/go-training-week3-waitgroup.html"/>
-    <id>https://lailin.xyz/post/go-training-week3-waitgroup.html</id>
-    <published>2020-12-27T22:08:51.000Z</published>
-    <updated>2021-03-07T14:09:55.351Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;在前面的几篇文章中我们或多或少都用到了 WaitGroup 来等待多个
-        
-      
-    
-    </summary>
-    
-      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
-    
-      <category term="Week03: Go 并发编程" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week03-Go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
-    
-      <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
-    
-      <category term="sync" scheme="https://lailin.xyz/tags/sync/"/>
-    
-      <category term="waitgroup" scheme="https://lailin.xyz/tags/waitgroup/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Go并发编程(五) 深入理解 sync/atomic</title>
     <link href="https://lailin.xyz/post/go-training-week3-atomic.html"/>
     <id>https://lailin.xyz/post/go-training-week3-atomic.html</id>
@@ -538,11 +497,52 @@
   </entry>
   
   <entry>
+    <title>Go并发编程(六) 深入理解 WaitGroup</title>
+    <link href="https://lailin.xyz/post/go-training-week3-waitgroup.html"/>
+    <id>https://lailin.xyz/post/go-training-week3-waitgroup.html</id>
+    <published>2020-12-27T14:08:51.000Z</published>
+    <updated>2021-03-07T15:03:35.886Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在前面的几篇文章中我们或多或少都用到了 WaitGroup 来等待多个
+        
+      
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Week03: Go 并发编程" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week03-Go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="sync" scheme="https://lailin.xyz/tags/sync/"/>
+    
+      <category term="waitgroup" scheme="https://lailin.xyz/tags/waitgroup/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go并发编程(四) 深入理解 Mutex</title>
     <link href="https://lailin.xyz/post/go-training-week3-sync.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sync.html</id>
-    <published>2020-12-26T13:08:51.000Z</published>
-    <updated>2021-03-07T14:09:55.061Z</updated>
+    <published>2020-12-26T05:08:51.000Z</published>
+    <updated>2021-03-07T15:03:35.886Z</updated>
     
     <summary type="html">
     
@@ -619,8 +619,8 @@
     <title>Go并发编程(二) Go 内存模型</title>
     <link href="https://lailin.xyz/post/go-training-week3-go-memory-model.html"/>
     <id>https://lailin.xyz/post/go-training-week3-go-memory-model.html</id>
-    <published>2020-12-19T13:08:51.000Z</published>
-    <updated>2021-03-07T14:09:54.591Z</updated>
+    <published>2020-12-19T05:08:51.000Z</published>
+    <updated>2021-03-07T15:03:35.882Z</updated>
     
     <summary type="html">
     
