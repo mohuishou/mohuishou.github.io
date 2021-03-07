@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-03-07T14:09:58.081Z</updated>
+  <updated>2021-03-07T15:51:21.124Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -20,8 +20,8 @@
     <title>Go工程化(七) Go Module</title>
     <link href="https://lailin.xyz/post/go-training-week4-go-module.html"/>
     <id>https://lailin.xyz/post/go-training-week4-go-module.html</id>
-    <published>2021-03-07T00:08:51.000Z</published>
-    <updated>2021-03-07T14:09:58.081Z</updated>
+    <published>2021-03-06T16:08:51.000Z</published>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
@@ -29,7 +29,7 @@
       
         
         
-          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;本系列为 &lt;a
+          &lt;p&gt;&lt;strong&gt;周末新开了微信订阅号，可以关注一下呀，后续所有文章都会同步在微信上发送&lt;/strong&gt;&lt;br&gt;&lt;img
         
       
     
@@ -123,7 +123,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-api-design.html"/>
     <id>https://lailin.xyz/post/go-training-week4-api-design.html</id>
     <published>2021-03-01T01:08:51.000Z</published>
-    <updated>2021-03-07T15:03:35.886Z</updated>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
@@ -191,7 +191,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
     <published>2021-02-06T05:08:51.000Z</published>
-    <updated>2021-03-07T15:03:35.886Z</updated>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
@@ -225,7 +225,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-clean-arch.html"/>
     <id>https://lailin.xyz/post/go-training-week4-clean-arch.html</id>
     <published>2021-01-26T06:12:03.000Z</published>
-    <updated>2021-03-07T15:03:35.886Z</updated>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
@@ -266,7 +266,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sum.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sum.html</id>
     <published>2021-01-15T15:08:51.000Z</published>
-    <updated>2021-03-07T15:03:35.886Z</updated>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
@@ -300,7 +300,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-channel.html"/>
     <id>https://lailin.xyz/post/go-training-week3-channel.html</id>
     <published>2021-01-14T15:08:51.000Z</published>
-    <updated>2021-03-07T15:03:35.882Z</updated>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
@@ -339,7 +339,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-context.html"/>
     <id>https://lailin.xyz/post/go-training-week3-context.html</id>
     <published>2021-01-08T15:08:51.000Z</published>
-    <updated>2021-03-07T15:03:35.882Z</updated>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
@@ -501,7 +501,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-waitgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-waitgroup.html</id>
     <published>2020-12-27T14:08:51.000Z</published>
-    <updated>2021-03-07T15:03:35.886Z</updated>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
@@ -542,7 +542,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sync.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sync.html</id>
     <published>2020-12-26T05:08:51.000Z</published>
-    <updated>2021-03-07T15:03:35.886Z</updated>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
@@ -620,7 +620,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-go-memory-model.html"/>
     <id>https://lailin.xyz/post/go-training-week3-go-memory-model.html</id>
     <published>2020-12-19T05:08:51.000Z</published>
-    <updated>2021-03-07T15:03:35.882Z</updated>
+    <updated>2021-03-07T15:51:21.124Z</updated>
     
     <summary type="html">
     
