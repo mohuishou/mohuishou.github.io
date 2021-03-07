@@ -1,1 +1,1088 @@
-<!DOCTYPE html><html lang="zh-CN" data-default-color-scheme="&#34;auto&#34;"><head><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png"><link rel="icon" type="image/png" href="/icons/favicon-32x32.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content=""><meta name="author" content="Mohuishou"><meta name="keywords" content="Go, Docker, PHP"><title>Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码 - Mohuishou</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css"><link rel="stylesheet" href="/css/main-8c4c5e426918ae095492d8a940e57fef.css"><link rel="stylesheet" href="/assets/css/custom-94ac739f6571b69e61e199e75a4cbff4.css"><script id="fluid-configs">var Fluid=window.Fluid||{},CONFIG={hostname:"lailin.xyz",root:"/",version:"1.8.7",typing:{enable:!0,typeSpeed:70,cursorChar:"_",loop:!1},anchorjs:{enable:!0,element:"h1,h2,h3,h4,h5,h6",placement:"right",visible:"hover",icon:""},progressbar:{enable:!0,height_px:3,color:"#29d",options:{showSpinner:!1,trickleSpeed:100}},copy_btn:!0,image_zoom:{enable:!0},toc:{enable:!0,headingSelector:"h1,h2,h3,h4,h5,h6",collapseDepth:3},lazyload:{enable:!0,onlypost:!1},web_analytics:{enable:!0,baidu:null,google:"UA-137859264-1",gtag:null,tencent:{sid:null,cid:null},woyaola:null,cnzz:null,leancloud:{app_id:null,app_key:null,server_url:null}}}</script><script src="/js/utils-5ecdced2f65030c3508cf0b3db78f4ad.js"></script><script src="/js/color-schema-4678c2299d6eeb96e23435ea339c9331.js"></script><meta name="generator" content="Hexo 5.2.0"></head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"><i class="iconfont icon-category-fill"></i> Go 进阶训练营(更新中)</a></li><li class="nav-item"><a class="nav-link" href="/post/go-design-pattern.html"><i class="iconfont icon-notebook"></i> Go 设计模式</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="iconfont icon-books"></i> 更多</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="/links/"><i class="iconfont icon-link-fill"></i> 友链 </a><a class="dropdown-item" href="/atom.xml"><i class="iconfont icon-rss"></i> rss </a><a class="dropdown-item" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></div></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i class="iconfont icon-search"></i>&nbsp;</a></li><li class="nav-item" id="color-toggle-btn"><a class="nav-link" href="javascript:">&nbsp;<i class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a></li></ul></div></div></nav><div class="banner" id="banner" parallax="true" style="background:url(/img/bg.jpg) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="page-header text-center fade-in-up"><span class="h2" id="subtitle" title="Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码"></span><div class="mt-3"><span class="post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2021-03-03 00:08" pubdate>2021年3月3日 凌晨</time></span></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 2.9k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 40 分钟</span></div></div></div></div></div></header><main><div class="container-fluid nopadding-x"><div class="row nomargin-x"><div class="d-none d-lg-block col-lg-2"><div class="sidebar"><p class="sidebar-header">Go进阶训练营</p><div class="sidebar-body" id="sidebar-body"><ol class="sidebar-list sidebar-list-1"><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23xho0000m4t51q602czj").classList.toggle("sidebar-is-collapsed")'>Week01: 微服务</a><ol id="sidebar-ckkm23xho0000m4t51q602czj" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-01.html">微服务(一) 微服务概览</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-02.html">微服务(二) 服务发现&amp;多租户</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23ykh0003m4t53mln1w0n").classList.toggle("sidebar-is-collapsed")'>Week02: Go错误处理</a><ol id="sidebar-ckkm23ykh0003m4t53mln1w0n" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-03.html">Go错误处理最佳实践</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm2667n000pm4t52z016wn0").classList.toggle("sidebar-is-collapsed")'>Week03: Go 并发编程</a><ol id="sidebar-ckkm2667n000pm4t52z016wn0" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-goroutine.html">Go并发编程(一) goroutine</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-go-memory-model.html">Go并发编程(二) Go 内存模型</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-data-race.html">Go并发编程(三) data race</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-sync.html">Go并发编程(四) 深入理解 Mutex</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-waitgroup.html">Go并发编程(六) 深入理解 WaitGroup</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-atomic.html">Go并发编程(五) 深入理解 sync/atomic</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-errgroup.html">Go并发编程(七) 深入理解 errgroup</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-once.html">Go并发编程(八) 深入理解 sync.Once</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-context.html">Go并发编程(九) 深入理解 Context</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-channel.html">Go并发编程(十) 深入理解 Channel</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-sum.html">Go并发编程(十一) 总结</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23zra000im4t5en8m0qy9").classList.toggle("sidebar-is-collapsed")'>Week04: Go 工程化</a><ol id="sidebar-ckkm23zra000im4t5en8m0qy9" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-clean-arch.html">Go工程化(一) 架构整洁之道阅读笔记</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-project-layout.html">Go工程化(二) 项目目录结构</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-wire.html">Go工程化(三) 依赖注入框架 wire</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-api-design.html">Go工程化(四) API 设计上: 项目结构 &amp; 设计</a></li><li class="sidebar-list-item is-active-li"><a class="sidebar-link sidebar-active-link" href="/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li></ol></li></ol></div></div></div><div class="col-lg-8 nopadding-x-md"><div class="container nopadding-x-md" id="board-ctn"><div class="py-5" id="board"><article class="post-content mx-auto"><h1 style="display:none">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</h1><div class="markdown-body"><h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>本系列为 <a target="_blank" rel="noopener" href="https://u.geekbang.org/subject/go?utm_source=lailin.xyz&amp;utm_medium=lailin.xyz">Go 进阶训练营</a> 笔记，预计 2021Q1 完成更新，访问 <a href="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">博客: Go 进阶训练营</a> 即可查看当前更新进度，部分文章篇幅较长，使用 PC 大屏浏览体验更佳。<strong>3 月进度: 02/15 </strong>3 月开始会尝试爆更模式，争取做到两天更新一篇文章，如果感兴趣可以拉到文章最下方获取关注方式。</p><p>在官方的提供的 protobuf 代码生成器当中仅支持生成 grpc 的代码，但是我们团队现状是大部分的项目都是使用 http1 类似 restful 的方式进行通信的，目前公司内部 gRPC 相关基础设施建设的还不完全，例如跨区域路由，服务注册等等原因导致我们没有办法向 gRPC 进行迁移，但是我们又想要有前面提到的各种好处，考虑到后面还是会进行 RPC 的迁移，又不想在代码里面写两套相同逻辑 service 层代码那该怎么办？</p><p>毛老师在课程上介绍了 kratos v2 的方法，自己写一个 protoc 插件，在代码生成的时候生成相关代码，只要我们生成的 server 接口和 gRPC 保持一致，或者接入其他的 RPC 服务，只需要接口保持一致那么我们的 service 层代码无需修改任何代码，就可以支持多种协议，做到了“框架只是细节”。</p><p>虽然框架只是细节，但是我们之前一直使用的 gin 作为 web 框架，kratos 使用的是 mux 作为路由框架，所以我们如果直接使用 kratos 的插件会导致很多中间件都需要做重构，这样影响比较大，并且也算是为了积累一些经验，因为除了生成 server 的代码，我们还需要同时配合公司内部的网关生成 client 端的代码，解决之前每个项目都需要自己手写 sdk 的问题。</p><p>接下来我们就一起来从借鉴开始实现一个生成 gin 的 http server 代码。</p><div style="background:#e8f7ff;padding:10px;border:1px solid #abd2da;border-radius:5px;margin-bottom:5px">注: 本文代码可以在 <a target="_blank" rel="noopener" href="https://github.com/mohuishou/protoc-gen-go-gin">mohuishou/protoc-gen-go-gin</a> 中找到，如果你有类似的需求可以直接使用</div><h3 id="方案设计"><a href="#方案设计" class="headerlink" title="方案设计"></a>方案设计</h3><p>开始开发之前我们先看一下 gin 的路由是怎么注册的，以及 grpc 生成的接口格式是什么样的</p><h4 id="gin-example"><a href="#gin-example" class="headerlink" title="gin example"></a>gin example</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handler</span><span class="hljs-params">(ctx *gin.Context)</span></span> &#123;<br>	<span class="hljs-comment">// get params</span><br>	params := <span class="hljs-keyword">struct</span> &#123;<br>		Msg <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;msg&quot;`</span><br>	&#125;&#123;&#125;<br>	ctx.BindQuery(&amp;params)<br><br>	<span class="hljs-comment">// 业务逻辑</span><br><br>	<span class="hljs-comment">// 返回数据</span><br>	ctx.JSON(<span class="hljs-number">200</span>, gin.H&#123;<br>		<span class="hljs-string">&quot;message&quot;</span>: params.Msg,<br>	&#125;)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	r := gin.Default()<br>	r.GET(<span class="hljs-string">&quot;/ping&quot;</span>, handler)<br>	r.Run() <span class="hljs-comment">// 监听并在 0.0.0.0:8080 上启动服务</span><br>&#125;<br></code></pre></td></tr></table></figure><p>这是一个简单的示例，可以发现 gin 注册路由需要一个 <code>func (ctx *gin.Context)</code> 签名的函数，这个函数一般做三件事，获取参数，调用业务逻辑，调用 gin 的方法返回 http response</p><h4 id="grpc-server-interface"><a href="#grpc-server-interface" class="headerlink" title="grpc server interface"></a>grpc server interface</h4><p>先看一下 proto 文件中的 rpc 定义，一般就是包含一个参数和一个返回值的函数</p><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-comment">// The greeting service definition.</span><br><span class="hljs-class"><span class="hljs-keyword">service</span> <span class="hljs-title">Greeter</span> </span>&#123;<br>  <span class="hljs-comment">// Sends a greeting</span><br>  <span class="hljs-function"><span class="hljs-keyword">rpc</span> SayHello (HelloRequest) <span class="hljs-keyword">returns</span> (HelloReply) </span>&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>然后看 grpc 生成的接口，其实和 proto 文件一一对应，只是多了一个 context 和 error</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> GreeterServer <span class="hljs-keyword">interface</span> &#123;<br>	<span class="hljs-comment">// Sends a greeting</span><br>	SayHello(context.Context, *HelloRequest) (*HelloReply, error)<br>	mustEmbedUnimplementedGreeterServer()<br>&#125;<br></code></pre></td></tr></table></figure><p>所以问题来了，我们让 service 层实现类似 <code>GreeterServer</code> 接口就行了，那我们代码生成器要怎么写才能够应用到 http 上呢？</p><h4 id="概要方案"><a href="#概要方案" class="headerlink" title="概要方案"></a>概要方案</h4><ol><li>我们需要从 proto 文件中得知 http method，http path 的信息，这样我们才知道要注册到哪个路由上<ol><li>这个可以通过 <code>google/api/annotations.proto</code> 为 rpc 方法添加 Option 实现</li><li>或者是通过函数签名来约定，我们约定方法名使用驼峰方式命名，首个单词是 http method 或者是 http method 的映射，如果都不是默认采用 post<ol><li><code>&quot;GET&quot;, &quot;FIND&quot;, &quot;QUERY&quot;, &quot;LIST&quot;, &quot;SEARCH&quot;</code> –&gt; <code>GET</code></li><li><code>&quot;POST&quot;, &quot;CREATE&quot;</code> –&gt; <code>POST</code></li><li><code>&quot;PUT&quot;, &quot;UPDATE&quot;</code> –&gt; <code>PUT</code></li><li><code>&quot;DELETE&quot;</code> –&gt; <code>DELETE</code></li></ol></li></ol></li><li>我们需要构建 <code>func handler(ctx *gin.Context)</code> 函数用于注册路由<ol><li>函数内需要处理参数，用于调用 service 层的代码</li><li>调用 service 层的代码结束之后，将返回值调用 gin 相关方法返回</li></ol></li></ol><p>所以我们最后生成的代码大概应该是这样的：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> GreeterService <span class="hljs-keyword">struct</span> &#123;<br>	server GreeterHTTPServer<br>	router gin.IRouter<br>&#125;<br><br><span class="hljs-comment">// 生成的 gin.HandlerFunc</span><br><span class="hljs-comment">// 由于 HandlerFunc 签名的限制，不能从参数传递 service 接口进来</span><br><span class="hljs-comment">// 所以我们使用一个 Struct 托管 service 数据</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *GreeterService)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx *gin.Context)</span></span> &#123;<br>	<span class="hljs-keyword">var</span> in HelloRequest<br><br>	<span class="hljs-keyword">if</span> err := ctx.ShouldBindJSON(∈); err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-comment">// 返回参数错误</span><br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	<span class="hljs-comment">// 调用业务逻辑</span><br>	out, err := s.server.(GreeterHTTPServer).SayHello(ctx, ∈)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-comment">// 返回错误结果</span><br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	<span class="hljs-comment">// 返回成功结果</span><br>	ctx.JSON(<span class="hljs-number">200</span>, out)<br>	<span class="hljs-keyword">return</span><br>&#125;<br><br><span class="hljs-comment">// 路由注册，首先需要 gin.IRouter 接口用于注册</span><br><span class="hljs-comment">// 其次需要获取到 SayHello 方法对应的 http method 和 path</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *GreeterService)</span> <span class="hljs-title">RegisterService</span><span class="hljs-params">()</span></span> &#123;<br>	s.router.Handle(<span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-string">&quot;/hello&quot;</span>, s.SayHello)<br>&#125;<br></code></pre></td></tr></table></figure><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>理论可行，开始干活，代码从 kratos v2 相关代码修改而来，文章篇幅有限，这里只贴关键代码，完整可执行代码请访问 <a target="_blank" rel="noopener" href="https://github.com/mohuishou/protoc-gen-go-gin">mohuishou/protoc-gen-go-gin</a></p><p><strong><em>如果对实现不感兴趣可以直接跳到最后一个部分查看使用示例，看最终的效果</em></strong></p><p>大致流程: 获取所有的 proto 文件 –&gt; 获取 proto 文件中的所有 service 信息 –&gt; 获取 service 中的所有 method 信息</p><h3 id="proto-文件"><a href="#proto-文件" class="headerlink" title="proto 文件"></a>proto 文件</h3><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs protobuf">syntax = <span class="hljs-string">&quot;proto3&quot;</span>;<br><br><span class="hljs-keyword">option</span> go_package = <span class="hljs-string">&quot;github.com/mohuishou/protoc-gen-go-gin/example/testproto;testproto&quot;</span>;<br><br><span class="hljs-keyword">package</span> testproto;<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;google/api/annotations.proto&quot;</span>;<br><br><span class="hljs-comment">// blog service is a blog demo</span><br><span class="hljs-class"><span class="hljs-keyword">service</span> <span class="hljs-title">BlogService</span> </span>&#123;<br>	<span class="hljs-comment">// 方法名 action+resource</span><br>	<span class="hljs-function"><span class="hljs-keyword">rpc</span> GetArticles(GetArticlesReq) <span class="hljs-keyword">returns</span> (GetArticlesResp) </span>&#123;<br>  	<span class="hljs-comment">// 添加 option 用于指定 http 的路由和方法</span><br>		<span class="hljs-keyword">option</span> (google.api.http) = &#123;<br>			get: <span class="hljs-string">&quot;/v1/articles&quot;</span><br><br>      <span class="hljs-comment">// 可以通过添加 additional_bindings 一个 rpc method 对应多个 http 路由</span><br>			additional_bindings &#123;<br>				get: <span class="hljs-string">&quot;/v1/author/&#123;author_id&#125;/articles&quot;</span><br>			&#125;<br>		&#125;;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure><h4 id="需要获取的信息"><a href="#需要获取的信息" class="headerlink" title="需要获取的信息"></a>需要获取的信息</h4><p><strong>service info</strong></p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> service <span class="hljs-keyword">struct</span> &#123;<br>	Name     <span class="hljs-keyword">string</span> <span class="hljs-comment">// Greeter</span><br>	FullName <span class="hljs-keyword">string</span> <span class="hljs-comment">// helloworld.Greeter</span><br>	FilePath <span class="hljs-keyword">string</span> <span class="hljs-comment">// api/helloworld/helloworld.proto</span><br><br>	Methods   []*method<br>	MethodSet <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]*method<br>&#125;<br></code></pre></td></tr></table></figure><p>为什么需要 Methods 和 MethodSet，因为可能存在多个 HTTP 请求对应一个 RPC Method，这也是下面的 method 结构中包含了一个 num 字段的原因</p><p><strong>method info</strong></p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> method <span class="hljs-keyword">struct</span> &#123;<br>	Name    <span class="hljs-keyword">string</span> <span class="hljs-comment">// SayHello</span><br>	Num     <span class="hljs-keyword">int</span>    <span class="hljs-comment">// 一个 rpc 方法可以对应多个 http 请求</span><br>	Request <span class="hljs-keyword">string</span> <span class="hljs-comment">// SayHelloReq</span><br>	Reply   <span class="hljs-keyword">string</span> <span class="hljs-comment">// SayHelloResp</span><br>	<span class="hljs-comment">// http_rule</span><br>	Path         <span class="hljs-keyword">string</span> <span class="hljs-comment">// 路由</span><br>	Method       <span class="hljs-keyword">string</span> <span class="hljs-comment">// HTTP Method</span><br>	Body         <span class="hljs-keyword">string</span><br>	ResponseBody <span class="hljs-keyword">string</span><br>&#125;<br></code></pre></td></tr></table></figure><h4 id="获取所有的-proto-文件"><a href="#获取所有的-proto-文件" class="headerlink" title="获取所有的 proto 文件"></a>获取所有的 proto 文件</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// main.go</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-comment">// ...</span><br><br>	options := protogen.Options&#123;<br>		ParamFunc: flags.Set,<br>	&#125;<br><br>	options.Run(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(gen *protogen.Plugin)</span> <span class="hljs-title">error</span></span> &#123;<br>		<span class="hljs-comment">// ...</span><br>		<span class="hljs-keyword">for</span> _, f := <span class="hljs-keyword">range</span> gen.Files &#123;<br>			<span class="hljs-keyword">if</span> !f.Generate &#123;<br>				<span class="hljs-keyword">continue</span><br>			&#125;<br>			generateFile(gen, f)<br>		&#125;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>	&#125;)<br>&#125;<br></code></pre></td></tr></table></figure><h4 id="生成单个-proto-文件中的内容"><a href="#生成单个-proto-文件中的内容" class="headerlink" title="生成单个 proto 文件中的内容"></a>生成单个 proto 文件中的内容</h4><p>这一部分的逻辑主要是生成文件的包名，以及将需要导入的第三方库，例如 gin 之类的导入到其中<br>然后循环调用 genService 方法生成相关代码</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 后面都是 gin.go 的内容</span><br><br><span class="hljs-comment">// generateFile generates a _gin.pb.go file.</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">generateFile</span><span class="hljs-params">(gen *protogen.Plugin, file *protogen.File)</span> *<span class="hljs-title">protogen</span>.<span class="hljs-title">GeneratedFile</span></span> &#123;<br>	<span class="hljs-comment">// 如果不存在 service 就直接跳过了，我们主要生成 service 的接口</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(file.Services) == <span class="hljs-number">0</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>	&#125;<br><br>	filename := file.GeneratedFilenamePrefix + <span class="hljs-string">&quot;_gin.pb.go&quot;</span><br>	g := gen.NewGeneratedFile(filename, file.GoImportPath)<br>	g.P(<span class="hljs-string">&quot;// Code generated by github.com/mohuishou/protoc-gen-go-gin. DO NOT EDIT.&quot;</span>)<br>	g.P()<br>	g.P(<span class="hljs-string">&quot;package &quot;</span>, file.GoPackageName)<br>	g.P()<br>	g.P(<span class="hljs-string">&quot;// This is a compile-time assertion to ensure that this generated file&quot;</span>)<br>	g.P(<span class="hljs-string">&quot;// is compatible with the mohuishou/protoc-gen-go-gin package it is being compiled against.&quot;</span>)<br>	g.P(<span class="hljs-string">&quot;// &quot;</span>, contextPkg.Ident(<span class="hljs-string">&quot;&quot;</span>), metadataPkg.Ident(<span class="hljs-string">&quot;&quot;</span>))<br>	g.P(<span class="hljs-string">&quot;//&quot;</span>, ginPkg.Ident(<span class="hljs-string">&quot;&quot;</span>), errPkg.Ident(<span class="hljs-string">&quot;&quot;</span>))<br>	g.P()<br><br>	<span class="hljs-keyword">for</span> _, service := <span class="hljs-keyword">range</span> file.Services &#123;<br>		genService(gen, file, g, service)<br>	&#125;<br>	<span class="hljs-keyword">return</span> g<br>&#125;<br></code></pre></td></tr></table></figure><h4 id="获取-service-相关信息"><a href="#获取-service-相关信息" class="headerlink" title="获取 service 相关信息"></a>获取 service 相关信息</h4><p>这一部分主要是利用 protogen.Service 的信息构建 service 结构，然后循环调用 genMethod 方法生成</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">genService</span><span class="hljs-params">(gen *protogen.Plugin, file *protogen.File, g *protogen.GeneratedFile, s *protogen.Service)</span></span> &#123;<br>	<span class="hljs-keyword">if</span> s.Desc.Options().(*descriptorpb.ServiceOptions).GetDeprecated() &#123;<br>		g.P(<span class="hljs-string">&quot;//&quot;</span>)<br>		g.P(deprecationComment)<br>	&#125;<br>	<span class="hljs-comment">// HTTP Server.</span><br>	sd := &amp;service&#123;<br>		Name:     s.GoName,<br>		FullName: <span class="hljs-keyword">string</span>(s.Desc.FullName()),<br>		FilePath: file.Desc.Path(),<br>	&#125;<br><br>	<span class="hljs-keyword">for</span> _, method := <span class="hljs-keyword">range</span> s.Methods &#123;<br>		sd.Methods = <span class="hljs-built_in">append</span>(sd.Methods, genMethod(method)...)<br>	&#125;<br>	g.P(sd.execute())<br>&#125;<br></code></pre></td></tr></table></figure><h4 id="获取-rpc-方法的相关信息"><a href="#获取-rpc-方法的相关信息" class="headerlink" title="获取 rpc 方法的相关信息"></a>获取 rpc 方法的相关信息</h4><p>我们通过 proto.GetExtension 获取之前在 rpc method 设置的 option 信息，如果存在那么就从 option 获取路由和 method 的信息，如果没有就根据方法名生成默认的路由</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">genMethod</span><span class="hljs-params">(m *protogen.Method)</span> []*<span class="hljs-title">method</span></span> &#123;<br>	<span class="hljs-keyword">var</span> methods []*method<br><br>	<span class="hljs-comment">// 存在 http rule 配置</span><br>	rule, ok := proto.GetExtension(m.Desc.Options(), annotations.E_Http).(*annotations.HttpRule)<br>	<span class="hljs-keyword">if</span> rule != <span class="hljs-literal">nil</span> &amp;&amp; ok &#123;<br>		<span class="hljs-keyword">for</span> _, bind := <span class="hljs-keyword">range</span> rule.AdditionalBindings &#123;<br>			methods = <span class="hljs-built_in">append</span>(methods, buildHTTPRule(m, bind))<br>		&#125;<br>		methods = <span class="hljs-built_in">append</span>(methods, buildHTTPRule(m, rule))<br>		<span class="hljs-keyword">return</span> methods<br>	&#125;<br><br>	<span class="hljs-comment">// 不存在走默认流程</span><br>	methods = <span class="hljs-built_in">append</span>(methods, defaultMethod(m))<br>	<span class="hljs-keyword">return</span> methods<br>&#125;<br></code></pre></td></tr></table></figure><p>从 option 中生成路由</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">buildHTTPRule</span><span class="hljs-params">(m *protogen.Method, rule *annotations.HttpRule)</span> *<span class="hljs-title">method</span></span> &#123;<br>	<span class="hljs-comment">// ....</span><br><br>	<span class="hljs-keyword">switch</span> pattern := rule.Pattern.(<span class="hljs-keyword">type</span>) &#123;<br>	<span class="hljs-keyword">case</span> *annotations.HttpRule_Get:<br>		path = pattern.Get<br>		method = <span class="hljs-string">&quot;GET&quot;</span><br>	<span class="hljs-comment">// ... 其他映射</span><br>	&#125;<br>	md := buildMethodDesc(m, method, path)<br>	<span class="hljs-keyword">return</span> md<br>&#125;<br></code></pre></td></tr></table></figure><p>生成默认的路由</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultMethod</span><span class="hljs-params">(m *protogen.Method)</span> *<span class="hljs-title">method</span></span> &#123;<br>    <span class="hljs-comment">// 分割方法名</span><br>	names := strings.Split(toSnakeCase(m.GoName), <span class="hljs-string">&quot;_&quot;</span>)<br><br>    <span class="hljs-comment">// ...</span><br><br>    <span class="hljs-comment">// 如果 http method 映射成功，那么路由就是 names[1:]</span><br>    <span class="hljs-comment">// 如果没有映射成功路由就是 names</span><br>	<span class="hljs-keyword">switch</span> strings.ToUpper(names[<span class="hljs-number">0</span>]) &#123;<br>	<span class="hljs-keyword">case</span> http.MethodGet, <span class="hljs-string">&quot;FIND&quot;</span>, <span class="hljs-string">&quot;QUERY&quot;</span>, <span class="hljs-string">&quot;LIST&quot;</span>, <span class="hljs-string">&quot;SEARCH&quot;</span>:<br>		httpMethod = http.MethodGet<br>	<span class="hljs-comment">// ...  其他方法映射</span><br>	<span class="hljs-keyword">default</span>:<br>		httpMethod = <span class="hljs-string">&quot;POST&quot;</span><br>		paths = names<br>	&#125;<br><br>	<span class="hljs-comment">// ...</span><br><br>	md := buildMethodDesc(m, httpMethod, path)<br>	<span class="hljs-keyword">return</span> md<br>&#125;<br></code></pre></td></tr></table></figure><p>最后我们在使用 go template 生成最开始方案中文件即可，代码有点多了这里就不贴了，可以在 <a target="_blank" rel="noopener" href="https://github.com/mohuishou/protoc-gen-go-gin">https://github.com/mohuishou/protoc-gen-go-gin</a> 中找到</p><h2 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a>使用案例</h2><div style="background:#e8f7ff;padding:10px;border:1px solid #abd2da;border-radius:5px;margin-bottom:5px">案例完整源代码可以在 <a target="_blank" rel="noopener" href="https://github.com/mohuishou/protoc-gen-go-gin">https://github.com/mohuishou/protoc-gen-go-gin</a> 中找到</div><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs protobuf">syntax = <span class="hljs-string">&quot;proto3&quot;</span>;<br><br><span class="hljs-keyword">option</span> go_package = <span class="hljs-string">&quot;github.com/mohuishou/protoc-gen-go-gin/example/api/product/app/v1&quot;</span>;<br><br><span class="hljs-keyword">package</span> product.app.v1;<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;google/api/annotations.proto&quot;</span>;<br><br><span class="hljs-comment">// blog service is a blog demo</span><br><span class="hljs-class"><span class="hljs-keyword">service</span> <span class="hljs-title">BlogService</span> </span>&#123;<br>	<span class="hljs-function"><span class="hljs-keyword">rpc</span> GetArticles(GetArticlesReq) <span class="hljs-keyword">returns</span> (GetArticlesResp) </span>&#123;<br>		<span class="hljs-keyword">option</span> (google.api.http) = &#123;<br>			get: <span class="hljs-string">&quot;/v1/articles&quot;</span><br>			additional_bindings &#123;<br>				get: <span class="hljs-string">&quot;/v1/author/&#123;author_id&#125;/articles&quot;</span><br>			&#125;<br>		&#125;;<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-keyword">rpc</span> CreateArticle(Article) <span class="hljs-keyword">returns</span> (Article) </span>&#123;<br>		<span class="hljs-keyword">option</span> (google.api.http) = &#123;<br>			post: <span class="hljs-string">&quot;/v1/author/&#123;author_id&#125;/articles&quot;</span><br>		&#125;;<br>	&#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">GetArticlesReq</span> </span>&#123;<br>	<span class="hljs-comment">// @inject_tag: form:&quot;title&quot;</span><br>	<span class="hljs-built_in">string</span> title = <span class="hljs-number">1</span>;<br><br>	<span class="hljs-comment">// @inject_tag: form:&quot;page&quot;</span><br>	<span class="hljs-built_in">int32</span> page = <span class="hljs-number">2</span>;<br><br>	<span class="hljs-comment">// @inject_tag: form:&quot;page_size&quot;</span><br>	<span class="hljs-built_in">int32</span> page_size = <span class="hljs-number">3</span>;<br><br>	<span class="hljs-comment">// @inject_tag: form:&quot;author_id&quot; uri:&quot;author_id&quot;</span><br>	<span class="hljs-built_in">int32</span> author_id = <span class="hljs-number">4</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">GetArticlesResp</span> </span>&#123;<br>	<span class="hljs-built_in">int64</span> total = <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">repeated</span> Article articles = <span class="hljs-number">2</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Article</span> </span>&#123;<br>	<span class="hljs-built_in">string</span> title  = <span class="hljs-number">1</span>;<br>	<span class="hljs-built_in">string</span> content = <span class="hljs-number">2</span>;<br>	<span class="hljs-comment">// @inject_tag: form:&quot;author_id&quot; uri:&quot;author_id&quot;</span><br>	<span class="hljs-built_in">int32</span> author_id = <span class="hljs-number">3</span>;<br>&#125;<br></code></pre></td></tr></table></figure><p>注意 @inject_tag: 的注释是使用了 protoc-go-inject-tag 插件用来附加额外的 Struct tags，protoc-gen-go 目前暂时不支持添加 tag</p><p>定义好 proto 文件之后我们只需要执行命令</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">protoc -I ./example/api \<br> <span class="hljs-comment"># 这个是用来生成 swagger json 文件的，我们很多系统支持导入 swagger 的定义，生成这个方便导入</span><br>--openapiv2_out ./example/api --openapiv2_opt logtostderr=<span class="hljs-literal">true</span> --openapiv2_opt json_names_for_fields=<span class="hljs-literal">false</span> \<br> <span class="hljs-comment"># 生成对应的 go 文件</span><br>--go_out ./example/api --go_opt=paths=source_relative \<br> <span class="hljs-comment"># 生成本文插件中的 gin 文件</span><br>--go-gin_out ./example/api --go-gin_opt=paths=source_relative \<br>example/api/product/app/v1/v1.proto<br>protoc-go-inject-tag -input=./example/api/product/app/v1/v1.pb.go<br></code></pre></td></tr></table></figure><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>api 设计这部分就先到这里了，下一篇文章我们一起看看配置管理</p><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol><li><a target="_blank" rel="noopener" href="https://u.geekbang.org/subject/go?utm_source=lailin.xyz&amp;utm_medium=lailin.xyz">Go 进阶训练营-极客时间</a></li><li><a href="https://lailin.xyz/post/go-training-week4-project-layout.html">Go 工程化(二) 项目目录结构</a></li><li><a target="_blank" rel="noopener" href="https://github.com/go-kratos/kratos">https://github.com/go-kratos/kratos</a></li><li><a target="_blank" rel="noopener" href="https://github.com/golang/protobuf/blob/master/protoc-gen-go/main.go">https://github.com/golang/protobuf/blob/master/protoc-gen-go/main.go</a></li></ol><h2 id="关注我获取更新"><a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新</h2><p>看到这里了还不关注点赞走一波</p><ul><li><a href="https://lailin.xyz">博客</a> 可以订阅 RSS，也可以点击首页通过 webpush 订阅浏览器消息通知</li><li><a target="_blank" rel="noopener" href="https://github.com/mohuishou">Github</a> Follow me</li><li><a target="_blank" rel="noopener" href="https://www.zhihu.com/people/mo-hui-shou-76">知乎</a> 关注账号，顺便点个 👍</li><li><a target="_blank" rel="noopener" href="https://toutiao.io/subjects/387401?f=new">开发者头条</a> 订阅订阅号，顺便点个 👍</li></ul><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li><li><a href="https://lailin.xyz/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li><a href="https://lailin.xyz/post/go-training-week4-api-design.html">Go工程化(四) API 设计上: 项目结构 & 设计</a></li></ul></div></div><hr><div><div class="post-metas mb-3"><div class="post-meta mr-3"><i class="iconfont icon-category"></i> <a class="hover-with-bg" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">Go进阶训练营</a> <a class="hover-with-bg" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week04-Go-%E5%B7%A5%E7%A8%8B%E5%8C%96/">Week04: Go 工程化</a></div><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a> <a class="hover-with-bg" href="/tags/Go/">Go</a> <a class="hover-with-bg" href="/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">Go进阶训练营</a> <a class="hover-with-bg" href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/">工程化</a></div></div><p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a>，转载请注明出处，禁止全文转载</p><div class="post-prevnext"><article class="post-prev col-6"><a href="/post/go-training-week4-config.html"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Go工程化(六) 配置管理</span> <span class="visible-mobile">上一篇</span></a></article><article class="post-next col-6"><a href="/post/go-training-week4-api-design.html"><span class="hidden-mobile">Go工程化(四) API 设计上: 项目结构 & 设计</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></article></div></div><article class="comments" id="comments"><script type="text/javascript">Fluid.utils.waitElementVisible("comments",function(){var t="github-light",e="github-dark",s="dark"===(s=document.documentElement.getAttribute("data-user-color-scheme"))?e:t;window.UtterancesThemeLight=t,window.UtterancesThemeDark=e;e=document.createElement("script");e.setAttribute("src","https://utteranc.es/client.js"),e.setAttribute("repo","scuplus/blogComment"),e.setAttribute("issue-term","pathname"),e.setAttribute("label","utterances"),e.setAttribute("theme",s),e.setAttribute("crossorigin","anonymous"),document.getElementById("comments").appendChild(e)})</script><noscript>Please enable JavaScript to view the comments</noscript></article></article></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div class="toc-body" id="toc-body"></div></div></div></div><div id="bottom"><div id="bottom-drawer" class="bottom-drawer"><div class="sidebar"><p class="sidebar-header">Go进阶训练营</p><div class="sidebar-body" id="sidebar-body"><ol class="sidebar-list sidebar-list-1"><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23xho0000m4t51q602czj").classList.toggle("sidebar-is-collapsed")'>Week01: 微服务</a><ol id="sidebar-ckkm23xho0000m4t51q602czj" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-01.html">微服务(一) 微服务概览</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-02.html">微服务(二) 服务发现&amp;多租户</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23ykh0003m4t53mln1w0n").classList.toggle("sidebar-is-collapsed")'>Week02: Go错误处理</a><ol id="sidebar-ckkm23ykh0003m4t53mln1w0n" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-03.html">Go错误处理最佳实践</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm2667n000pm4t52z016wn0").classList.toggle("sidebar-is-collapsed")'>Week03: Go 并发编程</a><ol id="sidebar-ckkm2667n000pm4t52z016wn0" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-goroutine.html">Go并发编程(一) goroutine</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-go-memory-model.html">Go并发编程(二) Go 内存模型</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-data-race.html">Go并发编程(三) data race</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-sync.html">Go并发编程(四) 深入理解 Mutex</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-atomic.html">Go并发编程(五) 深入理解 sync/atomic</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-waitgroup.html">Go并发编程(六) 深入理解 WaitGroup</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-errgroup.html">Go并发编程(七) 深入理解 errgroup</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-once.html">Go并发编程(八) 深入理解 sync.Once</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-context.html">Go并发编程(九) 深入理解 Context</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-channel.html">Go并发编程(十) 深入理解 Channel</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-sum.html">Go并发编程(十一) 总结</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23zra000im4t5en8m0qy9").classList.toggle("sidebar-is-collapsed")'>Week04: Go 工程化</a><ol id="sidebar-ckkm23zra000im4t5en8m0qy9" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-clean-arch.html">Go工程化(一) 架构整洁之道阅读笔记</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-project-layout.html">Go工程化(二) 项目目录结构</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-wire.html">Go工程化(三) 依赖注入框架 wire</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-api-design.html">Go工程化(四) API 设计上: 项目结构 &amp; 设计</a></li><li class="sidebar-list-item is-active-li"><a class="sidebar-link sidebar-active-link" href="/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li></ol></li></ol></div></div><div id="toc-mobile"><div class="toc-body" id="toc-body-mobile"></div></div></div><div id="bottom-tab"><a class="sub-menu" onclick='showBottomDrawer(this,"#bottom-drawer .sidebar")'><i class="iconfont"></i> 章节 </a><a class="sub-menu" onclick='showBottomDrawer(this,"#bottom-drawer #toc-mobile")'><i class="iconfont"></i> 目录 </a><a href="#comments" class="sub-menu" onclick='showBottomDrawer(this,"#comments")'><i class="iconfont"></i> 评论</a></div></div><script>function showBottomDrawer(s,t){let e=document.querySelector("#bottom-tab");e.childNodes.forEach(t=>{t!=s&&t.classList&&t.classList.remove("active")}),"#comments"!=t&&s.classList.toggle("active");let o=document.querySelector("#bottom-drawer"),c=document.querySelector(t);o.childNodes.forEach(t=>{t!=c&&t.classList&&t.classList.remove("active")}),c.classList.toggle("active"),"#comments"!=t?(c.classList.contains("active")&&!o.classList.contains("active")&&o.classList.add("active"),!c.classList.contains("active")&&o.classList.contains("active")&&o.classList.remove("active")):o.classList.remove("active")}document.onreadystatechange=function(t){0!=$("#bottom-drawer").height&&window.tocbot.init({tocSelector:"#toc-body-mobile",contentSelector:".markdown-body",headingSelector:"h1,h2,h3,h4",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:CONFIG.toc.collapseDepth||0,scrollSmooth:!0,headingsOffset:20})}</script></div><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><div class="col-lg-7 mx-auto nopadding-x-md"><div class="container custom mx-auto"><script>!function(e,s,p){var r;void 0===e.webpushr&&(e.webpushr=e.webpushr||function(){(e.webpushr.q=e.webpushr.q||[]).push(arguments)},r=s.getElementsByTagName(p)[0],(p=s.createElement(p)).id="webpushr-jssdk",p.async=1,p.src="https://cdn.webpushr.com/app.min.js",r.parentNode.appendChild(p))}(window,document,"script"),webpushr("setup",{key:"BBkZb7rpvsVqVNkORXD9T9T93MJodtpNJD5c1f2HE_XsED3r94An3CKObdyTJ6ub3ARm9LIdeDCVzKLBsK760NM"})</script></div></div></main><footer class="text-center mt-5 py-3"><div class="footer-content"><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div></footer><script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css"><script>NProgress.configure({showSpinner:!1,trickleSpeed:100}),NProgress.start(),window.addEventListener("load",function(){NProgress.done()})</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script><script src="/js/debouncer-c523e4d3f8b7b837c19f74984acbabf7.js"></script><script src="/js/events-f495e9aefe2285fc712ba316bdf01b26.js"></script><script src="/js/plugins-93fa930e12b7596433529edc1b5458df.js"></script><script src="/js/lazyload-e96b3165477d429bf8096bdbd068d816.js"></script><script src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script><script>!function(t){(0,Fluid.plugins.typing)(t.getElementById("subtitle").title)}((window,document))</script><script src="/js/local-search-c277a106ee2a2e265fcd58887e53c0fb.js"></script><script>document.querySelector("#local-search-input").onclick=function(){searchFunc("/local-search.xml","local-search-input","local-search-result"),this.onclick=null}</script><script defer>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-137859264-1","auto"),ga("send","pageview")</script><script async src="https://www.google-analytics.com/analytics.js"></script><script>let sidebarBody=document.querySelector(".sidebar .sidebar-body"),sidebarActive=document.querySelector(".sidebar .is-active-li"),bc=sidebarBody.getBoundingClientRect(),ac=sidebarActive.getBoundingClientRect(),t=ac.y-bc.y-bc.height/2;0<t&&sidebarBody.scrollTo({top:t,behavior:"smooth"})</script><script src="/js/boot-b4d619350e67f5b3ceeb2164d30268e0.js"></script></body></html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png">
+  <link rel="icon" type="image/png" href="/icons/favicon-32x32.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Mohuishou">
+  <meta name="keywords" content="Go, Docker, PHP">
+  <title>Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码 - Mohuishou</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lailin.xyz","root":"/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":null,"google":"UA-137859264-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">
+                <i class="iconfont icon-category-fill"></i>
+                Go 进阶训练营(更新中)
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/post/go-design-pattern.html">
+                <i class="iconfont icon-notebook"></i>
+                Go 设计模式
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                更多
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    <i class="iconfont icon-link-fill"></i>
+                    友链
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/atom.xml">
+                    <i class="iconfont icon-rss"></i>
+                    rss
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/bg.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-03 08:08" pubdate>
+        2021年3月3日 早上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      39
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2">
+      
+        
+
+<div class="sidebar">
+  <p class="sidebar-header">Go进阶训练营</p>
+  <div class="sidebar-body" ID="sidebar-body">
+    <ol class="sidebar-list sidebar-list-1">
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23xho0000m4t51q602czj').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week01: 微服务</a>
+        <ol id="sidebar-ckkm23xho0000m4t51q602czj" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-01.html">
+              微服务(一) 微服务概览
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-02.html">
+              微服务(二) 服务发现&amp;多租户
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23ykh0003m4t53mln1w0n').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week02: Go错误处理</a>
+        <ol id="sidebar-ckkm23ykh0003m4t53mln1w0n" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-03.html">
+              Go错误处理最佳实践
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm2667n000pm4t52z016wn0').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week03: Go 并发编程</a>
+        <ol id="sidebar-ckkm2667n000pm4t52z016wn0" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-goroutine.html">
+              Go并发编程(一) goroutine
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-go-memory-model.html">
+              Go并发编程(二) Go 内存模型
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-data-race.html">
+              Go并发编程(三) data race
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-sync.html">
+              Go并发编程(四) 深入理解 Mutex
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-errgroup.html">
+              Go并发编程(七) 深入理解 errgroup
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-once.html">
+              Go并发编程(八) 深入理解 sync.Once
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-context.html">
+              Go并发编程(九) 深入理解 Context
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-channel.html">
+              Go并发编程(十) 深入理解 Channel
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-sum.html">
+              Go并发编程(十一) 总结
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23zra000im4t5en8m0qy9').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week04: Go 工程化</a>
+        <ol id="sidebar-ckkm23zra000im4t5en8m0qy9" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-clean-arch.html">
+              Go工程化(一) 架构整洁之道阅读笔记
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-project-layout.html">
+              Go工程化(二) 项目目录结构
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-wire.html">
+              Go工程化(三) 依赖注入框架 wire
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-api-design.html">
+              Go工程化(四) API 设计上: 项目结构 &amp; 设计
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item is-active-li" > 
+            <a class="sidebar-link sidebar-active-link" href="/post/go-training-week4-protoc-gen-go-gin.html">
+              Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-config.html">
+              Go工程化(六) 配置管理
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-go-module.html">
+              Go工程化(七) Go Module
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+    </ol>
+  </div>
+</div>
+
+      
+    </div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</h1>
+            
+            <div class="markdown-body">
+              <h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>本系列为 <a target="_blank" rel="noopener" href="https://u.geekbang.org/subject/go?utm_source=lailin.xyz&amp;utm_medium=lailin.xyz">Go 进阶训练营</a> 笔记，预计 2021Q1 完成更新，访问 <a href="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">博客: Go 进阶训练营</a> 即可查看当前更新进度，部分文章篇幅较长，使用 PC 大屏浏览体验更佳。<strong>3 月进度: 02/15</strong> 3 月开始会尝试爆更模式，争取做到两天更新一篇文章，如果感兴趣可以拉到文章最下方获取关注方式。</p>
+<p>在官方的提供的 protobuf 代码生成器当中仅支持生成 grpc 的代码，但是我们团队现状是大部分的项目都是使用 http1 类似 restful 的方式进行通信的，目前公司内部 gRPC 相关基础设施建设的还不完全，例如跨区域路由，服务注册等等原因导致我们没有办法向 gRPC 进行迁移，但是我们又想要有前面提到的各种好处，考虑到后面还是会进行 RPC 的迁移，又不想在代码里面写两套相同逻辑 service 层代码那该怎么办？</p>
+<p>毛老师在课程上介绍了 kratos v2 的方法，自己写一个 protoc 插件，在代码生成的时候生成相关代码，只要我们生成的 server 接口和 gRPC 保持一致，或者接入其他的 RPC 服务，只需要接口保持一致那么我们的 service 层代码无需修改任何代码，就可以支持多种协议，做到了“框架只是细节”。</p>
+<p>虽然框架只是细节，但是我们之前一直使用的 gin 作为 web 框架，kratos 使用的是 mux 作为路由框架，所以我们如果直接使用 kratos 的插件会导致很多中间件都需要做重构，这样影响比较大，并且也算是为了积累一些经验，因为除了生成 server 的代码，我们还需要同时配合公司内部的网关生成 client 端的代码，解决之前每个项目都需要自己手写 sdk 的问题。</p>
+<p>接下来我们就一起来从借鉴开始实现一个生成 gin 的 http server 代码。</p>
+<div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">注: 本文代码可以在 <a target="_blank" rel="noopener" href="https://github.com/mohuishou/protoc-gen-go-gin">mohuishou/protoc-gen-go-gin</a> 中找到，如果你有类似的需求可以直接使用</div>
+
+<h3 id="方案设计"><a href="#方案设计" class="headerlink" title="方案设计"></a>方案设计</h3><p>开始开发之前我们先看一下 gin 的路由是怎么注册的，以及 grpc 生成的接口格式是什么样的</p>
+<h4 id="gin-example"><a href="#gin-example" class="headerlink" title="gin example"></a>gin example</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handler</span><span class="hljs-params">(ctx *gin.Context)</span></span> &#123;<br>	<span class="hljs-comment">// get params</span><br>	params := <span class="hljs-keyword">struct</span> &#123;<br>		Msg <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;msg&quot;`</span><br>	&#125;&#123;&#125;<br>	ctx.BindQuery(&amp;params)<br><br>	<span class="hljs-comment">// 业务逻辑</span><br><br>	<span class="hljs-comment">// 返回数据</span><br>	ctx.JSON(<span class="hljs-number">200</span>, gin.H&#123;<br>		<span class="hljs-string">&quot;message&quot;</span>: params.Msg,<br>	&#125;)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	r := gin.Default()<br>	r.GET(<span class="hljs-string">&quot;/ping&quot;</span>, handler)<br>	r.Run() <span class="hljs-comment">// 监听并在 0.0.0.0:8080 上启动服务</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这是一个简单的示例，可以发现 gin 注册路由需要一个 <code>func (ctx *gin.Context)</code> 签名的函数，这个函数一般做三件事，获取参数，调用业务逻辑，调用 gin 的方法返回 http response</p>
+<h4 id="grpc-server-interface"><a href="#grpc-server-interface" class="headerlink" title="grpc server interface"></a>grpc server interface</h4><p>先看一下 proto 文件中的 rpc 定义，一般就是包含一个参数和一个返回值的函数</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-comment">// The greeting service definition.</span><br><span class="hljs-class"><span class="hljs-keyword">service</span> <span class="hljs-title">Greeter</span> </span>&#123;<br>  <span class="hljs-comment">// Sends a greeting</span><br>  <span class="hljs-function"><span class="hljs-keyword">rpc</span> SayHello (HelloRequest) <span class="hljs-keyword">returns</span> (HelloReply) </span>&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>然后看 grpc 生成的接口，其实和 proto 文件一一对应，只是多了一个 context 和 error</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> GreeterServer <span class="hljs-keyword">interface</span> &#123;<br>	<span class="hljs-comment">// Sends a greeting</span><br>	SayHello(context.Context, *HelloRequest) (*HelloReply, error)<br>	mustEmbedUnimplementedGreeterServer()<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>所以问题来了，我们让 service 层实现类似 <code>GreeterServer</code> 接口就行了，那我们代码生成器要怎么写才能够应用到 http 上呢？</p>
+<h4 id="概要方案"><a href="#概要方案" class="headerlink" title="概要方案"></a>概要方案</h4><ol>
+<li>我们需要从 proto 文件中得知 http method，http path 的信息，这样我们才知道要注册到哪个路由上<ol>
+<li>这个可以通过 <code>google/api/annotations.proto</code> 为 rpc 方法添加 Option 实现</li>
+<li>或者是通过函数签名来约定，我们约定方法名使用驼峰方式命名，首个单词是 http method 或者是 http method 的映射，如果都不是默认采用 post<ol>
+<li><code>&quot;GET&quot;, &quot;FIND&quot;, &quot;QUERY&quot;, &quot;LIST&quot;, &quot;SEARCH&quot;</code>  –&gt; <code>GET</code></li>
+<li><code>&quot;POST&quot;, &quot;CREATE&quot;</code>  –&gt; <code>POST</code></li>
+<li><code>&quot;PUT&quot;, &quot;UPDATE&quot;</code>  –&gt; <code>PUT</code></li>
+<li><code>&quot;DELETE&quot;</code>  –&gt; <code>DELETE</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>我们需要构建 <code>func handler(ctx *gin.Context)</code> 函数用于注册路由<ol>
+<li>函数内需要处理参数，用于调用 service 层的代码</li>
+<li>调用 service 层的代码结束之后，将返回值调用 gin 相关方法返回</li>
+</ol>
+</li>
+</ol>
+<p>所以我们最后生成的代码大概应该是这样的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> GreeterService <span class="hljs-keyword">struct</span> &#123;<br>	server GreeterHTTPServer<br>	router gin.IRouter<br>&#125;<br><br><span class="hljs-comment">// 生成的 gin.HandlerFunc</span><br><span class="hljs-comment">// 由于 HandlerFunc 签名的限制，不能从参数传递 service 接口进来</span><br><span class="hljs-comment">// 所以我们使用一个 Struct 托管 service 数据</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *GreeterService)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx *gin.Context)</span></span> &#123;<br>	<span class="hljs-keyword">var</span> in HelloRequest<br><br>	<span class="hljs-keyword">if</span> err := ctx.ShouldBindJSON(∈); err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-comment">// 返回参数错误</span><br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	<span class="hljs-comment">// 调用业务逻辑</span><br>	out, err := s.server.(GreeterHTTPServer).SayHello(ctx, ∈)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-comment">// 返回错误结果</span><br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	<span class="hljs-comment">// 返回成功结果</span><br>	ctx.JSON(<span class="hljs-number">200</span>, out)<br>	<span class="hljs-keyword">return</span><br>&#125;<br><br><span class="hljs-comment">// 路由注册，首先需要 gin.IRouter 接口用于注册</span><br><span class="hljs-comment">// 其次需要获取到 SayHello 方法对应的 http method 和 path</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *GreeterService)</span> <span class="hljs-title">RegisterService</span><span class="hljs-params">()</span></span> &#123;<br>	s.router.Handle(<span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-string">&quot;/hello&quot;</span>, s.SayHello)<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>理论可行，开始干活，代码从 kratos v2 相关代码修改而来，文章篇幅有限，这里只贴关键代码，完整可执行代码请访问 <a target="_blank" rel="noopener" href="https://github.com/mohuishou/protoc-gen-go-gin">mohuishou/protoc-gen-go-gin</a></p>
+<p><strong><em>如果对实现不感兴趣可以直接跳到最后一个部分查看使用示例，看最终的效果</em></strong></p>
+<p>大致流程: 获取所有的 proto 文件 –&gt; 获取 proto 文件中的所有 service 信息 –&gt; 获取 service 中的所有 method 信息</p>
+<h3 id="proto-文件"><a href="#proto-文件" class="headerlink" title="proto 文件"></a>proto 文件</h3><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs protobuf">syntax = <span class="hljs-string">&quot;proto3&quot;</span>;<br><br><span class="hljs-keyword">option</span> go_package = <span class="hljs-string">&quot;github.com/mohuishou/protoc-gen-go-gin/example/testproto;testproto&quot;</span>;<br><br><span class="hljs-keyword">package</span> testproto;<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;google/api/annotations.proto&quot;</span>;<br><br><span class="hljs-comment">// blog service is a blog demo</span><br><span class="hljs-class"><span class="hljs-keyword">service</span> <span class="hljs-title">BlogService</span> </span>&#123;<br>	<span class="hljs-comment">// 方法名 action+resource</span><br>	<span class="hljs-function"><span class="hljs-keyword">rpc</span> GetArticles(GetArticlesReq) <span class="hljs-keyword">returns</span> (GetArticlesResp) </span>&#123;<br>  	<span class="hljs-comment">// 添加 option 用于指定 http 的路由和方法</span><br>		<span class="hljs-keyword">option</span> (google.api.http) = &#123;<br>			get: <span class="hljs-string">&quot;/v1/articles&quot;</span><br><br>      <span class="hljs-comment">// 可以通过添加 additional_bindings 一个 rpc method 对应多个 http 路由</span><br>			additional_bindings &#123;<br>				get: <span class="hljs-string">&quot;/v1/author/&#123;author_id&#125;/articles&quot;</span><br>			&#125;<br>		&#125;;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="需要获取的信息"><a href="#需要获取的信息" class="headerlink" title="需要获取的信息"></a>需要获取的信息</h4><p><strong>service info</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> service <span class="hljs-keyword">struct</span> &#123;<br>	Name     <span class="hljs-keyword">string</span> <span class="hljs-comment">// Greeter</span><br>	FullName <span class="hljs-keyword">string</span> <span class="hljs-comment">// helloworld.Greeter</span><br>	FilePath <span class="hljs-keyword">string</span> <span class="hljs-comment">// api/helloworld/helloworld.proto</span><br><br>	Methods   []*method<br>	MethodSet <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]*method<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>为什么需要 Methods 和 MethodSet，因为可能存在多个 HTTP 请求对应一个 RPC Method，这也是下面的 method 结构中包含了一个 num 字段的原因</p>
+<p><strong>method info</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> method <span class="hljs-keyword">struct</span> &#123;<br>	Name    <span class="hljs-keyword">string</span> <span class="hljs-comment">// SayHello</span><br>	Num     <span class="hljs-keyword">int</span>    <span class="hljs-comment">// 一个 rpc 方法可以对应多个 http 请求</span><br>	Request <span class="hljs-keyword">string</span> <span class="hljs-comment">// SayHelloReq</span><br>	Reply   <span class="hljs-keyword">string</span> <span class="hljs-comment">// SayHelloResp</span><br>	<span class="hljs-comment">// http_rule</span><br>	Path         <span class="hljs-keyword">string</span> <span class="hljs-comment">// 路由</span><br>	Method       <span class="hljs-keyword">string</span> <span class="hljs-comment">// HTTP Method</span><br>	Body         <span class="hljs-keyword">string</span><br>	ResponseBody <span class="hljs-keyword">string</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="获取所有的-proto-文件"><a href="#获取所有的-proto-文件" class="headerlink" title="获取所有的 proto 文件"></a>获取所有的 proto 文件</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// main.go</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-comment">// ...</span><br><br>	options := protogen.Options&#123;<br>		ParamFunc: flags.Set,<br>	&#125;<br><br>	options.Run(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(gen *protogen.Plugin)</span> <span class="hljs-title">error</span></span> &#123;<br>		<span class="hljs-comment">// ...</span><br>		<span class="hljs-keyword">for</span> _, f := <span class="hljs-keyword">range</span> gen.Files &#123;<br>			<span class="hljs-keyword">if</span> !f.Generate &#123;<br>				<span class="hljs-keyword">continue</span><br>			&#125;<br>			generateFile(gen, f)<br>		&#125;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>	&#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="生成单个-proto-文件中的内容"><a href="#生成单个-proto-文件中的内容" class="headerlink" title="生成单个 proto 文件中的内容"></a>生成单个 proto 文件中的内容</h4><p>这一部分的逻辑主要是生成文件的包名，以及将需要导入的第三方库，例如 gin 之类的导入到其中<br>然后循环调用 genService 方法生成相关代码</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 后面都是 gin.go 的内容</span><br><br><span class="hljs-comment">// generateFile generates a _gin.pb.go file.</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">generateFile</span><span class="hljs-params">(gen *protogen.Plugin, file *protogen.File)</span> *<span class="hljs-title">protogen</span>.<span class="hljs-title">GeneratedFile</span></span> &#123;<br>	<span class="hljs-comment">// 如果不存在 service 就直接跳过了，我们主要生成 service 的接口</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(file.Services) == <span class="hljs-number">0</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>	&#125;<br><br>	filename := file.GeneratedFilenamePrefix + <span class="hljs-string">&quot;_gin.pb.go&quot;</span><br>	g := gen.NewGeneratedFile(filename, file.GoImportPath)<br>	g.P(<span class="hljs-string">&quot;// Code generated by github.com/mohuishou/protoc-gen-go-gin. DO NOT EDIT.&quot;</span>)<br>	g.P()<br>	g.P(<span class="hljs-string">&quot;package &quot;</span>, file.GoPackageName)<br>	g.P()<br>	g.P(<span class="hljs-string">&quot;// This is a compile-time assertion to ensure that this generated file&quot;</span>)<br>	g.P(<span class="hljs-string">&quot;// is compatible with the mohuishou/protoc-gen-go-gin package it is being compiled against.&quot;</span>)<br>	g.P(<span class="hljs-string">&quot;// &quot;</span>, contextPkg.Ident(<span class="hljs-string">&quot;&quot;</span>), metadataPkg.Ident(<span class="hljs-string">&quot;&quot;</span>))<br>	g.P(<span class="hljs-string">&quot;//&quot;</span>, ginPkg.Ident(<span class="hljs-string">&quot;&quot;</span>), errPkg.Ident(<span class="hljs-string">&quot;&quot;</span>))<br>	g.P()<br><br>	<span class="hljs-keyword">for</span> _, service := <span class="hljs-keyword">range</span> file.Services &#123;<br>		genService(gen, file, g, service)<br>	&#125;<br>	<span class="hljs-keyword">return</span> g<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="获取-service-相关信息"><a href="#获取-service-相关信息" class="headerlink" title="获取 service 相关信息"></a>获取 service 相关信息</h4><p>这一部分主要是利用 protogen.Service 的信息构建 service 结构，然后循环调用 genMethod 方法生成</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">genService</span><span class="hljs-params">(gen *protogen.Plugin, file *protogen.File, g *protogen.GeneratedFile, s *protogen.Service)</span></span> &#123;<br>	<span class="hljs-keyword">if</span> s.Desc.Options().(*descriptorpb.ServiceOptions).GetDeprecated() &#123;<br>		g.P(<span class="hljs-string">&quot;//&quot;</span>)<br>		g.P(deprecationComment)<br>	&#125;<br>	<span class="hljs-comment">// HTTP Server.</span><br>	sd := &amp;service&#123;<br>		Name:     s.GoName,<br>		FullName: <span class="hljs-keyword">string</span>(s.Desc.FullName()),<br>		FilePath: file.Desc.Path(),<br>	&#125;<br><br>	<span class="hljs-keyword">for</span> _, method := <span class="hljs-keyword">range</span> s.Methods &#123;<br>		sd.Methods = <span class="hljs-built_in">append</span>(sd.Methods, genMethod(method)...)<br>	&#125;<br>	g.P(sd.execute())<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="获取-rpc-方法的相关信息"><a href="#获取-rpc-方法的相关信息" class="headerlink" title="获取 rpc 方法的相关信息"></a>获取 rpc 方法的相关信息</h4><p>我们通过 proto.GetExtension 获取之前在 rpc method 设置的 option 信息，如果存在那么就从 option 获取路由和 method 的信息，如果没有就根据方法名生成默认的路由</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">genMethod</span><span class="hljs-params">(m *protogen.Method)</span> []*<span class="hljs-title">method</span></span> &#123;<br>	<span class="hljs-keyword">var</span> methods []*method<br><br>	<span class="hljs-comment">// 存在 http rule 配置</span><br>	rule, ok := proto.GetExtension(m.Desc.Options(), annotations.E_Http).(*annotations.HttpRule)<br>	<span class="hljs-keyword">if</span> rule != <span class="hljs-literal">nil</span> &amp;&amp; ok &#123;<br>		<span class="hljs-keyword">for</span> _, bind := <span class="hljs-keyword">range</span> rule.AdditionalBindings &#123;<br>			methods = <span class="hljs-built_in">append</span>(methods, buildHTTPRule(m, bind))<br>		&#125;<br>		methods = <span class="hljs-built_in">append</span>(methods, buildHTTPRule(m, rule))<br>		<span class="hljs-keyword">return</span> methods<br>	&#125;<br><br>	<span class="hljs-comment">// 不存在走默认流程</span><br>	methods = <span class="hljs-built_in">append</span>(methods, defaultMethod(m))<br>	<span class="hljs-keyword">return</span> methods<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>从 option 中生成路由</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">buildHTTPRule</span><span class="hljs-params">(m *protogen.Method, rule *annotations.HttpRule)</span> *<span class="hljs-title">method</span></span> &#123;<br>	<span class="hljs-comment">// ....</span><br><br>	<span class="hljs-keyword">switch</span> pattern := rule.Pattern.(<span class="hljs-keyword">type</span>) &#123;<br>	<span class="hljs-keyword">case</span> *annotations.HttpRule_Get:<br>		path = pattern.Get<br>		method = <span class="hljs-string">&quot;GET&quot;</span><br>	<span class="hljs-comment">// ... 其他映射</span><br>	&#125;<br>	md := buildMethodDesc(m, method, path)<br>	<span class="hljs-keyword">return</span> md<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>生成默认的路由</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultMethod</span><span class="hljs-params">(m *protogen.Method)</span> *<span class="hljs-title">method</span></span> &#123;<br>    <span class="hljs-comment">// 分割方法名</span><br>	names := strings.Split(toSnakeCase(m.GoName), <span class="hljs-string">&quot;_&quot;</span>)<br><br>    <span class="hljs-comment">// ...</span><br><br>    <span class="hljs-comment">// 如果 http method 映射成功，那么路由就是 names[1:]</span><br>    <span class="hljs-comment">// 如果没有映射成功路由就是 names</span><br>	<span class="hljs-keyword">switch</span> strings.ToUpper(names[<span class="hljs-number">0</span>]) &#123;<br>	<span class="hljs-keyword">case</span> http.MethodGet, <span class="hljs-string">&quot;FIND&quot;</span>, <span class="hljs-string">&quot;QUERY&quot;</span>, <span class="hljs-string">&quot;LIST&quot;</span>, <span class="hljs-string">&quot;SEARCH&quot;</span>:<br>		httpMethod = http.MethodGet<br>	<span class="hljs-comment">// ...  其他方法映射</span><br>	<span class="hljs-keyword">default</span>:<br>		httpMethod = <span class="hljs-string">&quot;POST&quot;</span><br>		paths = names<br>	&#125;<br><br>	<span class="hljs-comment">// ...</span><br><br>	md := buildMethodDesc(m, httpMethod, path)<br>	<span class="hljs-keyword">return</span> md<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>最后我们在使用 go template 生成最开始方案中文件即可，代码有点多了这里就不贴了，可以在 <a target="_blank" rel="noopener" href="https://github.com/mohuishou/protoc-gen-go-gin">https://github.com/mohuishou/protoc-gen-go-gin</a> 中找到</p>
+<h2 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a>使用案例</h2><div style="background: #E8F7FF;padding:10px;border: 1px solid #ABD2DA;border-radius:5px;margin-bottom:5px;">案例完整源代码可以在 <a target="_blank" rel="noopener" href="https://github.com/mohuishou/protoc-gen-go-gin">https://github.com/mohuishou/protoc-gen-go-gin</a> 中找到</div>
+
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs protobuf">syntax = <span class="hljs-string">&quot;proto3&quot;</span>;<br><br><span class="hljs-keyword">option</span> go_package = <span class="hljs-string">&quot;github.com/mohuishou/protoc-gen-go-gin/example/api/product/app/v1&quot;</span>;<br><br><span class="hljs-keyword">package</span> product.app.v1;<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;google/api/annotations.proto&quot;</span>;<br><br><span class="hljs-comment">// blog service is a blog demo</span><br><span class="hljs-class"><span class="hljs-keyword">service</span> <span class="hljs-title">BlogService</span> </span>&#123;<br>	<span class="hljs-function"><span class="hljs-keyword">rpc</span> GetArticles(GetArticlesReq) <span class="hljs-keyword">returns</span> (GetArticlesResp) </span>&#123;<br>		<span class="hljs-keyword">option</span> (google.api.http) = &#123;<br>			get: <span class="hljs-string">&quot;/v1/articles&quot;</span><br>			additional_bindings &#123;<br>				get: <span class="hljs-string">&quot;/v1/author/&#123;author_id&#125;/articles&quot;</span><br>			&#125;<br>		&#125;;<br>	&#125;<br><br>	<span class="hljs-function"><span class="hljs-keyword">rpc</span> CreateArticle(Article) <span class="hljs-keyword">returns</span> (Article) </span>&#123;<br>		<span class="hljs-keyword">option</span> (google.api.http) = &#123;<br>			post: <span class="hljs-string">&quot;/v1/author/&#123;author_id&#125;/articles&quot;</span><br>		&#125;;<br>	&#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">GetArticlesReq</span> </span>&#123;<br>	<span class="hljs-comment">// @inject_tag: form:&quot;title&quot;</span><br>	<span class="hljs-built_in">string</span> title = <span class="hljs-number">1</span>;<br><br>	<span class="hljs-comment">// @inject_tag: form:&quot;page&quot;</span><br>	<span class="hljs-built_in">int32</span> page = <span class="hljs-number">2</span>;<br><br>	<span class="hljs-comment">// @inject_tag: form:&quot;page_size&quot;</span><br>	<span class="hljs-built_in">int32</span> page_size = <span class="hljs-number">3</span>;<br><br>	<span class="hljs-comment">// @inject_tag: form:&quot;author_id&quot; uri:&quot;author_id&quot;</span><br>	<span class="hljs-built_in">int32</span> author_id = <span class="hljs-number">4</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">GetArticlesResp</span> </span>&#123;<br>	<span class="hljs-built_in">int64</span> total = <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">repeated</span> Article articles = <span class="hljs-number">2</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Article</span> </span>&#123;<br>	<span class="hljs-built_in">string</span> title  = <span class="hljs-number">1</span>;<br>	<span class="hljs-built_in">string</span> content = <span class="hljs-number">2</span>;<br>	<span class="hljs-comment">// @inject_tag: form:&quot;author_id&quot; uri:&quot;author_id&quot;</span><br>	<span class="hljs-built_in">int32</span> author_id = <span class="hljs-number">3</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>注意 @inject_tag: 的注释是使用了 protoc-go-inject-tag 插件用来附加额外的 Struct tags，protoc-gen-go 目前暂时不支持添加 tag</p>
+<p>定义好 proto 文件之后我们只需要执行命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">protoc -I ./example/api \<br> <span class="hljs-comment"># 这个是用来生成 swagger json 文件的，我们很多系统支持导入 swagger 的定义，生成这个方便导入</span><br>--openapiv2_out ./example/api --openapiv2_opt logtostderr=<span class="hljs-literal">true</span> --openapiv2_opt json_names_for_fields=<span class="hljs-literal">false</span> \<br> <span class="hljs-comment"># 生成对应的 go 文件</span><br>--go_out ./example/api --go_opt=paths=source_relative \<br> <span class="hljs-comment"># 生成本文插件中的 gin 文件</span><br>--go-gin_out ./example/api --go-gin_opt=paths=source_relative \<br>example/api/product/app/v1/v1.proto<br>protoc-go-inject-tag -input=./example/api/product/app/v1/v1.pb.go<br></code></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>api 设计这部分就先到这里了，下一篇文章我们一起看看配置管理</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://u.geekbang.org/subject/go?utm_source=lailin.xyz&amp;utm_medium=lailin.xyz">Go 进阶训练营-极客时间</a></li>
+<li><a href="https://lailin.xyz/post/go-training-week4-project-layout.html">Go 工程化(二) 项目目录结构</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/go-kratos/kratos">https://github.com/go-kratos/kratos</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/golang/protobuf/blob/master/protoc-gen-go/main.go">https://github.com/golang/protobuf/blob/master/protoc-gen-go/main.go</a></li>
+</ol>
+
+            </div>
+            <!-- Custom -->            
+            
+                <h2 id="关注我获取更新"><a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a                class="anchorjs-link"                aria-label="Anchor"                data-anchorjs-icon=""                href="#关注我获取更新"                style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em"              ></a></h2><div class="row"><div class="col-lg-6"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png" srcset="/img/loading.gif" alt="wechat"></div><div class="col-lg-2 col-4"><a target="_blank" href="http://s.zhihu.com/B4RT3"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/zhihu.png" srcset="/img/loading.gif" alt="知乎"></a></div><div class="col-lg-2 col-4"><a target="_blank" href="https://toutiao.io/subjects/387401?f=new"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/toutiaoio.png" srcset="/img/loading.gif" alt="开发者头条"></a></div><div class="col-lg-2 col-4"><a target="_blank" href="https://github.com/mohuishou"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/github.png" srcset="/img/loading.gif" alt="github"></a></div></div>
+
+            
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">Go进阶训练营</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week04-Go-%E5%B7%A5%E7%A8%8B%E5%8C%96/">Week04: Go 工程化</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Go/">Go</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">Go进阶训练营</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/">工程化</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a>，转载请注明出处，禁止全文转载</p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/go-training-week4-config.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Go工程化(六) 配置管理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/go-training-week4-api-design.html">
+                        <span class="hidden-mobile">Go工程化(四) API 设计上: 项目结构 & 设计</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.waitElementVisible('comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'scuplus/blogComment');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+  <div id="bottom">
+  <div id="bottom-drawer" class="bottom-drawer">
+    
+      
+
+<div class="sidebar">
+  <p class="sidebar-header">Go进阶训练营</p>
+  <div class="sidebar-body" ID="sidebar-body">
+    <ol class="sidebar-list sidebar-list-1">
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23xho0000m4t51q602czj').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week01: 微服务</a>
+        <ol id="sidebar-ckkm23xho0000m4t51q602czj" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-01.html">
+              微服务(一) 微服务概览
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-02.html">
+              微服务(二) 服务发现&amp;多租户
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23ykh0003m4t53mln1w0n').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week02: Go错误处理</a>
+        <ol id="sidebar-ckkm23ykh0003m4t53mln1w0n" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-03.html">
+              Go错误处理最佳实践
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm2667n000pm4t52z016wn0').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week03: Go 并发编程</a>
+        <ol id="sidebar-ckkm2667n000pm4t52z016wn0" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-goroutine.html">
+              Go并发编程(一) goroutine
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-go-memory-model.html">
+              Go并发编程(二) Go 内存模型
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-data-race.html">
+              Go并发编程(三) data race
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-sync.html">
+              Go并发编程(四) 深入理解 Mutex
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-errgroup.html">
+              Go并发编程(七) 深入理解 errgroup
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-once.html">
+              Go并发编程(八) 深入理解 sync.Once
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-context.html">
+              Go并发编程(九) 深入理解 Context
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-channel.html">
+              Go并发编程(十) 深入理解 Channel
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-sum.html">
+              Go并发编程(十一) 总结
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23zra000im4t5en8m0qy9').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week04: Go 工程化</a>
+        <ol id="sidebar-ckkm23zra000im4t5en8m0qy9" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-clean-arch.html">
+              Go工程化(一) 架构整洁之道阅读笔记
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-project-layout.html">
+              Go工程化(二) 项目目录结构
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-wire.html">
+              Go工程化(三) 依赖注入框架 wire
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-api-design.html">
+              Go工程化(四) API 设计上: 项目结构 &amp; 设计
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item is-active-li" > 
+            <a class="sidebar-link sidebar-active-link" href="/post/go-training-week4-protoc-gen-go-gin.html">
+              Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-config.html">
+              Go工程化(六) 配置管理
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-go-module.html">
+              Go工程化(七) Go Module
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+    </ol>
+  </div>
+</div>
+
+    
+    <div id="toc-mobile">
+      <div class="toc-body" id="toc-body-mobile"></div>
+    </div>
+  </div>
+  <div id="bottom-tab">
+    <a class="sub-menu" onclick="showBottomDrawer(this, '#bottom-drawer .sidebar')">
+      <i class="iconfont"></i> 章节
+    </a>
+    <a class="sub-menu" onclick="showBottomDrawer(this, '#bottom-drawer #toc-mobile')">
+      <i class="iconfont"></i> 目录
+    </a>
+    <a href="#comments" class="sub-menu" onclick="showBottomDrawer(this, '#comments')"> 
+      <i class="iconfont"></i> 评论
+    </a>
+  </div>
+</div>
+
+<script>
+  document.onreadystatechange = function(e) {
+    let drawer = $('#bottom-drawer')
+    if (drawer.height == 0) return
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body-mobile',
+      contentSelector : '.markdown-body',
+      headingSelector : 'h1,h2,h3,h4',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : 20
+    });
+  } 
+  
+  function showBottomDrawer(e, sel){
+    let tab = document.querySelector('#bottom-tab')
+    tab.childNodes.forEach((n) => {
+      if(n != e && n.classList) n.classList.remove("active")
+    })
+    if (sel != "#comments") e.classList.toggle("active")
+
+    let drawer = document.querySelector('#bottom-drawer')
+    let s = document.querySelector(sel)
+    
+    drawer.childNodes.forEach((n) => {
+      if(n != s && n.classList) n.classList.remove("active")
+    })
+    s.classList.toggle("active")
+
+    if (sel == "#comments") {
+      drawer.classList.remove("active")
+      return
+    } 
+
+    if (s.classList.contains("active") && !drawer.classList.contains("active")) {
+      drawer.classList.add("active")
+    }
+
+    if (!s.classList.contains("active") && drawer.classList.contains("active")) {
+      drawer.classList.remove("active")
+    }
+  }
+</script>
+
+</div>
+
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+      <div class="col-lg-7 mx-auto nopadding-x-md">
+        <div class="container custom mx-auto">
+          <!-- start webpushr tracking code --> 
+<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";
+fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));
+webpushr('setup',{'key':'BBkZb7rpvsVqVNkORXD9T9T93MJodtpNJD5c1f2HE_XsED3r94An3CKObdyTJ6ub3ARm9LIdeDCVzKLBsK760NM' });</script>
+<!-- end webpushr tracking code -->
+
+        </div>
+      </div>
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-137859264-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<script>
+  let sidebarBody =  document.querySelector(".sidebar .sidebar-body")
+  let sidebarActive = document.querySelector(".sidebar .is-active-li")
+  let bc = sidebarBody.getBoundingClientRect()
+  let ac = sidebarActive.getBoundingClientRect()
+  let t = ac.y - bc.y - bc.height / 2
+  if (t > 0){
+    sidebarBody.scrollTo({
+      top: t,
+      behavior: 'smooth'
+    })
+  }
+</script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>

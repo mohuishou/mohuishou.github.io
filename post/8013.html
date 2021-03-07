@@ -1,13 +1,333 @@
-<!DOCTYPE html><html lang="zh-CN" data-default-color-scheme="&#34;auto&#34;"><head><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png"><link rel="icon" type="image/png" href="/icons/favicon-32x32.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content=""><meta name="author" content="Mohuishou"><meta name="keywords" content="Go, Docker, PHP"><title>使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘 - Mohuishou</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css"><link rel="stylesheet" href="/css/main-8c4c5e426918ae095492d8a940e57fef.css"><link rel="stylesheet" href="/assets/css/custom-94ac739f6571b69e61e199e75a4cbff4.css"><script id="fluid-configs">var Fluid=window.Fluid||{},CONFIG={hostname:"lailin.xyz",root:"/",version:"1.8.7",typing:{enable:!0,typeSpeed:70,cursorChar:"_",loop:!1},anchorjs:{enable:!0,element:"h1,h2,h3,h4,h5,h6",placement:"right",visible:"hover",icon:""},progressbar:{enable:!0,height_px:3,color:"#29d",options:{showSpinner:!1,trickleSpeed:100}},copy_btn:!0,image_zoom:{enable:!0},toc:{enable:!0,headingSelector:"h1,h2,h3,h4,h5,h6",collapseDepth:3},lazyload:{enable:!0,onlypost:!1},web_analytics:{enable:!0,baidu:null,google:"UA-137859264-1",gtag:null,tencent:{sid:null,cid:null},woyaola:null,cnzz:null,leancloud:{app_id:null,app_key:null,server_url:null}}}</script><script src="/js/utils-5ecdced2f65030c3508cf0b3db78f4ad.js"></script><script src="/js/color-schema-4678c2299d6eeb96e23435ea339c9331.js"></script><meta name="generator" content="Hexo 5.2.0"></head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"><i class="iconfont icon-category-fill"></i> Go 进阶训练营(更新中)</a></li><li class="nav-item"><a class="nav-link" href="/post/go-design-pattern.html"><i class="iconfont icon-notebook"></i> Go 设计模式</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="iconfont icon-books"></i> 更多</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="/links/"><i class="iconfont icon-link-fill"></i> 友链 </a><a class="dropdown-item" href="/atom.xml"><i class="iconfont icon-rss"></i> rss </a><a class="dropdown-item" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></div></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i class="iconfont icon-search"></i>&nbsp;</a></li><li class="nav-item" id="color-toggle-btn"><a class="nav-link" href="javascript:">&nbsp;<i class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a></li></ul></div></div></nav><div class="banner" id="banner" parallax="true" style="background:url(/img/bg.jpg) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="page-header text-center fade-in-up"><span class="h2" id="subtitle" title="使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘"></span><div class="mt-3"><span class="post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2016-06-28 00:00" pubdate>2016年6月28日 凌晨</time></span></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 2.1k 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 28 分钟</span></div></div></div></div></div></header><main><div class="container-fluid nopadding-x"><div class="row nomargin-x"><div class="d-none d-lg-block col-lg-2"></div><div class="col-lg-8 nopadding-x-md"><div class="container nopadding-x-md" id="board-ctn"><div class="py-5" id="board"><article class="post-content mx-auto"><h1 style="display:none">使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘</h1><div class="markdown-body"><blockquote><p>经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的 oss 可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑</p></blockquote><h3 id="之前使用的云盘"><a href="#之前使用的云盘" class="headerlink" title="之前使用的云盘"></a>之前使用的云盘</h3><ol><li><p>坚果云<br>个人认为是现在市面上最好的同步盘了，支持增量同步，多平台有 linux 版本，可以使用 webdav。美中不足的免费版每个月限制上传下载流量，收费版不限制流量有空间限制。有段时间突然有大量文件需要备份导致流量不足，但是平时又用不了太多，开一个月专业版的空间又不够，用的有点憋屈所以就弃用了。</p></li><li><p>百度云等<br>在使用坚果云之前的主力网盘，同步盘功能竟然要会员才能用，而且同步盘做的很不好用，不过用来做资源分享之类的还不错</p></li></ol><h3 id="为什么使用-oss"><a href="#为什么使用-oss" class="headerlink" title="为什么使用 oss"></a>为什么使用 oss</h3><ol><li><p>数据的稳定性，我比较喜欢折腾所以服务器有时候就会重装这时候对于文件就非常的不好管理和备份，放在 oss 上面能够更好的管理</p></li><li><p>第二个就是便宜，不和其他几家的云服务对比仅仅和阿里云的云盘，就是买服务器的时候的一个选项，便宜很多。40g 的话一年也就差不多 10 多块的样子。而且和 ECS 搭配使用没有流量费用</p></li></ol><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>安装 lnmp 架构</p><blockquote><p>其实 owncloud 官方更加推荐 lamp，但是我个人更喜欢 nginx，要比 Apache 省资源一些，能够用 Apache 的也很不错，可以少踩很多配置的坑，owncloud 的 nginx 官方示例配置很多坑，之后会说到</p></blockquote><h3 id="安装-ossfs"><a href="#安装-ossfs" class="headerlink" title="安装 ossfs"></a>安装 ossfs</h3><blockquote><p>注意：在这之前你需要先开通 oss，最好是和你的 ECS 是一个地区的，当然不是用的 ECS 也可以用，只是速度会慢一些，还有就是下载会使用公网流量，上传没有</p></blockquote><p>1.<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/32196.html">点击打开 ossfs 的下载页面下载对应系统的安装包</a> 2.我已 Ubuntu 为例，安装 ossfs，其他系统看官方的文档就行</p><pre><code class="hljs bash">sudo apt-get update
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png">
+  <link rel="icon" type="image/png" href="/icons/favicon-32x32.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Mohuishou">
+  <meta name="keywords" content="Go, Docker, PHP">
+  <title>使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘 - Mohuishou</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lailin.xyz","root":"/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":null,"google":"UA-137859264-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">
+                <i class="iconfont icon-category-fill"></i>
+                Go 进阶训练营(更新中)
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/post/go-design-pattern.html">
+                <i class="iconfont icon-notebook"></i>
+                Go 设计模式
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                更多
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    <i class="iconfont icon-link-fill"></i>
+                    友链
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/atom.xml">
+                    <i class="iconfont icon-rss"></i>
+                    rss
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/bg.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2016-06-28 00:00" pubdate>
+        2016年6月28日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      28
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2">
+      
+    </div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">使用lnmp+owncloud+ossfs+oss搭建属于自己的私有云盘</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>经常写一写文档之类的东西，需要一个同步网盘，但是现在市面上的还是满足不了我的要求，突然发现阿里云的 oss 可以挂载成虚拟磁盘，试着折腾了一下效果还不错，不过这中间还是有许多的坑</p>
+</blockquote>
+<h3 id="之前使用的云盘"><a href="#之前使用的云盘" class="headerlink" title="之前使用的云盘"></a>之前使用的云盘</h3><ol>
+<li><p>坚果云<br>个人认为是现在市面上最好的同步盘了，支持增量同步，多平台有 linux 版本，可以使用 webdav。美中不足的免费版每个月限制上传下载流量，收费版不限制流量有空间限制。有段时间突然有大量文件需要备份导致流量不足，但是平时又用不了太多，开一个月专业版的空间又不够，用的有点憋屈所以就弃用了。</p>
+</li>
+<li><p>百度云等<br>在使用坚果云之前的主力网盘，同步盘功能竟然要会员才能用，而且同步盘做的很不好用，不过用来做资源分享之类的还不错</p>
+</li>
+</ol>
+<h3 id="为什么使用-oss"><a href="#为什么使用-oss" class="headerlink" title="为什么使用 oss"></a>为什么使用 oss</h3><ol>
+<li><p>数据的稳定性，我比较喜欢折腾所以服务器有时候就会重装这时候对于文件就非常的不好管理和备份，放在 oss 上面能够更好的管理</p>
+</li>
+<li><p>第二个就是便宜，不和其他几家的云服务对比仅仅和阿里云的云盘，就是买服务器的时候的一个选项，便宜很多。40g 的话一年也就差不多 10 多块的样子。而且和 ECS 搭配使用没有流量费用</p>
+</li>
+</ol>
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>安装 lnmp 架构</p>
+<blockquote>
+<p>其实 owncloud 官方更加推荐 lamp，但是我个人更喜欢 nginx，要比 Apache 省资源一些，能够用 Apache 的也很不错，可以少踩很多配置的坑，owncloud 的 nginx 官方示例配置很多坑，之后会说到</p>
+</blockquote>
+<h3 id="安装-ossfs"><a href="#安装-ossfs" class="headerlink" title="安装 ossfs"></a>安装 ossfs</h3><blockquote>
+<p>注意：在这之前你需要先开通 oss，最好是和你的 ECS 是一个地区的，当然不是用的 ECS 也可以用，只是速度会慢一些，还有就是下载会使用公网流量，上传没有</p>
+</blockquote>
+<p>1.<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/32196.html">点击打开 ossfs 的下载页面下载对应系统的安装包</a> 2.我已 Ubuntu 为例，安装 ossfs，其他系统看官方的文档就行</p>
+<pre><code class="hljs bash">sudo apt-get update
 sudo apt-get install gdebi-core
-sudo gdebi your_ossfs_package</code></pre><p>3.将<code>my-bucket</code>这个 bucket 挂载到<code>/data/cloud</code>目录下，AccessKeyId 是<code>faint</code>， AccessKeySecret 是<code>123</code>，oss endpoint 是<code>http://oss-cn-hangzhou.aliyuncs.com</code></p><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> my-bucket:faint:123 &gt; /etc/passwd-ossfs
+sudo gdebi your_ossfs_package</code></pre>
+<p>3.将<code>my-bucket</code>这个 bucket 挂载到<code>/data/cloud</code>目录下，AccessKeyId 是<code>faint</code>， AccessKeySecret 是<code>123</code>，oss endpoint 是<code>http://oss-cn-hangzhou.aliyuncs.com</code></p>
+<pre><code class="hljs bash"><span class="hljs-built_in">echo</span> my-bucket:faint:123 &gt; /etc/passwd-ossfs
 chmod 640 /etc/passwd-ossfs
-mkdir /data/cloud</code></pre><p><strong>最后一步很重要，不能直接照官方文档上面的来，不然安装 owncloud 的时候可能会出现没有访问权限的问题</strong></p><ul><li>首先先看一下 nginx 的用户 id，以我的是<code>www</code>为例</li></ul><pre><code class="hljs bash">id www</code></pre><p>会返回给你用户的 uid 和 gid 等等,我假设返回的 uid 和 gid 都为 1001</p><pre><code class="hljs routeros">ossfs my-bucket /data/cloud <span class="hljs-attribute">-ourl</span>=http://oss-cn-hangzhou-internal.aliyuncs.com <span class="hljs-attribute">-ouid</span>=1001 <span class="hljs-attribute">-ogid</span>=1001 -o allow_other -o <span class="hljs-attribute">umask</span>=007</code></pre><p>这里面<code>allow_other</code>是允许其他用户访问，但是默认设置的是 777 权限这样 owncloud 会提示不安全，用<code>umask=007</code>挂载为 770 权限，不知道为啥这里 0 代表 7,7 表示 0</p><blockquote><p>到这里 ossfs 就安装完毕了下面开始安装 owncloud</p></blockquote><h3 id="安装-OWNCLOUD"><a href="#安装-OWNCLOUD" class="headerlink" title="安装 OWNCLOUD"></a>安装 OWNCLOUD</h3><blockquote><p>owncloud 的安装网上已经有很多的教程我就不多说了</p></blockquote><p>先打开<a target="_blank" rel="noopener" href="https://owncloud.org/install/#instructions-server">owncloud 的官网的服务器端的安装地址</a>，我安装的时候最新稳定版是<code>9.0.2</code>建议国内主机用迅雷之类的下载软件先下载下来上传到服务器，直接 wget 比较慢</p><p>1.下载并解压</p><pre><code class="hljs apache"><span class="hljs-attribute">wget</span>  https://download.owncloud.org/community/owncloud-<span class="hljs-number">9</span>.<span class="hljs-number">0</span>.<span class="hljs-number">2</span>.tar.bz<span class="hljs-number">2</span> //手动上传这一步就不用了
-<span class="hljs-attribute">tar</span> xvf owncloud-<span class="hljs-number">9</span>.<span class="hljs-number">0</span>.<span class="hljs-number">2</span>.tar.bz<span class="hljs-number">2</span> //以实际的文件名为准</code></pre><p>2.移动到站点目录,假设站点目录为<code>/data/wwwroot</code></p><pre><code class="hljs awk">mv owncloud<span class="hljs-regexp">/ /</span>data<span class="hljs-regexp">/wwwroot/</span></code></pre><p><strong>3.设置目录权限，这一步很重要</strong></p><pre><code class="hljs bash">chown -R www:www /data/wwwroot/owncloud/
-chmod 777 /data/wwwroot/owncloud//config/</code></pre><h3 id="设置-nginx-规则（Apache-基本不用改，只需要自己去设置一下-ssl，和常规的设置就行了）"><a href="#设置-nginx-规则（Apache-基本不用改，只需要自己去设置一下-ssl，和常规的设置就行了）" class="headerlink" title="设置 nginx 规则（Apache 基本不用改，只需要自己去设置一下 ssl，和常规的设置就行了）"></a>设置 nginx 规则（Apache 基本不用改，只需要自己去设置一下 ssl，和常规的设置就行了）</h3><p><strong>注意规则设置好之后，安装的时候点高级设置，使用 mysql 或者其他数据库，<code>sqllite</code>的性能不够，然后就是数据文件目录填写之前你 ossfs 的挂载目录，我之前挂载的是<code>/data/cloud</code></strong></p><blockquote><p>后面有 9.x 官方的示例，我这儿提示一下有些坑的地方</p></blockquote><p>1.本身的设置里面没有 log 的设置，不方便 debug，access_log 可以不用，error_log 还是需要加上的 2.里面没有 index 的设置，如果打开首页一片空白，加上 index.php 之后没有问题的话，</p><pre><code class="hljs glsl"><span class="hljs-keyword">location</span> / &#123;
+mkdir /data/cloud</code></pre>
+<p><strong>最后一步很重要，不能直接照官方文档上面的来，不然安装 owncloud 的时候可能会出现没有访问权限的问题</strong></p>
+<ul>
+<li>首先先看一下 nginx 的用户 id，以我的是<code>www</code>为例</li>
+</ul>
+<pre><code class="hljs bash">id www</code></pre>
+<p>会返回给你用户的 uid 和 gid 等等,我假设返回的 uid 和 gid 都为 1001</p>
+<pre><code class="hljs routeros">ossfs my-bucket /data/cloud <span class="hljs-attribute">-ourl</span>=http://oss-cn-hangzhou-internal.aliyuncs.com <span class="hljs-attribute">-ouid</span>=1001 <span class="hljs-attribute">-ogid</span>=1001 -o allow_other -o <span class="hljs-attribute">umask</span>=007</code></pre>
+<p>这里面<code>allow_other</code>是允许其他用户访问，但是默认设置的是 777 权限这样 owncloud 会提示不安全，用<code>umask=007</code>挂载为 770 权限，不知道为啥这里 0 代表 7,7 表示 0</p>
+<blockquote>
+<p>到这里 ossfs 就安装完毕了下面开始安装 owncloud</p>
+</blockquote>
+<h3 id="安装-OWNCLOUD"><a href="#安装-OWNCLOUD" class="headerlink" title="安装 OWNCLOUD"></a>安装 OWNCLOUD</h3><blockquote>
+<p>owncloud 的安装网上已经有很多的教程我就不多说了</p>
+</blockquote>
+<p>先打开<a target="_blank" rel="noopener" href="https://owncloud.org/install/#instructions-server">owncloud 的官网的服务器端的安装地址</a>，我安装的时候最新稳定版是<code>9.0.2</code>建议国内主机用迅雷之类的下载软件先下载下来上传到服务器，直接 wget 比较慢</p>
+<p>1.下载并解压</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">wget</span>  https://download.owncloud.org/community/owncloud-<span class="hljs-number">9</span>.<span class="hljs-number">0</span>.<span class="hljs-number">2</span>.tar.bz<span class="hljs-number">2</span> //手动上传这一步就不用了
+<span class="hljs-attribute">tar</span> xvf owncloud-<span class="hljs-number">9</span>.<span class="hljs-number">0</span>.<span class="hljs-number">2</span>.tar.bz<span class="hljs-number">2</span> //以实际的文件名为准</code></pre>
+<p>2.移动到站点目录,假设站点目录为<code>/data/wwwroot</code></p>
+<pre><code class="hljs awk">mv owncloud<span class="hljs-regexp">/ /</span>data<span class="hljs-regexp">/wwwroot/</span></code></pre>
+<p><strong>3.设置目录权限，这一步很重要</strong></p>
+<pre><code class="hljs bash">chown -R www:www /data/wwwroot/owncloud/
+chmod 777 /data/wwwroot/owncloud//config/</code></pre>
+<h3 id="设置-nginx-规则（Apache-基本不用改，只需要自己去设置一下-ssl，和常规的设置就行了）"><a href="#设置-nginx-规则（Apache-基本不用改，只需要自己去设置一下-ssl，和常规的设置就行了）" class="headerlink" title="设置 nginx 规则（Apache 基本不用改，只需要自己去设置一下 ssl，和常规的设置就行了）"></a>设置 nginx 规则（Apache 基本不用改，只需要自己去设置一下 ssl，和常规的设置就行了）</h3><p><strong>注意规则设置好之后，安装的时候点高级设置，使用 mysql 或者其他数据库，<code>sqllite</code>的性能不够，然后就是数据文件目录填写之前你 ossfs 的挂载目录，我之前挂载的是<code>/data/cloud</code></strong></p>
+<blockquote>
+<p>后面有 9.x 官方的示例，我这儿提示一下有些坑的地方</p>
+</blockquote>
+<p>1.本身的设置里面没有 log 的设置，不方便 debug，access_log 可以不用，error_log 还是需要加上的 2.里面没有 index 的设置，如果打开首页一片空白，加上 index.php 之后没有问题的话，</p>
+<pre><code class="hljs glsl"><span class="hljs-keyword">location</span> / &#123;
 		<span class="hljs-keyword">index</span> <span class="hljs-keyword">index</span>.php <span class="hljs-meta">#加上这一句</span>
       rewrite ^ /<span class="hljs-keyword">index</span>.php$uri;
-&#125;</code></pre><p>3.如果你进入安装页面，按照提示安装好了之后出现说<code>找不到文件目录</code>之类的话，那么很有可能是你没有开启<code>pathinfo</code>，owncloud 需要 pathinfo 的支持(示例的配置里面是有 pathinfo 的设置的)</p><h3 id="NEXT"><a href="#NEXT" class="headerlink" title="NEXT"></a>NEXT</h3><blockquote><p>到这里基本上 owncloud 的安装应该就结束了，使用也没有什么问题，我建议开启 ssl，不知道为什么，我开了 ssl 之后访问的速度提升了好几倍</p></blockquote><p>附送官方插件的地址<a target="_blank" rel="noopener" href="https://apps.owncloud.com/">点我点我</a>,国内主机在线安装插件可能装不上，可以 FQ 之后在这里面下载相应插件包，上传到 apps 目录下即可，下一篇说一下用 owncloud 实现离线下载功能，现在 9.0.2 版本的使用 owncloud 的离线下载插件有问题，但是看了一下这个 bug 很早就有，只是好像一直没有修复。之后我改一下能够用了再写下一篇吧</p><h3 id="9-x-官方示例"><a href="#9-x-官方示例" class="headerlink" title="9.x 官方示例"></a>9.x 官方示例</h3><pre><code class="hljs nginx"> <span class="hljs-attribute">upstream</span> php-handler &#123;
+&#125;</code></pre>
+<p>3.如果你进入安装页面，按照提示安装好了之后出现说<code>找不到文件目录</code>之类的话，那么很有可能是你没有开启<code>pathinfo</code>，owncloud 需要 pathinfo 的支持(示例的配置里面是有 pathinfo 的设置的)</p>
+<h3 id="NEXT"><a href="#NEXT" class="headerlink" title="NEXT"></a>NEXT</h3><blockquote>
+<p>到这里基本上 owncloud 的安装应该就结束了，使用也没有什么问题，我建议开启 ssl，不知道为什么，我开了 ssl 之后访问的速度提升了好几倍</p>
+</blockquote>
+<p>附送官方插件的地址<a target="_blank" rel="noopener" href="https://apps.owncloud.com/">点我点我</a>,国内主机在线安装插件可能装不上，可以 FQ 之后在这里面下载相应插件包，上传到 apps 目录下即可，下一篇说一下用 owncloud 实现离线下载功能，现在 9.0.2 版本的使用 owncloud 的离线下载插件有问题，但是看了一下这个 bug 很早就有，只是好像一直没有修复。之后我改一下能够用了再写下一篇吧</p>
+<h3 id="9-x-官方示例"><a href="#9-x-官方示例" class="headerlink" title="9.x 官方示例"></a>9.x 官方示例</h3><pre><code class="hljs nginx"> <span class="hljs-attribute">upstream</span> php-handler &#123;
     <span class="hljs-attribute">server</span> <span class="hljs-number">127.0.0.1:9000</span>; <span class="hljs-comment">#注意一下你自己的php服务设置，这一行可能需要自己调整</span>
     <span class="hljs-comment">#server unix:/var/run/php5-fpm.sock;</span>
 &#125;
@@ -135,4 +455,380 @@ chmod 777 /data/wwwroot/owncloud//config/</code></pre><h3 id="设置-nginx-规�
         <span class="hljs-comment"># Optional: Don&#x27;t log access to other assets</span>
         <span class="hljs-attribute">access_log</span> <span class="hljs-literal">off</span>;
     &#125;
-&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div></div><hr><div><div class="post-metas mb-3"><div class="post-meta mr-3"><i class="iconfont icon-category"></i> <a class="hover-with-bg" href="/categories/PHP/">PHP</a></div><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/php/">php</a> <a class="hover-with-bg" href="/tags/lnmp/">lnmp</a> <a class="hover-with-bg" href="/tags/%E4%BA%91%E7%9B%98/">云盘</a> <a class="hover-with-bg" href="/tags/owncloud/">owncloud</a> <a class="hover-with-bg" href="/tags/oss/">oss</a></div></div><p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a>，转载请注明出处，禁止全文转载</p><div class="post-prevnext"><article class="post-prev col-6"><a href="/post/13242.html"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">迁移laravel框架项目到虚拟主机</span> <span class="visible-mobile">上一篇</span></a></article><article class="post-next col-6"><a href="/post/31503.html"><span class="hidden-mobile">四川大学评教开源代码</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></article></div></div><article class="comments" id="comments"><script type="text/javascript">Fluid.utils.waitElementVisible("comments",function(){var t="github-light",e="github-dark",s="dark"===(s=document.documentElement.getAttribute("data-user-color-scheme"))?e:t;window.UtterancesThemeLight=t,window.UtterancesThemeDark=e;e=document.createElement("script");e.setAttribute("src","https://utteranc.es/client.js"),e.setAttribute("repo","scuplus/blogComment"),e.setAttribute("issue-term","pathname"),e.setAttribute("label","utterances"),e.setAttribute("theme",s),e.setAttribute("crossorigin","anonymous"),document.getElementById("comments").appendChild(e)})</script><noscript>Please enable JavaScript to view the comments</noscript></article></article></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div class="toc-body" id="toc-body"></div></div></div></div><div id="bottom"><div id="bottom-drawer" class="bottom-drawer"><div id="toc-mobile"><div class="toc-body" id="toc-body-mobile"></div></div></div><div id="bottom-tab"><a class="sub-menu" onclick='showBottomDrawer(this,"#bottom-drawer .sidebar")'><i class="iconfont"></i> 章节 </a><a class="sub-menu" onclick='showBottomDrawer(this,"#bottom-drawer #toc-mobile")'><i class="iconfont"></i> 目录 </a><a href="#comments" class="sub-menu" onclick='showBottomDrawer(this,"#comments")'><i class="iconfont"></i> 评论</a></div></div><script>function showBottomDrawer(s,t){let e=document.querySelector("#bottom-tab");e.childNodes.forEach(t=>{t!=s&&t.classList&&t.classList.remove("active")}),"#comments"!=t&&s.classList.toggle("active");let o=document.querySelector("#bottom-drawer"),c=document.querySelector(t);o.childNodes.forEach(t=>{t!=c&&t.classList&&t.classList.remove("active")}),c.classList.toggle("active"),"#comments"!=t?(c.classList.contains("active")&&!o.classList.contains("active")&&o.classList.add("active"),!c.classList.contains("active")&&o.classList.contains("active")&&o.classList.remove("active")):o.classList.remove("active")}document.onreadystatechange=function(t){0!=$("#bottom-drawer").height&&window.tocbot.init({tocSelector:"#toc-body-mobile",contentSelector:".markdown-body",headingSelector:"h1,h2,h3,h4",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:CONFIG.toc.collapseDepth||0,scrollSmooth:!0,headingsOffset:20})}</script></div><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><div class="col-lg-7 mx-auto nopadding-x-md"><div class="container custom mx-auto"><script>!function(e,s,p){var r;void 0===e.webpushr&&(e.webpushr=e.webpushr||function(){(e.webpushr.q=e.webpushr.q||[]).push(arguments)},r=s.getElementsByTagName(p)[0],(p=s.createElement(p)).id="webpushr-jssdk",p.async=1,p.src="https://cdn.webpushr.com/app.min.js",r.parentNode.appendChild(p))}(window,document,"script"),webpushr("setup",{key:"BBkZb7rpvsVqVNkORXD9T9T93MJodtpNJD5c1f2HE_XsED3r94An3CKObdyTJ6ub3ARm9LIdeDCVzKLBsK760NM"})</script></div></div></main><footer class="text-center mt-5 py-3"><div class="footer-content"><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div></footer><script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css"><script>NProgress.configure({showSpinner:!1,trickleSpeed:100}),NProgress.start(),window.addEventListener("load",function(){NProgress.done()})</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script><script src="/js/debouncer-c523e4d3f8b7b837c19f74984acbabf7.js"></script><script src="/js/events-f495e9aefe2285fc712ba316bdf01b26.js"></script><script src="/js/plugins-93fa930e12b7596433529edc1b5458df.js"></script><script src="/js/lazyload-e96b3165477d429bf8096bdbd068d816.js"></script><script src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script><script>!function(t){(0,Fluid.plugins.typing)(t.getElementById("subtitle").title)}((window,document))</script><script src="/js/local-search-c277a106ee2a2e265fcd58887e53c0fb.js"></script><script>document.querySelector("#local-search-input").onclick=function(){searchFunc("/local-search.xml","local-search-input","local-search-result"),this.onclick=null}</script><script defer>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-137859264-1","auto"),ga("send","pageview")</script><script async src="https://www.google-analytics.com/analytics.js"></script><script>let sidebarBody=document.querySelector(".sidebar .sidebar-body"),sidebarActive=document.querySelector(".sidebar .is-active-li"),bc=sidebarBody.getBoundingClientRect(),ac=sidebarActive.getBoundingClientRect(),t=ac.y-bc.y-bc.height/2;0<t&&sidebarBody.scrollTo({top:t,behavior:"smooth"})</script><script src="/js/boot-b4d619350e67f5b3ceeb2164d30268e0.js"></script></body></html>
+&#125;</code></pre><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/59080.html">一键迁移typecho到hexo</a></li><li><a href="https://lailin.xyz/post/43893.html">php设计模式（一）工厂模式</a></li><li><a href="https://lailin.xyz/post/13242.html">迁移laravel框架项目到虚拟主机</a></li></ul></div>
+            </div>
+            <!-- Custom -->            
+            
+                <h2 id="关注我获取更新"><a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a                class="anchorjs-link"                aria-label="Anchor"                data-anchorjs-icon=""                href="#关注我获取更新"                style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em"              ></a></h2><div class="row"><div class="col-lg-6"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png" srcset="/img/loading.gif" alt="wechat"></div><div class="col-lg-2 col-4"><a target="_blank" href="http://s.zhihu.com/B4RT3"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/zhihu.png" srcset="/img/loading.gif" alt="知乎"></a></div><div class="col-lg-2 col-4"><a target="_blank" href="https://toutiao.io/subjects/387401?f=new"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/toutiaoio.png" srcset="/img/loading.gif" alt="开发者头条"></a></div><div class="col-lg-2 col-4"><a target="_blank" href="https://github.com/mohuishou"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/github.png" srcset="/img/loading.gif" alt="github"></a></div></div>
+
+            
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/PHP/">PHP</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/php/">php</a>
+                    
+                      <a class="hover-with-bg" href="/tags/lnmp/">lnmp</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%91%E7%9B%98/">云盘</a>
+                    
+                      <a class="hover-with-bg" href="/tags/owncloud/">owncloud</a>
+                    
+                      <a class="hover-with-bg" href="/tags/oss/">oss</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a>，转载请注明出处，禁止全文转载</p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/13242.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">迁移laravel框架项目到虚拟主机</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/31503.html">
+                        <span class="hidden-mobile">四川大学评教开源代码</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.waitElementVisible('comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'scuplus/blogComment');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+  <div id="bottom">
+  <div id="bottom-drawer" class="bottom-drawer">
+    
+    <div id="toc-mobile">
+      <div class="toc-body" id="toc-body-mobile"></div>
+    </div>
+  </div>
+  <div id="bottom-tab">
+    <a class="sub-menu" onclick="showBottomDrawer(this, '#bottom-drawer .sidebar')">
+      <i class="iconfont"></i> 章节
+    </a>
+    <a class="sub-menu" onclick="showBottomDrawer(this, '#bottom-drawer #toc-mobile')">
+      <i class="iconfont"></i> 目录
+    </a>
+    <a href="#comments" class="sub-menu" onclick="showBottomDrawer(this, '#comments')"> 
+      <i class="iconfont"></i> 评论
+    </a>
+  </div>
+</div>
+
+<script>
+  document.onreadystatechange = function(e) {
+    let drawer = $('#bottom-drawer')
+    if (drawer.height == 0) return
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body-mobile',
+      contentSelector : '.markdown-body',
+      headingSelector : 'h1,h2,h3,h4',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : 20
+    });
+  } 
+  
+  function showBottomDrawer(e, sel){
+    let tab = document.querySelector('#bottom-tab')
+    tab.childNodes.forEach((n) => {
+      if(n != e && n.classList) n.classList.remove("active")
+    })
+    if (sel != "#comments") e.classList.toggle("active")
+
+    let drawer = document.querySelector('#bottom-drawer')
+    let s = document.querySelector(sel)
+    
+    drawer.childNodes.forEach((n) => {
+      if(n != s && n.classList) n.classList.remove("active")
+    })
+    s.classList.toggle("active")
+
+    if (sel == "#comments") {
+      drawer.classList.remove("active")
+      return
+    } 
+
+    if (s.classList.contains("active") && !drawer.classList.contains("active")) {
+      drawer.classList.add("active")
+    }
+
+    if (!s.classList.contains("active") && drawer.classList.contains("active")) {
+      drawer.classList.remove("active")
+    }
+  }
+</script>
+
+</div>
+
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+      <div class="col-lg-7 mx-auto nopadding-x-md">
+        <div class="container custom mx-auto">
+          <!-- start webpushr tracking code --> 
+<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";
+fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));
+webpushr('setup',{'key':'BBkZb7rpvsVqVNkORXD9T9T93MJodtpNJD5c1f2HE_XsED3r94An3CKObdyTJ6ub3ARm9LIdeDCVzKLBsK760NM' });</script>
+<!-- end webpushr tracking code -->
+
+        </div>
+      </div>
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-137859264-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<script>
+  let sidebarBody =  document.querySelector(".sidebar .sidebar-body")
+  let sidebarActive = document.querySelector(".sidebar .is-active-li")
+  let bc = sidebarBody.getBoundingClientRect()
+  let ac = sidebarActive.getBoundingClientRect()
+  let t = ac.y - bc.y - bc.height / 2
+  if (t > 0){
+    sidebarBody.scrollTo({
+      top: t,
+      behavior: 'smooth'
+    })
+  }
+</script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>

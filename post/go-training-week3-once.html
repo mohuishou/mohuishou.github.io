@@ -1,1 +1,1050 @@
-<!DOCTYPE html><html lang="zh-CN" data-default-color-scheme="&#34;auto&#34;"><head><meta charset="UTF-8"><link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png"><link rel="icon" type="image/png" href="/icons/favicon-32x32.png"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="theme-color" content="#2f4154"><meta name="description" content=""><meta name="author" content="Mohuishou"><meta name="keywords" content="Go, Docker, PHP"><title>Go并发编程(八) 深入理解 sync.Once - Mohuishou</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css"><link rel="stylesheet" href="/lib/hint/hint.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css"><link rel="stylesheet" href="/css/main-8c4c5e426918ae095492d8a940e57fef.css"><link rel="stylesheet" href="/assets/css/custom-94ac739f6571b69e61e199e75a4cbff4.css"><script id="fluid-configs">var Fluid=window.Fluid||{},CONFIG={hostname:"lailin.xyz",root:"/",version:"1.8.7",typing:{enable:!0,typeSpeed:70,cursorChar:"_",loop:!1},anchorjs:{enable:!0,element:"h1,h2,h3,h4,h5,h6",placement:"right",visible:"hover",icon:""},progressbar:{enable:!0,height_px:3,color:"#29d",options:{showSpinner:!1,trickleSpeed:100}},copy_btn:!0,image_zoom:{enable:!0},toc:{enable:!0,headingSelector:"h1,h2,h3,h4,h5,h6",collapseDepth:3},lazyload:{enable:!0,onlypost:!1},web_analytics:{enable:!0,baidu:null,google:"UA-137859264-1",gtag:null,tencent:{sid:null,cid:null},woyaola:null,cnzz:null,leancloud:{app_id:null,app_key:null,server_url:null}}}</script><script src="/js/utils-5ecdced2f65030c3508cf0b3db78f4ad.js"></script><script src="/js/color-schema-4678c2299d6eeb96e23435ea339c9331.js"></script><meta name="generator" content="Hexo 5.2.0"></head><body><header style="height:70vh"><nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar"><div class="container"><a class="navbar-brand" href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a> <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><div class="animated-icon"><span></span><span></span><span></span></div></button><div class="collapse navbar-collapse" id="navbarSupportedContent"><ul class="navbar-nav ml-auto text-center"><li class="nav-item"><a class="nav-link" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"><i class="iconfont icon-category-fill"></i> Go 进阶训练营(更新中)</a></li><li class="nav-item"><a class="nav-link" href="/post/go-design-pattern.html"><i class="iconfont icon-notebook"></i> Go 设计模式</a></li><li class="nav-item"><a class="nav-link" href="/archives/"><i class="iconfont icon-archive-fill"></i> 归档</a></li><li class="nav-item"><a class="nav-link" href="/about/"><i class="iconfont icon-user-fill"></i> 关于</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="iconfont icon-books"></i> 更多</a><div class="dropdown-menu" aria-labelledby="navbarDropdown"><a class="dropdown-item" href="/links/"><i class="iconfont icon-link-fill"></i> 友链 </a><a class="dropdown-item" href="/atom.xml"><i class="iconfont icon-rss"></i> rss </a><a class="dropdown-item" href="/tags/"><i class="iconfont icon-tags-fill"></i> 标签</a></div></li><li class="nav-item" id="search-btn"><a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i class="iconfont icon-search"></i>&nbsp;</a></li><li class="nav-item" id="color-toggle-btn"><a class="nav-link" href="javascript:">&nbsp;<i class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a></li></ul></div></div></nav><div class="banner" id="banner" parallax="true" style="background:url(/img/bg.jpg) no-repeat center center;background-size:cover"><div class="full-bg-img"><div class="mask flex-center" style="background-color:rgba(0,0,0,.3)"><div class="page-header text-center fade-in-up"><span class="h2" id="subtitle" title="Go并发编程(八) 深入理解 sync.Once"></span><div class="mt-3"><span class="post-meta"><i class="iconfont icon-date-fill" aria-hidden="true"></i> <time datetime="2020-12-28 22:29" pubdate>2020年12月28日 晚上</time></span></div><div class="mt-1"><span class="post-meta mr-2"><i class="iconfont icon-chart"></i> 755 字 </span><span class="post-meta mr-2"><i class="iconfont icon-clock-fill"></i> 10 分钟</span></div></div></div></div></div></header><main><div class="container-fluid nopadding-x"><div class="row nomargin-x"><div class="d-none d-lg-block col-lg-2"><div class="sidebar"><p class="sidebar-header">Go进阶训练营</p><div class="sidebar-body" id="sidebar-body"><ol class="sidebar-list sidebar-list-1"><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23xho0000m4t51q602czj").classList.toggle("sidebar-is-collapsed")'>Week01: 微服务</a><ol id="sidebar-ckkm23xho0000m4t51q602czj" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-01.html">微服务(一) 微服务概览</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-02.html">微服务(二) 服务发现&amp;多租户</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23ykh0003m4t53mln1w0n").classList.toggle("sidebar-is-collapsed")'>Week02: Go错误处理</a><ol id="sidebar-ckkm23ykh0003m4t53mln1w0n" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-03.html">Go错误处理最佳实践</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm2667n000pm4t52z016wn0").classList.toggle("sidebar-is-collapsed")'>Week03: Go 并发编程</a><ol id="sidebar-ckkm2667n000pm4t52z016wn0" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-goroutine.html">Go并发编程(一) goroutine</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-go-memory-model.html">Go并发编程(二) Go 内存模型</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-data-race.html">Go并发编程(三) data race</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-sync.html">Go并发编程(四) 深入理解 Mutex</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-waitgroup.html">Go并发编程(六) 深入理解 WaitGroup</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-atomic.html">Go并发编程(五) 深入理解 sync/atomic</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-errgroup.html">Go并发编程(七) 深入理解 errgroup</a></li><li class="sidebar-list-item is-active-li"><a class="sidebar-link sidebar-active-link" href="/post/go-training-week3-once.html">Go并发编程(八) 深入理解 sync.Once</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-context.html">Go并发编程(九) 深入理解 Context</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-channel.html">Go并发编程(十) 深入理解 Channel</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-sum.html">Go并发编程(十一) 总结</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23zra000im4t5en8m0qy9").classList.toggle("sidebar-is-collapsed")'>Week04: Go 工程化</a><ol id="sidebar-ckkm23zra000im4t5en8m0qy9" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-clean-arch.html">Go工程化(一) 架构整洁之道阅读笔记</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-project-layout.html">Go工程化(二) 项目目录结构</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-wire.html">Go工程化(三) 依赖注入框架 wire</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-api-design.html">Go工程化(四) API 设计上: 项目结构 &amp; 设计</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li></ol></li></ol></div></div></div><div class="col-lg-8 nopadding-x-md"><div class="container nopadding-x-md" id="board-ctn"><div class="py-5" id="board"><article class="post-content mx-auto"><h1 style="display:none">Go并发编程(八) 深入理解 sync.Once</h1><div class="markdown-body"><blockquote><p>本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成</p></blockquote><p>在上一篇文章《<a href="https://lailin.xyz/post/go-training-week3-errgroup.html">Week03: Go 并发编程(七) 深入理解 errgroup</a>》当中看 <code>errgourp</code> 源码的时候我们发现最后返回 <code>err</code> 是通过 once 来只保证返回一个非 nil 的值的，本文就来看一下 Once 的使用与实现</p><h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>once 的使用很简单</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> (<br>		o  sync.Once<br>		wg sync.WaitGroup<br>	)<br><br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;<br>		wg.Add(<span class="hljs-number">1</span>)<br><br>		<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(i <span class="hljs-keyword">int</span>)</span></span> &#123;<br>			<span class="hljs-keyword">defer</span> wg.Done()<br>			o.Do(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>				fmt.Println(<span class="hljs-string">&quot;once&quot;</span>, i)<br>			&#125;)<br>		&#125;(i)<br>	&#125;<br><br>	wg.Wait()<br>&#125;<br></code></pre></td></tr></table></figure><p>输出</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go">❯ <span class="hljs-keyword">go</span> run ./main.<span class="hljs-keyword">go</span><br>once <span class="hljs-number">9</span><br></code></pre></td></tr></table></figure><h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Once <span class="hljs-keyword">struct</span> &#123;<br>	done <span class="hljs-keyword">uint32</span><br>	m    Mutex<br>&#125;<br></code></pre></td></tr></table></figure><p>done 用于判定函数是否执行，如果不为 0 会直接返回</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(o *Once)</span> <span class="hljs-title">Do</span><span class="hljs-params">(f <span class="hljs-keyword">func</span>()</span>)</span> &#123;<br>	<span class="hljs-comment">// Note: Here is an incorrect implementation of Do:</span><br>	<span class="hljs-comment">//</span><br>	<span class="hljs-comment">//	if atomic.CompareAndSwapUint32(&amp;o.done, 0, 1) &#123;</span><br>	<span class="hljs-comment">//		f()</span><br>	<span class="hljs-comment">//	&#125;</span><br>	<span class="hljs-comment">//</span><br>	<span class="hljs-comment">// Do guarantees that when it returns, f has finished.</span><br>	<span class="hljs-comment">// This implementation would not implement that guarantee:</span><br>	<span class="hljs-comment">// given two simultaneous calls, the winner of the cas would</span><br>	<span class="hljs-comment">// call f, and the second would return immediately, without</span><br>	<span class="hljs-comment">// waiting for the first&#x27;s call to f to complete.</span><br>	<span class="hljs-comment">// This is why the slow path falls back to a mutex, and why</span><br>	<span class="hljs-comment">// the atomic.StoreUint32 must be delayed until after f returns.</span><br><br>	<span class="hljs-keyword">if</span> atomic.LoadUint32(&amp;o.done) == <span class="hljs-number">0</span> &#123;<br>		<span class="hljs-comment">// Outlined slow-path to allow inlining of the fast-path.</span><br>		o.doSlow(f)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>看 go 的源码真的可以学到很多东西，在这里还给出了很容易犯错的一种实现</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">if</span> atomic.CompareAndSwapUint32(&amp;o.done, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>) &#123;<br>	f()<br>&#125;<br></code></pre></td></tr></table></figure><p>如果这么实现最大的问题是，如果并发调用，一个 goroutine 执行，另外一个不会等正在执行的这个成功之后返回，而是直接就返回了，这就不能保证传入的方法一定会先执行一次了<br>所以回头看官方的实现</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">if</span> atomic.LoadUint32(&amp;o.done) == <span class="hljs-number">0</span> &#123;<br>    <span class="hljs-comment">// Outlined slow-path to allow inlining of the fast-path.</span><br>    o.doSlow(f)<br>&#125;<br></code></pre></td></tr></table></figure><p>会先判断 done 是否为 0，如果不为 0 说明还没执行过，就进入 <code>doSlow</code></p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(o *Once)</span> <span class="hljs-title">doSlow</span><span class="hljs-params">(f <span class="hljs-keyword">func</span>()</span>)</span> &#123;<br>	o.m.Lock()<br>	<span class="hljs-keyword">defer</span> o.m.Unlock()<br>	<span class="hljs-keyword">if</span> o.done == <span class="hljs-number">0</span> &#123;<br>		<span class="hljs-keyword">defer</span> atomic.StoreUint32(&amp;o.done, <span class="hljs-number">1</span>)<br>		f()<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure><p>在 <code>doSlow</code> 当中使用了互斥锁来保证只会执行一次</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>Once 保证了传入的函数只会执行一次，这常用在单例模式，配置文件加载，初始化这些场景下</li><li>但是需要注意。Once 是不能复用的，只要执行过了，再传入其他的方法也不会再执行了</li><li>并且 Once.Do 在执行的过程中如果 f 出现 panic，后面也不会再执行了</li></ul><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol><li><a target="_blank" rel="noopener" href="https://pkg.go.dev/sync#Once">https://pkg.go.dev/sync#Once</a></li><li><a target="_blank" rel="noopener" href="https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-sync-primitives/#once">6.2 同步原语与锁</a></li></ol><h2 id="关注我获取更新"><a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新</h2><p>看到这里了还不关注点赞走一波</p><ul><li><a href="https://lailin.xyz">博客</a> 可以订阅 RSS</li><li><a target="_blank" rel="noopener" href="https://github.com/mohuishou">Github</a> Follow me</li><li><a target="_blank" rel="noopener" href="https://www.zhihu.com/people/mo-hui-shou-76">知乎</a> 关注账号，顺便点个 👍</li><li><a target="_blank" rel="noopener" href="https://toutiao.io/subjects/387401?f=new">开发者头条</a> 订阅订阅号，顺便点个 👍</li></ul><div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-clean-arch.html">Week04: Go工程化(一) 架构整洁之道阅读笔记</a></li><li><a href="https://lailin.xyz/post/go-training-week3-sum.html">Week03: Go并发编程(十一) 总结</a></li><li><a href="https://lailin.xyz/post/go-training-week3-channel.html">Week03: Go并发编程(十) 深入理解 Channel</a></li></ul></div></div><hr><div><div class="post-metas mb-3"><div class="post-meta mr-3"><i class="iconfont icon-category"></i> <a class="hover-with-bg" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">Go进阶训练营</a> <a class="hover-with-bg" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week03-Go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">Week03: Go 并发编程</a></div><div class="post-meta"><i class="iconfont icon-tags"></i> <a class="hover-with-bg" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a> <a class="hover-with-bg" href="/tags/Go/">Go</a> <a class="hover-with-bg" href="/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">Go进阶训练营</a> <a class="hover-with-bg" href="/tags/%E5%B9%B6%E5%8F%91/">并发</a> <a class="hover-with-bg" href="/tags/sync/">sync</a> <a class="hover-with-bg" href="/tags/once/">once</a></div></div><p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a>，转载请注明出处，禁止全文转载</p><div class="post-prevnext"><article class="post-prev col-6"><a href="/post/go-training-week3-context.html"><i class="iconfont icon-arrowleft"></i> <span class="hidden-mobile">Go并发编程(九) 深入理解 Context</span> <span class="visible-mobile">上一篇</span></a></article><article class="post-next col-6"><a href="/post/go-training-week3-errgroup.html"><span class="hidden-mobile">Go并发编程(七) 深入理解 errgroup</span> <span class="visible-mobile">下一篇</span> <i class="iconfont icon-arrowright"></i></a></article></div></div><article class="comments" id="comments"><script type="text/javascript">Fluid.utils.waitElementVisible("comments",function(){var t="github-light",e="github-dark",s="dark"===(s=document.documentElement.getAttribute("data-user-color-scheme"))?e:t;window.UtterancesThemeLight=t,window.UtterancesThemeDark=e;e=document.createElement("script");e.setAttribute("src","https://utteranc.es/client.js"),e.setAttribute("repo","scuplus/blogComment"),e.setAttribute("issue-term","pathname"),e.setAttribute("label","utterances"),e.setAttribute("theme",s),e.setAttribute("crossorigin","anonymous"),document.getElementById("comments").appendChild(e)})</script><noscript>Please enable JavaScript to view the comments</noscript></article></article></div></div></div><div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn"><div id="toc"><p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p><div class="toc-body" id="toc-body"></div></div></div></div><div id="bottom"><div id="bottom-drawer" class="bottom-drawer"><div class="sidebar"><p class="sidebar-header">Go进阶训练营</p><div class="sidebar-body" id="sidebar-body"><ol class="sidebar-list sidebar-list-1"><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23xho0000m4t51q602czj").classList.toggle("sidebar-is-collapsed")'>Week01: 微服务</a><ol id="sidebar-ckkm23xho0000m4t51q602czj" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-01.html">微服务(一) 微服务概览</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-02.html">微服务(二) 服务发现&amp;多租户</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23ykh0003m4t53mln1w0n").classList.toggle("sidebar-is-collapsed")'>Week02: Go错误处理</a><ol id="sidebar-ckkm23ykh0003m4t53mln1w0n" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-03.html">Go错误处理最佳实践</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm2667n000pm4t52z016wn0").classList.toggle("sidebar-is-collapsed")'>Week03: Go 并发编程</a><ol id="sidebar-ckkm2667n000pm4t52z016wn0" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-goroutine.html">Go并发编程(一) goroutine</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-go-memory-model.html">Go并发编程(二) Go 内存模型</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-data-race.html">Go并发编程(三) data race</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-sync.html">Go并发编程(四) 深入理解 Mutex</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-atomic.html">Go并发编程(五) 深入理解 sync/atomic</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-waitgroup.html">Go并发编程(六) 深入理解 WaitGroup</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-errgroup.html">Go并发编程(七) 深入理解 errgroup</a></li><li class="sidebar-list-item is-active-li"><a class="sidebar-link sidebar-active-link" href="/post/go-training-week3-once.html">Go并发编程(八) 深入理解 sync.Once</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-context.html">Go并发编程(九) 深入理解 Context</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-channel.html">Go并发编程(十) 深入理解 Channel</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week3-sum.html">Go并发编程(十一) 总结</a></li></ol></li><li class="sidebar-list-item"><a class="sidebar-title" onclick='document.querySelector("#sidebar-ckkm23zra000im4t5en8m0qy9").classList.toggle("sidebar-is-collapsed")'>Week04: Go 工程化</a><ol id="sidebar-ckkm23zra000im4t5en8m0qy9" class="sidebar-list sidebar-list-2 sidebar-is-collapsible"><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-clean-arch.html">Go工程化(一) 架构整洁之道阅读笔记</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-project-layout.html">Go工程化(二) 项目目录结构</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-wire.html">Go工程化(三) 依赖注入框架 wire</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-api-design.html">Go工程化(四) API 设计上: 项目结构 &amp; 设计</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-protoc-gen-go-gin.html">Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-config.html">Go工程化(六) 配置管理</a></li><li class="sidebar-list-item"><a class="sidebar-link" href="/post/go-training-week4-go-module.html">Go工程化(七) Go Module</a></li></ol></li></ol></div></div><div id="toc-mobile"><div class="toc-body" id="toc-body-mobile"></div></div></div><div id="bottom-tab"><a class="sub-menu" onclick='showBottomDrawer(this,"#bottom-drawer .sidebar")'><i class="iconfont"></i> 章节 </a><a class="sub-menu" onclick='showBottomDrawer(this,"#bottom-drawer #toc-mobile")'><i class="iconfont"></i> 目录 </a><a href="#comments" class="sub-menu" onclick='showBottomDrawer(this,"#comments")'><i class="iconfont"></i> 评论</a></div></div><script>function showBottomDrawer(s,t){let e=document.querySelector("#bottom-tab");e.childNodes.forEach(t=>{t!=s&&t.classList&&t.classList.remove("active")}),"#comments"!=t&&s.classList.toggle("active");let o=document.querySelector("#bottom-drawer"),c=document.querySelector(t);o.childNodes.forEach(t=>{t!=c&&t.classList&&t.classList.remove("active")}),c.classList.toggle("active"),"#comments"!=t?(c.classList.contains("active")&&!o.classList.contains("active")&&o.classList.add("active"),!c.classList.contains("active")&&o.classList.contains("active")&&o.classList.remove("active")):o.classList.remove("active")}document.onreadystatechange=function(t){0!=$("#bottom-drawer").height&&window.tocbot.init({tocSelector:"#toc-body-mobile",contentSelector:".markdown-body",headingSelector:"h1,h2,h3,h4",linkClass:"tocbot-link",activeLinkClass:"tocbot-active-link",listClass:"tocbot-list",isCollapsedClass:"tocbot-is-collapsed",collapsibleClass:"tocbot-is-collapsible",collapseDepth:CONFIG.toc.collapseDepth||0,scrollSmooth:!0,headingsOffset:20})}</script></div><a id="scroll-top-button" href="#" role="button"><i class="iconfont icon-arrowup" aria-hidden="true"></i></a><div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable modal-lg" role="document"><div class="modal-content"><div class="modal-header text-center"><h4 class="modal-title w-100 font-weight-bold">搜索</h4><button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body mx-3"><div class="md-form mb-5"><input type="text" id="local-search-input" class="form-control validate"> <label data-error="x" data-success="v" for="local-search-input">关键词</label></div><div class="list-group" id="local-search-result"></div></div></div></div></div><div class="col-lg-7 mx-auto nopadding-x-md"><div class="container custom mx-auto"><script>!function(e,s,p){var r;void 0===e.webpushr&&(e.webpushr=e.webpushr||function(){(e.webpushr.q=e.webpushr.q||[]).push(arguments)},r=s.getElementsByTagName(p)[0],(p=s.createElement(p)).id="webpushr-jssdk",p.async=1,p.src="https://cdn.webpushr.com/app.min.js",r.parentNode.appendChild(p))}(window,document,"script"),webpushr("setup",{key:"BBkZb7rpvsVqVNkORXD9T9T93MJodtpNJD5c1f2HE_XsED3r94An3CKObdyTJ6ub3ARm9LIdeDCVzKLBsK760NM"})</script></div></div></main><footer class="text-center mt-5 py-3"><div class="footer-content"><a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a></div></footer><script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css"><script>NProgress.configure({showSpinner:!1,trickleSpeed:100}),NProgress.start(),window.addEventListener("load",function(){NProgress.done()})</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script><script src="/js/debouncer-c523e4d3f8b7b837c19f74984acbabf7.js"></script><script src="/js/events-f495e9aefe2285fc712ba316bdf01b26.js"></script><script src="/js/plugins-93fa930e12b7596433529edc1b5458df.js"></script><script src="/js/lazyload-e96b3165477d429bf8096bdbd068d816.js"></script><script src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js"></script><script>!function(t){(0,Fluid.plugins.typing)(t.getElementById("subtitle").title)}((window,document))</script><script src="/js/local-search-c277a106ee2a2e265fcd58887e53c0fb.js"></script><script>document.querySelector("#local-search-input").onclick=function(){searchFunc("/local-search.xml","local-search-input","local-search-result"),this.onclick=null}</script><script defer>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-137859264-1","auto"),ga("send","pageview")</script><script async src="https://www.google-analytics.com/analytics.js"></script><script>let sidebarBody=document.querySelector(".sidebar .sidebar-body"),sidebarActive=document.querySelector(".sidebar .is-active-li"),bc=sidebarBody.getBoundingClientRect(),ac=sidebarActive.getBoundingClientRect(),t=ac.y-bc.y-bc.height/2;0<t&&sidebarBody.scrollTo({top:t,behavior:"smooth"})</script><script src="/js/boot-b4d619350e67f5b3ceeb2164d30268e0.js"></script></body></html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/icons/touch-icon-apple.png">
+  <link rel="icon" type="image/png" href="/icons/favicon-32x32.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Mohuishou">
+  <meta name="keywords" content="Go, Docker, PHP">
+  <title>Go并发编程(八) 深入理解 sync.Once - Mohuishou</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/assets/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"lailin.xyz","root":"/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":null,"google":"UA-137859264-1","gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>mohuishou</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">
+                <i class="iconfont icon-category-fill"></i>
+                Go 进阶训练营(更新中)
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/post/go-design-pattern.html">
+                <i class="iconfont icon-notebook"></i>
+                Go 设计模式
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                更多
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    <i class="iconfont icon-link-fill"></i>
+                    友链
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/atom.xml">
+                    <i class="iconfont icon-rss"></i>
+                    rss
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/bg.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Go并发编程(八) 深入理解 sync.Once">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-28 22:29" pubdate>
+        2020年12月28日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      700 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      9
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2">
+      
+        
+
+<div class="sidebar">
+  <p class="sidebar-header">Go进阶训练营</p>
+  <div class="sidebar-body" ID="sidebar-body">
+    <ol class="sidebar-list sidebar-list-1">
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23xho0000m4t51q602czj').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week01: 微服务</a>
+        <ol id="sidebar-ckkm23xho0000m4t51q602czj" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-01.html">
+              微服务(一) 微服务概览
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-02.html">
+              微服务(二) 服务发现&amp;多租户
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23ykh0003m4t53mln1w0n').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week02: Go错误处理</a>
+        <ol id="sidebar-ckkm23ykh0003m4t53mln1w0n" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-03.html">
+              Go错误处理最佳实践
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm2667n000pm4t52z016wn0').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week03: Go 并发编程</a>
+        <ol id="sidebar-ckkm2667n000pm4t52z016wn0" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-goroutine.html">
+              Go并发编程(一) goroutine
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-go-memory-model.html">
+              Go并发编程(二) Go 内存模型
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-data-race.html">
+              Go并发编程(三) data race
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-sync.html">
+              Go并发编程(四) 深入理解 Mutex
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-errgroup.html">
+              Go并发编程(七) 深入理解 errgroup
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item is-active-li" > 
+            <a class="sidebar-link sidebar-active-link" href="/post/go-training-week3-once.html">
+              Go并发编程(八) 深入理解 sync.Once
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-context.html">
+              Go并发编程(九) 深入理解 Context
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-channel.html">
+              Go并发编程(十) 深入理解 Channel
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-sum.html">
+              Go并发编程(十一) 总结
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23zra000im4t5en8m0qy9').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week04: Go 工程化</a>
+        <ol id="sidebar-ckkm23zra000im4t5en8m0qy9" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-clean-arch.html">
+              Go工程化(一) 架构整洁之道阅读笔记
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-project-layout.html">
+              Go工程化(二) 项目目录结构
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-wire.html">
+              Go工程化(三) 依赖注入框架 wire
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-api-design.html">
+              Go工程化(四) API 设计上: 项目结构 &amp; 设计
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-protoc-gen-go-gin.html">
+              Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-config.html">
+              Go工程化(六) 配置管理
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-go-module.html">
+              Go工程化(七) Go Module
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+    </ol>
+  </div>
+</div>
+
+      
+    </div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Go并发编程(八) 深入理解 sync.Once</h1>
+            
+            <div class="markdown-body">
+              <blockquote>
+<p>本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成</p>
+</blockquote>
+<p>在上一篇文章《<a href="https://lailin.xyz/post/go-training-week3-errgroup.html">Week03: Go 并发编程(七) 深入理解 errgroup</a>》当中看 <code>errgourp</code>  源码的时候我们发现最后返回 <code>err</code>  是通过 once 来只保证返回一个非 nil 的值的，本文就来看一下 Once 的使用与实现</p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>once 的使用很简单</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> (<br>		o  sync.Once<br>		wg sync.WaitGroup<br>	)<br><br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;<br>		wg.Add(<span class="hljs-number">1</span>)<br><br>		<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(i <span class="hljs-keyword">int</span>)</span></span> &#123;<br>			<span class="hljs-keyword">defer</span> wg.Done()<br>			o.Do(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>				fmt.Println(<span class="hljs-string">&quot;once&quot;</span>, i)<br>			&#125;)<br>		&#125;(i)<br>	&#125;<br><br>	wg.Wait()<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go">❯ <span class="hljs-keyword">go</span> run ./main.<span class="hljs-keyword">go</span><br>once <span class="hljs-number">9</span><br></code></pre></td></tr></table></figure>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Once <span class="hljs-keyword">struct</span> &#123;<br>	done <span class="hljs-keyword">uint32</span><br>	m    Mutex<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>done 用于判定函数是否执行，如果不为 0 会直接返回</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(o *Once)</span> <span class="hljs-title">Do</span><span class="hljs-params">(f <span class="hljs-keyword">func</span>()</span>)</span> &#123;<br>	<span class="hljs-comment">// Note: Here is an incorrect implementation of Do:</span><br>	<span class="hljs-comment">//</span><br>	<span class="hljs-comment">//	if atomic.CompareAndSwapUint32(&amp;o.done, 0, 1) &#123;</span><br>	<span class="hljs-comment">//		f()</span><br>	<span class="hljs-comment">//	&#125;</span><br>	<span class="hljs-comment">//</span><br>	<span class="hljs-comment">// Do guarantees that when it returns, f has finished.</span><br>	<span class="hljs-comment">// This implementation would not implement that guarantee:</span><br>	<span class="hljs-comment">// given two simultaneous calls, the winner of the cas would</span><br>	<span class="hljs-comment">// call f, and the second would return immediately, without</span><br>	<span class="hljs-comment">// waiting for the first&#x27;s call to f to complete.</span><br>	<span class="hljs-comment">// This is why the slow path falls back to a mutex, and why</span><br>	<span class="hljs-comment">// the atomic.StoreUint32 must be delayed until after f returns.</span><br><br>	<span class="hljs-keyword">if</span> atomic.LoadUint32(&amp;o.done) == <span class="hljs-number">0</span> &#123;<br>		<span class="hljs-comment">// Outlined slow-path to allow inlining of the fast-path.</span><br>		o.doSlow(f)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>看 go 的源码真的可以学到很多东西，在这里还给出了很容易犯错的一种实现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">if</span> atomic.CompareAndSwapUint32(&amp;o.done, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>) &#123;<br>	f()<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果这么实现最大的问题是，如果并发调用，一个 goroutine 执行，另外一个不会等正在执行的这个成功之后返回，而是直接就返回了，这就不能保证传入的方法一定会先执行一次了<br>所以回头看官方的实现</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">if</span> atomic.LoadUint32(&amp;o.done) == <span class="hljs-number">0</span> &#123;<br>    <span class="hljs-comment">// Outlined slow-path to allow inlining of the fast-path.</span><br>    o.doSlow(f)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>会先判断 done 是否为 0，如果不为 0 说明还没执行过，就进入 <code>doSlow</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(o *Once)</span> <span class="hljs-title">doSlow</span><span class="hljs-params">(f <span class="hljs-keyword">func</span>()</span>)</span> &#123;<br>	o.m.Lock()<br>	<span class="hljs-keyword">defer</span> o.m.Unlock()<br>	<span class="hljs-keyword">if</span> o.done == <span class="hljs-number">0</span> &#123;<br>		<span class="hljs-keyword">defer</span> atomic.StoreUint32(&amp;o.done, <span class="hljs-number">1</span>)<br>		f()<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在 <code>doSlow</code>  当中使用了互斥锁来保证只会执行一次</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>Once 保证了传入的函数只会执行一次，这常用在单例模式，配置文件加载，初始化这些场景下</li>
+<li>但是需要注意。Once 是不能复用的，只要执行过了，再传入其他的方法也不会再执行了</li>
+<li>并且 Once.Do 在执行的过程中如果 f 出现 panic，后面也不会再执行了</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://pkg.go.dev/sync#Once">https://pkg.go.dev/sync#Once</a></li>
+<li><a target="_blank" rel="noopener" href="https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-sync-primitives/#once">6.2 同步原语与锁</a></li>
+</ol>
+<div><h2 id="相关推荐">相关推荐</h2><ul><li><a href="https://lailin.xyz/post/go-training-week4-clean-arch.html">Week04: Go工程化(一) 架构整洁之道阅读笔记</a></li><li><a href="https://lailin.xyz/post/go-training-week3-sum.html">Week03: Go并发编程(十一) 总结</a></li><li><a href="https://lailin.xyz/post/go-training-week3-channel.html">Week03: Go并发编程(十) 深入理解 Channel</a></li></ul></div>
+            </div>
+            <!-- Custom -->            
+            
+                <h2 id="关注我获取更新"><a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a                class="anchorjs-link"                aria-label="Anchor"                data-anchorjs-icon=""                href="#关注我获取更新"                style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em"              ></a></h2><div class="row"><div class="col-lg-6"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png" srcset="/img/loading.gif" alt="wechat"></div><div class="col-lg-2 col-4"><a target="_blank" href="http://s.zhihu.com/B4RT3"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/zhihu.png" srcset="/img/loading.gif" alt="知乎"></a></div><div class="col-lg-2 col-4"><a target="_blank" href="https://toutiao.io/subjects/387401?f=new"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/toutiaoio.png" srcset="/img/loading.gif" alt="开发者头条"></a></div><div class="col-lg-2 col-4"><a target="_blank" href="https://github.com/mohuishou"><img style="width: 100%;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/github.png" srcset="/img/loading.gif" alt="github"></a></div></div>
+
+            
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">Go进阶训练营</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week03-Go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">Week03: Go 并发编程</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Go/">Go</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">Go进阶训练营</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+                    
+                      <a class="hover-with-bg" href="/tags/sync/">sync</a>
+                    
+                      <a class="hover-with-bg" href="/tags/once/">once</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a>，转载请注明出处，禁止全文转载</p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/go-training-week3-context.html">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Go并发编程(九) 深入理解 Context</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/go-training-week3-errgroup.html">
+                        <span class="hidden-mobile">Go并发编程(七) 深入理解 errgroup</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.waitElementVisible('comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'scuplus/blogComment');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+  <div id="bottom">
+  <div id="bottom-drawer" class="bottom-drawer">
+    
+      
+
+<div class="sidebar">
+  <p class="sidebar-header">Go进阶训练营</p>
+  <div class="sidebar-body" ID="sidebar-body">
+    <ol class="sidebar-list sidebar-list-1">
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23xho0000m4t51q602czj').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week01: 微服务</a>
+        <ol id="sidebar-ckkm23xho0000m4t51q602czj" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-01.html">
+              微服务(一) 微服务概览
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-02.html">
+              微服务(二) 服务发现&amp;多租户
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23ykh0003m4t53mln1w0n').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week02: Go错误处理</a>
+        <ol id="sidebar-ckkm23ykh0003m4t53mln1w0n" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-03.html">
+              Go错误处理最佳实践
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm2667n000pm4t52z016wn0').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week03: Go 并发编程</a>
+        <ol id="sidebar-ckkm2667n000pm4t52z016wn0" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-goroutine.html">
+              Go并发编程(一) goroutine
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-go-memory-model.html">
+              Go并发编程(二) Go 内存模型
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-data-race.html">
+              Go并发编程(三) data race
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-sync.html">
+              Go并发编程(四) 深入理解 Mutex
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-atomic.html">
+              Go并发编程(五) 深入理解 sync/atomic
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-waitgroup.html">
+              Go并发编程(六) 深入理解 WaitGroup
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-errgroup.html">
+              Go并发编程(七) 深入理解 errgroup
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item is-active-li" > 
+            <a class="sidebar-link sidebar-active-link" href="/post/go-training-week3-once.html">
+              Go并发编程(八) 深入理解 sync.Once
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-context.html">
+              Go并发编程(九) 深入理解 Context
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-channel.html">
+              Go并发编程(十) 深入理解 Channel
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week3-sum.html">
+              Go并发编程(十一) 总结
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+      <li class="sidebar-list-item"> 
+        <a class="sidebar-title" onclick="
+          (function(){
+            document.querySelector('#sidebar-ckkm23zra000im4t5en8m0qy9').classList.toggle('sidebar-is-collapsed')
+          })()
+          ">Week04: Go 工程化</a>
+        <ol id="sidebar-ckkm23zra000im4t5en8m0qy9" class="sidebar-list sidebar-list-2 sidebar-is-collapsible 
+            ">
+          
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-clean-arch.html">
+              Go工程化(一) 架构整洁之道阅读笔记
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-project-layout.html">
+              Go工程化(二) 项目目录结构
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-wire.html">
+              Go工程化(三) 依赖注入框架 wire
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-api-design.html">
+              Go工程化(四) API 设计上: 项目结构 &amp; 设计
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-protoc-gen-go-gin.html">
+              Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-config.html">
+              Go工程化(六) 配置管理
+            </a>
+          </li>
+          
+          <li class="sidebar-list-item " > 
+            <a class="sidebar-link " href="/post/go-training-week4-go-module.html">
+              Go工程化(七) Go Module
+            </a>
+          </li>
+          
+        </ol>
+      </li>
+    
+    </ol>
+  </div>
+</div>
+
+    
+    <div id="toc-mobile">
+      <div class="toc-body" id="toc-body-mobile"></div>
+    </div>
+  </div>
+  <div id="bottom-tab">
+    <a class="sub-menu" onclick="showBottomDrawer(this, '#bottom-drawer .sidebar')">
+      <i class="iconfont"></i> 章节
+    </a>
+    <a class="sub-menu" onclick="showBottomDrawer(this, '#bottom-drawer #toc-mobile')">
+      <i class="iconfont"></i> 目录
+    </a>
+    <a href="#comments" class="sub-menu" onclick="showBottomDrawer(this, '#comments')"> 
+      <i class="iconfont"></i> 评论
+    </a>
+  </div>
+</div>
+
+<script>
+  document.onreadystatechange = function(e) {
+    let drawer = $('#bottom-drawer')
+    if (drawer.height == 0) return
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body-mobile',
+      contentSelector : '.markdown-body',
+      headingSelector : 'h1,h2,h3,h4',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : 20
+    });
+  } 
+  
+  function showBottomDrawer(e, sel){
+    let tab = document.querySelector('#bottom-tab')
+    tab.childNodes.forEach((n) => {
+      if(n != e && n.classList) n.classList.remove("active")
+    })
+    if (sel != "#comments") e.classList.toggle("active")
+
+    let drawer = document.querySelector('#bottom-drawer')
+    let s = document.querySelector(sel)
+    
+    drawer.childNodes.forEach((n) => {
+      if(n != s && n.classList) n.classList.remove("active")
+    })
+    s.classList.toggle("active")
+
+    if (sel == "#comments") {
+      drawer.classList.remove("active")
+      return
+    } 
+
+    if (s.classList.contains("active") && !drawer.classList.contains("active")) {
+      drawer.classList.add("active")
+    }
+
+    if (!s.classList.contains("active") && drawer.classList.contains("active")) {
+      drawer.classList.remove("active")
+    }
+  }
+</script>
+
+</div>
+
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+      <div class="col-lg-7 mx-auto nopadding-x-md">
+        <div class="container custom mx-auto">
+          <!-- start webpushr tracking code --> 
+<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";
+fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));
+webpushr('setup',{'key':'BBkZb7rpvsVqVNkORXD9T9T93MJodtpNJD5c1f2HE_XsED3r94An3CKObdyTJ6ub3ARm9LIdeDCVzKLBsK760NM' });</script>
+<!-- end webpushr tracking code -->
+
+        </div>
+      </div>
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    <!-- Google Analytics -->
+    <script defer>
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) };
+      ga.l = +new Date;
+      ga('create', 'UA-137859264-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<script>
+  let sidebarBody =  document.querySelector(".sidebar .sidebar-body")
+  let sidebarActive = document.querySelector(".sidebar .is-active-li")
+  let bc = sidebarBody.getBoundingClientRect()
+  let ac = sidebarActive.getBoundingClientRect()
+  let t = ac.y - bc.y - bc.height / 2
+  if (t > 0){
+    sidebarBody.scrollTo({
+      top: t,
+      behavior: 'smooth'
+    })
+  }
+</script>
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
