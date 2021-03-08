@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-03-08T06:09:50.488Z</updated>
+  <updated>2021-03-08T16:41:52.982Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -17,11 +17,47 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Go工程化(八) 单元测试</title>
+    <link href="https://lailin.xyz/post/go-training-week4-unit-test.html"/>
+    <id>https://lailin.xyz/post/go-training-week4-unit-test.html</id>
+    <published>2021-03-09T02:08:51.000Z</published>
+    <updated>2021-03-08T16:41:52.982Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;本系列为 &lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Week04: Go 工程化" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week04-Go-%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="工程化" scheme="https://lailin.xyz/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+      <category term="单元测试" scheme="https://lailin.xyz/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go工程化(七) Go Module</title>
     <link href="https://lailin.xyz/post/go-training-week4-go-module.html"/>
     <id>https://lailin.xyz/post/go-training-week4-go-module.html</id>
     <published>2021-03-06T16:08:51.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.982Z</updated>
     
     <summary type="html">
     
@@ -123,7 +159,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-api-design.html"/>
     <id>https://lailin.xyz/post/go-training-week4-api-design.html</id>
     <published>2021-03-01T01:08:51.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.982Z</updated>
     
     <summary type="html">
     
@@ -191,7 +227,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
     <published>2021-02-06T05:08:51.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.982Z</updated>
     
     <summary type="html">
     
@@ -225,7 +261,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-clean-arch.html"/>
     <id>https://lailin.xyz/post/go-training-week4-clean-arch.html</id>
     <published>2021-01-26T06:12:03.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.982Z</updated>
     
     <summary type="html">
     
@@ -266,7 +302,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sum.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sum.html</id>
     <published>2021-01-15T15:08:51.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.982Z</updated>
     
     <summary type="html">
     
@@ -300,7 +336,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-channel.html"/>
     <id>https://lailin.xyz/post/go-training-week3-channel.html</id>
     <published>2021-01-14T15:08:51.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.978Z</updated>
     
     <summary type="html">
     
@@ -339,7 +375,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-context.html"/>
     <id>https://lailin.xyz/post/go-training-week3-context.html</id>
     <published>2021-01-08T15:08:51.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.978Z</updated>
     
     <summary type="html">
     
@@ -501,7 +537,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-waitgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-waitgroup.html</id>
     <published>2020-12-27T14:08:51.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.982Z</updated>
     
     <summary type="html">
     
@@ -542,7 +578,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sync.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sync.html</id>
     <published>2020-12-26T05:08:51.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.982Z</updated>
     
     <summary type="html">
     
@@ -620,7 +656,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-go-memory-model.html"/>
     <id>https://lailin.xyz/post/go-training-week3-go-memory-model.html</id>
     <published>2020-12-19T05:08:51.000Z</published>
-    <updated>2021-03-08T06:09:50.488Z</updated>
+    <updated>2021-03-08T16:41:52.982Z</updated>
     
     <summary type="html">
     
@@ -3030,34 +3066,6 @@
       <category term="四川大学" scheme="https://lailin.xyz/tags/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6/"/>
     
       <category term="锐捷" scheme="https://lailin.xyz/tags/%E9%94%90%E6%8D%B7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>php设计模式（一）工厂模式</title>
-    <link href="https://lailin.xyz/post/43893.html"/>
-    <id>https://lailin.xyz/post/43893.html</id>
-    <published>2016-08-06T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.533Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;PHP-设计模式（一）工厂模式&quot;&gt;&lt;a href=&quot;#PHP-设计模式（一）工厂模式&quot; class=&quot;headerlink&quot; title=&quot;PHP 设计模式（一）工厂模式&quot;&gt;&lt;/a&gt;PHP
-        
-      
-    
-    </summary>
-    
-      <category term="PHP" scheme="https://lailin.xyz/categories/PHP/"/>
-    
-    
-      <category term="php" scheme="https://lailin.xyz/tags/php/"/>
-    
-      <category term="设计模式" scheme="https://lailin.xyz/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
