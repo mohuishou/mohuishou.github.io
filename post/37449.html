@@ -259,6 +259,12 @@
             <!-- SEO header -->
             <h1 style="display: none">一个十分边缘的gorm的bug</h1>
             
+            <!-- Before Custom -->            
+            
+              <b>最近新开了微信公众号，大家可以订阅一下呀，后续的文章会同步发送到微信公众号上</>
+<img style="width: 100%;max-width:600px;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png" srcset="/img/loading.gif" alt="wechat">
+
+            
             <div class="markdown-body">
               <p>[toc]</p>
 <h2 id="复现代码"><a href="#复现代码" class="headerlink" title="复现代码"></a>复现代码</h2><p>这个代码的触发条件比较严苛，首先必须要保证 gorm 执行的一行必须为<code>updates</code>语句，并且在<code>updates(struct)</code>,并且传入的这个<code>struct</code>必须要包含一个直接或者间接关联的一个多态表，这些条件缺一不可</p>

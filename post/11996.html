@@ -259,6 +259,12 @@
             <!-- SEO header -->
             <h1 style="display: none">Go Web 小技巧（三）Gin 参数绑定</h1>
             
+            <!-- Before Custom -->            
+            
+              <b>最近新开了微信公众号，大家可以订阅一下呀，后续的文章会同步发送到微信公众号上</>
+<img style="width: 100%;max-width:600px;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png" srcset="/img/loading.gif" alt="wechat">
+
+            
             <div class="markdown-body">
               <h2 id="楔-xie-子"><a href="#楔-xie-子" class="headerlink" title="楔(xiē)子"></a>楔(xiē)子</h2><p>在第一篇文章 <a href="https://lailin.xyz/post/38237.html">简化 Gin 接口代码</a> 当中为大家提供了一种抽象 <code>gin</code> 接口代码的思路，而这篇文章会为大家带来参数绑定的一些技巧。</p>
 <p>在我们写的绝大部分的 API 代码当中，其实都是需要传递参数的，无论是通过 <code>path</code>、<code>query string</code> 还是 <code>body</code>，在 <code>gin</code> 当中，为我们提供了一系列的 <code>binding</code> 方法让我们可以把这些参数绑定到一个对象中，通过还可以通过 <code>struct tag</code> 来对参数进行校验，不知道到大家曾今是否和遇到过相同的困惑：</p>

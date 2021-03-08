@@ -259,6 +259,12 @@
             <!-- SEO header -->
             <h1 style="display: none">Go Struct 初始化风格的抉择</h1>
             
+            <!-- Before Custom -->            
+            
+              <b>最近新开了微信公众号，大家可以订阅一下呀，后续的文章会同步发送到微信公众号上</>
+<img style="width: 100%;max-width:600px;" src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png" srcset="/img/loading.gif" alt="wechat">
+
+            
             <div class="markdown-body">
               <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近在对之前的代码做重构，从之前的 <code>MVC</code>  结构切换到 <code>Clean Arch</code>  的结构，但是在切换的时候关于代码风格出现了一些困惑<br>在下面的代码中 <code>repository</code>  是存储库，主要用于封装数据库查询或者是第三方微服务的调用，它实现了 <code>domain.IAzRepository</code>  接口，其他层的代码都只依赖这个接口而不依赖具体的实现</p>
 <h2 id="三种代码风格"><a href="#三种代码风格" class="headerlink" title="三种代码风格"></a>三种代码风格</h2><h3 id="风格一"><a href="#风格一" class="headerlink" title="风格一"></a>风格一</h3><p>在 Go 中我们常常“返回实现(struct)，依赖接口”，其实就是在函数返回的时候我们返回一个具体的实现，函数的参数或者是 Struct 的成员部分我们依赖接口，这个风格看起来是违背了这个原则的</p>
