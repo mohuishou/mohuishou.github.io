@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-03-10T11:15:32.425Z</updated>
+  <updated>2021-03-10T16:18:21.489Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -17,11 +17,39 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Go工程化(九) 项目重构实践</title>
+    <link href="https://lailin.xyz/post/go-training-week4-practice.html"/>
+    <id>https://lailin.xyz/post/go-training-week4-practice.html</id>
+    <published>2021-03-11T05:08:51.000Z</published>
+    <updated>2021-03-10T16:18:21.489Z</updated>
+    
+    <summary type="html">
+    
+      这是《Go 工程化》系列的最后一篇文章了, 不知道大家听完毛老师的课程或者看完我之前的哪些文章有没有进行过一些尝试，本文就会从一个“真实”的项目重构的案例来一步一步的介绍我趟过的那些坑，希望可以对大家有所启发。
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Week04: Go 工程化" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week04-Go-%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="工程化" scheme="https://lailin.xyz/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go工程化(八) 单元测试</title>
     <link href="https://lailin.xyz/post/go-training-week4-unit-test.html"/>
     <id>https://lailin.xyz/post/go-training-week4-unit-test.html</id>
     <published>2021-03-09T02:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -57,7 +85,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-go-module.html"/>
     <id>https://lailin.xyz/post/go-training-week4-go-module.html</id>
     <published>2021-03-06T16:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -159,7 +187,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-api-design.html"/>
     <id>https://lailin.xyz/post/go-training-week4-api-design.html</id>
     <published>2021-03-01T01:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -227,7 +255,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
     <published>2021-02-06T05:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -261,7 +289,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-clean-arch.html"/>
     <id>https://lailin.xyz/post/go-training-week4-clean-arch.html</id>
     <published>2021-01-26T06:12:03.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -302,7 +330,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sum.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sum.html</id>
     <published>2021-01-15T15:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -336,7 +364,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-channel.html"/>
     <id>https://lailin.xyz/post/go-training-week3-channel.html</id>
     <published>2021-01-14T15:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -375,7 +403,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-context.html"/>
     <id>https://lailin.xyz/post/go-training-week3-context.html</id>
     <published>2021-01-08T15:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -537,7 +565,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-waitgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-waitgroup.html</id>
     <published>2020-12-27T14:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -578,7 +606,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sync.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sync.html</id>
     <published>2020-12-26T05:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -656,7 +684,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-go-memory-model.html"/>
     <id>https://lailin.xyz/post/go-training-week3-go-memory-model.html</id>
     <published>2020-12-19T05:08:51.000Z</published>
-    <updated>2021-03-10T11:15:32.425Z</updated>
+    <updated>2021-03-10T16:18:21.489Z</updated>
     
     <summary type="html">
     
@@ -3035,37 +3063,6 @@
       <category term="ss" scheme="https://lailin.xyz/tags/ss/"/>
     
       <category term="deepin" scheme="https://lailin.xyz/tags/deepin/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>四川大学锐捷windows解除多网卡限制</title>
-    <link href="https://lailin.xyz/post/18280.html"/>
-    <id>https://lailin.xyz/post/18280.html</id>
-    <published>2016-09-06T16:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.525Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;搬到望江校区之后校园网快了好多，但是需要锐捷认证，锐捷这个坑货需要限制多网卡，而且程序的占用实在太大，十分的不方便。使用
-        
-      
-    
-    </summary>
-    
-      <category term="大学" scheme="https://lailin.xyz/categories/%E5%A4%A7%E5%AD%A6/"/>
-    
-    
-      <category term="破解" scheme="https://lailin.xyz/tags/%E7%A0%B4%E8%A7%A3/"/>
-    
-      <category term="四川大学" scheme="https://lailin.xyz/tags/%E5%9B%9B%E5%B7%9D%E5%A4%A7%E5%AD%A6/"/>
-    
-      <category term="锐捷" scheme="https://lailin.xyz/tags/%E9%94%90%E6%8D%B7/"/>
     
   </entry>
   
