@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-03-20T15:50:46.180Z</updated>
+  <updated>2021-03-21T03:58:46.862Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://lailin.xyz/post/go-training-week5-comment-design-1.html"/>
     <id>https://lailin.xyz/post/go-training-week5-comment-design-1.html</id>
     <published>2021-03-14T10:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.862Z</updated>
     
     <summary type="html">
     
@@ -49,7 +49,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-practice.html"/>
     <id>https://lailin.xyz/post/go-training-week4-practice.html</id>
     <published>2021-03-11T05:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -77,7 +77,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-unit-test.html"/>
     <id>https://lailin.xyz/post/go-training-week4-unit-test.html</id>
     <published>2021-03-09T02:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.862Z</updated>
     
     <summary type="html">
     
@@ -121,7 +121,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-go-module.html"/>
     <id>https://lailin.xyz/post/go-training-week4-go-module.html</id>
     <published>2021-03-06T16:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -162,8 +162,8 @@
     <title>Go工程化(六) 配置管理</title>
     <link href="https://lailin.xyz/post/go-training-week4-config.html"/>
     <id>https://lailin.xyz/post/go-training-week4-config.html</id>
-    <published>2021-03-05T00:08:51.000Z</published>
-    <updated>2021-03-07T14:09:58.221Z</updated>
+    <published>2021-03-04T16:08:51.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -171,7 +171,15 @@
       
         
         
-          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;本系列为 &lt;a
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
@@ -196,8 +204,8 @@
     <title>Go工程化(五) API 设计下: 基于 protobuf 自动生成 gin 代码</title>
     <link href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html"/>
     <id>https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html</id>
-    <published>2021-03-03T00:08:51.000Z</published>
-    <updated>2021-03-07T14:09:57.951Z</updated>
+    <published>2021-03-02T16:08:51.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -205,7 +213,15 @@
       
         
         
-          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;本系列为 &lt;a
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
@@ -231,7 +247,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-api-design.html"/>
     <id>https://lailin.xyz/post/go-training-week4-api-design.html</id>
     <published>2021-03-01T01:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -272,8 +288,8 @@
     <title>Go工程化(三) 依赖注入框架 wire</title>
     <link href="https://lailin.xyz/post/go-training-week4-wire.html"/>
     <id>https://lailin.xyz/post/go-training-week4-wire.html</id>
-    <published>2021-02-22T13:08:51.000Z</published>
-    <updated>2021-03-07T14:09:57.561Z</updated>
+    <published>2021-02-22T05:08:51.000Z</published>
+    <updated>2021-03-21T03:58:46.862Z</updated>
     
     <summary type="html">
     
@@ -281,7 +297,15 @@
       
         
         
-          &lt;h2 id=&quot;序&quot;&gt;&lt;a href=&quot;#序&quot; class=&quot;headerlink&quot; title=&quot;序&quot;&gt;&lt;/a&gt;序&lt;/h2&gt;&lt;p&gt;本系列为 &lt;a
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
@@ -307,7 +331,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
     <published>2021-02-06T05:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -349,7 +373,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-clean-arch.html"/>
     <id>https://lailin.xyz/post/go-training-week4-clean-arch.html</id>
     <published>2021-01-26T06:12:03.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -395,7 +419,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sum.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sum.html</id>
     <published>2021-01-15T15:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -437,7 +461,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-channel.html"/>
     <id>https://lailin.xyz/post/go-training-week3-channel.html</id>
     <published>2021-01-14T15:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -481,7 +505,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-context.html"/>
     <id>https://lailin.xyz/post/go-training-week3-context.html</id>
     <published>2021-01-08T15:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -524,8 +548,8 @@
     <title>Go并发编程(八) 深入理解 sync.Once</title>
     <link href="https://lailin.xyz/post/go-training-week3-once.html"/>
     <id>https://lailin.xyz/post/go-training-week3-once.html</id>
-    <published>2020-12-28T14:29:54.000Z</published>
-    <updated>2021-03-07T14:09:55.511Z</updated>
+    <published>2020-12-28T06:29:54.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -533,10 +557,15 @@
       
         
         
-          &lt;blockquote&gt;
-&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;在上一篇文章《&lt;a
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
@@ -565,8 +594,8 @@
     <title>Go并发编程(七) 深入理解 errgroup</title>
     <link href="https://lailin.xyz/post/go-training-week3-errgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-errgroup.html</id>
-    <published>2020-12-28T13:36:51.000Z</published>
-    <updated>2021-03-07T14:09:55.431Z</updated>
+    <published>2020-12-28T05:36:51.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -574,10 +603,15 @@
       
         
         
-          &lt;blockquote&gt;
-&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;回顾&quot;&gt;&lt;a href=&quot;#回顾&quot; class=&quot;headerlink&quot;
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
@@ -605,50 +639,11 @@
   </entry>
   
   <entry>
-    <title>Go并发编程(五) 深入理解 sync/atomic</title>
-    <link href="https://lailin.xyz/post/go-training-week3-atomic.html"/>
-    <id>https://lailin.xyz/post/go-training-week3-atomic.html</id>
-    <published>2020-12-27T14:08:51.000Z</published>
-    <updated>2021-03-07T14:09:55.221Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;回顾&quot;&gt;&lt;a href=&quot;#回顾&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
-    
-      <category term="Week03: Go 并发编程" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week03-Go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
-    
-      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
-    
-      <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
-    
-      <category term="atomic" scheme="https://lailin.xyz/tags/atomic/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Go并发编程(六) 深入理解 WaitGroup</title>
     <link href="https://lailin.xyz/post/go-training-week3-waitgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-waitgroup.html</id>
     <published>2020-12-27T14:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -690,11 +685,55 @@
   </entry>
   
   <entry>
+    <title>Go并发编程(五) 深入理解 sync/atomic</title>
+    <link href="https://lailin.xyz/post/go-training-week3-atomic.html"/>
+    <id>https://lailin.xyz/post/go-training-week3-atomic.html</id>
+    <published>2020-12-27T06:08:51.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
+        
+      
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Week03: Go 并发编程" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week03-Go-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="并发" scheme="https://lailin.xyz/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="atomic" scheme="https://lailin.xyz/tags/atomic/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go并发编程(四) 深入理解 Mutex</title>
     <link href="https://lailin.xyz/post/go-training-week3-sync.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sync.html</id>
     <published>2020-12-26T05:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -739,8 +778,8 @@
     <title>Go并发编程(三) data race</title>
     <link href="https://lailin.xyz/post/go-training-week3-data-race.html"/>
     <id>https://lailin.xyz/post/go-training-week3-data-race.html</id>
-    <published>2020-12-21T13:08:51.000Z</published>
-    <updated>2021-03-07T14:09:54.831Z</updated>
+    <published>2020-12-21T05:08:51.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -748,10 +787,15 @@
       
         
         
-          &lt;blockquote&gt;
-&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;回顾&quot;&gt;&lt;a href=&quot;#回顾&quot; class=&quot;headerlink&quot;
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
@@ -777,7 +821,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-go-memory-model.html"/>
     <id>https://lailin.xyz/post/go-training-week3-go-memory-model.html</id>
     <published>2020-12-19T05:08:51.000Z</published>
-    <updated>2021-03-20T15:50:46.180Z</updated>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -818,8 +862,8 @@
     <title>Go并发编程(一) goroutine</title>
     <link href="https://lailin.xyz/post/go-training-week3-goroutine.html"/>
     <id>https://lailin.xyz/post/go-training-week3-goroutine.html</id>
-    <published>2020-12-09T13:08:51.000Z</published>
-    <updated>2021-03-07T14:09:54.271Z</updated>
+    <published>2020-12-09T05:08:51.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -827,10 +871,15 @@
       
         
         
-          &lt;blockquote&gt;
-&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;接下来会一共会有 4 - 6 篇文章讲解 Go
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
@@ -855,8 +904,8 @@
     <title>Go错误处理最佳实践</title>
     <link href="https://lailin.xyz/post/go-training-03.html"/>
     <id>https://lailin.xyz/post/go-training-03.html</id>
-    <published>2020-12-01T12:44:27.000Z</published>
-    <updated>2021-03-07T14:09:54.021Z</updated>
+    <published>2020-12-01T04:44:27.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -864,10 +913,15 @@
       
         
         
-          &lt;blockquote&gt;
-&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;最佳实践&quot;&gt;&lt;a href=&quot;#最佳实践&quot;
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
@@ -892,8 +946,8 @@
     <title>微服务(二) 服务发现&amp;多租户</title>
     <link href="https://lailin.xyz/post/go-training-02.html"/>
     <id>https://lailin.xyz/post/go-training-02.html</id>
-    <published>2020-11-29T07:43:17.000Z</published>
-    <updated>2021-03-06T14:23:47.769Z</updated>
+    <published>2020-11-28T23:43:17.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -901,8 +955,15 @@
       
         
         
-          &lt;blockquote&gt;
-&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
@@ -927,8 +988,8 @@
     <title>微服务(一) 微服务概览</title>
     <link href="https://lailin.xyz/post/go-training-01.html"/>
     <id>https://lailin.xyz/post/go-training-01.html</id>
-    <published>2020-11-25T14:00:22.000Z</published>
-    <updated>2021-03-06T14:23:43.819Z</updated>
+    <published>2020-11-25T06:00:22.000Z</published>
+    <updated>2021-03-21T03:58:46.858Z</updated>
     
     <summary type="html">
     
@@ -936,10 +997,15 @@
       
         
         
-          &lt;blockquote&gt;
-&lt;p&gt;本系列为极客时间 Go 进阶训练营笔记，同步直播更新，预计一周更新 1 ~ 2 篇文章，到 202103 月更新完成&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;几个问题&quot;&gt;&lt;a href=&quot;#几个问题&quot;
+          
+&lt;div
+  style=&quot;
+    background: #e8f7ff;
+    padding: 10px;
+    border: 1px solid #abd2da;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
         
       
     
