@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2021-04-09T09:14:28.636Z</updated>
+  <updated>2021-04-11T16:59:03.617Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -17,11 +17,47 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Go可用性(五) 限流4: 自适应限流</title>
+    <link href="https://lailin.xyz/post/go-training-week6-4-auto-limiter.html"/>
+    <id>https://lailin.xyz/post/go-training-week6-4-auto-limiter.html</id>
+    <published>2021-04-12T05:08:51.000Z</published>
+    <updated>2021-04-11T16:59:03.617Z</updated>
+    
+    <summary type="html">
+    
+      什么？机器都快挂了，限流竟然还没出发？
+    
+    </summary>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="Week06: 微服务可用性设计" scheme="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/Week06-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%8F%AF%E7%94%A8%E6%80%A7%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+      <category term="学习笔记" scheme="https://lailin.xyz/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="Go" scheme="https://lailin.xyz/tags/Go/"/>
+    
+      <category term="Go进阶训练营" scheme="https://lailin.xyz/tags/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/"/>
+    
+      <category term="微服务" scheme="https://lailin.xyz/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+    
+      <category term="可用性" scheme="https://lailin.xyz/tags/%E5%8F%AF%E7%94%A8%E6%80%A7/"/>
+    
+      <category term="过载保护" scheme="https://lailin.xyz/tags/%E8%BF%87%E8%BD%BD%E4%BF%9D%E6%8A%A4/"/>
+    
+      <category term="限流" scheme="https://lailin.xyz/tags/%E9%99%90%E6%B5%81/"/>
+    
+      <category term="令牌桶" scheme="https://lailin.xyz/tags/%E4%BB%A4%E7%89%8C%E6%A1%B6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go可用性(四) 限流3: 漏桶算法</title>
     <link href="https://lailin.xyz/post/go-training-week6-4-leaky-bucket.html"/>
     <id>https://lailin.xyz/post/go-training-week6-4-leaky-bucket.html</id>
     <published>2021-04-07T05:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -57,7 +93,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-3-token-bucket-2.html"/>
     <id>https://lailin.xyz/post/go-training-week6-3-token-bucket-2.html</id>
     <published>2021-04-01T05:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -93,7 +129,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-2-token-bucket-1.html"/>
     <id>https://lailin.xyz/post/go-training-week6-2-token-bucket-1.html</id>
     <published>2021-03-28T16:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -129,7 +165,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-usability-1-bulkhe.html"/>
     <id>https://lailin.xyz/post/go-training-week6-usability-1-bulkhe.html</id>
     <published>2021-03-25T08:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -159,7 +195,7 @@
     <link href="https://lailin.xyz/post/go-training-week5-singleflight.html"/>
     <id>https://lailin.xyz/post/go-training-week5-singleflight.html</id>
     <published>2021-03-21T17:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -187,7 +223,7 @@
     <link href="https://lailin.xyz/post/go-training-week5-comment-design-1.html"/>
     <id>https://lailin.xyz/post/go-training-week5-comment-design-1.html</id>
     <published>2021-03-14T10:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -215,7 +251,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-practice.html"/>
     <id>https://lailin.xyz/post/go-training-week4-practice.html</id>
     <published>2021-03-11T05:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -243,7 +279,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-unit-test.html"/>
     <id>https://lailin.xyz/post/go-training-week4-unit-test.html</id>
     <published>2021-03-09T02:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -285,7 +321,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-go-module.html"/>
     <id>https://lailin.xyz/post/go-training-week4-go-module.html</id>
     <published>2021-03-06T16:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -325,7 +361,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-config.html"/>
     <id>https://lailin.xyz/post/go-training-week4-config.html</id>
     <published>2021-03-04T16:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -365,7 +401,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html"/>
     <id>https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html</id>
     <published>2021-03-02T16:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -405,7 +441,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-api-design.html"/>
     <id>https://lailin.xyz/post/go-training-week4-api-design.html</id>
     <published>2021-03-01T01:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -445,7 +481,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-wire.html"/>
     <id>https://lailin.xyz/post/go-training-week4-wire.html</id>
     <published>2021-02-22T05:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -485,7 +521,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
     <published>2021-02-06T05:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -525,7 +561,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-clean-arch.html"/>
     <id>https://lailin.xyz/post/go-training-week4-clean-arch.html</id>
     <published>2021-01-26T06:12:03.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -569,7 +605,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sum.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sum.html</id>
     <published>2021-01-15T15:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -609,7 +645,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-channel.html"/>
     <id>https://lailin.xyz/post/go-training-week3-channel.html</id>
     <published>2021-01-14T15:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.632Z</updated>
+    <updated>2021-04-11T16:59:03.613Z</updated>
     
     <summary type="html">
     
@@ -651,7 +687,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-context.html"/>
     <id>https://lailin.xyz/post/go-training-week3-context.html</id>
     <published>2021-01-08T15:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.613Z</updated>
     
     <summary type="html">
     
@@ -693,7 +729,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-once.html"/>
     <id>https://lailin.xyz/post/go-training-week3-once.html</id>
     <published>2020-12-28T06:29:54.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -737,7 +773,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-errgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-errgroup.html</id>
     <published>2020-12-28T05:36:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -783,7 +819,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-waitgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-waitgroup.html</id>
     <published>2020-12-27T14:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -827,7 +863,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-atomic.html"/>
     <id>https://lailin.xyz/post/go-training-week3-atomic.html</id>
     <published>2020-12-27T06:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.632Z</updated>
+    <updated>2021-04-11T16:59:03.613Z</updated>
     
     <summary type="html">
     
@@ -869,7 +905,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sync.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sync.html</id>
     <published>2020-12-26T05:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -913,7 +949,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-data-race.html"/>
     <id>https://lailin.xyz/post/go-training-week3-data-race.html</id>
     <published>2020-12-21T05:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -953,7 +989,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-go-memory-model.html"/>
     <id>https://lailin.xyz/post/go-training-week3-go-memory-model.html</id>
     <published>2020-12-19T05:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -993,7 +1029,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-goroutine.html"/>
     <id>https://lailin.xyz/post/go-training-week3-goroutine.html</id>
     <published>2020-12-09T05:08:51.000Z</published>
-    <updated>2021-04-09T09:14:28.636Z</updated>
+    <updated>2021-04-11T16:59:03.617Z</updated>
     
     <summary type="html">
     
@@ -1033,7 +1069,7 @@
     <link href="https://lailin.xyz/post/go-training-03.html"/>
     <id>https://lailin.xyz/post/go-training-03.html</id>
     <published>2020-12-01T04:44:27.000Z</published>
-    <updated>2021-04-09T09:14:28.632Z</updated>
+    <updated>2021-04-11T16:59:03.613Z</updated>
     
     <summary type="html">
     
@@ -1073,7 +1109,7 @@
     <link href="https://lailin.xyz/post/go-training-02.html"/>
     <id>https://lailin.xyz/post/go-training-02.html</id>
     <published>2020-11-28T23:43:17.000Z</published>
-    <updated>2021-04-09T09:14:28.632Z</updated>
+    <updated>2021-04-11T16:59:03.613Z</updated>
     
     <summary type="html">
     
@@ -1113,7 +1149,7 @@
     <link href="https://lailin.xyz/post/go-training-01.html"/>
     <id>https://lailin.xyz/post/go-training-01.html</id>
     <published>2020-11-25T06:00:22.000Z</published>
-    <updated>2021-04-09T09:14:28.632Z</updated>
+    <updated>2021-04-11T16:59:03.613Z</updated>
     
     <summary type="html">
     
@@ -3149,33 +3185,6 @@
       <category term="华为软挑" scheme="https://lailin.xyz/tags/%E5%8D%8E%E4%B8%BA%E8%BD%AF%E6%8C%91/"/>
     
       <category term="图" scheme="https://lailin.xyz/tags/%E5%9B%BE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>华为软挑2017</title>
-    <link href="https://lailin.xyz/post/4976.html"/>
-    <id>https://lailin.xyz/post/4976.html</id>
-    <published>2017-04-08T00:00:00.000Z</published>
-    <updated>2020-04-18T13:39:10.524Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;稍稍总结一下最近差不多几天的心路历程，虽然最后没有拿到名次，但是从最开始的连最短路径是什么都不知道，到现在的已经可以利用遗传算法+最小费用最大流算法求出一些可行的解，就短短的不到一周的时间，学习到了可以说之前一个学期也未必能够学习到的知识。&lt;/p&gt;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="算法" scheme="https://lailin.xyz/tags/%E7%AE%97%E6%B3%95/"/>
-    
-      <category term="华为软挑" scheme="https://lailin.xyz/tags/%E5%8D%8E%E4%B8%BA%E8%BD%AF%E6%8C%91/"/>
     
   </entry>
   
