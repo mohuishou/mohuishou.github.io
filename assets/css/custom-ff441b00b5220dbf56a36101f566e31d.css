@@ -1,4 +1,4 @@
-.fancybox-slide--image .fancybox-content{background:#fff!important}#关注我获取更新{color:var(--post-heading-color);font-weight:700;margin-bottom:.75em;margin-top:2em;font-size:1.5em}@media (max-width:600px){.wechat-qr{display:none}}
+.fancybox-slide--image .fancybox-content{background:#fff!important}#关注我获取更新{color:var(--post-heading-color);font-weight:700;margin-bottom:.75em;margin-top:2em;font-size:1.5em}@media (max-width:600px){.wechat-qr{display:none}}.note a{color:var(--post-link-color)!important}
 <h2 id="关注我获取更新">
   <a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a
     class="anchorjs-link"
@@ -41,3 +41,30 @@
     /></a>
   </div>
 </div>
+
+<!-- Add wechat img after categories -->
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  let toc = $("#toc");
+  if (toc.height() >= 1){
+    toc.append(`
+    <a
+      class="fancybox fancybox.image"
+      href="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"
+      itemscope=""
+      itemtype="http://schema.org/ImageObject"
+      itemprop="url"
+      data-fancybox="default"
+      rel="default"
+      title="wechat"
+      data-caption="wechat"
+      ><img
+        style="width: 100%"
+        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"
+        srcset="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"
+        alt="wechat"
+      />
+    `)
+  }
+})
+</script>
