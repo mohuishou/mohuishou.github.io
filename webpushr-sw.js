@@ -1,4 +1,4 @@
-importScripts('https://cdn.webpushr.com/sw-server.min.js');
+importScripts("https://cdn.webpushr.com/sw-server.min.js");
 <h2 id="关注我获取更新">
   <a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a
     class="anchorjs-link"
