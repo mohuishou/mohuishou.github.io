@@ -4,6 +4,41 @@
   
   
   <entry>
+    <title>10. 总结</title>
+    <link href="/post/operator-11-summary.html"/>
+    <url>/post/operator-11-summary.html</url>
+    
+    <content type="html"><![CDATA[<div class="note note-info">            <p>注：本文所有示例代码都可以在 <a href="https://github.com/mohuishou/blog-code">blog-code</a> 仓库中找到</p>          </div><p>本来一开始只打算简单的了解一些 kubebuilder 的使用方法，知道基本上怎么使用就行了，但是看着看着就有点刹不住车了，文章数量也从预计的 5 篇左右翻了一个倍。</p><p>不过虽然时间花的久了一些，感觉还是挺值的，前面 9 篇文章除了高可用没有专门讲解之外，关于Operator 比较大的模块也算是都有涉及了，最开始的时候可能总是觉得 Operator 的编写可能会比较复杂，整个使用上风险也比较大，但是接触了 kubebuilder 发现，社区已经将相关的开发组件封装的很好了，整个体验也算是比较顺畅，基本上我们只需要知道相关的一些概念，就可以直接上手进行使用了。kubebuilder 的代码和设计上也是十分值得学习的，大量的使用到了接口，在降低学习成本的同时也留下了充分的扩展性，这是我在之前我们自己的一些代码和框架上没有看到的。因为一般来说想要做到这种只需要写一个函数就能完成业务开发的话，限制都会很大，二次开发也会很麻烦，kubebuilder 的平衡做的很好。</p><p>下面我们就简单的回顾一下之前学习的内容:</p><h3 id="1-Operator概述-如何对-Kubernetes-进行扩展"><a href="#1-Operator概述-如何对-Kubernetes-进行扩展" class="headerlink" title=" 1. Operator概述: 如何对 Kubernetes 进行扩展"></a><a href="https://lailin.xyz/post/operator-01-overview.html"> 1. Operator概述: 如何对 Kubernetes 进行扩展</a></h3><p>我们在第一篇文章中主要介绍了 K8s 有哪些扩展点，希望起到一个大纲的作用，之后如果有一些需求想要对 k8s 进行扩展的时候可以知道从哪里下手。核心就是下面这张图了</p><p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/20210502223110.png" alt="kubernate 扩展"></p><h3 id="2-Kind-如何快速搭建本地-K8s-开发环境？"><a href="#2-Kind-如何快速搭建本地-K8s-开发环境？" class="headerlink" title="2. Kind: 如何快速搭建本地 K8s 开发环境？"></a><a href="https://lailin.xyz/post/operator-02-use-kind-create-k8s-local-cluster.html">2. Kind: 如何快速搭建本地 K8s 开发环境？</a></h3><p>在这一篇文章中我们使用 kind 搭建了自己的本地开发环境，说简单其实也挺简单的 <code>kind create cluster</code> 一行命令就完事，不过最好还是有科学上网的环境，能够使我们的环境创建的过程顺畅很多。</p><p>这里面比较坑的就是 load image 的特性，当时卡了我很久，主要是因为默认的镜像拉取策略是 <code>imagePullPolicy: Always</code> ，这样无论什么怎么设置都会报拉取镜像错误，因为我们的镜像实际上是没有推送的。</p><h3 id="3-KubeBuilder-简明教程"><a href="#3-KubeBuilder-简明教程" class="headerlink" title="3. KubeBuilder 简明教程"></a><a href="https://lailin.xyz/post/operator-03-kubebuilder-tutorial.html">3. KubeBuilder 简明教程</a></h3><p>这篇文章中，我们完成了 kubebuilder 的环境搭建，学习了如何使用的 kubebuilder 快速的创建一个 operator 项目骨架。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 初始化项目</span><br>kubebuilder init --domain lailin.xyz --repo github.com/mohuishou/blog-code/k8s-operator/02-kubebuilder<br><br><span class="hljs-comment"># 创建 api</span><br>kubebuilder create api --group apps --version v1 --kind Application<br><br><span class="hljs-comment"># 编写 Reconcile 函数</span><br></code></pre></td></tr></table></figure><h3 id="4-kustomize-简明教程"><a href="#4-kustomize-简明教程" class="headerlink" title="4. kustomize 简明教程"></a><a href="https://lailin.xyz/post/operator-04-kustomize-tutorial.html">4. kustomize 简明教程</a></h3><p>kubebuilder 中的 YAML 文件都是通过 kustomize 生成的，如果不太清楚这个工具用起来可能会感觉到比较困惑，并且我们后面也要对默认的配置进行一些改造，所以就把这一篇文章往前放了一些。</p><p>这一篇文章主要是讲了 kustomize 的一个使用方法和项目布局，知道里面有哪些 api 可以对 yaml 文件怎么进行修改，kustomize 其实比较适合用于 gitops</p><h3 id="5-kubebuilder-实战-CRUD"><a href="#5-kubebuilder-实战-CRUD" class="headerlink" title="5. kubebuilder 实战: CRUD"></a><a href="https://lailin.xyz/post/operator-05-kubebuilder-crud.html">5. kubebuilder 实战: CRUD</a></h3><p>从这一篇文章开始就进入到我们 NodePool Operator 的开发过程中了，这一篇主要是先分析了一下需求，然后大概想了一下方案，实现了 CURD 的一个能力。</p><p>除了基本的 CURD 之外我们还利用 Finalizers 实现了预删除，使用 OwnerReference 将两个资源进行了关联，保证了父资源删除子资源就会被自动删除。</p><h3 id="6-kubebuilder-实战-status-amp-event"><a href="#6-kubebuilder-实战-status-amp-event" class="headerlink" title="6. kubebuilder 实战: status &amp; event"></a><a href="https://lailin.xyz/post/operator-06-kubebuilder-status-and-event.html">6. kubebuilder 实战: status &amp; event</a></h3><p>在 K8s 中我们经常会看到很多资源都有一些 status 和 event，因为我们资源在被控制器不断的进行调整，所以它会处于一个变化的过程中，这时候通过 status 我们就可以很方便的知道当前资源的状态，是否存在问题等。status 中还会时常放置一些统计数据，例如 pod 数目这种。</p><p>通过 event 我们可以记录一些时序数据或者是关键的错误日志等信息，这样可以帮助我们更好的排查错误，因为可能现在存在这个问题，等一会儿再执行的时候这个问题就没了。</p><h3 id="7-kubebuilder-进阶-测试"><a href="#7-kubebuilder-进阶-测试" class="headerlink" title="7. kubebuilder 进阶: 测试"></a><a href="https://lailin.xyz/post/operator-07-kubebuilder-test.html">7. kubebuilder 进阶: 测试</a></h3><p>Operator 的测试真的是个老大难的问题，因为在 k8s 中控制器是不断在运行的，如果监听了一些系统资源的事件，那触发的频率会更高。</p><p>在这篇文章，我们抛砖引玉一起看了一个单元测试的案例和集成测试的案例，单元测试和一般的 go test 没有什么区别，集成测试我们直接在 kubebuilder 生成的测试代码的基础上写相关的测试逻辑就行了。</p><h3 id="8-kubebuilder-进阶-webhook"><a href="#8-kubebuilder-进阶-webhook" class="headerlink" title="8. kubebuilder 进阶: webhook"></a><a href="https://lailin.xyz/post/operator-08-kubebuilder-webhook.html">8. kubebuilder 进阶: webhook</a></h3><p>准入控制存在两种 WebHook，变更准入控制 MutatingAdmissionWebhook，和验证准入控制 ValidatingAdmissionWebhook，执行的顺序是先执行 MutatingAdmissionWebhook 再执行 ValidatingAdmissionWebhook。</p><p>这篇文章我们实现了两种准入控制的接口，并且部署到了集群中，同时还讲解了本地如何进行调试</p><h3 id="9-kubebuilder-进阶-源码分析"><a href="#9-kubebuilder-进阶-源码分析" class="headerlink" title="9. kubebuilder 进阶: 源码分析"></a><a href="https://lailin.xyz/post/operator-09-kubebuilder-code.html">9. kubebuilder 进阶: 源码分析</a></h3><p>Kubebuilder 是一个非常好用的 Operator 开发框架，不仅极大的简化了 Operator 的开发过程，并且充分的利用了 go interface 的特性留下了足够的扩展性。</p><p>这篇文章我们简单看了一些 kubebuilder 启动相关的源码，了解了我们代码是如何跑起来的，虽然不算是特别深入，但是也可以说 kubebuilder 对我们也不完全是黑盒了</p><p><img src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/image/20210502232426.svg" alt="arch"></p><h2 id="关注我获取更新">  <a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a    class="anchorjs-link"    aria-label="Anchor"    data-anchorjs-icon=""    href="#关注我获取更新"    style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em"  ></a></h2><div class="row">  <div class="col-lg-6">    <img      style="width: 100%"      src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"      alt="wechat"    />  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="http://s.zhihu.com/B4RT3"      ><img        style="width: 100%"        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/zhihu.png"        alt="知乎"    /></a>  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="https://toutiao.io/subjects/387401?f=new"      ><img        style="width: 100%"        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/toutiaoio.png"        alt="开发者头条"    /></a>  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="https://github.com/mohuishou"      ><img        style="width: 100%"        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/github.png"        alt="github"    /></a>  </div></div><!-- Add wechat img after categories --><script>document.addEventListener('DOMContentLoaded', (event) => {  let toc = $("#toc");  if (toc.height() >= 1){    toc.append(`    <a      class="fancybox fancybox.image"      href="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"      itemscope=""      itemtype="http://schema.org/ImageObject"      itemprop="url"      data-fancybox="default"      rel="default"      title="wechat"      data-caption="wechat"      ><img        style="width: 100%"        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"        srcset="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"        alt="wechat"      />    `)  }})</script>]]></content>
+    
+    
+    <categories>
+      
+      <category>kubernetes 系列</category>
+      
+      <category>Kubernetes 扩展: Operator</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Go</tag>
+      
+      <tag>k8s</tag>
+      
+      <tag>operator</tag>
+      
+      <tag>kubernetes</tag>
+      
+      <tag>kubebuilder</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>9. kubebuilder 进阶: 源码分析</title>
     <link href="/post/operator-09-kubebuilder-code.html"/>
     <url>/post/operator-09-kubebuilder-code.html</url>
@@ -28,9 +63,9 @@
       
       <tag>operator</tag>
       
-      <tag>kubebuilder</tag>
-      
       <tag>kubernetes</tag>
+      
+      <tag>kubebuilder</tag>
       
     </tags>
     
@@ -63,9 +98,9 @@
       
       <tag>operator</tag>
       
-      <tag>kubebuilder</tag>
-      
       <tag>kubernetes</tag>
+      
+      <tag>kubebuilder</tag>
       
       <tag>webhook</tag>
       
@@ -100,9 +135,9 @@
       
       <tag>operator</tag>
       
-      <tag>kubebuilder</tag>
-      
       <tag>kubernetes</tag>
+      
+      <tag>kubebuilder</tag>
       
       <tag>测试</tag>
       
@@ -137,9 +172,9 @@
       
       <tag>operator</tag>
       
-      <tag>kubebuilder</tag>
-      
       <tag>kubernetes</tag>
+      
+      <tag>kubebuilder</tag>
       
     </tags>
     
@@ -172,9 +207,9 @@
       
       <tag>operator</tag>
       
-      <tag>kubebuilder</tag>
-      
       <tag>kubernetes</tag>
+      
+      <tag>kubebuilder</tag>
       
     </tags>
     
@@ -207,9 +242,9 @@
       
       <tag>operator</tag>
       
-      <tag>kubernetes</tag>
-      
       <tag>云原生</tag>
+      
+      <tag>kubernetes</tag>
       
       <tag>kustomize</tag>
       
@@ -244,11 +279,11 @@
       
       <tag>operator</tag>
       
-      <tag>kubebuilder</tag>
+      <tag>云原生</tag>
       
       <tag>kubernetes</tag>
       
-      <tag>云原生</tag>
+      <tag>kubebuilder</tag>
       
     </tags>
     
@@ -279,9 +314,9 @@
       
       <tag>k8s</tag>
       
-      <tag>kubernetes</tag>
-      
       <tag>云原生</tag>
+      
+      <tag>kubernetes</tag>
       
       <tag>kind</tag>
       
@@ -314,9 +349,9 @@
       
       <tag>k8s</tag>
       
-      <tag>operator</tag>
-      
       <tag>Kubernetes</tag>
+      
+      <tag>operator</tag>
       
       <tag>概念</tag>
       
