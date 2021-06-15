@@ -1,4 +1,9 @@
-importScripts("https://cdn.webpushr.com/sw-server.min.js");
+
+<div class="note note-info">
+            <p>注：本文所有示例代码都可以在 <a href="https://github.com/mohuishou/blog-code">blog-code</a> 仓库中找到</p>
+          </div>
+
+importScripts('https://cdn.webpushr.com/sw-server.min.js');
 <h2 id="关注我获取更新">
   <a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a
     class="anchorjs-link"
