@@ -2761,33 +2761,6 @@
   
   
   <entry>
-    <title>pprof go性能分析工具</title>
-    <link href="/post/40393.html"/>
-    <url>/post/40393.html</url>
-    
-    <content type="html"><![CDATA[<p>PPT 分享(可能需要 FQ 方能访问，需要可以访问, onedrive.live.com)</p><a id="more"></a><iframe id="ppt" width="100%" onload="changeFrameHeight()"  src="https://onedrive.live.com/embed?cid=9B44A0E26836C4FF&amp;resid=9B44A0E26836C4FF%211837&amp;authkey=AAoxyFlzZ39JQvM&amp;em=2&amp;wdAr=1.7777777777777777" frameborder="0">这是嵌入 <a target="_blank" href="https://office.com">Microsoft Office</a> 演示文稿，由 <a target="_blank" href="https://office.com/webapps">Office Online</a> 支持。</iframe><script>function changeFrameHeight(){    var ifm= document.getElementById("ppt");    console.log(ifm.width)    ifm.height=ifm.clientWidth / 16 * 9 + 24;}window.onresize = changeFrameHeight</script><h2 id="关注我获取更新">  <a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a    class="anchorjs-link"    aria-label="Anchor"    data-anchorjs-icon=""    href="#关注我获取更新"    style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em"  ></a></h2><div class="row">  <div class="col-lg-6">    <img      style="width: 100%"      src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"      alt="wechat"    />  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="http://s.zhihu.com/B4RT3"      ><img        style="width: 100%"        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/zhihu.png"        alt="知乎"    /></a>  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="https://toutiao.io/subjects/387401?f=new"      ><img        style="width: 100%"        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/toutiaoio.png"        alt="开发者头条"    /></a>  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="https://github.com/mohuishou"      ><img        style="width: 100%"        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/github.png"        alt="github"    /></a>  </div></div><!-- Add wechat img after categories --><script>document.addEventListener('DOMContentLoaded', (event) => {  let toc = $("#toc");  if (toc.height() >= 1){    toc.append(`    <a      class="fancybox fancybox.image"      href="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"      itemscope=""      itemtype="http://schema.org/ImageObject"      itemprop="url"      data-fancybox="default"      rel="default"      title="wechat"      data-caption="wechat"      ><img        style="width: 100%"        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"        srcset="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"        alt="wechat"      />    `)  }})</script>]]></content>
-    
-    
-    <categories>
-      
-      <category>事故现场</category>
-      
-      <category>2018</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>blog</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>使用TravisCI自动部署Blog</title>
     <link href="/post/52061.html"/>
     <url>/post/52061.html</url>
