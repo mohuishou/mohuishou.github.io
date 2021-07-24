@@ -17,7 +17,7 @@ importScripts('https://cdn.webpushr.com/sw-server.min.js');
   <div class="col-lg-6">
     <img
       style="width: 100%"
-      src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"
+      src="https://img.lailin.xyz/custom/wechat_white.png"
       alt="wechat"
     />
   </div>
@@ -25,7 +25,7 @@ importScripts('https://cdn.webpushr.com/sw-server.min.js');
     <a target="_blank" href="http://s.zhihu.com/B4RT3"
       ><img
         style="width: 100%"
-        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/zhihu.png"
+        src="https://img.lailin.xyz/custom/zhihu.png"
         alt="知乎"
     /></a>
   </div>
@@ -33,7 +33,7 @@ importScripts('https://cdn.webpushr.com/sw-server.min.js');
     <a target="_blank" href="https://toutiao.io/subjects/387401?f=new"
       ><img
         style="width: 100%"
-        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/toutiaoio.png"
+        src="https://img.lailin.xyz/custom/toutiaoio.png"
         alt="开发者头条"
     /></a>
   </div>
@@ -41,7 +41,7 @@ importScripts('https://cdn.webpushr.com/sw-server.min.js');
     <a target="_blank" href="https://github.com/mohuishou"
       ><img
         style="width: 100%"
-        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/github.png"
+        src="https://img.lailin.xyz/custom/github.png"
         alt="github"
     /></a>
   </div>
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     toc.append(`
     <a
       class="fancybox fancybox.image"
-      href="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"
+      href="https://img.lailin.xyz/custom/wechat_white.png"
       itemscope=""
       itemtype="http://schema.org/ImageObject"
       itemprop="url"
@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
       data-caption="wechat"
       ><img
         style="width: 100%"
-        src="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"
-        srcset="https://mohuishou-blog-sz.oss-cn-shenzhen.aliyuncs.com/custom/wechat_white.png"
+        src="https://img.lailin.xyz/custom/wechat_white.png"
+        srcset="https://img.lailin.xyz/custom/wechat_white.png"
         alt="wechat"
       />
     `)
