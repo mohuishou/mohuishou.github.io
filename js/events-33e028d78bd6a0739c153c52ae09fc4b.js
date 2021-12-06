@@ -1,0 +1,15 @@
+HTMLElement.prototype.wrap=function(o){this.parentNode.insertBefore(o,this),this.parentNode.removeChild(this),o.appendChild(this)},Fluid.events={registerNavbarEvent:function(){var o=jQuery("#navbar"),e=jQuery("#navbar .dropdown-menu");0<o.offset().top&&(o.removeClass("navbar-dark"),e.removeClass("navbar-dark")),Fluid.utils.listenScroll(function(){o[50<o.offset().top?"addClass":"removeClass"]("top-nav-collapse"),e[50<o.offset().top?"addClass":"removeClass"]("dropdown-collapse"),0<o.offset().top?o.removeClass("navbar-dark"):o.addClass("navbar-dark"),e.removeClass("navbar-dark")}),jQuery("#navbar-toggler-btn").on("click",function(){jQuery(".animated-icon").toggleClass("open"),jQuery("#navbar").toggleClass("navbar-col-show")})},registerParallaxEvent:function(){var n,r=jQuery('#banner[parallax="true"]');0===r.length||0!==(n=jQuery("#board")).length&&Fluid.utils.listenScroll(function(){var o=jQuery(window).scrollTop()/5,e=96+parseInt(n.css("margin-top"),0);r.css({transform:"translate3d(0,"+(o=e<o?e:o)+"px,0)","-webkit-transform":"translate3d(0,"+o+"px,0)","-ms-transform":"translate3d(0,"+o+"px,0)","-o-transform":"translate3d(0,"+o+"px,0)"}),jQuery("#toc")&&jQuery("#toc-ctn").css({"padding-top":o+"px"})})},registerScrollDownArrowEvent:function(){var o=jQuery(".scroll-down-bar");0!==o.length&&o.on("click",function(){Fluid.utils.scrollToElement("#board",-jQuery("#navbar").height())})},registerScrollTopArrowEvent:function(){var e,n,r,o,t,a=jQuery("#scroll-top-button");0===a.length||0!==(e=jQuery("#board")).length&&(r=n=!1,(o=function(){var o=e[0].getClientRects()[0].right,o=document.body.offsetWidth-o;n=50<=o,a.css({bottom:n&&r?"20px":"-60px",right:o-64+"px"})})(),jQuery(window).resize(o),t=e.offset().top,Fluid.utils.listenScroll(function(){var o=document.body.scrollTop+document.documentElement.scrollTop;r=t<=o,a.css({bottom:n&&r?"20px":"-60px"})}),a.on("click",function(){jQuery("body,html").animate({scrollTop:0,easing:"swing"})}))},registerImageLoadedEvent:function(){if("NProgress"in window){var o=document.getElementById("banner");o&&(o=o.style.backgroundImage.match(/\((.*?)\)/)[1].replace(/(['"])/g,""),(e=new Image).onload=function(){window.NProgress&&window.NProgress.inc(.2)},e.src=o,e.complete&&e.onload());var e=jQuery("main img:not([lazyload])"),n=e.length;for(const r of e){const t=r.onload;r.onload=function(){t&&t(),window.NProgress&&window.NProgress.inc(.5/n)},r.complete&&r.onload()}}},billboard:function(){"console"in window&&console.log(`
+------------------------------------------------
+|                                              |
+|     ________  __            _        __      |
+|    |_   __  |[  |          (_)      |  ]     |
+|      | |_ \\_| | | __   _   __   .--.| |      |
+|      |  _|    | |[  | | | [  |/ /'\`\\' |      |
+|     _| |_     | | | \\_/ |, | || \\__/  |      |
+|    |_____|   [___]'.__.'_/[___]'.__.;__]     |
+|                                              |
+|           Powered by Hexo x Fluid            |
+|         GitHub: https://git.io/JqpVD         |
+|                                              |
+------------------------------------------------
+    `)}};
