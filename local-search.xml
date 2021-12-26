@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>Go 工程化(十一) 如何优雅的写出 repo  层代码</title>
+    <link href="/post/graceful-repo-code.html"/>
+    <url>/post/graceful-repo-code.html</url>
+    
+    <content type="html"><![CDATA[<div class="note note-info">            <p>注：本文所有示例代码都可以在 <a href="https://github.com/mohuishou/blog-code">blog-code</a> 仓库中找到</p>          </div><div class="note note-info">            <p>本系列为 Go 进阶训练营 笔记，预计 2021Q2 完成更新，访问 <a href="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/">博客: Go进阶训练营</a>, 即可查看当前更新进度，部分文章篇幅较长，使用 PC 大屏浏览体验更佳。</p>          </div><aside><p><img src="data:image/svg+xml;utf8,%3Csvg%20class%3D%22icon%22%20style%3D%22width%3A%201em%3Bheight%3A%201em%3Bvertical-align%3A%20middle%3Bfill%3A%20currentColor%3Boverflow%3A%20hidden%3B%22%20viewBox%3D%220%200%201024%201024%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M893.76%20534.4A255.136%20255.136%200%200%201%20992%20736c0%20141.44-114.56%20256-256%20256-29.44%200-57.92-5.12-84.16-14.4a255.744%20255.744%200%200%201-88-431.04%20255.872%20255.872%200%200%201%20329.92-12.16z%22%20fill%3D%22%23E0EBFE%22%20%2F%3E%3Cpath%20d%3D%22M128%20192a384%20128%200%201%200%20768%200%20384%20128%200%201%200-768%200Z%22%20fill%3D%22%23E0EBFE%22%20%2F%3E%3Cpath%20d%3D%22M928%20521.92V192c0-105.024-209.28-160-416-160S96%2086.976%2096%20192v672c0%20105.024%20209.28%20160%20416%20160%2050.592%200%2098.432-3.008%20142.176-8.896%201.888-0.256%203.392-1.248%205.12-1.792A283.52%20283.52%200%200%200%20736%201024c158.816%200%20288-129.184%20288-288a285.44%20285.44%200%200%200-96-214.08zM512%2096c227.744%200%20352%2063.392%20352%2096s-124.256%2096-352%2096S160%20224.608%20160%20192s124.256-96%20352-96zM160%20281.056C237.632%20327.776%20375.2%20352%20512%20352s274.368-24.224%20352-70.944v197.184A285.184%20285.184%200%200%200%20736%20448c-65.6%200-128.544%2022.432-179.52%2063.136-14.56%200.544-29.376%200.864-44.48%200.864-227.744%200-352-63.392-352-96V281.056z%20m0%20224c74.816%2045.024%20205.28%2069.024%20337.12%2070.72a288.16%20288.16%200%200%200-49.024%20158.432C258.848%20723.552%20160%20668.8%20160%20640v-134.944zM512%20960c-227.744%200-352-63.392-352-96v-135.008c68.544%2041.12%20182.624%2064.096%20295.52%2069.632a289.248%20289.248%200%200%200%2099.328%20160.064c-14.176%200.544-28.096%201.312-42.848%201.312z%20m224%200a224.928%20224.928%200%200%201-222.336-196.288A224%20224%200%200%201%20736%20512c50.368%200%2098.112%2016.48%20138.048%2047.616A222.304%20222.304%200%200%201%20960%20736c0%20123.52-100.48%20224-224%20224z%22%20fill%3D%22%235465CF%22%20%2F%3E%3Cpath%20d%3D%22M840.48%20618.304l-153.504%20166.528-55.488-60a32%2032%200%201%200-46.976%2043.456l79.04%2085.44c0.288%200.32%200.704%200.416%200.992%200.704%200.32%200.32%200.448%200.768%200.8%201.088%201.824%201.696%204%202.592%206.08%203.776%201.28%200.736%202.304%201.728%203.616%202.24%203.84%201.6%207.904%202.464%2012%202.464a31.904%2031.904%200%200%200%2012.032-2.464c1.28-0.512%202.304-1.504%203.52-2.208%202.112-1.184%204.32-2.112%206.144-3.84%200.352-0.32%200.48-0.736%200.8-1.056%200.32-0.32%200.736-0.416%201.024-0.736l176.96-192a32%2032%200%200%200-47.04-43.392z%22%20fill%3D%22%235465CF%22%20%2F%3E%3C%2Fsvg%3E" alt="data:image/svg+xml;utf8,%3Csvg%20class%3D%22icon%22%20style%3D%22width%3A%201em%3Bheight%3A%201em%3Bvertical-align%3A%20middle%3Bfill%3A%20currentColor%3Boverflow%3A%20hidden%3B%22%20viewBox%3D%220%200%201024%201024%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M893.76%20534.4A255.136%20255.136%200%200%201%20992%20736c0%20141.44-114.56%20256-256%20256-29.44%200-57.92-5.12-84.16-14.4a255.744%20255.744%200%200%201-88-431.04%20255.872%20255.872%200%200%201%20329.92-12.16z%22%20fill%3D%22%23E0EBFE%22%20%2F%3E%3Cpath%20d%3D%22M128%20192a384%20128%200%201%200%20768%200%20384%20128%200%201%200-768%200Z%22%20fill%3D%22%23E0EBFE%22%20%2F%3E%3Cpath%20d%3D%22M928%20521.92V192c0-105.024-209.28-160-416-160S96%2086.976%2096%20192v672c0%20105.024%20209.28%20160%20416%20160%2050.592%200%2098.432-3.008%20142.176-8.896%201.888-0.256%203.392-1.248%205.12-1.792A283.52%20283.52%200%200%200%20736%201024c158.816%200%20288-129.184%20288-288a285.44%20285.44%200%200%200-96-214.08zM512%2096c227.744%200%20352%2063.392%20352%2096s-124.256%2096-352%2096S160%20224.608%20160%20192s124.256-96%20352-96zM160%20281.056C237.632%20327.776%20375.2%20352%20512%20352s274.368-24.224%20352-70.944v197.184A285.184%20285.184%200%200%200%20736%20448c-65.6%200-128.544%2022.432-179.52%2063.136-14.56%200.544-29.376%200.864-44.48%200.864-227.744%200-352-63.392-352-96V281.056z%20m0%20224c74.816%2045.024%20205.28%2069.024%20337.12%2070.72a288.16%20288.16%200%200%200-49.024%20158.432C258.848%20723.552%20160%20668.8%20160%20640v-134.944zM512%20960c-227.744%200-352-63.392-352-96v-135.008c68.544%2041.12%20182.624%2064.096%20295.52%2069.632a289.248%20289.248%200%200%200%2099.328%20160.064c-14.176%200.544-28.096%201.312-42.848%201.312z%20m224%200a224.928%20224.928%200%200%201-222.336-196.288A224%20224%200%200%201%20736%20512c50.368%200%2098.112%2016.48%20138.048%2047.616A222.304%20222.304%200%200%201%20960%20736c0%20123.52-100.48%20224-224%20224z%22%20fill%3D%22%235465CF%22%20%2F%3E%3Cpath%20d%3D%22M840.48%20618.304l-153.504%20166.528-55.488-60a32%2032%200%201%200-46.976%2043.456l79.04%2085.44c0.288%200.32%200.704%200.416%200.992%200.704%200.32%200.32%200.448%200.768%200.8%201.088%201.824%201.696%204%202.592%206.08%203.776%201.28%200.736%202.304%201.728%203.616%202.24%203.84%201.6%207.904%202.464%2012%202.464a31.904%2031.904%200%200%200%2012.032-2.464c1.28-0.512%202.304-1.504%203.52-2.208%202.112-1.184%204.32-2.112%206.144-3.84%200.352-0.32%200.48-0.736%200.8-1.056%200.32-0.32%200.736-0.416%201.024-0.736l176.96-192a32%2032%200%200%200-47.04-43.392z%22%20fill%3D%22%235465CF%22%20%2F%3E%3C%2Fsvg%3E" width="40px" /> 上篇文章中我们提到了事务的几种解决方案，可以避免在 repo 中写很多不同事务的方法，这篇我们看一下怎么让 repo 层的代码看起来优雅一点</p></aside><p>还是以获取一篇文章为例，我们在获取文章的时候大部分时候可能都是通过 <code>id</code> 获取的，但是我们也可能通过标题等其它信息获取文章的数据，这时候我们的 repo 层代码怎么写呢？</p><p>最简单的方式，就是我们直接在 repo 这里写两个方法</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// IArticleRepo IArticleRepo</span><br><span class="hljs-keyword">type</span> IArticleRepo <span class="hljs-keyword">interface</span> &#123;<br>GetArticleByTitle(ctx context.Context, title <span class="hljs-keyword">string</span>) (*Article, error)<br>GetArticleByID(ctx context.Context, id <span class="hljs-keyword">int</span>) (*Article, error)<br>&#125;<br></code></pre></td></tr></table></figure><p>这样最简单也最直观，但是问题是我们的实际的业务需求往往比我们的例子复杂，如果我们需要通过 id 或者标题获取呢？再添加一个 <code>GetArticleByIDOrTitle</code> ? </p><p>这么做的话也不是不行，但是这么做的话就会让我们的 repo 的代码随着时间的增长越来越多不说，命名也是问题，因为组合的方式可能是多种多样的</p><p>接下来给大家提供一种我们正在使用的一种思路，利用 <code>Function Options</code> 这种 Go 常见的编程范式，使我们的 repo 更优雅，也可扩展</p><h2 id="DBOption"><a href="#DBOption" class="headerlink" title="DBOption"></a>DBOption</h2><blockquote><p>注意: 笔者这里使用的是 GORM，但是这种方式不仅仅适用于 orm 的情况，只是相对方便一点而已</p></blockquote><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> DBOption <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(*gorm.DB)</span> *<span class="hljs-title">gorm</span>.<span class="hljs-title">DB</span></span><br><br><span class="hljs-comment">// IArticleRepo IArticleRepo</span><br><span class="hljs-keyword">type</span> IArticleRepo <span class="hljs-keyword">interface</span> &#123;<br>WithByID(id <span class="hljs-keyword">uint</span>) DBOption<br>WithByTitle(title <span class="hljs-keyword">string</span>) DBOption<br>GetArticle(ctx context.Context, opts ...DBOption) (*Article, error)<br>&#125;<br></code></pre></td></tr></table></figure><p>我们定义一个的 <code>DBOption</code> 这个 <code>Option</code> 方法会作为我们 repo 层方法中的最后一个参数，这样我们在定义方法的时候就可以简洁一些，就不必定义很多 <code>GetArticleByXXX</code> 方法了，而是通过定义很多 <code>WithByXXX</code> 的 <code>Option</code> 方法来解决。</p><p>这样在 usecase 层，我们只需要这么调用即可</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *article)</span> <span class="hljs-title">GetArticle</span><span class="hljs-params">(ctx context.Context, id <span class="hljs-keyword">int</span>)</span> <span class="hljs-params">(*domain.Article, error)</span></span> &#123;<br><span class="hljs-comment">// 这里可能有其他业务逻辑...</span><br><span class="hljs-keyword">return</span> u.repo.GetArticle(ctx, u.repo.WithByID(<span class="hljs-keyword">uint</span>(id)))<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p><strong>复用:</strong> 虽然看上去我们只是把  <code>GetArticleByXXX</code>  换成了 <code>WithByXXX</code> 该有的方法并没有变少，但是我们拆分之后会发现很多可以复用的方法，例如 <code>WithByID</code> 这种几乎是每个实体都会有的方法，我们就不用重复写了。</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// GetArticle 和 GetAuthor 都能用上</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *article)</span> <span class="hljs-title">GetArticle</span><span class="hljs-params">(ctx context.Context, id <span class="hljs-keyword">int</span>)</span> <span class="hljs-params">(*domain.Article, error)</span></span> &#123;<br><span class="hljs-comment">// 这里可能有其他业务逻辑...</span><br><span class="hljs-keyword">return</span> u.repo.GetArticle(ctx, u.repo.WithByID(<span class="hljs-keyword">uint</span>(id)))<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *article)</span> <span class="hljs-title">GetAuthor</span><span class="hljs-params">(ctx context.Context, id <span class="hljs-keyword">int</span>)</span> <span class="hljs-params">(*domain.Author, error)</span></span> &#123;<br><span class="hljs-comment">// 这里可能有其他业务逻辑...</span><br><span class="hljs-keyword">return</span> u.repo.GetAuthor(ctx, u.repo.WithByID(<span class="hljs-keyword">uint</span>(id)))<br>&#125;<br></code></pre></td></tr></table></figure><p><strong>最小化:</strong> 这么修改了之后，拆分组合更加方便了，很多查询条件都可以最小化，例如我们可以添加一个 <code>WithSelects</code> 的方法，我们在 usecase 调用的时候就可以传入当前场景只需要关注的字段就可以了</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// GetArticle 返回文章的同时也需要返回作者的名字</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *article)</span> <span class="hljs-title">GetArticle</span><span class="hljs-params">(ctx context.Context, id <span class="hljs-keyword">int</span>)</span> <span class="hljs-params">(*domain.Article, error)</span></span> &#123;<br>article, err := u.repo.GetArticle(ctx, u.repo.WithByID(<span class="hljs-keyword">uint</span>(id)))<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br><span class="hljs-keyword">return</span> err<br>&#125;<br><br>article.Author, err = u.repo.GetAuthor(ctx, u.repo.WithByArticleID(id), u.repo.WithBySelects(<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>))<br><span class="hljs-keyword">return</span> article, err<br>&#125;<br></code></pre></td></tr></table></figure><p><strong>可测性:</strong> repo 层的测试会变得更加方便，这样修改之后我们可以将查询条件拆分出来进行测试，会比之前耦合在一起测试简单很多。</p><p><strong>抽象:</strong> 这种方式可以让我们抽象 CURD 接口更加方便，在 repo 层实现的时候，我们可以直接把 curd 的方法都给抽象出来</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 这里以创建为例</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r *userRepo)</span> <span class="hljs-title">optionDB</span><span class="hljs-params">(ctx context.Context, opts ...model.DBOption)</span> *<span class="hljs-title">gorm</span>.<span class="hljs-title">DB</span></span> &#123;<br>db := r.db.WithContext(ctx)<br><span class="hljs-keyword">for</span> _, opt := <span class="hljs-keyword">range</span> opts &#123;<br>db = opt(db)<br>&#125;<br><span class="hljs-keyword">return</span> db<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r *userRepo)</span> <span class="hljs-title">create</span><span class="hljs-params">(ctx context.Context, data any, opts ...model.DBOption)</span> <span class="hljs-title">error</span></span> &#123;<br>db := r.optionDB(ctx, opts...)<br>err := db.Create(data).Error<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br><span class="hljs-keyword">return</span> pb.ErrorDbCreateFailf(<span class="hljs-string">&quot;err: %+v&quot;</span>, err)<br>&#125;<br><span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>今天给大家介绍了使用 Function Option 的方式来写 repo 层的代码，接下来我们就简单总结一下</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> DBOption <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(*gorm.DB)</span> *<span class="hljs-title">gorm</span>.<span class="hljs-title">DB</span></span><br><br><span class="hljs-comment">// IArticleRepo IArticleRepo</span><br><span class="hljs-keyword">type</span> IArticleRepo <span class="hljs-keyword">interface</span> &#123;<br>WithByID(id <span class="hljs-keyword">uint</span>) DBOption<br>WithByTitle(title <span class="hljs-keyword">string</span>) DBOption<br>GetArticle(ctx context.Context, opts ...DBOption) (*Article, error)<br>&#125;<br></code></pre></td></tr></table></figure><h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ul><li><strong>复用:</strong> 虽然看上去我们只是把  <code>GetArticleByXXX</code>  换成了 <code>WithByXXX</code> 该有的方法并没有变少，但是我们拆分之后会发现很多可以复用的方法，例如 <code>WithByID</code> 这种几乎是每个实体都会有的方法，我们就不用重复写了。</li><li><strong>最小化:</strong> 这么修改了之后，拆分组合更加方便了，很多查询条件都可以最小化，例如我们可以添加一个 <code>WithSelects</code> 的方法，我们在 usecase 调用的时候就可以传入当前场景只需要关注的字段就可以了</li><li><strong>可测性:</strong> repo 层的测试会变得更加方便，这样修改之后我们可以将查询条件拆分出来进行测试，会比之前耦合在一起测试简单很多。</li><li><strong>抽象:</strong> 这种方式可以让我们抽象 CURD 接口更加方便</li></ul><h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul><li>最大的缺点就是有的问题在单测可能测试不出来了，usecase 的测试中，repo 层被 mock 掉了，repo 在测试的时候大部分我们只会测试当前的方法，所以 usecase 有使用比较复杂的查询语句的时候，repo 测试最好测一测真实的使用场景，不要仅测试单个 Option 方法</li></ul><p>今天的文章就到这里，下篇文章给大家介绍一下 API 定义上的一点小技巧</p><h2 id="关注我获取更新">  <a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a    class="anchorjs-link"    aria-label="Anchor"    data-anchorjs-icon=""    href="#关注我获取更新"    style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em"  ></a></h2><div class="row">  <div class="col-lg-6">    <img      style="width: 100%"      src="https://img.lailin.xyz/custom/wechat_white.png"      alt="wechat"    />  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="http://s.zhihu.com/B4RT3"      ><img        style="width: 100%"        src="https://img.lailin.xyz/custom/zhihu.png"        alt="知乎"    /></a>  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="https://github.com/mohuishou"      ><img        style="width: 100%"        src="https://img.lailin.xyz/custom/github.png"        alt="github"    /></a>  </div></div><!-- Add wechat img after categories --><script>document.addEventListener('DOMContentLoaded', (event) => {  let toc = $("#toc");  if (toc.height() < 1) return;  let img = `  <a    class="fancybox fancybox.image"    href="https://img.lailin.xyz/custom/wechat_white.png"    itemscope=""    itemtype="http://schema.org/ImageObject"    itemprop="url"    data-fancybox="default"    rel="default"    title="wechat"    data-caption="wechat"    ><img      style="width: 80%; margin-left: 1rem;"      src="https://img.lailin.xyz/custom/wechat_white.png"      srcset="https://img.lailin.xyz/custom/wechat_white.png"      alt="wechat"    />    </a>  `  toc.append(img.replace(/srcset.*?"/, ""))})</script>]]></content>
+    
+    
+    <categories>
+      
+      <category>Go进阶训练营</category>
+      
+      <category>Week04: Go 工程化</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>go</tag>
+      
+      <tag>工程实践</tag>
+      
+      <tag>工程化</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Go 工程化(十) 如何在整洁架构中使用事务?</title>
     <link href="/post/clean-arch-transaction.html"/>
     <url>/post/clean-arch-transaction.html</url>
@@ -874,9 +905,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>Go进阶训练营</tag>
-      
       <tag>工程化</tag>
+      
+      <tag>Go进阶训练营</tag>
       
     </tags>
     
@@ -907,9 +938,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>Go进阶训练营</tag>
-      
       <tag>工程化</tag>
+      
+      <tag>Go进阶训练营</tag>
       
       <tag>单元测试</tag>
       
@@ -942,9 +973,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>Go进阶训练营</tag>
-      
       <tag>工程化</tag>
+      
+      <tag>Go进阶训练营</tag>
       
     </tags>
     
@@ -975,9 +1006,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>Go进阶训练营</tag>
-      
       <tag>工程化</tag>
+      
+      <tag>Go进阶训练营</tag>
       
     </tags>
     
@@ -1008,9 +1039,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>Go进阶训练营</tag>
-      
       <tag>工程化</tag>
+      
+      <tag>Go进阶训练营</tag>
       
     </tags>
     
@@ -1041,9 +1072,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>Go进阶训练营</tag>
-      
       <tag>工程化</tag>
+      
+      <tag>Go进阶训练营</tag>
       
     </tags>
     
@@ -1074,9 +1105,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>Go进阶训练营</tag>
-      
       <tag>工程化</tag>
+      
+      <tag>Go进阶训练营</tag>
       
     </tags>
     
@@ -1107,9 +1138,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>Go进阶训练营</tag>
-      
       <tag>工程化</tag>
+      
+      <tag>Go进阶训练营</tag>
       
     </tags>
     
@@ -1140,9 +1171,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>Go进阶训练营</tag>
-      
       <tag>工程化</tag>
+      
+      <tag>Go进阶训练营</tag>
       
       <tag>读书笔记</tag>
       
