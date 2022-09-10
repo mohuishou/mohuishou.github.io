@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lailin.xyz/"/>
-  <updated>2022-09-10T08:29:06.323Z</updated>
+  <updated>2022-09-10T08:47:18.991Z</updated>
   <id>https://lailin.xyz/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://lailin.xyz/post/kubernetes-job-running-not-end.html"/>
     <id>https://lailin.xyz/post/kubernetes-job-running-not-end.html</id>
     <published>2022-09-09T16:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -45,7 +45,7 @@
     <link href="https://lailin.xyz/post/graceful-repo-code.html"/>
     <id>https://lailin.xyz/post/graceful-repo-code.html</id>
     <published>2021-12-26T16:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -71,7 +71,7 @@
     <link href="https://lailin.xyz/post/clean-arch-transaction.html"/>
     <id>https://lailin.xyz/post/clean-arch-transaction.html</id>
     <published>2021-12-23T16:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -95,7 +95,7 @@
     <link href="https://lailin.xyz/post/add-catefories-sidebar-in-blog.html"/>
     <id>https://lailin.xyz/post/add-catefories-sidebar-in-blog.html</id>
     <published>2021-12-20T16:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -117,7 +117,7 @@
     <link href="https://lailin.xyz/post/notion-markdown-blog.html"/>
     <id>https://lailin.xyz/post/notion-markdown-blog.html</id>
     <published>2021-12-19T16:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -141,7 +141,7 @@
     <link href="https://lailin.xyz/post/3-years-summary.html"/>
     <id>https://lailin.xyz/post/3-years-summary.html</id>
     <published>2021-07-13T07:59:31.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -176,7 +176,7 @@
     <link href="https://lailin.xyz/post/localhost.html"/>
     <id>https://lailin.xyz/post/localhost.html</id>
     <published>2021-06-15T06:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -202,7 +202,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-7-summary.html"/>
     <id>https://lailin.xyz/post/go-training-week6-7-summary.html</id>
     <published>2021-05-25T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -234,7 +234,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-6-breaker.html"/>
     <id>https://lailin.xyz/post/go-training-week6-6-breaker.html</id>
     <published>2021-05-23T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -270,7 +270,7 @@
     <link href="https://lailin.xyz/post/operator-11-summary.html"/>
     <id>https://lailin.xyz/post/operator-11-summary.html</id>
     <published>2021-05-17T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -300,7 +300,7 @@
     <link href="https://lailin.xyz/post/operator-09-kubebuilder-code.html"/>
     <id>https://lailin.xyz/post/operator-09-kubebuilder-code.html</id>
     <published>2021-05-16T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -330,7 +330,7 @@
     <link href="https://lailin.xyz/post/operator-08-kubebuilder-webhook.html"/>
     <id>https://lailin.xyz/post/operator-08-kubebuilder-webhook.html</id>
     <published>2021-05-13T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -362,7 +362,7 @@
     <link href="https://lailin.xyz/post/operator-07-kubebuilder-test.html"/>
     <id>https://lailin.xyz/post/operator-07-kubebuilder-test.html</id>
     <published>2021-05-12T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -394,7 +394,7 @@
     <link href="https://lailin.xyz/post/operator-06-kubebuilder-status-and-event.html"/>
     <id>https://lailin.xyz/post/operator-06-kubebuilder-status-and-event.html</id>
     <published>2021-05-11T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -424,7 +424,7 @@
     <link href="https://lailin.xyz/post/operator-05-kubebuilder-crud.html"/>
     <id>https://lailin.xyz/post/operator-05-kubebuilder-crud.html</id>
     <published>2021-05-10T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -454,7 +454,7 @@
     <link href="https://lailin.xyz/post/operator-04-kustomize-tutorial.html"/>
     <id>https://lailin.xyz/post/operator-04-kustomize-tutorial.html</id>
     <published>2021-05-09T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -486,7 +486,7 @@
     <link href="https://lailin.xyz/post/operator-03-kubebuilder-tutorial.html"/>
     <id>https://lailin.xyz/post/operator-03-kubebuilder-tutorial.html</id>
     <published>2021-05-07T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -518,7 +518,7 @@
     <link href="https://lailin.xyz/post/operator-02-use-kind-create-k8s-local-cluster.html"/>
     <id>https://lailin.xyz/post/operator-02-use-kind-create-k8s-local-cluster.html</id>
     <published>2021-05-06T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -548,7 +548,7 @@
     <link href="https://lailin.xyz/post/operator-01-overview.html"/>
     <id>https://lailin.xyz/post/operator-01-overview.html</id>
     <published>2021-05-05T17:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -580,7 +580,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-4-auto-limiter.html"/>
     <id>https://lailin.xyz/post/go-training-week6-4-auto-limiter.html</id>
     <published>2021-04-12T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -616,7 +616,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-4-leaky-bucket.html"/>
     <id>https://lailin.xyz/post/go-training-week6-4-leaky-bucket.html</id>
     <published>2021-04-07T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -652,7 +652,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-3-token-bucket-2.html"/>
     <id>https://lailin.xyz/post/go-training-week6-3-token-bucket-2.html</id>
     <published>2021-04-01T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -688,7 +688,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-2-token-bucket-1.html"/>
     <id>https://lailin.xyz/post/go-training-week6-2-token-bucket-1.html</id>
     <published>2021-03-28T16:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -724,7 +724,7 @@
     <link href="https://lailin.xyz/post/go-training-week6-usability-1-bulkhe.html"/>
     <id>https://lailin.xyz/post/go-training-week6-usability-1-bulkhe.html</id>
     <published>2021-03-25T08:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -754,7 +754,7 @@
     <link href="https://lailin.xyz/post/go-training-week5-singleflight.html"/>
     <id>https://lailin.xyz/post/go-training-week5-singleflight.html</id>
     <published>2021-03-21T17:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -782,7 +782,7 @@
     <link href="https://lailin.xyz/post/go-training-week5-comment-design-1.html"/>
     <id>https://lailin.xyz/post/go-training-week5-comment-design-1.html</id>
     <published>2021-03-14T10:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -810,7 +810,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-practice.html"/>
     <id>https://lailin.xyz/post/go-training-week4-practice.html</id>
     <published>2021-03-11T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -838,7 +838,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-unit-test.html"/>
     <id>https://lailin.xyz/post/go-training-week4-unit-test.html</id>
     <published>2021-03-09T02:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -879,7 +879,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-go-module.html"/>
     <id>https://lailin.xyz/post/go-training-week4-go-module.html</id>
     <published>2021-03-06T16:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -918,7 +918,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-config.html"/>
     <id>https://lailin.xyz/post/go-training-week4-config.html</id>
     <published>2021-03-04T16:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -957,7 +957,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html"/>
     <id>https://lailin.xyz/post/go-training-week4-protoc-gen-go-gin.html</id>
     <published>2021-03-02T16:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -996,7 +996,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-api-design.html"/>
     <id>https://lailin.xyz/post/go-training-week4-api-design.html</id>
     <published>2021-03-01T01:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1035,7 +1035,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-wire.html"/>
     <id>https://lailin.xyz/post/go-training-week4-wire.html</id>
     <published>2021-02-22T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1074,7 +1074,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-project-layout.html"/>
     <id>https://lailin.xyz/post/go-training-week4-project-layout.html</id>
     <published>2021-02-06T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1113,7 +1113,7 @@
     <link href="https://lailin.xyz/post/go-training-week4-clean-arch.html"/>
     <id>https://lailin.xyz/post/go-training-week4-clean-arch.html</id>
     <published>2021-01-26T06:12:03.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1156,7 +1156,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sum.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sum.html</id>
     <published>2021-01-15T15:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1195,7 +1195,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-channel.html"/>
     <id>https://lailin.xyz/post/go-training-week3-channel.html</id>
     <published>2021-01-14T15:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1236,7 +1236,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-context.html"/>
     <id>https://lailin.xyz/post/go-training-week3-context.html</id>
     <published>2021-01-08T15:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1277,7 +1277,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-once.html"/>
     <id>https://lailin.xyz/post/go-training-week3-once.html</id>
     <published>2020-12-28T06:29:54.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1320,7 +1320,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-errgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-errgroup.html</id>
     <published>2020-12-28T05:36:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1365,7 +1365,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-waitgroup.html"/>
     <id>https://lailin.xyz/post/go-training-week3-waitgroup.html</id>
     <published>2020-12-27T14:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1408,7 +1408,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-atomic.html"/>
     <id>https://lailin.xyz/post/go-training-week3-atomic.html</id>
     <published>2020-12-27T06:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1449,7 +1449,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-sync.html"/>
     <id>https://lailin.xyz/post/go-training-week3-sync.html</id>
     <published>2020-12-26T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1492,7 +1492,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-data-race.html"/>
     <id>https://lailin.xyz/post/go-training-week3-data-race.html</id>
     <published>2020-12-21T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1531,7 +1531,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-go-memory-model.html"/>
     <id>https://lailin.xyz/post/go-training-week3-go-memory-model.html</id>
     <published>2020-12-19T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1570,7 +1570,7 @@
     <link href="https://lailin.xyz/post/go-training-week3-goroutine.html"/>
     <id>https://lailin.xyz/post/go-training-week3-goroutine.html</id>
     <published>2020-12-09T05:08:51.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1609,7 +1609,7 @@
     <link href="https://lailin.xyz/post/go-training-03.html"/>
     <id>https://lailin.xyz/post/go-training-03.html</id>
     <published>2020-12-01T04:44:27.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1648,7 +1648,7 @@
     <link href="https://lailin.xyz/post/go-training-02.html"/>
     <id>https://lailin.xyz/post/go-training-02.html</id>
     <published>2020-11-28T23:43:17.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1687,7 +1687,7 @@
     <link href="https://lailin.xyz/post/go-training-01.html"/>
     <id>https://lailin.xyz/post/go-training-01.html</id>
     <published>2020-11-24T16:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -1715,7 +1715,7 @@
     <link href="https://lailin.xyz/post/defer.html"/>
     <id>https://lailin.xyz/post/defer.html</id>
     <published>2020-11-24T06:45:42.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -1753,7 +1753,7 @@
     <link href="https://lailin.xyz/post/stack.html"/>
     <id>https://lailin.xyz/post/stack.html</id>
     <published>2020-11-23T05:46:59.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -1791,7 +1791,7 @@
     <link href="https://lailin.xyz/post/go-new-struct-style-select.html"/>
     <id>https://lailin.xyz/post/go-new-struct-style-select.html</id>
     <published>2020-11-21T22:11:51.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -1821,7 +1821,7 @@
     <link href="https://lailin.xyz/post/array_2.html"/>
     <id>https://lailin.xyz/post/array_2.html</id>
     <published>2020-11-20T21:28:17.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -1859,7 +1859,7 @@
     <link href="https://lailin.xyz/post/array.html"/>
     <id>https://lailin.xyz/post/array.html</id>
     <published>2020-11-14T17:17:14.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -1897,7 +1897,7 @@
     <link href="https://lailin.xyz/post/list.html"/>
     <id>https://lailin.xyz/post/list.html</id>
     <published>2020-11-06T03:51:31.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -1935,7 +1935,7 @@
     <link href="https://lailin.xyz/post/go-design-pattern.html"/>
     <id>https://lailin.xyz/post/go-design-pattern.html</id>
     <published>2020-11-04T17:35:39.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -1969,7 +1969,7 @@
     <link href="https://lailin.xyz/post/mediator.html"/>
     <id>https://lailin.xyz/post/mediator.html</id>
     <published>2020-11-04T05:42:07.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2003,7 +2003,7 @@
     <link href="https://lailin.xyz/post/interpreter.html"/>
     <id>https://lailin.xyz/post/interpreter.html</id>
     <published>2020-11-03T06:18:03.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2037,7 +2037,7 @@
     <link href="https://lailin.xyz/post/command.html"/>
     <id>https://lailin.xyz/post/command.html</id>
     <published>2020-10-29T05:27:44.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2071,7 +2071,7 @@
     <link href="https://lailin.xyz/post/memento.html"/>
     <id>https://lailin.xyz/post/memento.html</id>
     <published>2020-10-19T07:22:17.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2105,7 +2105,7 @@
     <link href="https://lailin.xyz/post/visitor.html"/>
     <id>https://lailin.xyz/post/visitor.html</id>
     <published>2020-10-18T05:16:55.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2139,7 +2139,7 @@
     <link href="https://lailin.xyz/post/iterator.html"/>
     <id>https://lailin.xyz/post/iterator.html</id>
     <published>2020-10-17T23:52:47.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2173,7 +2173,7 @@
     <link href="https://lailin.xyz/post/state.html"/>
     <id>https://lailin.xyz/post/state.html</id>
     <published>2020-10-11T01:50:05.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2207,7 +2207,7 @@
     <link href="https://lailin.xyz/post/chain.html"/>
     <id>https://lailin.xyz/post/chain.html</id>
     <published>2020-10-07T06:18:07.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2241,7 +2241,7 @@
     <link href="https://lailin.xyz/post/strategy.html"/>
     <id>https://lailin.xyz/post/strategy.html</id>
     <published>2020-09-29T07:32:32.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2275,7 +2275,7 @@
     <link href="https://lailin.xyz/post/template.html"/>
     <id>https://lailin.xyz/post/template.html</id>
     <published>2020-09-23T05:06:10.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2309,7 +2309,7 @@
     <link href="https://lailin.xyz/post/observer.html"/>
     <id>https://lailin.xyz/post/observer.html</id>
     <published>2020-09-21T05:49:23.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2343,7 +2343,7 @@
     <link href="https://lailin.xyz/post/flyweight.html"/>
     <id>https://lailin.xyz/post/flyweight.html</id>
     <published>2020-09-20T08:47:12.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2377,7 +2377,7 @@
     <link href="https://lailin.xyz/post/composite.html"/>
     <id>https://lailin.xyz/post/composite.html</id>
     <published>2020-09-18T22:35:48.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2411,7 +2411,7 @@
     <link href="https://lailin.xyz/post/facade.html"/>
     <id>https://lailin.xyz/post/facade.html</id>
     <published>2020-09-18T01:03:05.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2445,7 +2445,7 @@
     <link href="https://lailin.xyz/post/adapter.html"/>
     <id>https://lailin.xyz/post/adapter.html</id>
     <published>2020-09-17T05:45:01.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2479,7 +2479,7 @@
     <link href="https://lailin.xyz/post/decorator.html"/>
     <id>https://lailin.xyz/post/decorator.html</id>
     <published>2020-09-06T00:05:57.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2513,7 +2513,7 @@
     <link href="https://lailin.xyz/post/bridge.html"/>
     <id>https://lailin.xyz/post/bridge.html</id>
     <published>2020-09-06T00:05:11.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2547,7 +2547,7 @@
     <link href="https://lailin.xyz/post/proxy.html"/>
     <id>https://lailin.xyz/post/proxy.html</id>
     <published>2020-09-06T00:03:56.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2581,7 +2581,7 @@
     <link href="https://lailin.xyz/post/go-design-pattern-create.html"/>
     <id>https://lailin.xyz/post/go-design-pattern-create.html</id>
     <published>2020-09-01T20:28:04.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2615,7 +2615,7 @@
     <link href="https://lailin.xyz/post/prototype.html"/>
     <id>https://lailin.xyz/post/prototype.html</id>
     <published>2020-09-01T20:03:39.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2649,7 +2649,7 @@
     <link href="https://lailin.xyz/post/builder.html"/>
     <id>https://lailin.xyz/post/builder.html</id>
     <published>2020-08-29T20:26:20.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2683,7 +2683,7 @@
     <link href="https://lailin.xyz/post/factory.html"/>
     <id>https://lailin.xyz/post/factory.html</id>
     <published>2020-08-24T02:34:08.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2717,7 +2717,7 @@
     <link href="https://lailin.xyz/post/fe1ma9.html"/>
     <id>https://lailin.xyz/post/fe1ma9.html</id>
     <published>2020-08-20T20:22:09.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.987Z</updated>
     
     <summary type="html">
     
@@ -2747,7 +2747,7 @@
     <link href="https://lailin.xyz/post/singleton.html"/>
     <id>https://lailin.xyz/post/singleton.html</id>
     <published>2020-08-19T01:19:47.000Z</published>
-    <updated>2022-09-10T08:29:06.315Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2781,7 +2781,7 @@
     <link href="https://lailin.xyz/post/how-to-write-a-pre-research-report.html"/>
     <id>https://lailin.xyz/post/how-to-write-a-pre-research-report.html</id>
     <published>2020-07-06T20:17:41.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -2809,7 +2809,7 @@
     <link href="https://lailin.xyz/post/auxvv1.html"/>
     <id>https://lailin.xyz/post/auxvv1.html</id>
     <published>2020-04-17T10:41:12.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2835,7 +2835,7 @@
     <link href="https://lailin.xyz/post/11996.html"/>
     <id>https://lailin.xyz/post/11996.html</id>
     <published>2019-11-06T13:00:00.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2869,7 +2869,7 @@
     <link href="https://lailin.xyz/post/17394.html"/>
     <id>https://lailin.xyz/post/17394.html</id>
     <published>2019-11-03T10:12:26.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2896,7 +2896,7 @@
     <link href="https://lailin.xyz/post/38237.html"/>
     <id>https://lailin.xyz/post/38237.html</id>
     <published>2019-10-26T02:10:10.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2929,7 +2929,7 @@
     <link href="https://lailin.xyz/post/45050.html"/>
     <id>https://lailin.xyz/post/45050.html</id>
     <published>2019-07-11T15:05:01.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -2962,7 +2962,7 @@
     <link href="https://lailin.xyz/post/41140.html"/>
     <id>https://lailin.xyz/post/41140.html</id>
     <published>2019-05-07T15:31:20.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -2990,7 +2990,7 @@
     <link href="https://lailin.xyz/post/27142.html"/>
     <id>https://lailin.xyz/post/27142.html</id>
     <published>2019-04-09T15:42:17.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -3020,7 +3020,7 @@
     <link href="https://lailin.xyz/post/51252.html"/>
     <id>https://lailin.xyz/post/51252.html</id>
     <published>2019-03-30T08:10:10.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -3050,7 +3050,7 @@
     <link href="https://lailin.xyz/post/60163.html"/>
     <id>https://lailin.xyz/post/60163.html</id>
     <published>2019-01-29T06:08:52.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -3085,7 +3085,7 @@
     <link href="https://lailin.xyz/post/28054.html"/>
     <id>https://lailin.xyz/post/28054.html</id>
     <published>2019-01-14T09:11:19.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -3109,7 +3109,7 @@
     <link href="https://lailin.xyz/post/7944.html"/>
     <id>https://lailin.xyz/post/7944.html</id>
     <published>2018-12-08T00:44:03.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -3131,7 +3131,7 @@
     <link href="https://lailin.xyz/post/44107.html"/>
     <id>https://lailin.xyz/post/44107.html</id>
     <published>2018-12-08T00:31:20.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -3168,7 +3168,7 @@
     <link href="https://lailin.xyz/post/52061.html"/>
     <id>https://lailin.xyz/post/52061.html</id>
     <published>2018-09-25T03:09:59.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -3200,7 +3200,7 @@
     <link href="https://lailin.xyz/post/37623.html"/>
     <id>https://lailin.xyz/post/37623.html</id>
     <published>2018-09-23T06:35:51.000Z</published>
-    <updated>2022-09-10T08:29:06.323Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -3226,7 +3226,7 @@
     <link href="https://lailin.xyz/post/37449.html"/>
     <id>https://lailin.xyz/post/37449.html</id>
     <published>2018-09-21T02:46:58.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -3257,7 +3257,7 @@
     <link href="https://lailin.xyz/post/44029.html"/>
     <id>https://lailin.xyz/post/44029.html</id>
     <published>2018-08-02T06:46:01.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -3289,7 +3289,7 @@
     <link href="https://lailin.xyz/post/12338.html"/>
     <id>https://lailin.xyz/post/12338.html</id>
     <published>2018-07-21T07:03:19.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
@@ -3322,7 +3322,7 @@
     <link href="https://lailin.xyz/post/61686.html"/>
     <id>https://lailin.xyz/post/61686.html</id>
     <published>2018-07-21T02:46:58.000Z</published>
-    <updated>2022-09-10T08:29:06.319Z</updated>
+    <updated>2022-09-10T08:47:18.991Z</updated>
     
     <summary type="html">
     
@@ -3352,7 +3352,7 @@
     <link href="https://lailin.xyz/post/47700.html"/>
     <id>https://lailin.xyz/post/47700.html</id>
     <published>2018-03-19T17:53:06.000Z</published>
-    <updated>2022-09-10T08:29:06.311Z</updated>
+    <updated>2022-09-10T08:47:18.983Z</updated>
     
     <summary type="html">
     
