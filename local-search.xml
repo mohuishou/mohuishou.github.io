@@ -8,35 +8,6 @@
     <link href="/post/kubernetes-job-running-not-end.html"/>
     <url>/post/kubernetes-job-running-not-end.html</url>
     
-    <content type="html"><![CDATA[<div class="note note-info">            <p>注：本文所有示例代码都可以在 <a href="https://github.com/mohuishou/blog-code">blog-code</a> 仓库中找到</p>          </div><aside><p><img class="emoji" draggable="false" alt="💡" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f4a1.png"/> 鸽了好久，但是更新虽迟但到，本文源码基于 k8s 1.22.3 版本</p></aside><h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>最近我们踩了一个之前很难遇到的坑，k8s 集群内同时并发运行的 job 2000+，一个 job 只有一个 Pod，一次运行一般 1 - 2min 就可以结束，但是线上数据统计发现每分钟新增的数据只有几十条，这个很不符合常理，关键是还没有报错。</p><p>因为我们的 job 很多，加上已完成未删除的 job 有上万个同时存在，并且 controller 会根据 cr 的需求不断地增删对应的 job，所以排查起来相对比较困难。</p><p>最后发现有一个 job 执行了 3h 都还没有执行完毕，这个成功的引起了我的注意，查看发现这个 job 的确没有完成，并且这个 job 关联的 pod 才刚刚创建，job 的信息里面也只有一个 <code>active: 1</code> 并没有失败的 job 出现</p><p>然后去腾讯云查看 k8s 的审计日志，离谱的事情来了</p><p><img src="/notion_images/6afd8dd22e5435ac9e93f59bf08e3264.png"></p><p>这个 job 对应的 pod 被 pod gc 删除了 50 次，然后查看上线服务的日志也发现存在大量的重复数据上报请求被丢弃掉了。</p><h2 id="为什么-Pod-刚成功就被删除？"><a href="#为什么-Pod-刚成功就被删除？" class="headerlink" title="为什么 Pod 刚成功就被删除？"></a>为什么 Pod 刚成功就被删除？</h2><p>省流版: 来自<a href="https://kubernetes.io/zh-cn/docs/concepts/workloads/controllers/job/#job-tracking-with-finalizers">官网</a>的温馨提示</p><blockquote><p>Job <a href="https://kubernetes.io/zh-cn/docs/concepts/architecture/controller/">控制器（Controller）</a> 依靠计算集群中存在的 Pod 来跟踪作业状态。 也就是说，维持一个统计 <code>succeeded</code> 和 <code>failed</code> 的 Pod 的计数器。 然而，Pod 可以因为一些原因被移除，包括：</p><ul><li>当一个节点宕机时，垃圾收集器会删除孤立（Orphan）Pod。</li><li>垃圾收集器在某个阈值后删除已完成的 Pod（处于 <code>Succeeded</code> 或 <code>Failed</code> 阶段）。</li><li>人工干预删除 Job 的 Pod。</li><li>一个外部控制器（不包含于 Kubernetes）来删除或取代 Pod。</li></ul></blockquote><h2 id="为什么会触发-Pod-Gc-什么时候会触发？"><a href="#为什么会触发-Pod-Gc-什么时候会触发？" class="headerlink" title="为什么会触发 Pod Gc, 什么时候会触发？"></a>为什么会触发 Pod Gc, 什么时候会触发？</h2><p>看一下源码 <a href="https://github.dev/kubernetes/kubernetes/blob/v1.22.3/pkg/controller/podgc/doc.go#L22">pkg/controller/podgc/doc.go</a> 中的说明</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// Package podgc contains a very simple pod &quot;garbage collector&quot; implementation,</span><br><span class="hljs-comment">// PodGCController, that runs in the controller manager. If the number of pods</span><br><span class="hljs-comment">// in terminated phases (right now either Failed or Succeeded) surpasses a</span><br><span class="hljs-comment">// configurable threshold, the controller will delete pods in terminated state</span><br><span class="hljs-comment">// until the system reaches the allowed threshold again. The PodGCController</span><br><span class="hljs-comment">// prioritizes pods to delete by sorting by creation timestamp and deleting the</span><br><span class="hljs-comment">// oldest objects first. The PodGCController will not delete non-terminated</span><br><span class="hljs-comment">// pods.</span><br></code></pre></td></tr></table></figure><p>简单翻译一下就是，当已结束状态(Failed or Succeeded)的 Pod 的数量 &gt; 配置的值的时候，Pod Gc Controller 就会按照创建时间从远往近开始删除已结束状态的 Pod</p><aside><p><img class="emoji" draggable="false" alt="💡" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f4a1.png"/> 这个配置是 kube-controller-manager 的一个配置<br><code>-terminated-pod-gc-threshold</code> int32 默认值：12500，这个值 <code>≤ 0</code> 的时候 pod gc 不再回首已终止的 pod</p></aside><p>后面单独出一篇文章分析 Pod Gc，这里简单看一下 <code>gcTerminated</code> 部分的代码</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gcc *PodGCController)</span> <span class="hljs-title">gcTerminated</span><span class="hljs-params">(pods []*v1.Pod)</span></span> &#123;<br>  <span class="hljs-comment">// 过滤出 terminated Pods</span><br>terminatedPods := []*v1.Pod&#123;&#125;<br><span class="hljs-keyword">for</span> _, pod := <span class="hljs-keyword">range</span> pods &#123;<br><span class="hljs-keyword">if</span> isPodTerminated(pod) &#123;<br>terminatedPods = <span class="hljs-built_in">append</span>(terminatedPods, pod)<br>&#125;<br>&#125;<br><br>  <span class="hljs-comment">// 非常简单的判断，需要删除多少个</span><br>terminatedPodCount := <span class="hljs-built_in">len</span>(terminatedPods)<br>deleteCount := terminatedPodCount - gcc.terminatedPodThreshold<br><br><span class="hljs-keyword">if</span> deleteCount &lt;= <span class="hljs-number">0</span> &#123;<br><span class="hljs-keyword">return</span><br>&#125;<br><br><span class="hljs-comment">// 按照时间进行排序，然后并发删除</span><br>sort.Sort(byCreationTimestamp(terminatedPods))<br><span class="hljs-keyword">var</span> wait sync.WaitGroup<br><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; deleteCount; i++ &#123;<br>wait.Add(<span class="hljs-number">1</span>)<br><span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(namespace <span class="hljs-keyword">string</span>, name <span class="hljs-keyword">string</span>)</span></span> &#123;<br><span class="hljs-keyword">defer</span> wait.Done()<br><span class="hljs-keyword">if</span> err := gcc.deletePod(namespace, name); err != <span class="hljs-literal">nil</span> &#123;<br><span class="hljs-comment">// ignore not founds</span><br><span class="hljs-keyword">defer</span> utilruntime.HandleError(err)<br>&#125;<br>&#125;(terminatedPods[i].Namespace, terminatedPods[i].Name)<br>&#125;<br>wait.Wait()<br>&#125;<br></code></pre></td></tr></table></figure><p>我们可以看到这个删除逻辑也是非常的简单粗暴了，只要超过数量然后就开始删除，但是这个有个问题是，我们现在 terminated pod 数量比 terminatedPodThreshold 这个值大，并且还有 controller 在反复创建 job，这就会导致 pod gc 频繁工作导致 job 一直无法完成了</p><h2 id="怎么解决这个问题？"><a href="#怎么解决这个问题？" class="headerlink" title="怎么解决这个问题？"></a>怎么解决这个问题？</h2><ul><li>最简单的方案就是根据业务的实际需求调整 terminatedPodThreshold 这个值，一般而言默认值 12500 已经足够大了，所以一般也不会触发这个问题，但是需要注意这个值也不能太大，如果太大了，job 有问题可能会直接把 master 打挂<ul><li>但是如果使用云厂商的服务需要注意，我们这次出问题就是因为腾讯云 tke 这个值会根据集群规模自动调整，如果像我们这样集群节点可能不算特别大，也就几百，但是 job 数量特别多就要小心了，这个值比默认值小很多，当时我们是 2000 左右的 pod 就触发了这个问题</li></ul></li><li>还有一个办法就是减少 pod 数量<ul><li>这个问题其实在开发阶段出现过，但是当时没发现是 pod gc 的问题，所以我让一个 job 只有 一个 pod，job 关联的父资源状态结束之后，这个 job 就会被删除掉，尽早的去释放到多余的已完成的 pod</li><li>但是显而易见这个方案治标不治本</li></ul></li><li>还有一个方案是 <strong><strong><a href="https://kubernetes.io/zh-cn/docs/concepts/workloads/controllers/job/#job-tracking-with-finalizers">使用 Finalizer 追踪 Job</a></strong></strong><ul><li>k8s 1.22 开始支持 job 给 pod 添加 finalizer，这样可以确保 pod 被意外删除的时候 job controller 可以感知到</li><li>这个 feature 在 1.22 版本可以手动开启，1.23 版本默认开启，但是 1.24 版本被默认关闭了，因为存在未解决的 bug 可能会导致 job 和 pod 一直处于 terminating 的状态。具体可以看这个 <a href="https://github.com/kubernetes/kubernetes/pull/109487">PR</a></li></ul></li></ul><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul><li>回顾一下这个坑，其实早有预兆，但是机会给了一次次没有及时抓住最后还是跳了下去<ul><li>开发阶段就发现了这个问题，但是不够重视，没有追根溯源，当时解决了就以为解决了</li><li>测试阶段没有压测，上线前的就已经预料到了最多的时候需要短时间内跑 100W+ 的 job，但是觉得是上线初期感觉压力应该没那么大，把压测时间滞后了</li><li>生产阶段排查问题没有第一时间去看 k8s 审计以及事件日志，导致走了弯路</li></ul></li><li>最后一个 github 查看源码的 tips，现在只要把 <a href="http://github.com/">github.com</a> 改成 <a href="http://github.dev/">github.dev</a> 就能直接用 vscode web 版本查看仓库代码，并且还支持代码跳转，文中的所有源码链接都是 github.dev 的链接，可以体验一下  <img src="/notion_images/31a65a18a41e11853b1f38224bfb23a5.png"></li></ul><h2 id="关注我获取更新">  <a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a    class="anchorjs-link"    aria-label="Anchor"    data-anchorjs-icon=""    href="#关注我获取更新"    style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em"  ></a></h2><div class="row">  <div class="col-lg-6">    <img      style="width: 100%"      src="https://img.lailin.xyz/custom/wechat_white.png"      alt="wechat"    />  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="http://s.zhihu.com/B4RT3"      ><img        style="width: 100%"        src="https://img.lailin.xyz/custom/zhihu.png"        alt="知乎"    /></a>  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="https://github.com/mohuishou"      ><img        style="width: 100%"        src="https://img.lailin.xyz/custom/github.png"        alt="github"    /></a>  </div></div><!-- Add wechat img after categories --><script>document.addEventListener('DOMContentLoaded', (event) => {  let toc = $("#toc");  if (toc.height() < 1) return;  let img = `  <a    class="fancybox fancybox.image"    href="https://img.lailin.xyz/custom/wechat_white.png"    itemscope=""    itemtype="http://schema.org/ImageObject"    itemprop="url"    data-fancybox="default"    rel="default"    title="wechat"    data-caption="wechat"    ><img      style="width: 80%; margin-left: 1rem;"      src="https://img.lailin.xyz/custom/wechat_white.png"      srcset="https://img.lailin.xyz/custom/wechat_white.png"      alt="wechat"    />    </a>  `  toc.append(img.replace(/srcset.*?"/, ""))})</script>]]></content>
-    
-    
-    <categories>
-      
-      <category>Job</category>
-      
-      <category>kubernetes 系列</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>k8s</tag>
-      
-      <tag>源码分析</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>k8s job 为何迟迟不能结束？</title>
-    <link href="/post/kubernetes-job-running-not-end.html"/>
-    <url>/post/kubernetes-job-running-not-end.html</url>
-    
     <content type="html"><![CDATA[<div class="note note-info">            <p>注：本文所有示例代码都可以在 <a href="https://github.com/mohuishou/blog-code">blog-code</a> 仓库中找到</p>          </div><aside><p><img src="/notion_images/a16bfa1d943877bf2f73209ab68b01d2.svg" width="40px"> 鸽了好久，但是更新虽迟但到，本文源码基于 k8s 1.22.3 版本</p></aside><h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>最近我们踩了一个之前很难遇到的坑，k8s 集群内同时并发运行的 job 2000+，一个 job 只有一个 Pod，一次运行一般 1 - 2min 就可以结束，但是线上数据统计发现每分钟新增的数据只有几十条，这个很不符合常理，关键是还没有报错。</p><p>因为我们的 job 很多，加上已完成未删除的 job 有上万个同时存在，并且 controller 会根据 cr 的需求不断地增删对应的 job，所以排查起来相对比较困难。</p><p>然后去腾讯云查看 k8s 的审计日志，离谱的事情来了</p><p><img src="/notion_images/6afd8dd22e5435ac9e93f59bf08e3264.png"></p><p>这个 job 对应的 pod 被 pod gc 删除了 50 次，然后查看上线服务的日志也发现存在大量的重复数据上报请求被丢弃掉了。</p><h2 id="为什么-Pod-刚成功就被删除？"><a href="#为什么-Pod-刚成功就被删除？" class="headerlink" title="为什么 Pod 刚成功就被删除？"></a>为什么 Pod 刚成功就被删除？</h2><blockquote><p>Job <a href="https://kubernetes.io/zh-cn/docs/concepts/architecture/controller/">控制器（Controller）</a> 依靠计算集群中存在的 Pod 来跟踪作业状态。 也就是说，维持一个统计 <code>succeeded</code> 和 <code>failed</code> 的 Pod 的计数器。 然而，Pod 可以因为一些原因被移除，包括：</p><ul><li>当一个节点宕机时，垃圾收集器会删除孤立（Orphan）Pod。</li><li>垃圾收集器在某个阈值后删除已完成的 Pod（处于 <code>Succeeded</code> 或 <code>Failed</code> 阶段）。</li><li>人工干预删除 Job 的 Pod。</li><li>一个外部控制器（不包含于 Kubernetes）来删除或取代 Pod。</li></ul></blockquote><h2 id="为什么会触发-Pod-Gc-什么时候会触发？"><a href="#为什么会触发-Pod-Gc-什么时候会触发？" class="headerlink" title="为什么会触发 Pod Gc, 什么时候会触发？"></a>为什么会触发 Pod Gc, 什么时候会触发？</h2><p>看一下源码 <a href="https://github.dev/kubernetes/kubernetes/blob/v1.22.3/pkg/controller/podgc/doc.go#L22">pkg/controller/podgc/doc.go</a> 中的说明</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// Package podgc contains a very simple pod &quot;garbage collector&quot; implementation,</span><br><span class="hljs-comment">// PodGCController, that runs in the controller manager. If the number of pods</span><br><span class="hljs-comment">// in terminated phases (right now either Failed or Succeeded) surpasses a</span><br><span class="hljs-comment">// configurable threshold, the controller will delete pods in terminated state</span><br><span class="hljs-comment">// until the system reaches the allowed threshold again. The PodGCController</span><br><span class="hljs-comment">// prioritizes pods to delete by sorting by creation timestamp and deleting the</span><br><span class="hljs-comment">// oldest objects first. The PodGCController will not delete non-terminated</span><br><span class="hljs-comment">// pods.</span><br></code></pre></td></tr></table></figure><p>简单翻译一下就是，当已结束状态(Failed or Succeeded)的 Pod 的数量 &gt; 配置的值的时候，Pod Gc Controller 就会按照创建时间从远往近开始删除已结束状态的 Pod</p><aside><p><img class="emoji" draggable="false" alt="💡" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f4a1.png"/> 这个配置是 kube-controller-manager 的一个配置<br><code>-terminated-pod-gc-threshold</code> int32 默认值：12500，这个值 <code>≤ 0</code> 的时候 pod gc 不再回首已终止的 pod</p></aside><p>后面单独出一篇文章分析 Pod Gc，这里简单看一下 <code>gcTerminated</code> 部分的代码</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gcc *PodGCController)</span> <span class="hljs-title">gcTerminated</span><span class="hljs-params">(pods []*v1.Pod)</span></span> &#123;<br>  <span class="hljs-comment">// 过滤出 terminated Pods</span><br>terminatedPods := []*v1.Pod&#123;&#125;<br><span class="hljs-keyword">for</span> _, pod := <span class="hljs-keyword">range</span> pods &#123;<br><span class="hljs-keyword">if</span> isPodTerminated(pod) &#123;<br>terminatedPods = <span class="hljs-built_in">append</span>(terminatedPods, pod)<br>&#125;<br>&#125;<br><br>  <span class="hljs-comment">// 非常简单的判断，需要删除多少个</span><br>terminatedPodCount := <span class="hljs-built_in">len</span>(terminatedPods)<br>deleteCount := terminatedPodCount - gcc.terminatedPodThreshold<br><br><span class="hljs-keyword">if</span> deleteCount &lt;= <span class="hljs-number">0</span> &#123;<br><span class="hljs-keyword">return</span><br>&#125;<br><br><span class="hljs-comment">// 按照时间进行排序，然后并发删除</span><br>sort.Sort(byCreationTimestamp(terminatedPods))<br><span class="hljs-keyword">var</span> wait sync.WaitGroup<br><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; deleteCount; i++ &#123;<br>wait.Add(<span class="hljs-number">1</span>)<br><span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(namespace <span class="hljs-keyword">string</span>, name <span class="hljs-keyword">string</span>)</span></span> &#123;<br><span class="hljs-keyword">defer</span> wait.Done()<br><span class="hljs-keyword">if</span> err := gcc.deletePod(namespace, name); err != <span class="hljs-literal">nil</span> &#123;<br><span class="hljs-comment">// ignore not founds</span><br><span class="hljs-keyword">defer</span> utilruntime.HandleError(err)<br>&#125;<br>&#125;(terminatedPods[i].Namespace, terminatedPods[i].Name)<br>&#125;<br>wait.Wait()<br>&#125;<br></code></pre></td></tr></table></figure><p>我们可以看到这个删除逻辑也是非常的简单粗暴了，只要超过数量然后就开始删除，但是这个有个问题是，我们现在 terminated pod 数量比 terminatedPodThreshold 这个值大，并且还有 controller 在反复创建 job，这就会导致 pod gc 频繁工作导致 job 一直无法完成了</p><h2 id="怎么解决这个问题？"><a href="#怎么解决这个问题？" class="headerlink" title="怎么解决这个问题？"></a>怎么解决这个问题？</h2><ul><li>最简单的方案就是根据业务的实际需求调整 terminatedPodThreshold 这个值，一般而言默认值 12500 已经足够大了，所以一般也不会触发这个问题，但是需要注意这个值也不能太大，如果太大了，job 有问题可能会直接把 master 打挂<ul><li>但是如果使用云厂商的服务需要注意，我们这次出问题就是因为腾讯云 tke 这个值会根据集群规模自动调整，如果像我们这样集群节点可能不算特别大，也就几百，但是 job 数量特别多就要小心了，这个值比默认值小很多，当时我们是 2000 左右的 pod 就触发了这个问题</li></ul></li><li>还有一个办法就是减少 pod 数量<ul><li>这个问题其实在开发阶段出现过，但是当时没发现是 pod gc 的问题，所以我让一个 job 只有 一个 pod，job 关联的父资源状态结束之后，这个 job 就会被删除掉，尽早的去释放到多余的已完成的 pod</li><li>但是显而易见这个方案治标不治本</li></ul></li><li>还有一个方案是 <strong><strong><a href="https://kubernetes.io/zh-cn/docs/concepts/workloads/controllers/job/#job-tracking-with-finalizers">使用 Finalizer 追踪 Job</a></strong></strong><ul><li>k8s 1.22 开始支持 job 给 pod 添加 finalizer，这样可以确保 pod 被意外删除的时候 job controller 可以感知到</li><li>这个 feature 在 1.22 版本可以手动开启，1.23 版本默认开启，但是 1.24 版本被默认关闭了，因为存在未解决的 bug 可能会导致 job 和 pod 一直处于 terminating 的状态。具体可以看这个 <a href="https://github.com/kubernetes/kubernetes/pull/109487">PR</a></li></ul></li></ul><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul><li>回顾一下这个坑，其实早有预兆，但是机会给了一次次没有及时抓住最后还是跳了下去<ul><li>开发阶段就发现了这个问题，但是不够重视，没有追根溯源，当时解决了就以为解决了</li><li>测试阶段没有压测，上线前的就已经预料到了最多的时候需要短时间内跑 100W+ 的 job，但是觉得是上线初期感觉压力应该没那么大，把压测时间滞后了</li><li>生产阶段排查问题没有第一时间去看 k8s 审计以及事件日志，导致走了弯路</li></ul></li><li>最后一个 github 查看源码的 tips，现在只要把 <a href="http://github.com/">github.com</a> 改成 <a href="http://github.dev/">github.dev</a> 就能直接用 vscode web 版本查看仓库代码，并且还支持代码跳转，文中的所有源码链接都是 github.dev 的链接，可以体验一下  <img src="/notion_images/31a65a18a41e11853b1f38224bfb23a5.png"></li></ul><h2 id="关注我获取更新">  <a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a    class="anchorjs-link"    aria-label="Anchor"    data-anchorjs-icon=""    href="#关注我获取更新"    style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em"  ></a></h2><div class="row">  <div class="col-lg-6">    <img      style="width: 100%"      src="https://img.lailin.xyz/custom/wechat_white.png"      alt="wechat"    />  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="http://s.zhihu.com/B4RT3"      ><img        style="width: 100%"        src="https://img.lailin.xyz/custom/zhihu.png"        alt="知乎"    /></a>  </div>  <div class="col-lg-2 col-4">    <a target="_blank" href="https://github.com/mohuishou"      ><img        style="width: 100%"        src="https://img.lailin.xyz/custom/github.png"        alt="github"    /></a>  </div></div><!-- Add wechat img after categories --><script>document.addEventListener('DOMContentLoaded', (event) => {  let toc = $("#toc");  if (toc.height() < 1) return;  let img = `  <a    class="fancybox fancybox.image"    href="https://img.lailin.xyz/custom/wechat_white.png"    itemscope=""    itemtype="http://schema.org/ImageObject"    itemprop="url"    data-fancybox="default"    rel="default"    title="wechat"    data-caption="wechat"    ><img      style="width: 80%; margin-left: 1rem;"      src="https://img.lailin.xyz/custom/wechat_white.png"      srcset="https://img.lailin.xyz/custom/wechat_white.png"      alt="wechat"    />    </a>  `  toc.append(img.replace(/srcset.*?"/, ""))})</script>]]></content>
     
     
@@ -963,9 +934,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>工程化</tag>
-      
       <tag>Go进阶训练营</tag>
+      
+      <tag>工程化</tag>
       
     </tags>
     
@@ -996,9 +967,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>工程化</tag>
-      
       <tag>Go进阶训练营</tag>
+      
+      <tag>工程化</tag>
       
       <tag>单元测试</tag>
       
@@ -1031,9 +1002,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>工程化</tag>
-      
       <tag>Go进阶训练营</tag>
+      
+      <tag>工程化</tag>
       
     </tags>
     
@@ -1064,9 +1035,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>工程化</tag>
-      
       <tag>Go进阶训练营</tag>
+      
+      <tag>工程化</tag>
       
     </tags>
     
@@ -1097,9 +1068,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>工程化</tag>
-      
       <tag>Go进阶训练营</tag>
+      
+      <tag>工程化</tag>
       
     </tags>
     
@@ -1130,9 +1101,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>工程化</tag>
-      
       <tag>Go进阶训练营</tag>
+      
+      <tag>工程化</tag>
       
     </tags>
     
@@ -1163,9 +1134,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>工程化</tag>
-      
       <tag>Go进阶训练营</tag>
+      
+      <tag>工程化</tag>
       
     </tags>
     
@@ -1196,9 +1167,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>工程化</tag>
-      
       <tag>Go进阶训练营</tag>
+      
+      <tag>工程化</tag>
       
     </tags>
     
@@ -1229,9 +1200,9 @@
       
       <tag>学习笔记</tag>
       
-      <tag>工程化</tag>
-      
       <tag>Go进阶训练营</tag>
+      
+      <tag>工程化</tag>
       
       <tag>读书笔记</tag>
       
