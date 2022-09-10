@@ -1,0 +1,124 @@
+
+<div class="note note-info">
+            <p>注：本文所有示例代码都可以在 <a href="https://github.com/mohuishou/blog-code">blog-code</a> 仓库中找到</p>
+          </div>
+
+.fancybox-slide--image .fancybox-content {
+  background: #fff !important;
+}
+
+#关注我获取更新 {
+  color: var(--post-heading-color);
+  font-weight: bold;
+  margin-bottom: 0.75em;
+  margin-top: 2em;
+  font-size: 1.5em;
+}
+
+@media (max-width: 600px) {
+  .wechat-qr {
+    display: none;
+  }
+}
+
+.note a {
+  color: var(--post-link-color) !important;
+}
+
+.footnote-text > span > br {
+  display: none;
+}
+
+aside {
+  background-color: #f6f8fa;
+  padding: 10px;
+  padding-left: 42.5px;
+  position: relative;
+  margin-bottom: 16px;
+  border-radius: 5px;
+}
+
+aside a:nth-child(1) img {
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  width: 25px !important;
+  height: 25px !important;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+aside p:last-child {
+  margin-bottom: 0 !important;
+}
+
+aside .image-caption {
+  display: none;
+}
+
+
+
+<h2 id="关注我获取更新">
+  <a href="#关注我获取更新" class="headerlink" title="关注我获取更新"></a>关注我获取更新<a
+    class="anchorjs-link"
+    aria-label="Anchor"
+    data-anchorjs-icon=""
+    href="#关注我获取更新"
+    style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em"
+  ></a>
+</h2>
+<div class="row">
+  <div class="col-lg-6">
+    <img
+      style="width: 100%"
+      src="https://img.lailin.xyz/custom/wechat_white.png"
+      alt="wechat"
+    />
+  </div>
+  <div class="col-lg-2 col-4">
+    <a target="_blank" href="http://s.zhihu.com/B4RT3"
+      ><img
+        style="width: 100%"
+        src="https://img.lailin.xyz/custom/zhihu.png"
+        alt="知乎"
+    /></a>
+  </div>
+  <div class="col-lg-2 col-4">
+    <a target="_blank" href="https://github.com/mohuishou"
+      ><img
+        style="width: 100%"
+        src="https://img.lailin.xyz/custom/github.png"
+        alt="github"
+    /></a>
+  </div>
+</div>
+
+<!-- Add wechat img after categories -->
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  let toc = $("#toc");
+  if (toc.height() < 1) return;
+  let img = `
+  <a
+    class="fancybox fancybox.image"
+    href="https://img.lailin.xyz/custom/wechat_white.png"
+    itemscope=""
+    itemtype="http://schema.org/ImageObject"
+    itemprop="url"
+    data-fancybox="default"
+    rel="default"
+    title="wechat"
+    data-caption="wechat"
+    ><img
+      style="width: 80%; margin-left: 1rem;"
+      src="https://img.lailin.xyz/custom/wechat_white.png"
+      srcset="https://img.lailin.xyz/custom/wechat_white.png"
+      alt="wechat"
+    />
+    </a>
+  `
+  toc.append(img.replace(/srcset.*?"/, ""))
+})
+</script>
